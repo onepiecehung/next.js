@@ -60,7 +60,7 @@ DEPLOY_STAGING_TOKEN=your_staging_token
 DEPLOY_PRODUCTION_TOKEN=your_production_token
 ```
 
-### **Required npm Scripts:**
+### **Required yarn Scripts:**
 ```json
 {
   "scripts": {
@@ -127,10 +127,10 @@ npm run deploy:production
 ### **Local Testing:**
 ```bash
 # Test workflows locally
-npm run lint
-npm run type-check
-npm run build
-npm run test
+yarn lint
+yarn type-check
+yarn build
+yarn test
 ```
 
 ## 📈 Benefits
