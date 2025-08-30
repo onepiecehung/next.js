@@ -12,7 +12,7 @@ import LoginDialog from "@/components/auth/login-dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useState } from "react";
-import { DraculaThemeToggle } from "@/components/ui/dracula-theme-toggle";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { UserDropdown } from "@/components/ui/user-dropdown";
 import { NavLoadingSkeleton } from "@/components/ui/loading-skeleton";
 
@@ -47,7 +47,7 @@ export default function SiteNav() {
         </Link>
 
         <div className="flex items-center gap-3">
-          <DraculaThemeToggle />
+          <ThemeToggle />
           {(() => {
             if (authLoading) return <NavLoadingSkeleton />;
             if (user)

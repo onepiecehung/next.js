@@ -18,7 +18,6 @@ export * from "../../components/providers/loading-provider";
 
 // Export theme components
 export * from "../../components/ui/theme-toggle";
-export * from "../../components/ui/dracula-theme-toggle";
 
 // Export Dracula UI components
 export * from "../../components/ui/dracula-button";
