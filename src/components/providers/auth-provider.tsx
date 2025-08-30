@@ -27,7 +27,7 @@ export default function AuthProvider({
         setAuthLoading(true);
         showGlobalSkeleton();
 
-        // First check if token is valid and refresh if needed
+        // Check if user is already authenticated on app load
         const isTokenValid = await checkAndRefreshToken();
         if (isTokenValid) {
           // Token is valid, fetch user data

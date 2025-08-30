@@ -48,17 +48,18 @@ export default function SiteNav() {
 
         <div className="flex items-center gap-3">
           <DraculaThemeToggle />
-          {authLoading ? (
-            <NavLoadingSkeleton />
-          ) : user ? (
-            <UserDropdown
-              user={user}
-              onLogout={handleLogout}
-              isLoggingOut={isLoggingOut}
-            />
-          ) : (
-            <LoginDialog />
-          )}
+          {(() => {
+            if (authLoading) return <NavLoadingSkeleton />;
+            if (user)
+              return (
+                <UserDropdown
+                  user={user}
+                  onLogout={handleLogout}
+                  isLoggingOut={isLoggingOut}
+                />
+              );
+            return <LoginDialog />;
+          })()}
         </div>
       </div>
     </header>

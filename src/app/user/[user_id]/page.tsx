@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { http } from "@/lib/http";
+import { publicHttp } from "@/lib/http";
 import { useIsMounted } from "@/components/providers/no-ssr";
 import { toast } from "sonner";
 import type { PublicUser, Article } from "@/lib/types";
@@ -43,17 +43,25 @@ export default function UserProfilePage() {
         setError(null);
 
         // Fetch user profile
-        const userResponse = await http.get(`/users/${userId}`);
+        const userResponse = await publicHttp.get(`/users/${userId}`);
         if (userResponse.data.success) {
           setUser(userResponse.data.data);
         } else {
           throw new Error(userResponse.data.message || "Failed to fetch user");
         }
 
-        // Fetch user articles
-        const articlesResponse = await http.get(`/users/${userId}/articles`);
-        if (articlesResponse.data.success) {
-          setArticles(articlesResponse.data.data || []);
+        // Fetch user articles (don't fail if this API has issues)
+        try {
+          const articlesResponse = await publicHttp.get(
+            `/users/${userId}/articles`,
+          );
+          if (articlesResponse.data.success) {
+            setArticles(articlesResponse.data.data || []);
+          }
+        } catch (articlesError) {
+          console.warn("Failed to fetch user articles:", articlesError);
+          // Don't fail the entire profile load, just show empty articles
+          setArticles([]);
         }
       } catch (err) {
         console.error("Error fetching user data:", err);

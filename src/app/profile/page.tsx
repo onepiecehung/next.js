@@ -9,12 +9,14 @@ import {
   PenTool,
   MessageSquare,
   BookOpen,
+  Eye,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useAtom } from "jotai";
 import { currentUserAtom } from "@/lib/auth-store";
 import { useIsMounted } from "@/components/providers/no-ssr";
+import Link from "next/link";
 
 /**
  * Profile Page Component
@@ -63,7 +65,7 @@ export default function ProfilePage() {
               <Avatar className="h-24 w-24">
                 {hasAvatar && (
                   <AvatarImage
-                    src={user.avatar!.url}
+                    src={user?.avatar?.url}
                     alt={`${displayName}'s avatar`}
                     className="object-cover"
                   />
@@ -80,12 +82,24 @@ export default function ProfilePage() {
                 <h1 className="text-3xl font-bold text-foreground">
                   {displayName}
                 </h1>
-                <Button
-                  variant="outline"
-                  className="border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-800"
-                >
-                  Follow
-                </Button>
+                <div className="flex items-center gap-3">
+                  <Button
+                    variant="outline"
+                    className="border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-800"
+                  >
+                    Follow
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    className="bg-purple-100 hover:bg-purple-200 text-purple-700 border-purple-200 dark:bg-purple-900/20 dark:hover:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800"
+                    asChild
+                  >
+                    <Link href={`/user/${user.id}`}>
+                      <Eye className="mr-2 h-4 w-4" />
+                      View as Public
+                    </Link>
+                  </Button>
+                </div>
               </div>
 
               {/* Bio */}

@@ -74,27 +74,12 @@ export function clearUserState() {
 export async function checkAndRefreshToken(): Promise<boolean> {
   try {
     // Try to fetch user data to check if token is valid
+    // The http interceptor will handle 401 and refresh automatically
     await fetchMeAction();
     return true;
-  } catch (error: unknown) {
-    // If 401, try to refresh token
-    if (error && typeof error === "object" && "response" in error) {
-      const axiosError = error as { response?: { status?: number } };
-      if (axiosError.response?.status === 401) {
-        try {
-          // The http interceptor will handle the refresh automatically
-          // Just try to fetch user data again
-          await fetchMeAction();
-          return true;
-        } catch (refreshError) {
-          // Refresh failed, user needs to login again
-          clearUserState();
-          return false;
-        }
-      }
-    }
-
-    // Other errors, clear state and return false
+  } catch {
+    // If any error occurs (including 401), clear state and return false
+    // The interceptor will have already tried to refresh the token
     clearUserState();
     return false;
   }

@@ -1,5 +1,4 @@
 import axios from "axios";
-import type { ApiResponse, RefreshTokenResponse } from "@/lib/types";
 
 // In-memory storage for access token (not persisted to localStorage for security)
 let ACCESS_TOKEN: string | null = null;
@@ -38,6 +37,13 @@ export const http = axios.create({
   baseURL:
     process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/api/v1",
   withCredentials: false, // Temporarily disabled due to CORS issue
+});
+
+// Create public axios instance for APIs that don't require authentication
+export const publicHttp = axios.create({
+  baseURL:
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/api/v1",
+  withCredentials: false,
 });
 
 // Request interceptor: automatically attach Authorization header if access token exists
