@@ -21,6 +21,7 @@ import Link from "next/link";
 /**
  * Profile Page Component
  * Displays user profile information with tabs for different content types
+ * Uses Dracula theme color system for consistent and harmonious design
  */
 export default function ProfilePage() {
   const [user] = useAtom(currentUserAtom);
@@ -55,14 +56,14 @@ export default function ProfilePage() {
   const hasAvatar = user.avatar?.url;
 
   return (
-    <div className="bg-background">
+    <div className="bg-background min-h-screen">
       {/* Profile Header Section */}
-      <div className="border-b bg-card">
+      <div className="border-b border-border bg-card">
         <div className="mx-auto max-w-4xl px-4 py-8">
           <div className="flex items-start gap-6">
             {/* Avatar */}
             <div className="flex-shrink-0">
-              <Avatar className="h-24 w-24">
+              <Avatar className="h-24 w-24 ring-2 ring-primary/20">
                 {hasAvatar && (
                   <AvatarImage
                     src={user?.avatar?.url}
@@ -70,7 +71,7 @@ export default function ProfilePage() {
                     className="object-cover"
                   />
                 )}
-                <AvatarFallback className="text-2xl font-semibold bg-gradient-to-br from-purple-500 to-blue-600 text-white">
+                <AvatarFallback className="text-2xl font-semibold bg-gradient-to-br from-primary to-primary/70 text-primary-foreground">
                   {initials}
                 </AvatarFallback>
               </Avatar>
@@ -85,13 +86,13 @@ export default function ProfilePage() {
                 <div className="flex items-center gap-3">
                   <Button
                     variant="outline"
-                    className="border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-800"
+                    className="border-border hover:bg-accent hover:text-accent-foreground transition-colors"
                   >
                     Follow
                   </Button>
                   <Button
                     variant="secondary"
-                    className="bg-purple-100 hover:bg-purple-200 text-purple-700 border-purple-200 dark:bg-purple-900/20 dark:hover:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800"
+                    className="bg-secondary hover:bg-secondary/80 text-secondary-foreground border-secondary transition-colors"
                     asChild
                   >
                     <Link href={`/user/${user.id}`}>
@@ -112,20 +113,32 @@ export default function ProfilePage() {
               {/* Stats */}
               <div className="text-sm text-muted-foreground mb-4">
                 <span className="flex items-center gap-1">
-                  <Heart className="h-4 w-4" />
+                  <Heart className="h-4 w-4 text-chart-1" />
                   12 Likes
                 </span>
               </div>
 
               {/* Social Links */}
               <div className="flex items-center gap-4">
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-8 w-8 p-0 hover:bg-accent hover:text-accent-foreground transition-colors"
+                >
                   <Github className="h-4 w-4" />
                 </Button>
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-8 w-8 p-0 hover:bg-accent hover:text-accent-foreground transition-colors"
+                >
                   <Twitter className="h-4 w-4" />
                 </Button>
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-8 w-8 p-0 hover:bg-accent hover:text-accent-foreground transition-colors"
+                >
                   <Rss className="h-4 w-4" />
                 </Button>
               </div>
@@ -135,15 +148,15 @@ export default function ProfilePage() {
       </div>
 
       {/* Content Navigation Tabs */}
-      <div className="border-b bg-background">
+      <div className="border-b border-border bg-background">
         <div className="mx-auto max-w-4xl px-4">
           <div className="flex space-x-8">
             <button
               onClick={() => setActiveTab("articles")}
               className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === "articles"
-                  ? "border-foreground text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30"
               }`}
             >
               <span className="flex items-center gap-2">
@@ -155,8 +168,8 @@ export default function ProfilePage() {
               onClick={() => setActiveTab("scraps")}
               className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === "scraps"
-                  ? "border-foreground text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30"
               }`}
             >
               <span className="flex items-center gap-2">
@@ -168,8 +181,8 @@ export default function ProfilePage() {
               onClick={() => setActiveTab("comments")}
               className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === "comments"
-                  ? "border-foreground text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30"
               }`}
             >
               <span className="flex items-center gap-2">
@@ -186,60 +199,60 @@ export default function ProfilePage() {
         {activeTab === "articles" && (
           <div className="space-y-6">
             {/* Article Card 1 */}
-            <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+            <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
               <div className="flex items-start justify-between mb-4">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
                   TECH
                 </span>
-                <PenTool className="h-8 w-8 text-gray-600 dark:text-gray-400" />
+                <PenTool className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight">
+              <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
                 Building a Modern Next.js Application with TypeScript and
                 Tailwind CSS
               </h3>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span>2 days ago</span>
                 <span className="flex items-center gap-1">
-                  <Heart className="h-4 w-4" />6
+                  <Heart className="h-4 w-4 text-chart-1" />6
                 </span>
               </div>
             </div>
 
             {/* Article Card 2 */}
-            <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg p-6">
+            <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
               <div className="flex items-start justify-between mb-4">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-chart-2/10 text-chart-2 border border-chart-2/20">
                   TUTORIAL
                 </span>
-                <BookOpen className="h-8 w-8 text-gray-600 dark:text-gray-400" />
+                <BookOpen className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight">
+              <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
                 Complete Guide to Authentication with Next.js and JWT
               </h3>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span>1 week ago</span>
                 <span className="flex items-center gap-1">
-                  <Heart className="h-4 w-4" />
+                  <Heart className="h-4 w-4 text-chart-1" />
                   12
                 </span>
               </div>
             </div>
 
             {/* Article Card 3 */}
-            <div className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800 rounded-lg p-6">
+            <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
               <div className="flex items-start justify-between mb-4">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-chart-4/10 text-chart-4 border border-chart-4/20">
                   INSIGHTS
                 </span>
-                <MessageSquare className="h-8 w-8 text-gray-600 dark:text-gray-400" />
+                <MessageSquare className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight">
+              <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
                 State Management Best Practices in React Applications
               </h3>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span>2 weeks ago</span>
                 <span className="flex items-center gap-1">
-                  <Heart className="h-4 w-4" />8
+                  <Heart className="h-4 w-4 text-chart-1" />8
                 </span>
               </div>
             </div>
