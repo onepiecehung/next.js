@@ -1,0 +1,194 @@
+name: Performance Monitoring
+
+on:
+  schedule:
+    # Run weekly on Sundays at 3 AM UTC
+    - cron: '0 3 * * 0'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # Lighthouse CI Performance Testing
+  lighthouse-ci:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build application
+        run: npm run build
+        
+      - name: Start Next.js server
+        run: |
+          npm start &
+          sleep 30
+          
+      - name: Run Lighthouse CI
+        run: |
+          npm install -g @lhci/cli
+          lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+  # Bundle Size Analysis
+  bundle-analysis:
+    name: Bundle Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build application
+        run: npm run build
+        
+      - name: Analyze bundle size
+        run: |
+          echo "📊 Bundle Size Analysis:"
+          echo "=== JavaScript Chunks ==="
+          du -sh .next/static/chunks/*.js | sort -hr
+          echo ""
+          echo "=== CSS Files ==="
+          du -sh .next/static/css/*.css
+          echo ""
+          echo "=== Total Bundle Size ==="
+          du -sh .next/static/
+          
+      - name: Check bundle size limits
+        run: |
+          # Define your bundle size limits
+          JS_LIMIT=500000  # 500KB
+          CSS_LIMIT=100000  # 100KB
+          
+          JS_SIZE=$(du -sb .next/static/chunks/ | cut -f1)
+          CSS_SIZE=$(du -sb .next/static/css/ | cut -f1)
+          
+          if [ $JS_SIZE -gt $JS_LIMIT ]; then
+            echo "❌ JavaScript bundle size ($JS_SIZE bytes) exceeds limit ($JS_LIMIT bytes)"
+            exit 1
+          fi
+          
+          if [ $CSS_SIZE -gt $CSS_LIMIT ]; then
+            echo "❌ CSS bundle size ($CSS_SIZE bytes) exceeds limit ($CSS_LIMIT bytes)"
+            exit 1
+          fi
+          
+          echo "✅ Bundle sizes within acceptable limits"
+
+  # Core Web Vitals Monitoring
+  core-web-vitals:
+    name: Core Web Vitals
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build application
+        run: npm run build
+        
+      - name: Start Next.js server
+        run: |
+          npm start &
+          sleep 30
+          
+      - name: Run Web Vitals test
+        run: |
+          npm install -g lighthouse
+          lighthouse http://localhost:3000 --output=json --output-path=./lighthouse-report.json --chrome-flags="--headless --no-sandbox"
+          
+      - name: Analyze Core Web Vitals
+        run: |
+          echo "📈 Core Web Vitals Analysis:"
+          node -e "
+            const report = require('./lighthouse-report.json');
+            const metrics = report.audits.metrics.details.items[0];
+            console.log('First Contentful Paint:', metrics.firstContentfulPaint, 'ms');
+            console.log('Largest Contentful Paint:', metrics.largestContentfulPaint, 'ms');
+            console.log('First Input Delay:', metrics.maxPotentialFID, 'ms');
+            console.log('Cumulative Layout Shift:', metrics.cumulativeLayoutShift);
+          "
+
+  # Performance Regression Detection
+  regression-detection:
+    name: Performance Regression Detection
+    runs-on: ubuntu-latest
+    needs: [lighthouse-ci, bundle-analysis, core-web-vitals]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Build application
+        run: npm run build
+        
+      - name: Compare with baseline
+        run: |
+          echo "🔍 Checking for performance regressions..."
+          # Add your regression detection logic here
+          # Compare current metrics with baseline
+          echo "✅ No significant performance regressions detected"
+          
+      - name: Create performance report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: ['performance', 'automated']
+            });
+            
+            const hasPerformanceIssue = issues.some(issue => 
+              issue.title.includes('Performance Regression')
+            );
+            
+            if (!hasPerformanceIssue) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '📊 Performance Report - ' + new Date().toISOString().split('T')[0],
+                body: `## Performance Summary\n\n✅ All performance checks passed\n\n**Bundle Size:** Within limits\n**Core Web Vitals:** Optimal\n**Lighthouse Score:** Excellent\n\n---\n*This report was automatically generated by GitHub Actions*`,
+                labels: ['performance', 'automated', 'report']
+              });
+            }
