@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { NoSSR } from "@/components/providers/no-ssr";
 import { LoadingProvider } from "@/components/providers/loading-provider";
 import { GlobalLoadingOverlay } from "@/components/ui/global-loading-overlay";
+import SiteNav from "@/components/site-nav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,7 +38,10 @@ export default function RootLayout({
         <NoSSR>
           <LoadingProvider>
             <ThemeProvider>
-              <AuthProvider>{children}</AuthProvider>
+              <AuthProvider>
+                <SiteNav />
+                {children}
+              </AuthProvider>
             </ThemeProvider>
             <GlobalLoadingOverlay />
           </LoadingProvider>

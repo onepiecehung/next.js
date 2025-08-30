@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useIsMounted } from "@/components/providers/no-ssr";
 
 interface UserDropdownProps {
@@ -21,6 +21,10 @@ interface UserDropdownProps {
     name?: string | null;
     username?: string | null;
     email: string;
+    avatar?: {
+      url: string;
+      key: string;
+    } | null;
   };
   onLogout: () => void;
   isLoggingOut: boolean;
@@ -34,10 +38,11 @@ export function UserDropdown({
   user,
   onLogout,
   isLoggingOut,
-}: UserDropdownProps) {
+}: Readonly<UserDropdownProps>) {
   const isMounted = useIsMounted();
   const displayName = user.name || user.username || user.email.split("@")[0];
   const initials = displayName.slice(0, 2).toUpperCase();
+  const hasAvatar = user.avatar?.url;
 
   // Prevent hydration mismatch by not rendering until mounted
   if (!isMounted) {
@@ -60,6 +65,15 @@ export function UserDropdown({
           className="relative h-8 w-8 rounded-full hover:bg-purple-500/10"
         >
           <Avatar className="h-8 w-8">
+            {/* Show user avatar if available */}
+            {hasAvatar && (
+              <AvatarImage
+                src={user.avatar!.url}
+                alt={`${displayName}'s avatar`}
+                className="object-cover"
+              />
+            )}
+            {/* Fallback to initials if no avatar or image fails to load */}
             <AvatarFallback className="bg-purple-500/20 text-purple-600 dark:bg-purple-400/20 dark:text-purple-300">
               {initials}
             </AvatarFallback>

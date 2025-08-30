@@ -22,7 +22,7 @@ export function GlobalLoadingOverlay() {
           <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
             {/* Logo skeleton */}
             <LoadingSkeleton className="h-8 w-32" />
-            
+
             {/* Right side actions skeleton */}
             <div className="flex items-center gap-3">
               {/* Theme toggle skeleton */}
@@ -46,7 +46,10 @@ export function GlobalLoadingOverlay() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {/* Card skeletons */}
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="space-y-4 p-6 border rounded-lg bg-card">
+                <div
+                  key={i}
+                  className="space-y-4 p-6 border rounded-lg bg-card"
+                >
                   <LoadingSkeleton className="h-48 w-full rounded-md" />
                   <div className="space-y-2">
                     <LoadingSkeleton className="h-6 w-3/4" />

@@ -34,6 +34,30 @@ export interface User {
   };
 }
 
+// Public User interface for profile pages (extends User with additional public fields)
+export interface PublicUser extends User {
+  bio?: string;
+  website?: string;
+  location?: string;
+  socialLinks?: {
+    github?: string;
+    twitter?: string;
+    linkedin?: string;
+  };
+}
+
+// Article interface for user profile pages
+export interface Article {
+  id: string;
+  title: string;
+  content: string;
+  tags: string[];
+  publishedAt: string;
+  likesCount: number;
+  commentsCount: number;
+  readTime: number;
+}
+
 // Authentication-related types
 export interface LoginRequest {
   email: string;
