@@ -6,9 +6,19 @@
     "dev": "cross-env PORT=3001 next dev --turbopack",
     "build": "next build --turbopack",
     "start": "cross-env PORT=3001 next start",
-    "lint": "eslint",
-    "lint:fix": "eslint --fix",
-    "format": "prettier --write \"src/**/*.{ts,json,tsx}\""
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,json,tsx}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,json,tsx}\"",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "audit": "yarn audit",
+    "audit:fix": "yarn audit --fix",
+    "outdated": "yarn outdated",
+    "clean": "rm -rf .next out dist",
+    "clean:all": "rm -rf .next out dist node_modules yarn.lock && yarn install"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
