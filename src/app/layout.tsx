@@ -3,6 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import AuthProvider from "@/components/providers/auth-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { NoSSR } from "@/components/providers/no-ssr";
+import { LoadingProvider } from "@/components/providers/loading-provider";
+import { GlobalLoadingOverlay } from "@/components/ui/global-loading-overlay";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,13 +29,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        suppressHydrationWarning={true}
       >
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <NoSSR>
+          <LoadingProvider>
+            <ThemeProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </ThemeProvider>
+            <GlobalLoadingOverlay />
+          </LoadingProvider>
+        </NoSSR>
         <Toaster richColors position="top-center" />
       </body>
     </html>

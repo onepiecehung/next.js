@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { useAtom } from "jotai"
-import { currentUserAtom } from "@/lib/auth-store"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { useAtom } from "jotai";
+import { currentUserAtom } from "@/lib/auth-store";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function WritePage() {
-  const [user] = useAtom(currentUserAtom)
-  const router = useRouter()
+  const [user] = useAtom(currentUserAtom);
+  const router = useRouter();
 
   useEffect(() => {
     // Redirect to home if user is not authenticated
     if (!user) {
-      router.replace("/")
+      router.replace("/");
     }
-  }, [user, router])
+  }, [user, router]);
 
   // Show loading or redirect if not authenticated
   if (!user) {
@@ -32,7 +32,7 @@ export default function WritePage() {
           </Link>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -42,7 +42,7 @@ export default function WritePage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-6">
             Write Your Article
           </h1>
-          
+
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -54,7 +54,7 @@ export default function WritePage() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Content
@@ -65,7 +65,7 @@ export default function WritePage() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
               />
             </div>
-            
+
             <div className="flex justify-end space-x-3 pt-4">
               <Button variant="outline">Save Draft</Button>
               <Button>Publish Article</Button>
@@ -74,5 +74,5 @@ export default function WritePage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

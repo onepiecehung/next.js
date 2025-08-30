@@ -79,37 +79,38 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Dracula Theme Colors */
+  --background: #282a36; /* Dracula Background */
+  --foreground: #f8f8f2; /* Dracula Foreground */
+  --card: #44475a; /* Dracula Current Line */
+  --card-foreground: #f8f8f2; /* Dracula Foreground */
+  --popover: #44475a; /* Dracula Current Line */
+  --popover-foreground: #f8f8f2; /* Dracula Foreground */
+  --primary: #bd93f9; /* Dracula Purple */
+  --primary-foreground: #282a36; /* Dracula Background */
+  --secondary: #6272a4; /* Dracula Comment */
+  --secondary-foreground: #f8f8f2; /* Dracula Foreground */
+  --muted: #44475a; /* Dracula Current Line */
+  --muted-foreground: #6272a4; /* Dracula Comment */
+  --accent: #44475a; /* Dracula Current Line */
+  --accent-foreground: #f8f8f2; /* Dracula Foreground */
+  --destructive: #ff5555; /* Dracula Red */
+  --border: #6272a4; /* Dracula Comment */
+  --input: #44475a; /* Dracula Current Line */
+  --ring: #bd93f9; /* Dracula Purple */
+  --chart-1: #ff79c6; /* Dracula Pink */
+  --chart-2: #50fa7b; /* Dracula Green */
+  --chart-3: #f1fa8c; /* Dracula Yellow */
+  --chart-4: #ffb86c; /* Dracula Orange */
+  --chart-5: #8be9fd; /* Dracula Cyan */
+  --sidebar: #44475a; /* Dracula Current Line */
+  --sidebar-foreground: #f8f8f2; /* Dracula Foreground */
+  --sidebar-primary: #bd93f9; /* Dracula Purple */
+  --sidebar-primary-foreground: #282a36; /* Dracula Background */
+  --sidebar-accent: #44475a; /* Dracula Current Line */
+  --sidebar-accent-foreground: #f8f8f2; /* Dracula Foreground */
+  --sidebar-border: #6272a4; /* Dracula Comment */
+  --sidebar-ring: #bd93f9; /* Dracula Purple */
 }
 
 @layer base {

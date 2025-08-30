@@ -1,59 +1,66 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { useAtom } from "jotai"
-import { currentUserAtom, logoutAction } from "@/lib/auth-store"
-import LoginDialog from "@/components/auth/login-dialog"
-import { Button } from "@/components/ui/button"
-import { toast } from "sonner"
-import { useState } from "react"
+import Link from "next/link";
+import { useAtom } from "jotai";
+import {
+  currentUserAtom,
+  logoutAction,
+  clearUserState,
+  authLoadingAtom,
+} from "@/lib/auth-store";
+import LoginDialog from "@/components/auth/login-dialog";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { useState } from "react";
+import { DraculaThemeToggle } from "@/components/ui/dracula-theme-toggle";
+import { UserDropdown } from "@/components/ui/user-dropdown";
+import { NavLoadingSkeleton } from "@/components/ui/loading-skeleton";
 
 export default function SiteNav() {
-  const [user] = useAtom(currentUserAtom)
-  const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const [user, setUser] = useAtom(currentUserAtom);
+  const [authLoading] = useAtom(authLoadingAtom);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
     try {
-      setIsLoggingOut(true)
-      await logoutAction()
-      toast.success("Successfully logged out")
+      setIsLoggingOut(true);
+      await logoutAction();
+      // Clear user state after successful logout
+      setUser(null);
+      clearUserState(); // Ensure all tokens are cleared
+      toast.success("Successfully logged out");
     } catch {
-      toast.error("Logout failed")
+      toast.error("Logout failed");
+      // Even if logout API fails, clear local state
+      setUser(null);
+      clearUserState();
     } finally {
-      setIsLoggingOut(false)
+      setIsLoggingOut(false);
     }
-  }
+  };
 
   return (
-    <header className="border-b bg-white">
+    <header className="border-b bg-background">
       <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
-        <Link href="/" className="font-semibold text-xl text-gray-900">
+        <Link href="/" className="font-semibold text-xl text-foreground">
           Medium-ish
         </Link>
-        
+
         <div className="flex items-center gap-3">
-          {user ? (
-            <>
-              <span className="text-sm text-gray-600">
-                Hi, {user.name || user.email}
-              </span>
-              <Link href="/write">
-                <Button size="sm">Write</Button>
-              </Link>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={handleLogout}
-                disabled={isLoggingOut}
-              >
-                {isLoggingOut ? "Logging out..." : "Logout"}
-              </Button>
-            </>
+          <DraculaThemeToggle />
+          {authLoading ? (
+            <NavLoadingSkeleton />
+          ) : user ? (
+            <UserDropdown
+              user={user}
+              onLogout={handleLogout}
+              isLoggingOut={isLoggingOut}
+            />
           ) : (
             <LoginDialog />
           )}
         </div>
       </div>
     </header>
-  )
+  );
 }
