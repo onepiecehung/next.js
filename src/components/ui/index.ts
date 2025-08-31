@@ -46,3 +46,4 @@ export { XIcon } from "./icons";
 export { UserDropdown } from "./navigation";
 export { LanguageSwitcher } from "./language-switcher";
 export { TipTapEditor } from "./tiptap-editor";
+export { ContentRenderer } from "./content-renderer";

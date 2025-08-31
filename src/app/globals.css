@@ -492,4 +492,25 @@
       @apply border-none;
     }
   }
+
+  /* Code Mode Styles */
+  .language-html {
+    @apply text-gray-800 dark:text-gray-200;
+  }
+
+  .language-html .token.tag {
+    @apply text-blue-600 dark:text-blue-400;
+  }
+
+  .language-html .token.attr-name {
+    @apply text-green-600 dark:text-green-400;
+  }
+
+  .language-html .token.attr-value {
+    @apply text-red-600 dark:text-red-400;
+  }
+
+  .language-html .token.punctuation {
+    @apply text-gray-600 dark:text-gray-400;
+  }
 }

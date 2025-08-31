@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -8,8 +8,29 @@ import Typography from "@tiptap/extension-typography";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import CodeBlock from "@tiptap/extension-code-block";
+import { Node } from '@tiptap/core';
 import { Button } from "./core/button";
 import { NoSSR } from "../providers/no-ssr";
+import Prism from "prismjs";
+import "prismjs/themes/prism.css";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-tsx";
+import "prismjs/components/prism-css";
+import "prismjs/components/prism-json";
+
+// Custom CodeBlock extension with Prism.js support
+const CodeBlockWithPrism = CodeBlock.extend({
+  renderHTML({ node, HTMLAttributes }) {
+    const language = node.attrs.language || 'typescript';
+    return [
+      'pre',
+      { ...HTMLAttributes, class: `language-${language}` },
+      ['code', { class: `language-${language}` }, node.textContent]
+    ];
+  },
+});
 import {
   Bold,
   Italic,
@@ -50,7 +71,9 @@ export function TipTapEditor({
   
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        codeBlock: false, // Disable default CodeBlock
+      }),
       Placeholder.configure({
         placeholder,
       }),
@@ -66,7 +89,7 @@ export function TipTapEditor({
           class: "max-w-full h-auto rounded-lg",
         },
       }),
-      CodeBlock.configure({
+      CodeBlockWithPrism.configure({
         HTMLAttributes: {
           class:
             "bg-gray-100 dark:bg-gray-800 rounded-md p-4 font-mono text-sm",
@@ -83,6 +106,35 @@ export function TipTapEditor({
       if (onChange) {
         onChange(editor.getHTML());
       }
+      
+      // Highlight code blocks in editor after content update
+      setTimeout(() => {
+        const codeBlocks = editor.view.dom.querySelectorAll('pre code');
+        codeBlocks.forEach((block) => {
+          Prism.highlightElement(block);
+        });
+      }, 0);
+      
+      // Also highlight code blocks in preview modes if active
+      setTimeout(() => {
+        // Preview Mode
+        const previewContainer = document.querySelector('.preview-content');
+        if (previewContainer) {
+          const previewCodeBlocks = previewContainer.querySelectorAll('pre code');
+          previewCodeBlocks.forEach((block) => {
+            Prism.highlightElement(block);
+          });
+        }
+        
+        // Split View Preview
+        const splitViewPreview = document.querySelector('.split-view-preview .preview-content');
+        if (splitViewPreview) {
+          const splitViewCodeBlocks = splitViewPreview.querySelectorAll('pre code');
+          splitViewCodeBlocks.forEach((block) => {
+            Prism.highlightElement(block);
+          });
+        }
+      }, 100);
     },
     // Fix SSR hydration mismatch
     immediatelyRender: false,
@@ -238,6 +290,17 @@ export function TipTapEditor({
               setIsPreviewMode(true);
               setIsSplitView(false); // Tắt Split View khi vào Preview Mode
               setIsCodeMode(false); // Tắt Code Mode khi vào Preview Mode
+              
+              // Highlight code blocks in preview mode after state update
+              setTimeout(() => {
+                const previewContainer = document.querySelector('.preview-content');
+                if (previewContainer) {
+                  const codeBlocks = previewContainer.querySelectorAll('pre code');
+                  codeBlocks.forEach((block) => {
+                    Prism.highlightElement(block);
+                  });
+                }
+              }, 100);
             }
           }}
           className={isPreviewMode ? "bg-green-100 text-green-700" : ""}
@@ -260,6 +323,17 @@ export function TipTapEditor({
               setIsSplitView(true);
               setIsPreviewMode(false); // Tắt Preview Mode khi vào Split View
               setIsCodeMode(false); // Tắt Code Mode khi vào Split View
+              
+              // Highlight code blocks in split view preview after state update
+              setTimeout(() => {
+                const previewContainer = document.querySelector('.split-view-preview .preview-content');
+                if (previewContainer) {
+                  const codeBlocks = previewContainer.querySelectorAll('pre code');
+                  codeBlocks.forEach((block) => {
+                    Prism.highlightElement(block);
+                  });
+                }
+              }, 100);
             }
           }}
           className={isSplitView ? "bg-purple-100 text-purple-700" : ""}
@@ -324,8 +398,10 @@ export function TipTapEditor({
             return (
               <div className="p-4 min-h-[400px]">
                 <div className="bg-gray-100 dark:bg-gray-800 rounded-md p-4 font-mono text-sm overflow-x-auto">
-                  <pre className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap">
-                    {editor.getHTML()}
+                  <pre className="language-html">
+                    <code className="language-html">
+                      {editor.getHTML()}
+                    </code>
                   </pre>
                 </div>
               </div>
