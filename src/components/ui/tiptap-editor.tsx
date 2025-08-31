@@ -24,6 +24,7 @@ import {
   Eye,
   Edit3,
   SplitSquareHorizontalIcon as Split,
+  FileCode,
 } from "lucide-react";
 
 interface TipTapEditorProps {
@@ -45,6 +46,7 @@ export function TipTapEditor({
 }: TipTapEditorProps) {
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [isSplitView, setIsSplitView] = useState(false);
+  const [isCodeMode, setIsCodeMode] = useState(false);
   
   const editor = useEditor({
     extensions: [
@@ -235,6 +237,7 @@ export function TipTapEditor({
             } else {
               setIsPreviewMode(true);
               setIsSplitView(false); // Tắt Split View khi vào Preview Mode
+              setIsCodeMode(false); // Tắt Code Mode khi vào Preview Mode
             }
           }}
           className={isPreviewMode ? "bg-green-100 text-green-700" : ""}
@@ -256,12 +259,31 @@ export function TipTapEditor({
             } else {
               setIsSplitView(true);
               setIsPreviewMode(false); // Tắt Preview Mode khi vào Split View
+              setIsCodeMode(false); // Tắt Code Mode khi vào Split View
             }
           }}
           className={isSplitView ? "bg-purple-100 text-purple-700" : ""}
           title={isSplitView ? "Exit Split View" : "Enter Split View"}
         >
           <Split className="h-4 w-4" />
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            if (isCodeMode) {
+              setIsCodeMode(false);
+            } else {
+              setIsCodeMode(true);
+              setIsPreviewMode(false); // Tắt Preview Mode khi vào Code Mode
+              setIsSplitView(false); // Tắt Split View khi vào Code Mode
+            }
+          }}
+          className={isCodeMode ? "bg-yellow-100 text-yellow-700" : ""}
+          title={isCodeMode ? "Switch to Edit Mode" : "View HTML Code"}
+        >
+          <FileCode className="h-4 w-4" />
         </Button>
       </div>
 
@@ -294,6 +316,18 @@ export function TipTapEditor({
                   className="preview-content"
                   dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
                 />
+              </div>
+            );
+          }
+
+          if (isCodeMode) {
+            return (
+              <div className="p-4 min-h-[400px]">
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-md p-4 font-mono text-sm overflow-x-auto">
+                  <pre className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap">
+                    {editor.getHTML()}
+                  </pre>
+                </div>
               </div>
             );
           }
