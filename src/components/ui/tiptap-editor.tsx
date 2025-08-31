@@ -23,14 +23,14 @@ import {
   Image as ImageIcon,
   Eye,
   Edit3,
-  Split,
+  SplitSquareHorizontalIcon as Split,
 } from "lucide-react";
 
 interface TipTapEditorProps {
-  content?: string;
-  onChange?: (content: string) => void;
-  placeholder?: string;
-  className?: string;
+  readonly content?: string;
+  readonly onChange?: (content: string) => void;
+  readonly placeholder?: string;
+  readonly className?: string;
 }
 
 /**
@@ -229,7 +229,14 @@ export function TipTapEditor({
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setIsPreviewMode(!isPreviewMode)}
+          onClick={() => {
+            if (isPreviewMode) {
+              setIsPreviewMode(false);
+            } else {
+              setIsPreviewMode(true);
+              setIsSplitView(false); // Tắt Split View khi vào Preview Mode
+            }
+          }}
           className={isPreviewMode ? "bg-green-100 text-green-700" : ""}
           title={isPreviewMode ? "Switch to Edit Mode" : "Switch to Preview Mode"}
         >
@@ -243,7 +250,14 @@ export function TipTapEditor({
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setIsSplitView(!isSplitView)}
+          onClick={() => {
+            if (isSplitView) {
+              setIsSplitView(false);
+            } else {
+              setIsSplitView(true);
+              setIsPreviewMode(false); // Tắt Preview Mode khi vào Split View
+            }
+          }}
           className={isSplitView ? "bg-purple-100 text-purple-700" : ""}
           title={isSplitView ? "Exit Split View" : "Enter Split View"}
         >
@@ -252,32 +266,40 @@ export function TipTapEditor({
       </div>
 
         {/* Editor Content */}
-        {isSplitView ? (
-          <div className="grid grid-cols-2 gap-0 min-h-[400px]">
-            {/* Left: Editor */}
-            <div className="split-view-editor pr-4">
-              <EditorContent editor={editor} />
-            </div>
-            {/* Right: Preview */}
-            <div className="split-view-preview pl-4">
-              <div className="prose prose-lg max-w-none">
+        {(() => {
+          if (isSplitView) {
+            return (
+              <div className="grid grid-cols-2 gap-0 min-h-[400px]">
+                {/* Left: Editor */}
+                <div className="split-view-editor pr-4">
+                  <EditorContent editor={editor} />
+                </div>
+                {/* Right: Preview */}
+                <div className="split-view-preview pl-4">
+                  <div className="prose prose-lg max-w-none">
+                    <div 
+                      className="preview-content"
+                      dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          }
+          
+          if (isPreviewMode) {
+            return (
+              <div className="p-4 min-h-[400px] prose prose-lg max-w-none">
                 <div 
                   className="preview-content"
                   dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
                 />
               </div>
-            </div>
-          </div>
-        ) : isPreviewMode ? (
-          <div className="p-4 min-h-[400px] prose prose-lg max-w-none">
-            <div 
-              className="preview-content"
-              dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
-            />
-          </div>
-        ) : (
-          <EditorContent editor={editor} />
-        )}
+            );
+          }
+          
+          return <EditorContent editor={editor} />;
+        })()}
       </div>
     </NoSSR>
   );
