@@ -3,8 +3,13 @@
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 /**
- * Theme Provider component that wraps next-themes
- * Provides dark/light mode switching functionality
+ * Enhanced Theme Provider component that wraps next-themes
+ * Provides dark/light mode switching functionality with improved configuration
+ * Features:
+ * - Theme persistence in localStorage
+ * - Smooth transitions
+ * - System theme detection
+ * - Theme validation
  */
 export function ThemeProvider({
   children,
@@ -15,8 +20,10 @@ export function ThemeProvider({
       attribute="class"
       defaultTheme="system"
       enableSystem
-      disableTransitionOnChange
-      enableColorScheme={false}
+      disableTransitionOnChange={false}
+      enableColorScheme={true}
+      storageKey="app-theme"
+      themes={["light", "dark", "system"]}
       {...props}
     >
       {children}
