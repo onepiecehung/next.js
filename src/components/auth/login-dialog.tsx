@@ -63,7 +63,7 @@ export default function LoginDialog() {
       setUser(completeUser);
 
       // Show success message and close dialog
-      toast.success(t('toast.login.success', 'toast'));
+      toast.success(t("toast.login.success", "toast"));
       setOpen(false);
       reset(); // Clear form
     } catch (error: unknown) {
@@ -82,7 +82,7 @@ export default function LoginDialog() {
               "message" in error.response.data &&
               typeof error.response.data.message === "string"
             ? error.response.data.message
-            : t('auth.login.error.default', 'auth');
+            : t("auth.login.error.default", "auth");
       toast.error(errorMessage);
     }
   };
@@ -97,19 +97,19 @@ export default function LoginDialog() {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline">{t('auth.login.button', 'auth')}</Button>
+        <Button variant="outline">{t("auth.login.button", "auth")}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{t('auth.login.title', 'auth')}</DialogTitle>
+          <DialogTitle>{t("auth.login.title", "auth")}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">{t('auth.form.email', 'auth')}</Label>
+            <Label htmlFor="email">{t("auth.form.email", "auth")}</Label>
             <Input
               id="email"
               type="email"
-              placeholder={t('auth.form.emailPlaceholder', 'auth')}
+              placeholder={t("auth.form.emailPlaceholder", "auth")}
               {...register("email")}
               className={errors.email ? "border-red-500" : ""}
             />
@@ -119,11 +119,11 @@ export default function LoginDialog() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">{t('auth.form.password', 'auth')}</Label>
+            <Label htmlFor="password">{t("auth.form.password", "auth")}</Label>
             <Input
               id="password"
               type="password"
-              placeholder={t('auth.form.passwordPlaceholder', 'auth')}
+              placeholder={t("auth.form.passwordPlaceholder", "auth")}
               {...register("password")}
               className={errors.password ? "border-red-500" : ""}
             />
@@ -133,10 +133,9 @@ export default function LoginDialog() {
           </div>
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting 
-              ? t('auth.login.signingIn', 'auth') 
-              : t('auth.login.signIn', 'auth')
-            }
+            {isSubmitting
+              ? t("auth.login.signingIn", "auth")
+              : t("auth.login.signIn", "auth")}
           </Button>
         </form>
       </DialogContent>

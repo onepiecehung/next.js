@@ -4,7 +4,14 @@ import * as React from "react";
 import { Moon, Sun, Monitor, Zap } from "lucide-react";
 import { useIsMounted } from "@/components/providers/no-ssr";
 
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui";
 import { useTheme } from "@/hooks/useTheme";
 
 interface ThemeToggleProps {
@@ -20,21 +27,21 @@ interface ThemeToggleProps {
  * Eliminates code duplication and provides consistent theming
  * Uses enhanced theme hook for better management
  */
-export function ThemeToggle({ 
-  variant = "default", 
-  size = "sm", 
+export function ThemeToggle({
+  variant = "default",
+  size = "sm",
   showLabels = true,
-  className = ""
+  className = "",
 }: ThemeToggleProps) {
-  const { 
-    theme, 
-    setTheme, 
-    mounted, 
-    isDark, 
-    toggleTheme, 
-    setDarkTheme, 
-    setLightTheme, 
-    setSystemTheme 
+  const {
+    theme,
+    setTheme,
+    mounted,
+    isDark,
+    toggleTheme,
+    setDarkTheme,
+    setLightTheme,
+    setSystemTheme,
   } = useTheme();
   const isMounted = useIsMounted();
 
@@ -145,10 +152,10 @@ export function ThemeToggle({
 }
 
 // Legacy exports for backward compatibility
-export const DraculaThemeToggleButton = (props: Omit<ThemeToggleProps, 'variant'>) => (
-  <ThemeToggle {...props} variant="simple" />
-);
+export const DraculaThemeToggleButton = (
+  props: Omit<ThemeToggleProps, "variant">,
+) => <ThemeToggle {...props} variant="simple" />;
 
-export const DraculaModeToggle = (props: Omit<ThemeToggleProps, 'variant'>) => (
+export const DraculaModeToggle = (props: Omit<ThemeToggleProps, "variant">) => (
   <ThemeToggle {...props} variant="dracula" />
 );

@@ -74,12 +74,12 @@ export async function fetchCurrentUser(): Promise<User> {
  */
 export async function updateUserProfile(
   userId: string,
-  userData: Partial<User>
+  userData: Partial<User>,
 ): Promise<User> {
   try {
     const response = await http.put<ApiResponse<User>>(
       `/users/${userId}`,
-      userData
+      userData,
     );
 
     // Check if API response is successful

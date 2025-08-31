@@ -1,7 +1,7 @@
 /**
  * Main UI Components Index
  * Central export file for all UI components organized by category
- * 
+ *
  * Usage:
  * - Import specific components: import { Button } from "@/components/ui/core";
  * - Import all from category: import * as Core from "@/components/ui/core";
@@ -35,8 +35,14 @@ export { Avatar, AvatarImage, AvatarFallback } from "./core";
 export { Input } from "./core";
 export { Label } from "./core";
 export { Dialog, DialogContent, DialogTrigger } from "./layout";
-export { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "./layout";
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "./layout";
 export { ThemeToggle } from "./theme";
 export { XIcon } from "./icons";
 export { UserDropdown } from "./navigation";
 export { LanguageSwitcher } from "./language-switcher";
+export { TipTapEditor } from "./tiptap-editor";

@@ -35,8 +35,11 @@ const FormField = <
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
-  const contextValue = React.useMemo(() => ({ name: props.name }), [props.name]);
-  
+  const contextValue = React.useMemo(
+    () => ({ name: props.name }),
+    [props.name],
+  );
+
   return (
     <FormFieldContext.Provider value={contextValue}>
       <Controller {...props} />

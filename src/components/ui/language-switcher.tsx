@@ -1,9 +1,14 @@
 "use client";
 
-import { Button } from './core/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './layout/dropdown-menu';
-import { Globe, Check } from 'lucide-react';
-import { useI18n } from '@/components/providers/i18n-provider';
+import { Button } from "./core/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./layout/dropdown-menu";
+import { Globe, Check } from "lucide-react";
+import { useI18n } from "@/components/providers/i18n-provider";
 
 /**
  * Simple Language Switcher Component
@@ -15,12 +20,12 @@ export function LanguageSwitcher() {
 
   const getCurrentLanguageName = () => {
     switch (locale) {
-      case 'en':
-        return 'English';
-      case 'vi':
-        return 'Tiếng Việt';
+      case "en":
+        return "English";
+      case "vi":
+        return "Tiếng Việt";
       default:
-        return 'English';
+        return "English";
     }
   };
 
@@ -41,22 +46,18 @@ export function LanguageSwitcher() {
         className="border-purple-500/30 bg-card/95 backdrop-blur-sm w-48"
       >
         <DropdownMenuItem
-          onClick={() => setLocale('en')}
+          onClick={() => setLocale("en")}
           className="flex items-center justify-between hover:bg-purple-500/10 hover:text-purple-400 focus:bg-purple-500/10 focus:text-purple-400"
         >
           <span>English</span>
-          {locale === 'en' && (
-            <Check className="h-4 w-4 text-purple-400" />
-          )}
+          {locale === "en" && <Check className="h-4 w-4 text-purple-400" />}
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => setLocale('vi')}
+          onClick={() => setLocale("vi")}
           className="flex items-center justify-between hover:bg-purple-500/10 hover:text-purple-400 focus:bg-purple-500/10 focus:text-purple-400"
         >
           <span>Tiếng Việt</span>
-          {locale === 'vi' && (
-            <Check className="h-4 w-4 text-purple-400" />
-          )}
+          {locale === "vi" && <Check className="h-4 w-4 text-purple-400" />}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

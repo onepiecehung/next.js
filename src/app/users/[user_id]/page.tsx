@@ -55,7 +55,7 @@ export default function ProfilePage() {
         setProfileData(data);
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "Failed to fetch user profile"
+          err instanceof Error ? err.message : "Failed to fetch user profile",
         );
       } finally {
         setIsLoading(false);
@@ -102,9 +102,7 @@ export default function ProfilePage() {
     );
   }
   const displayName =
-    profileData.name ||
-    profileData.username ||
-    profileData.email.split("@")[0];
+    profileData.name || profileData.username || profileData.email.split("@")[0];
   const initials = displayName.slice(0, 2).toUpperCase();
   const hasAvatar = profileData.avatar?.url;
 

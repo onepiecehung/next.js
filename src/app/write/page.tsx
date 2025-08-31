@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import { currentUserAtom } from "@/lib/auth-store";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui";
+import { Button, TipTapEditor } from "@/components/ui";
 import Link from "next/link";
 import { Skeletonize } from "@/components/skeletonize";
 import { useI18n } from "@/components/providers/i18n-provider";
@@ -19,6 +19,8 @@ export default function WritePage() {
   const [user] = useAtom(currentUserAtom);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
   useEffect(() => {
     // Simulate loading delay
@@ -39,13 +41,13 @@ export default function WritePage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">
-            {t('write.accessDenied', 'write')}
+            {t("write.accessDenied", "write")}
           </h1>
           <p className="text-gray-600 mb-6">
-            {t('write.loginRequired', 'write')}
+            {t("write.loginRequired", "write")}
           </p>
           <Link href="/">
-            <Button>{t('write.goToHome', 'write')}</Button>
+            <Button>{t("write.goToHome", "write")}</Button>
           </Link>
         </div>
       </div>
@@ -58,39 +60,39 @@ export default function WritePage() {
         <Skeletonize loading={isLoading}>
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <h1 className="text-3xl font-bold text-gray-900 mb-6">
-              {t('write.title', 'write')}
+              {t("write.title", "write")}
             </h1>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('write.form.title', 'write')}
+                  {t("write.form.title", "write")}
                 </label>
                 <input
                   type="text"
-                  placeholder={t('write.form.titlePlaceholder', 'write')}
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder={t("write.form.titlePlaceholder", "write")}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('write.form.content', 'write')}
+                  {t("write.form.content", "write")}
                 </label>
-                <textarea
-                  placeholder={t('write.form.contentPlaceholder', 'write')}
-                  rows={12}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                <TipTapEditor
+                  content={content}
+                  onChange={setContent}
+                  placeholder={t("write.form.contentPlaceholder", "write")}
                 />
               </div>
 
               <div className="flex justify-end space-x-3 pt-4">
                 <Button variant="outline">
-                  {t('write.form.saveDraft', 'write')}
+                  {t("write.form.saveDraft", "write")}
                 </Button>
-                <Button>
-                  {t('write.form.publishArticle', 'write')}
-                </Button>
+                <Button>{t("write.form.publishArticle", "write")}</Button>
               </div>
             </div>
           </div>
