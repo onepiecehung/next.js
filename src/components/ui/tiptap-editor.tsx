@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -20,6 +21,8 @@ import {
   Heading2,
   Link as LinkIcon,
   Image as ImageIcon,
+  Eye,
+  Edit3,
 } from "lucide-react";
 
 interface TipTapEditorProps {
@@ -39,6 +42,8 @@ export function TipTapEditor({
   placeholder = "Start writing your story...",
   className = "",
 }: TipTapEditorProps) {
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
+  
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -213,13 +218,38 @@ export function TipTapEditor({
             <LinkIcon className="h-4 w-4" />
           </Button>
 
-          <Button variant="ghost" size="sm" onClick={addImage}>
-            <ImageIcon className="h-4 w-4" />
-          </Button>
-        </div>
+                  <Button variant="ghost" size="sm" onClick={addImage}>
+          <ImageIcon className="h-4 w-4" />
+        </Button>
+
+        <div className="w-px h-6 bg-gray-300 mx-2" />
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setIsPreviewMode(!isPreviewMode)}
+          className={isPreviewMode ? "bg-green-100 text-green-700" : ""}
+          title={isPreviewMode ? "Switch to Edit Mode" : "Switch to Preview Mode"}
+        >
+          {isPreviewMode ? (
+            <Edit3 className="h-4 w-4" />
+          ) : (
+            <Eye className="h-4 w-4" />
+          )}
+        </Button>
+      </div>
 
         {/* Editor Content */}
-        <EditorContent editor={editor} />
+        {isPreviewMode ? (
+          <div className="p-4 min-h-[400px] prose prose-lg max-w-none">
+            <div 
+              className="preview-content"
+              dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
+            />
+          </div>
+        ) : (
+          <EditorContent editor={editor} />
+        )}
       </div>
     </NoSSR>
   );
