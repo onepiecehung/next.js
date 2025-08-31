@@ -8,7 +8,7 @@ import {
   checkAndRefreshToken,
   fetchMeAction,
 } from "@/lib/auth-store";
-import { ClientOnly } from "@/components/ui/client-only";
+import { ClientOnly } from "@/components/ui";
 
 export default function AuthProvider({
   children,

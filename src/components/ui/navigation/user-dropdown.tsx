@@ -4,16 +4,7 @@ import * as React from "react";
 import { User, LogOut, Settings, PenTool } from "lucide-react";
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, Avatar, AvatarImage, AvatarFallback } from "@/components/ui";
 import { useIsMounted } from "@/components/providers/no-ssr";
 
 interface UserDropdownProps {
@@ -97,21 +88,21 @@ export function UserDropdown({
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-purple-500/20" />
 
-        <DropdownMenuItem asChild>
+        <DropdownMenuItem asChild key="write">
           <Link href="/write" className="cursor-pointer">
             <PenTool className="mr-2 h-4 w-4" />
             <span>Write</span>
           </Link>
         </DropdownMenuItem>
 
-        <DropdownMenuItem asChild>
+        <DropdownMenuItem asChild key="profile">
           <Link href="/profile" className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </Link>
         </DropdownMenuItem>
 
-        <DropdownMenuItem asChild>
+        <DropdownMenuItem asChild key="settings">
           <Link href="/settings" className="cursor-pointer">
             <Settings className="mr-2 h-4 w-4" />
             <span>Settings</span>
@@ -121,6 +112,7 @@ export function UserDropdown({
         <DropdownMenuSeparator className="bg-purple-500/20" />
 
         <DropdownMenuItem
+          key="logout"
           onClick={onLogout}
           disabled={isLoggingOut}
           className="cursor-pointer text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400"

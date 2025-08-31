@@ -2,14 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DraculaCard,
-  DraculaCardContent,
-  DraculaCardHeader,
-  DraculaCardTitle,
-} from "@/components/ui/dracula-card";
+import { Button, Avatar, AvatarFallback, AvatarImage, DraculaCard, DraculaCardContent, DraculaCardHeader, DraculaCardTitle } from "@/components/ui";
 import {
   Calendar,
   MapPin,

@@ -1,19 +1,18 @@
 "use client";
 
-import Link from "next/link";
 import { useAtom } from "jotai";
+import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
+
+import LoginDialog from "@/components/auth/login-dialog";
+import { ThemeToggle, UserDropdown } from "@/components/ui";
 import {
+  authLoadingAtom,
+  clearUserState,
   currentUserAtom,
   logoutAction,
-  clearUserState,
-  authLoadingAtom,
 } from "@/lib/auth-store";
-import LoginDialog from "@/components/auth/login-dialog";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { useState } from "react";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { UserDropdown } from "@/components/ui/user-dropdown";
 
 export default function SiteNav() {
   const [user, setUser] = useAtom(currentUserAtom);

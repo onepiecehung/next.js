@@ -5,20 +5,13 @@ import { Moon, Sun, Monitor, Zap } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useIsMounted } from "@/components/providers/no-ssr";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui";
 
 /**
- * Theme Toggle component
- * Features Light, Dracula (Dark), and System themes
+ * Dracula-themed Theme Toggle component
+ * Features Dracula color scheme and vampire-inspired icons
  */
-export function ThemeToggle() {
+export function DraculaThemeToggle() {
   const { setTheme, theme } = useTheme();
   const isMounted = useIsMounted();
 
@@ -46,14 +39,13 @@ export function ThemeToggle() {
         >
           <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-yellow-500" />
           <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-purple-400" />
-          <span className="sr-only">Toggle theme</span>
+          <span className="sr-only">Toggle Dracula theme</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="border-purple-500/30 bg-card/95 backdrop-blur-sm w-48"
+        className="border-purple-500/30 bg-card/95 backdrop-blur-sm"
       >
-        {/* Light Theme */}
         <DropdownMenuItem
           onClick={() => setTheme("light")}
           className="hover:bg-yellow-500/10 hover:text-yellow-500 focus:bg-yellow-500/10 focus:text-yellow-500"
@@ -61,21 +53,13 @@ export function ThemeToggle() {
           <Sun className="mr-2 h-4 w-4 text-yellow-500" />
           <span>Light</span>
         </DropdownMenuItem>
-
-        <DropdownMenuSeparator className="bg-purple-500/20" />
-
-        {/* Dark Theme */}
         <DropdownMenuItem
           onClick={() => setTheme("dark")}
           className="hover:bg-purple-500/10 hover:text-purple-400 focus:bg-purple-500/10 focus:text-purple-400"
         >
-          <Zap className="mr-2 h-4 w-4 text-purple-400" />
+          <Moon className="mr-2 h-4 w-4 text-purple-400" />
           <span>Dracula</span>
         </DropdownMenuItem>
-
-        <DropdownMenuSeparator className="bg-purple-500/20" />
-
-        {/* System Theme */}
         <DropdownMenuItem
           onClick={() => setTheme("system")}
           className="hover:bg-cyan-500/10 hover:text-cyan-400 focus:bg-cyan-500/10 focus:text-cyan-400"

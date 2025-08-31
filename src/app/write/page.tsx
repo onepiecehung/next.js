@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import { currentUserAtom } from "@/lib/auth-store";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 import Link from "next/link";
 import { Skeletonize } from "@/components/skeletonize";
 

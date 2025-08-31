@@ -1,0 +1,20 @@
+/* Custom X Icon Styling */
+.x-icon {
+  /* Base icon styles */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Custom hover effects if needed */
+.x-icon:hover {
+  /* Add any custom hover effects here */
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+/* Dark mode adjustments if needed */
+@media (prefers-color-scheme: dark) {
+  .x-icon {
+    /* Dark mode specific styles */
+  }
+}

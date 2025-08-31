@@ -1,23 +1,28 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useAtom } from "jotai";
 import {
-  Heart,
-  Github,
-  Twitter,
-  Rss,
-  PenTool,
-  MessageSquare,
   BookOpen,
   Eye,
+  Github,
+  Heart,
+  MessageSquare,
+  PenTool,
+  Rss,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { useAtom } from "jotai";
-import { currentUserAtom } from "@/lib/auth-store";
-import { useIsMounted } from "@/components/providers/no-ssr";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+import { useIsMounted } from "@/components/providers/no-ssr";
 import { Skeletonize } from "@/components/skeletonize";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
+  XIcon,
+} from "@/components/ui";
+import { currentUserAtom } from "@/lib/auth-store";
 
 /**
  * Profile Page Component
@@ -141,7 +146,7 @@ export default function ProfilePage() {
                     size="sm"
                     className="h-8 w-8 p-0 hover:bg-accent hover:text-accent-foreground transition-colors"
                   >
-                    <Twitter className="h-4 w-4" />
+                    <XIcon className="h-4 w-4" />
                   </Button>
                   <Button
                     variant="ghost"
