@@ -88,21 +88,21 @@ export function UserDropdown({
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-purple-500/20" />
 
-        <DropdownMenuItem asChild key="write">
+        <DropdownMenuItem asChild>
           <Link href="/write" className="cursor-pointer">
             <PenTool className="mr-2 h-4 w-4" />
             <span>Write</span>
           </Link>
         </DropdownMenuItem>
 
-        <DropdownMenuItem asChild key="profile">
+        <DropdownMenuItem asChild>
           <Link href="/profile" className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </Link>
         </DropdownMenuItem>
 
-        <DropdownMenuItem asChild key="settings">
+        <DropdownMenuItem asChild>
           <Link href="/settings" className="cursor-pointer">
             <Settings className="mr-2 h-4 w-4" />
             <span>Settings</span>

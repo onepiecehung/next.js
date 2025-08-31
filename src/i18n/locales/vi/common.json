@@ -1,0 +1,41 @@
+{
+  "navigation": {
+    "home": "Trang chủ",
+    "profile": "Hồ sơ",
+    "write": "Viết",
+    "settings": "Cài đặt",
+    "logout": "Đăng xuất"
+  },
+  "buttons": {
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "edit": "Sửa",
+    "delete": "Xóa",
+    "close": "Đóng",
+    "submit": "Gửi",
+    "loading": "Đang tải...",
+    "retry": "Thử lại"
+  },
+  "labels": {
+    "email": "Email",
+    "password": "Mật khẩu",
+    "username": "Tên đăng nhập",
+    "name": "Tên",
+    "avatar": "Ảnh đại diện",
+    "search": "Tìm kiếm",
+    "filter": "Lọc",
+    "sort": "Sắp xếp"
+  },
+  "status": {
+    "success": "Thành công",
+    "error": "Lỗi",
+    "warning": "Cảnh báo",
+    "info": "Thông tin"
+  },
+  "themes": {
+    "light": "Sáng",
+    "dark": "Tối",
+    "dracula": "Dracula",
+    "system": "Hệ thống"
+  }
+}

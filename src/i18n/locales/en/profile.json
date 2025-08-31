@@ -1,0 +1,28 @@
+{
+  "header": {
+    "profileNotFound": "Profile Not Found",
+    "loginRequired": "Please log in to view your profile.",
+    "likes": "Likes",
+    "followers": "Followers",
+    "following": "Following"
+  },
+  "tabs": {
+    "articles": "Articles",
+    "scraps": "Scraps",
+    "comments": "Comments"
+  },
+  "content": {
+    "noScraps": "No scraps yet",
+    "noScrapsDescription": "Start writing your first scrap to share your thoughts.",
+    "noComments": "No comments yet",
+    "noCommentsDescription": "Your comments will appear here when you start engaging with content.",
+    "readTime": "min read",
+    "daysAgo": "days ago",
+    "weeksAgo": "weeks ago"
+  },
+  "categories": {
+    "tech": "TECH",
+    "tutorial": "TUTORIAL",
+    "insights": "INSIGHTS"
+  }
+}

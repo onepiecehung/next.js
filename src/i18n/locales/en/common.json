@@ -1,0 +1,41 @@
+{
+  "navigation": {
+    "home": "Home",
+    "profile": "Profile",
+    "write": "Write",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "close": "Close",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "retry": "Retry"
+  },
+  "labels": {
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "name": "Name",
+    "avatar": "Avatar",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort"
+  },
+  "status": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information"
+  },
+  "themes": {
+    "light": "Light",
+    "dark": "Dark",
+    "dracula": "Dracula",
+    "system": "System"
+  }
+}

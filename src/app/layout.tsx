@@ -6,6 +6,7 @@ import AuthProvider from "@/components/providers/auth-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { NoSSR } from "@/components/providers/no-ssr";
 import { LoadingProvider } from "@/components/providers/loading-provider";
+import { I18nProvider } from "@/components/providers/i18n-provider";
 import SiteNav from "@/components/site-nav";
 
 const geistSans = Geist({
@@ -35,14 +36,16 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         <NoSSR>
-          <ThemeProvider>
-            <AuthProvider>
-              <LoadingProvider>
-                <SiteNav />
-                {children}
-              </LoadingProvider>
-            </AuthProvider>
-          </ThemeProvider>
+          <I18nProvider>
+            <ThemeProvider>
+              <AuthProvider>
+                <LoadingProvider>
+                  <SiteNav />
+                  {children}
+                </LoadingProvider>
+              </AuthProvider>
+            </ThemeProvider>
+          </I18nProvider>
         </NoSSR>
         <Toaster richColors position="top-center" />
       </body>

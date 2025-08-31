@@ -1,0 +1,28 @@
+{
+  "header": {
+    "profileNotFound": "Không tìm thấy hồ sơ",
+    "loginRequired": "Vui lòng đăng nhập để xem hồ sơ của bạn.",
+    "likes": "Thích",
+    "followers": "Người theo dõi",
+    "following": "Đang theo dõi"
+  },
+  "tabs": {
+    "articles": "Bài viết",
+    "scraps": "Ghi chú",
+    "comments": "Bình luận"
+  },
+  "content": {
+    "noScraps": "Chưa có ghi chú nào",
+    "noScrapsDescription": "Bắt đầu viết ghi chú đầu tiên để chia sẻ suy nghĩ của bạn.",
+    "noComments": "Chưa có bình luận nào",
+    "noCommentsDescription": "Bình luận của bạn sẽ xuất hiện ở đây khi bạn bắt đầu tương tác với nội dung.",
+    "readTime": "phút đọc",
+    "daysAgo": "ngày trước",
+    "weeksAgo": "tuần trước"
+  },
+  "categories": {
+    "tech": "CÔNG NGHỆ",
+    "tutorial": "HƯỚNG DẪN",
+    "insights": "GÓC NHÌN"
+  }
+}

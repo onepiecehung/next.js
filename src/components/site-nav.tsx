@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 import LoginDialog from "@/components/auth/login-dialog";
 import { ThemeToggle, UserDropdown } from "@/components/ui";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import {
   authLoadingAtom,
   clearUserState,
@@ -45,6 +46,7 @@ export default function SiteNav() {
         </Link>
 
         <div className="flex items-center gap-3">
+          <LanguageSwitcher />
           <ThemeToggle />
           {(() => {
             if (authLoading)

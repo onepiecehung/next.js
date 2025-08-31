@@ -39,3 +39,4 @@ export { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 export { ThemeToggle } from "./theme";
 export { XIcon } from "./icons";
 export { UserDropdown } from "./navigation";
+export { LanguageSwitcher } from "./language-switcher";

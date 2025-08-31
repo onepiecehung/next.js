@@ -1,0 +1,22 @@
+{
+  "auth": {
+    "loginSuccess": "Đăng nhập thành công",
+    "loginFailed": "Đăng nhập thất bại. Vui lòng thử lại.",
+    "logoutSuccess": "Đăng xuất thành công",
+    "logoutFailed": "Đăng xuất thất bại",
+    "registerSuccess": "Tạo tài khoản thành công",
+    "registerFailed": "Đăng ký thất bại. Vui lòng thử lại."
+  },
+  "profile": {
+    "updateSuccess": "Cập nhật hồ sơ thành công",
+    "updateFailed": "Không thể cập nhật hồ sơ",
+    "avatarUpdateSuccess": "Cập nhật ảnh đại diện thành công",
+    "avatarUpdateFailed": "Không thể cập nhật ảnh đại diện"
+  },
+  "general": {
+    "operationSuccess": "Thao tác hoàn thành thành công",
+    "operationFailed": "Thao tác thất bại. Vui lòng thử lại.",
+    "networkError": "Lỗi mạng. Vui lòng kiểm tra kết nối.",
+    "validationError": "Vui lòng kiểm tra thông tin nhập và thử lại."
+  }
+}
