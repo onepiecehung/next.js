@@ -9,6 +9,7 @@ import {
   PenTool,
   Rss,
 } from "lucide-react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { useI18n } from "@/components/providers/i18n-provider";
@@ -22,6 +23,7 @@ import {
   GitHubIcon,
   XIcon,
 } from "@/components/ui";
+import { fetchUserProfile, User } from "@/lib/api/users";
 import { currentUserAtom } from "@/lib/auth-store";
 
 /**
@@ -31,44 +33,80 @@ import { currentUserAtom } from "@/lib/auth-store";
  */
 export default function ProfilePage() {
   const { t } = useI18n();
+  const params = useParams();
+  const userId = params.user_id as string;
 
-  const [user] = useAtom(currentUserAtom);
+  const [currentUser] = useAtom(currentUserAtom);
+  const [profileData, setProfileData] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState<
     "articles" | "scraps" | "comments"
   >("articles");
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const isMounted = useIsMounted();
 
   useEffect(() => {
-    // Simulate loading delay
-    const timer = setTimeout(() => setIsLoading(false), 500);
-    return () => clearTimeout(timer);
-  }, []);
+    const fetchProfileData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const data = await fetchUserProfile(userId);
+        setProfileData(data);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to fetch user profile"
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (userId) {
+      fetchProfileData();
+    }
+  }, [userId]);
 
   // Prevent hydration mismatch
   if (!isMounted) {
     return <div className="min-h-screen bg-background" />;
   }
 
-  // If no user, show loading or redirect
-  if (!user) {
+  // Show error if API call failed
+  if (error) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-foreground mb-4">
-            {t("header.profileNotFound", "profile")}
+            {t("user.error.title", "user")}
           </h1>
-          <p className="text-muted-foreground">
-            {t("header.loginRequired", "profile")}
-          </p>
+          <p className="text-muted-foreground">{error}</p>
         </div>
       </div>
     );
   }
 
-  const displayName = user.name || user.username || user.email.split("@")[0];
+  // If no profile data, show loading
+  if (!profileData) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-foreground mb-4">
+            {t("user.notFound.title", "user")}
+          </h1>
+          <p className="text-muted-foreground">
+            {t("user.notFound.description", "user")}
+          </p>
+        </div>
+      </div>
+    );
+  }
+  const displayName =
+    profileData.name ||
+    profileData.username ||
+    profileData.email.split("@")[0];
   const initials = displayName.slice(0, 2).toUpperCase();
-  const hasAvatar = user.avatar?.url;
+  const hasAvatar = profileData.avatar?.url;
 
   return (
     <div className="bg-background min-h-screen">
@@ -82,7 +120,7 @@ export default function ProfilePage() {
                 <Avatar className="h-24 w-24 ring-2 ring-primary/20">
                   {hasAvatar && (
                     <AvatarImage
-                      src={user?.avatar?.url}
+                      src={profileData.avatar?.url}
                       alt={`${displayName}'s avatar`}
                       className="object-cover"
                     />
@@ -99,22 +137,24 @@ export default function ProfilePage() {
                   <h1 className="text-3xl font-bold text-foreground">
                     {displayName}
                   </h1>
-                  <div className="flex items-center gap-3">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-primary/30 hover:border-primary/50 hover:bg-primary/10"
-                    >
-                      {t("common.buttons.edit", "common")}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-primary/30 hover:border-primary/50 hover:bg-primary/10"
-                    >
-                      {t("common.buttons.save", "common")}
-                    </Button>
-                  </div>
+                  {currentUser && currentUser.id === userId && (
+                    <div className="flex items-center gap-3">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-primary/30 hover:border-primary/50 hover:bg-primary/10"
+                      >
+                        {t("common.buttons.edit", "common")}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-primary/30 hover:border-primary/50 hover:bg-primary/10"
+                      >
+                        {t("common.buttons.save", "common")}
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 <p className="text-muted-foreground text-lg mb-4 leading-relaxed">
@@ -243,35 +283,35 @@ export default function ProfilePage() {
               {/* Article Card 2 */}
               <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-chart-2/10 text-chart-2 border border-chart-2/20 mb-3">
-                  {t('categories.tutorial', 'profile')}
+                  {t("categories.tutorial", "profile")}
                 </span>
                 <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
                   Complete Guide to Authentication with Next.js and JWT
                 </h3>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>1 {t('content.weeksAgo', 'profile')}</span>
+                  <span>1 {t("content.weeksAgo", "profile")}</span>
                   <span className="flex items-center gap-1">
                     <Heart className="h-4 w-4 text-chart-1" />
                     12
                   </span>
-                  <span>12 {t('content.readTime', 'profile')}</span>
+                  <span>12 {t("content.readTime", "profile")}</span>
                 </div>
               </div>
 
               {/* Article Card 3 */}
               <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-chart-4/10 text-chart-4 border border-chart-4/20 mb-3">
-                  {t('categories.insights', 'profile')}
+                  {t("categories.insights", "profile")}
                 </span>
                 <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
                   State Management Best Practices in React Applications
                 </h3>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>2 {t('content.weeksAgo', 'profile')}</span>
+                  <span>2 {t("content.weeksAgo", "profile")}</span>
                   <span className="flex items-center gap-1">
                     <Heart className="h-4 w-4 text-chart-1" />8
                   </span>
-                  <span>6 {t('content.readTime', 'profile')}</span>
+                  <span>6 {t("content.readTime", "profile")}</span>
                 </div>
               </div>
             </div>
