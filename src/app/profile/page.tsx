@@ -4,11 +4,10 @@ import { useAtom } from "jotai";
 import {
   BookOpen,
   Eye,
-  Github,
   Heart,
   MessageSquare,
   PenTool,
-  Rss,
+  Rss
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -18,9 +17,9 @@ import { Skeletonize } from "@/components/skeletonize";
 import {
   Avatar,
   AvatarFallback,
-  AvatarImage,
-  Button,
-  XIcon,
+  AvatarImage, Button,
+  GitHubIcon,
+  XIcon
 } from "@/components/ui";
 import { currentUserAtom } from "@/lib/auth-store";
 
@@ -139,7 +138,7 @@ export default function ProfilePage() {
                     size="sm"
                     className="h-8 w-8 p-0 hover:bg-accent hover:text-accent-foreground transition-colors"
                   >
-                    <Github className="h-4 w-4" />
+                    <GitHubIcon className="h-4 w-4" />
                   </Button>
                   <Button
                     variant="ghost"

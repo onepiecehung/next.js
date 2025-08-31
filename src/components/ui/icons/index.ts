@@ -5,6 +5,7 @@
  */
 
 export { XIcon } from "./x-icon";
+export { GitHubIcon } from "./github-icon";
 export { XIcon as XIconAlt } from "./custom-icons"; // Alternative export path
 
 // Add more custom icons here as needed

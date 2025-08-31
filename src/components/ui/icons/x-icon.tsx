@@ -15,6 +15,7 @@ const XIcon = createLucideIcon("X", [
       stroke: "none",
       fill: "currentColor",
       className: "x-icon",
+      key: "x-icon",
     },
   ],
 ]);
