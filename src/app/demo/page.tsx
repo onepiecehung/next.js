@@ -1,28 +1,31 @@
+"use client";
+
 import { Suspense } from "react";
 import { SkeletonDemo } from "./skeleton-demo";
+import { useI18n } from "@/components/providers/i18n-provider";
 
 /**
- * Demo page showcasing the automatic skeleton loading technique
+ * Internationalized Demo page showcasing the automatic skeleton loading technique
  * This page demonstrates how the same DOM structure can be used
  * for both loading and loaded states without layout shifts
  */
 export default function DemoPage() {
+  const { t } = useI18n();
+
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="mx-auto max-w-6xl">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-4">
-            Auto Skeleton Demo
+            {t('demo.title', 'demo')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            This demo shows automatic page-level skeleton loading that preserves
-            the existing DOM layout. The same content is used for both loading
-            and loaded states, ensuring no reflow jumps.
+            {t('demo.description', 'demo')}
           </p>
         </div>
 
         <Suspense
-          fallback={<div className="text-center py-8">Loading demo...</div>}
+          fallback={<div className="text-center py-8">{t('demo.loading', 'demo')}</div>}
         >
           <SkeletonDemo />
         </Suspense>

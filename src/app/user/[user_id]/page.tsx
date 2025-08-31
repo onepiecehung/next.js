@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import { Skeletonize } from "@/components/skeletonize";
 import { useLoading } from "@/components/providers/loading-provider";
+import { useI18n } from "@/components/providers/i18n-provider";
 
 interface User {
   id: string;
@@ -48,7 +49,13 @@ interface Article {
   tags: string[];
 }
 
+/**
+ * Internationalized User Profile Page Component
+ * Displays detailed user profile information and their articles
+ * Uses custom i18n hook for multi-language support
+ */
 export default function UserProfilePage() {
+  const { t } = useI18n();
   const params = useParams();
   const userId = params.user_id as string;
   const [user, setUser] = useState<User | null>(null);
@@ -120,7 +127,7 @@ export default function UserProfilePage() {
         setArticles(mockArticles);
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "Failed to fetch user data",
+          err instanceof Error ? err.message : t('user.error.fetchFailed', 'user'),
         );
       } finally {
         setUserProfileLoading(false);
@@ -130,7 +137,7 @@ export default function UserProfilePage() {
     if (userId) {
       fetchUserData();
     }
-  }, [userId, setUserProfileLoading]);
+  }, [userId, setUserProfileLoading, t]);
 
   // Prevent hydration mismatch
   if (!isMounted) {
@@ -141,7 +148,9 @@ export default function UserProfilePage() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-foreground mb-4">Error</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-4">
+            {t('user.error.title', 'user')}
+          </h1>
           <p className="text-muted-foreground">{error}</p>
         </div>
       </div>
@@ -153,10 +162,10 @@ export default function UserProfilePage() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-foreground mb-4">
-            User Not Found
+            {t('user.notFound.title', 'user')}
           </h1>
           <p className="text-muted-foreground">
-            The requested user profile could not be found.
+            {t('user.notFound.description', 'user')}
           </p>
         </div>
       </div>
@@ -201,14 +210,14 @@ export default function UserProfilePage() {
                       variant="outline"
                       className="border-border hover:bg-accent hover:text-accent-foreground transition-colors"
                     >
-                      Follow
+                      {t('user.actions.follow', 'user')}
                     </Button>
                     <Button
                       variant="secondary"
                       className="bg-secondary hover:bg-secondary/80 text-secondary-foreground border-secondary transition-colors"
                     >
                       <MessageCircle className="mr-2 h-4 w-4" />
-                      Message
+                      {t('user.actions.message', 'user')}
                     </Button>
                   </div>
                 </div>
@@ -242,7 +251,7 @@ export default function UserProfilePage() {
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
                     <span>
-                      Joined {new Date(user.createdAt).toLocaleDateString()}
+                      {t('user.joined', 'user')} {new Date(user.createdAt).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
@@ -253,19 +262,25 @@ export default function UserProfilePage() {
                     <span className="font-semibold text-foreground">
                       {user._count?.articles || 0}
                     </span>
-                    <span className="text-muted-foreground">Articles</span>
+                    <span className="text-muted-foreground">
+                      {t('user.stats.articles', 'user')}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-foreground">
                       {user._count?.followers || 0}
                     </span>
-                    <span className="text-muted-foreground">Followers</span>
+                    <span className="text-muted-foreground">
+                      {t('user.stats.followers', 'user')}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-foreground">
                       {user._count?.following || 0}
                     </span>
-                    <span className="text-muted-foreground">Following</span>
+                    <span className="text-muted-foreground">
+                      {t('user.stats.following', 'user')}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -279,11 +294,11 @@ export default function UserProfilePage() {
         <Skeletonize loading={userProfileLoading}>
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-foreground mb-2">
-              Articles by {displayName}
+              {t('user.articles.title', 'user')} {displayName}
             </h2>
             <p className="text-muted-foreground">
-              {articles.length} article{articles.length !== 1 ? "s" : ""}{" "}
-              published
+              {articles.length} {t('user.articles.count', 'user')}{articles.length !== 1 ? "s" : ""}{" "}
+              {t('user.articles.published', 'user')}
             </p>
           </div>
 
@@ -311,7 +326,7 @@ export default function UserProfilePage() {
                         <span>
                           {new Date(article.publishedAt).toLocaleDateString()}
                         </span>
-                        <span>{article.readTime} min read</span>
+                        <span>{article.readTime} {t('user.articles.readTime', 'user')}</span>
                         <div className="flex items-center gap-1">
                           <Heart className="h-4 w-4" />
                           {article.likes}
@@ -349,8 +364,10 @@ export default function UserProfilePage() {
             <div className="text-center py-12">
               <div className="text-muted-foreground mb-4">
                 <MessageCircle className="h-16 w-16 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No Articles Yet</h3>
-                <p>This user hasn&apos;t published any articles yet.</p>
+                <h3 className="text-lg font-semibold mb-2">
+                  {t('user.articles.noArticles.title', 'user')}
+                </h3>
+                <p>{t('user.articles.noArticles.description', 'user')}</p>
               </div>
             </div>
           )}

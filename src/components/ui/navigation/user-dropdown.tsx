@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, Avatar, AvatarImage, AvatarFallback } from "@/components/ui";
 import { useIsMounted } from "@/components/providers/no-ssr";
+import { useI18n } from "@/components/providers/i18n-provider";
 
 interface UserDropdownProps {
   user: {
@@ -22,14 +23,16 @@ interface UserDropdownProps {
 }
 
 /**
- * User dropdown menu component
+ * Internationalized User dropdown menu component
  * Shows user info and provides quick access to user actions
+ * Uses custom i18n hook for multi-language support
  */
 export function UserDropdown({
   user,
   onLogout,
   isLoggingOut,
 }: Readonly<UserDropdownProps>) {
+  const { t } = useI18n();
   const isMounted = useIsMounted();
   const displayName = user.name || user.username || user.email.split("@")[0];
   const initials = displayName.slice(0, 2).toUpperCase();
@@ -91,21 +94,21 @@ export function UserDropdown({
         <DropdownMenuItem asChild>
           <Link href="/write" className="cursor-pointer">
             <PenTool className="mr-2 h-4 w-4" />
-            <span>Write</span>
+            <span>{t('userMenu.write', 'common')}</span>
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
           <Link href="/profile" className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
+            <span>{t('userMenu.profile', 'common')}</span>
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
           <Link href="/settings" className="cursor-pointer">
             <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
+            <span>{t('userMenu.settings', 'common')}</span>
           </Link>
         </DropdownMenuItem>
 
@@ -118,7 +121,12 @@ export function UserDropdown({
           className="cursor-pointer text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400"
         >
           <LogOut className="mr-2 h-4 w-4" />
-          <span>{isLoggingOut ? "Logging out..." : "Logout"}</span>
+          <span>
+            {isLoggingOut 
+              ? t('userMenu.loggingOut', 'common') 
+              : t('userMenu.logout', 'common')
+            }
+          </span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

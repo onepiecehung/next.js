@@ -1,4 +1,13 @@
 {
+  "toast": {
+    "login": {
+      "success": "Successfully logged in!"
+    },
+    "logout": {
+      "success": "Successfully logged out",
+      "error": "Logout failed"
+    }
+  },
   "auth": {
     "loginSuccess": "Successfully logged in",
     "loginFailed": "Login failed. Please try again.",

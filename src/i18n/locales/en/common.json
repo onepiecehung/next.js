@@ -1,20 +1,33 @@
 {
-  "navigation": {
-    "home": "Home",
-    "profile": "Profile",
-    "write": "Write",
-    "settings": "Settings",
-    "logout": "Logout"
-  },
-  "buttons": {
-    "save": "Save",
-    "cancel": "Cancel",
-    "edit": "Edit",
-    "delete": "Delete",
-    "close": "Close",
-    "submit": "Submit",
-    "loading": "Loading...",
-    "retry": "Retry"
+  "common": {
+    "nav": {
+      "brand": "Medium-ish"
+    },
+    "userMenu": {
+      "write": "Write",
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Logout",
+      "loggingOut": "Logging out..."
+    },
+    "buttons": {
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "confirm": "Confirm",
+      "close": "Close"
+    },
+    "loading": {
+      "loading": "Loading...",
+      "pleaseWait": "Please wait...",
+      "processing": "Processing..."
+    },
+    "error": {
+      "somethingWentWrong": "Something went wrong",
+      "tryAgain": "Please try again",
+      "notFound": "Not found"
+    }
   },
   "labels": {
     "email": "Email",

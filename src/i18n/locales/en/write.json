@@ -1,0 +1,16 @@
+{
+  "write": {
+    "accessDenied": "Access Denied",
+    "loginRequired": "You need to be logged in to access this page.",
+    "goToHome": "Go to Home",
+    "title": "Write Your Article",
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "Enter your article title...",
+      "content": "Content",
+      "contentPlaceholder": "Start writing your article...",
+      "saveDraft": "Save Draft",
+      "publishArticle": "Publish Article"
+    }
+  }
+}

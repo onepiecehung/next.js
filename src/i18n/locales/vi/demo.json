@@ -1,0 +1,7 @@
+{
+  "demo": {
+    "title": "Demo Tự Động Skeleton",
+    "description": "Demo này cho thấy việc tải skeleton tự động ở cấp trang giữ nguyên bố cục DOM hiện có. Cùng một nội dung được sử dụng cho cả trạng thái tải và đã tải, đảm bảo không có hiện tượng nhảy layout.",
+    "loading": "Đang tải demo..."
+  }
+}

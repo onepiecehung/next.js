@@ -1,0 +1,32 @@
+{
+  "user": {
+    "error": {
+      "title": "Error",
+      "fetchFailed": "Failed to fetch user data"
+    },
+    "notFound": {
+      "title": "User Not Found",
+      "description": "The requested user profile could not be found."
+    },
+    "actions": {
+      "follow": "Follow",
+      "message": "Message"
+    },
+    "joined": "Joined",
+    "stats": {
+      "articles": "Articles",
+      "followers": "Followers",
+      "following": "Following"
+    },
+    "articles": {
+      "title": "Articles by",
+      "count": "article",
+      "published": "published",
+      "readTime": "min read",
+      "noArticles": {
+        "title": "No Articles Yet",
+        "description": "This user hasn't published any articles yet."
+      }
+    }
+  }
+}

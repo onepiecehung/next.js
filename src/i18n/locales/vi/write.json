@@ -1,0 +1,16 @@
+{
+  "write": {
+    "accessDenied": "Truy Cập Bị Từ Chối",
+    "loginRequired": "Bạn cần đăng nhập để truy cập trang này.",
+    "goToHome": "Về Trang Chủ",
+    "title": "Viết Bài Viết Của Bạn",
+    "form": {
+      "title": "Tiêu Đề",
+      "titlePlaceholder": "Nhập tiêu đề bài viết...",
+      "content": "Nội Dung",
+      "contentPlaceholder": "Bắt đầu viết bài viết của bạn...",
+      "saveDraft": "Lưu Bản Nháp",
+      "publishArticle": "Xuất Bản Bài Viết"
+    }
+  }
+}

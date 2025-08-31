@@ -20,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui";
 import { Button, Input, Label } from "@/components/ui";
+import { useI18n } from "@/components/providers/i18n-provider";
 
 // Form validation schema
 const loginSchema = z.object({
@@ -29,7 +30,13 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
+/**
+ * Internationalized Login Dialog Component
+ * Handles user authentication with form validation
+ * Uses custom i18n hook for multi-language support
+ */
 export default function LoginDialog() {
+  const { t } = useI18n();
   const [, setUser] = useAtom(currentUserAtom);
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const [open, setOpen] = useState(false);
@@ -56,7 +63,7 @@ export default function LoginDialog() {
       setUser(completeUser);
 
       // Show success message and close dialog
-      toast.success("Successfully logged in!");
+      toast.success(t('toast.login.success', 'toast'));
       setOpen(false);
       reset(); // Clear form
     } catch (error: unknown) {
@@ -75,7 +82,7 @@ export default function LoginDialog() {
               "message" in error.response.data &&
               typeof error.response.data.message === "string"
             ? error.response.data.message
-            : "Login failed. Please check your credentials.";
+            : t('auth.login.error.default', 'auth');
       toast.error(errorMessage);
     }
   };
@@ -90,19 +97,19 @@ export default function LoginDialog() {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline">Login</Button>
+        <Button variant="outline">{t('auth.login.button', 'auth')}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Sign in to your account</DialogTitle>
+          <DialogTitle>{t('auth.login.title', 'auth')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t('auth.form.email', 'auth')}</Label>
             <Input
               id="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder={t('auth.form.emailPlaceholder', 'auth')}
               {...register("email")}
               className={errors.email ? "border-red-500" : ""}
             />
@@ -112,11 +119,11 @@ export default function LoginDialog() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t('auth.form.password', 'auth')}</Label>
             <Input
               id="password"
               type="password"
-              placeholder="Enter your password"
+              placeholder={t('auth.form.passwordPlaceholder', 'auth')}
               {...register("password")}
               className={errors.password ? "border-red-500" : ""}
             />
@@ -126,7 +133,10 @@ export default function LoginDialog() {
           </div>
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Signing in..." : "Sign in"}
+            {isSubmitting 
+              ? t('auth.login.signingIn', 'auth') 
+              : t('auth.login.signIn', 'auth')
+            }
           </Button>
         </form>
       </DialogContent>

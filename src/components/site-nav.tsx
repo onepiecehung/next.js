@@ -14,8 +14,15 @@ import {
   currentUserAtom,
   logoutAction,
 } from "@/lib/auth-store";
+import { useI18n } from "@/components/providers/i18n-provider";
 
+/**
+ * Internationalized Site Navigation Component
+ * Main navigation bar with language switcher, theme toggle, and user authentication
+ * Uses custom i18n hook for multi-language support
+ */
 export default function SiteNav() {
+  const { t } = useI18n();
   const [user, setUser] = useAtom(currentUserAtom);
   const [authLoading] = useAtom(authLoadingAtom);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -27,9 +34,9 @@ export default function SiteNav() {
       // Clear user state after successful logout
       setUser(null);
       clearUserState(); // Ensure all tokens are cleared
-      toast.success("Successfully logged out");
+      toast.success(t('toast.logout.success', 'toast'));
     } catch {
-      toast.error("Logout failed");
+      toast.error(t('toast.logout.error', 'toast'));
       // Even if logout API fails, clear local state
       setUser(null);
       clearUserState();
@@ -42,7 +49,7 @@ export default function SiteNav() {
     <header className="border-b bg-background">
       <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
         <Link href="/" className="font-semibold text-xl text-foreground">
-          Medium-ish
+          {t('nav.brand', 'common')}
         </Link>
 
         <div className="flex items-center gap-3">
