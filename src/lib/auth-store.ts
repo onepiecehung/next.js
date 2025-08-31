@@ -1,6 +1,6 @@
 "use client";
 
-import { atom } from "jotai";
+import { atom, useAtom } from "jotai";
 import {
   http,
   setAccessToken,
@@ -14,6 +14,27 @@ import type { User, ApiResponse, LoginResponse } from "@/lib/types";
 export const accessTokenAtom = atom<string | null>(null);
 export const currentUserAtom = atom<User | null>(null);
 export const authLoadingAtom = atom<boolean>(false);
+export const userProfileLoadingAtom = atom<boolean>(false);
+
+// Function to set user profile loading state
+export function setUserProfileLoading(loading: boolean) {
+  // This will be used by components to control the global loading state
+  return loading;
+}
+
+// Hook for managing user profile loading state
+export function useUserProfileLoading() {
+  const [loading, setLoading] = useAtom(userProfileLoadingAtom);
+
+  const startLoading = () => setLoading(true);
+  const stopLoading = () => setLoading(false);
+
+  return {
+    loading,
+    startLoading,
+    stopLoading,
+  };
+}
 
 // Login action: handles both cookie-based and fallback refresh token scenarios
 export async function loginAction(

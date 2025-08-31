@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import AuthProvider from "@/components/providers/auth-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { NoSSR } from "@/components/providers/no-ssr";
+import { LoadingProvider } from "@/components/providers/loading-provider";
 import SiteNav from "@/components/site-nav";
 
 const geistSans = Geist({
@@ -36,8 +37,10 @@ export default function RootLayout({
         <NoSSR>
           <ThemeProvider>
             <AuthProvider>
-              <SiteNav />
-              {children}
+              <LoadingProvider>
+                <SiteNav />
+                {children}
+              </LoadingProvider>
             </AuthProvider>
           </ThemeProvider>
         </NoSSR>
