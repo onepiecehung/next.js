@@ -4,15 +4,14 @@ import { useAtom } from "jotai";
 import {
   BookOpen,
   Eye,
-  Github,
   Heart,
   MessageSquare,
   PenTool,
   Rss,
 } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { useI18n } from "@/components/providers/i18n-provider";
 import { useIsMounted } from "@/components/providers/no-ssr";
 import { Skeletonize } from "@/components/skeletonize";
 import {
@@ -20,10 +19,10 @@ import {
   AvatarFallback,
   AvatarImage,
   Button,
+  GitHubIcon,
   XIcon,
 } from "@/components/ui";
 import { currentUserAtom } from "@/lib/auth-store";
-import { useI18n } from "@/components/providers/i18n-provider";
 
 /**
  * Internationalized Profile Page Component
@@ -32,7 +31,7 @@ import { useI18n } from "@/components/providers/i18n-provider";
  */
 export default function ProfilePage() {
   const { t } = useI18n();
-  
+
   const [user] = useAtom(currentUserAtom);
   const [activeTab, setActiveTab] = useState<
     "articles" | "scraps" | "comments"
@@ -57,10 +56,10 @@ export default function ProfilePage() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-foreground mb-4">
-            {t('header.profileNotFound', 'profile')}
+            {t("header.profileNotFound", "profile")}
           </h1>
           <p className="text-muted-foreground">
-            {t('header.loginRequired', 'profile')}
+            {t("header.loginRequired", "profile")}
           </p>
         </div>
       </div>
@@ -106,14 +105,14 @@ export default function ProfilePage() {
                       size="sm"
                       className="border-primary/30 hover:border-primary/50 hover:bg-primary/10"
                     >
-                      {t('buttons.edit', 'common')}
+                      {t("common.buttons.edit", "common")}
                     </Button>
                     <Button
                       variant="outline"
                       size="sm"
                       className="border-primary/30 hover:border-primary/50 hover:bg-primary/10"
                     >
-                      {t('buttons.save', 'common')}
+                      {t("common.buttons.save", "common")}
                     </Button>
                   </div>
                 </div>
@@ -131,7 +130,7 @@ export default function ProfilePage() {
                   </span>
                   <span className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Heart className="h-4 w-4 text-chart-1" />
-                    12 {t('header.likes', 'profile')}
+                    12 {t("header.likes", "profile")}
                   </span>
                 </div>
 
@@ -143,7 +142,7 @@ export default function ProfilePage() {
                     size="sm"
                     className="h-8 w-8 p-0 hover:bg-accent hover:text-accent-foreground transition-colors"
                   >
-                    <Github className="h-4 w-4" />
+                    <GitHubIcon className="h-4 w-4" />
                   </Button>
                   <Button
                     key="x"
@@ -183,7 +182,7 @@ export default function ProfilePage() {
             >
               <span className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4" />
-                {t('tabs.articles', 'profile')} 3
+                {t("tabs.articles", "profile")} 3
               </span>
             </button>
             <button
@@ -197,7 +196,7 @@ export default function ProfilePage() {
             >
               <span className="flex items-center gap-2">
                 <PenTool className="h-4 w-4" />
-                {t('tabs.scraps', 'profile')} 0
+                {t("tabs.scraps", "profile")} 0
               </span>
             </button>
             <button
@@ -211,7 +210,7 @@ export default function ProfilePage() {
             >
               <span className="flex items-center gap-2">
                 <MessageSquare className="h-4 w-4" />
-                {t('tabs.comments', 'profile')}
+                {t("tabs.comments", "profile")}
               </span>
             </button>
           </div>
@@ -225,25 +224,25 @@ export default function ProfilePage() {
             <div className="space-y-6">
               {/* Article Card 1 */}
               <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
-                  {t('categories.tech', 'profile')}
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 mb-3">
+                  {t("categories.tech", "profile")}
                 </span>
                 <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
                   Building a Modern Next.js Application with TypeScript and
                   Tailwind CSS
                 </h3>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>2 {t('content.daysAgo', 'profile')}</span>
+                  <span>2 {t("content.daysAgo", "profile")}</span>
                   <span className="flex items-center gap-1">
                     <Heart className="h-4 w-4 text-chart-1" />6
                   </span>
-                  <span>8 {t('content.readTime', 'profile')}</span>
+                  <span>8 {t("content.readTime", "profile")}</span>
                 </div>
               </div>
 
               {/* Article Card 2 */}
               <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-chart-2/10 text-chart-2 border border-chart-2/20">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-chart-2/10 text-chart-2 border border-chart-2/20 mb-3">
                   {t('categories.tutorial', 'profile')}
                 </span>
                 <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
@@ -261,7 +260,7 @@ export default function ProfilePage() {
 
               {/* Article Card 3 */}
               <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-chart-4/10 text-chart-4 border border-chart-4/20">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-chart-4/10 text-chart-4 border border-chart-4/20 mb-3">
                   {t('categories.insights', 'profile')}
                 </span>
                 <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
@@ -284,10 +283,10 @@ export default function ProfilePage() {
             <div className="text-center py-12">
               <PenTool className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-medium text-foreground mb-2">
-                {t('content.noScraps', 'profile')}
+                {t("content.noScraps", "profile")}
               </h3>
               <p className="text-muted-foreground">
-                {t('content.noScrapsDescription', 'profile')}
+                {t("content.noScrapsDescription", "profile")}
               </p>
             </div>
           </Skeletonize>
@@ -298,10 +297,10 @@ export default function ProfilePage() {
             <div className="text-center py-12">
               <MessageSquare className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-medium text-foreground mb-2">
-                {t('content.noComments', 'profile')}
+                {t("content.noComments", "profile")}
               </h3>
               <p className="text-muted-foreground">
-                {t('content.noCommentsDescription', 'profile')}
+                {t("content.noCommentsDescription", "profile")}
               </p>
             </div>
           </Skeletonize>

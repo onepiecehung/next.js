@@ -21,6 +21,7 @@ import { useI18n } from "@/components/providers/i18n-provider";
 
 interface UserDropdownProps {
   user: {
+    id: string;
     name?: string | null;
     username?: string | null;
     email: string;
@@ -73,7 +74,7 @@ export function UserDropdown({
             {/* Show user avatar if available */}
             {hasAvatar && (
               <AvatarImage
-                src={user.avatar!.url}
+                src={user.avatar?.url || ""}
                 alt={`${displayName}'s avatar`}
                 className="object-cover"
               />
@@ -110,7 +111,7 @@ export function UserDropdown({
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link href="/profile" className="cursor-pointer">
+          <Link href={`/users/${user.id}`} className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />
             <span>{t("user.dropdown.profile", "user")}</span>
           </Link>
