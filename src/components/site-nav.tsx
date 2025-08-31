@@ -49,7 +49,7 @@ export default function SiteNav() {
     <header className="border-b bg-background">
       <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
         <Link href="/" className="font-semibold text-xl text-foreground">
-          {t('nav.brand', 'common')}
+          {t('common.nav.brand', 'common')}
         </Link>
 
         <div className="flex items-center gap-3">

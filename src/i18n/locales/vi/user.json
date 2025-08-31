@@ -27,6 +27,12 @@
         "title": "Chưa Có Bài Viết",
         "description": "Người dùng này chưa xuất bản bài viết nào."
       }
+    },
+    "dropdown": {
+      "write": "Viết",
+      "profile": "Hồ Sơ",
+      "settings": "Cài Đặt",
+      "logout": "Đăng Xuất"
     }
   }
 }

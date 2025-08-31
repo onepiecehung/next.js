@@ -27,6 +27,12 @@
         "title": "No Articles Yet",
         "description": "This user hasn't published any articles yet."
       }
+    },
+    "dropdown": {
+      "write": "Write",
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Logout"
     }
   }
 }

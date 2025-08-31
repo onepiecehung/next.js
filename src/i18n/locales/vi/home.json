@@ -1,0 +1,35 @@
+{
+  "home": {
+    "hero": {
+      "title": "Chào mừng đến với Medium-ish",
+      "description": "Nền tảng hiện đại dành cho các nhà văn, lập trình viên và người sáng tạo để chia sẻ kiến thức, xây dựng khán giả và kết nối với những người có cùng chí hướng.",
+      "viewProfile": "Xem Hồ Sơ",
+      "startWriting": "Bắt Đầu Viết"
+    },
+    "features": {
+      "title": "Bạn Có Thể Làm Gì",
+      "subtitle": "Khám phá những tính năng mạnh mẽ khiến Medium-ish trở thành nền tảng hoàn hảo cho người sáng tạo nội dung",
+      "write": {
+        "title": "Viết & Xuất Bản",
+        "description": "Tạo ra những bài viết đẹp mắt với trình soạn thảo văn bản phong phú. Chia sẻ kiến thức, kinh nghiệm và hiểu biết của bạn với thế giới.",
+        "button": "Bắt Đầu Viết"
+      },
+      "profile": {
+        "title": "Xây Dựng Hồ Sơ",
+        "description": "Trưng bày chuyên môn của bạn, kết nối với người theo dõi và xây dựng thương hiệu cá nhân trong cộng đồng lập trình viên.",
+        "button": "Xem Hồ Sơ"
+      },
+      "discover": {
+        "title": "Khám Phá Nội Dung",
+        "description": "Khám phá bài viết từ các nhà văn tài năng, học kỹ năng mới và cập nhật xu hướng mới nhất trong công nghệ.",
+        "button": "Khám Phá Demo"
+      }
+    },
+    "cta": {
+      "title": "Sẵn Sàng Bắt Đầu?",
+      "subtitle": "Tham gia cùng hàng nghìn người sáng tạo đang chia sẻ kiến thức trên Medium-ish",
+      "getStarted": "Bắt Đầu",
+      "learnMore": "Tìm Hiểu Thêm"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "home": {
+    "hero": {
+      "title": "Welcome to Medium-ish",
+      "description": "A modern platform for writers, developers, and creators to share their knowledge, build their audience, and connect with like-minded individuals.",
+      "viewProfile": "View Profile",
+      "startWriting": "Start Writing"
+    },
+    "features": {
+      "title": "What You Can Do",
+      "subtitle": "Discover the powerful features that make Medium-ish the perfect platform for content creators",
+      "write": {
+        "title": "Write & Publish",
+        "description": "Create beautiful articles with our rich text editor. Share your knowledge, experiences, and insights with the world.",
+        "button": "Start Writing"
+      },
+      "profile": {
+        "title": "Build Your Profile",
+        "description": "Showcase your expertise, connect with followers, and build your personal brand in the developer community.",
+        "button": "View Profile"
+      },
+      "discover": {
+        "title": "Discover Content",
+        "description": "Explore articles from talented writers, learn new skills, and stay updated with the latest trends in technology.",
+        "button": "Explore Demo"
+      }
+    },
+    "cta": {
+      "title": "Ready to Get Started?",
+      "subtitle": "Join thousands of creators who are already sharing their knowledge on Medium-ish",
+      "getStarted": "Get Started",
+      "learnMore": "Learn More"
+    }
+  }
+}

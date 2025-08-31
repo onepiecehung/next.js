@@ -4,7 +4,18 @@ import * as React from "react";
 import { User, LogOut, Settings, PenTool } from "lucide-react";
 import Link from "next/link";
 
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, Avatar, AvatarImage, AvatarFallback } from "@/components/ui";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "@/components/ui";
 import { useIsMounted } from "@/components/providers/no-ssr";
 import { useI18n } from "@/components/providers/i18n-provider";
 
@@ -94,21 +105,21 @@ export function UserDropdown({
         <DropdownMenuItem asChild>
           <Link href="/write" className="cursor-pointer">
             <PenTool className="mr-2 h-4 w-4" />
-            <span>{t('userMenu.write', 'common')}</span>
+            <span>{t("user.dropdown.write", "user")}</span>
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
           <Link href="/profile" className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />
-            <span>{t('userMenu.profile', 'common')}</span>
+            <span>{t("user.dropdown.profile", "user")}</span>
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
           <Link href="/settings" className="cursor-pointer">
             <Settings className="mr-2 h-4 w-4" />
-            <span>{t('userMenu.settings', 'common')}</span>
+            <span>{t("user.dropdown.settings", "user")}</span>
           </Link>
         </DropdownMenuItem>
 
@@ -122,10 +133,9 @@ export function UserDropdown({
         >
           <LogOut className="mr-2 h-4 w-4" />
           <span>
-            {isLoggingOut 
-              ? t('userMenu.loggingOut', 'common') 
-              : t('userMenu.logout', 'common')
-            }
+            {isLoggingOut
+              ? t("userMenu.loggingOut", "common")
+              : t("userMenu.logout", "common")}
           </span>
         </DropdownMenuItem>
       </DropdownMenuContent>
