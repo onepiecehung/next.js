@@ -8,7 +8,6 @@ import {
   checkAndRefreshToken,
   fetchMeAction,
 } from "@/lib/auth-store";
-import { useLoading } from "./loading-provider";
 import { ClientOnly } from "@/components/ui/client-only";
 
 export default function AuthProvider({
@@ -18,14 +17,12 @@ export default function AuthProvider({
 }) {
   const [, setUser] = useAtom(currentUserAtom);
   const [, setAuthLoading] = useAtom(authLoadingAtom);
-  const { showGlobalSkeleton, hideGlobalSkeleton } = useLoading();
 
   useEffect(() => {
     // Check if user is already authenticated on app load
     const checkAuth = async () => {
       try {
         setAuthLoading(true);
-        showGlobalSkeleton();
 
         // Check if user is already authenticated on app load
         const isTokenValid = await checkAndRefreshToken();
@@ -42,7 +39,6 @@ export default function AuthProvider({
         setUser(null);
       } finally {
         setAuthLoading(false);
-        hideGlobalSkeleton();
       }
     };
 

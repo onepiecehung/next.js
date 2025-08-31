@@ -14,7 +14,6 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { UserDropdown } from "@/components/ui/user-dropdown";
-import { NavLoadingSkeleton } from "@/components/ui/loading-skeleton";
 
 export default function SiteNav() {
   const [user, setUser] = useAtom(currentUserAtom);
@@ -49,7 +48,10 @@ export default function SiteNav() {
         <div className="flex items-center gap-3">
           <ThemeToggle />
           {(() => {
-            if (authLoading) return <NavLoadingSkeleton />;
+            if (authLoading)
+              return (
+                <div className="h-8 w-20 animate-pulse bg-muted rounded" />
+              );
             if (user)
               return (
                 <UserDropdown

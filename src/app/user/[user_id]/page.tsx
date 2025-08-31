@@ -1,101 +1,174 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Heart,
-  Github,
-  Twitter,
-  Rss,
-  PenTool,
-  MessageSquare,
-  BookOpen,
-  User,
-  Calendar,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DraculaCard,
+  DraculaCardContent,
+  DraculaCardHeader,
+  DraculaCardTitle,
+} from "@/components/ui/dracula-card";
+import {
+  Calendar,
+  MapPin,
+  Globe,
+  Mail,
+  Heart,
+  MessageCircle,
+  Share2,
+  Eye,
+  User,
+} from "lucide-react";
 import Link from "next/link";
-import { publicHttp } from "@/lib/http";
-import { useIsMounted } from "@/components/providers/no-ssr";
-import { toast } from "sonner";
-import type { PublicUser, Article } from "@/lib/types";
+import { Skeletonize } from "@/components/skeletonize";
+
+interface User {
+  id: string;
+  username: string;
+  name?: string;
+  email: string;
+  bio?: string;
+  avatar?: {
+    url: string;
+  };
+  location?: string;
+  website?: string;
+  createdAt: string;
+  _count?: {
+    articles: number;
+    followers: number;
+    following: number;
+  };
+}
+
+interface Article {
+  id: string;
+  title: string;
+  excerpt: string;
+  publishedAt: string;
+  readTime: number;
+  likes: number;
+  comments: number;
+  tags: string[];
+}
 
 export default function UserProfilePage() {
   const params = useParams();
   const userId = params.user_id as string;
-  const [user, setUser] = useState<PublicUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<
-    "articles" | "scraps" | "comments"
-  >("articles");
-  const isMounted = useIsMounted();
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Fetch user data
   useEffect(() => {
-    if (!isMounted || !userId) return;
+    setIsMounted(true);
+  }, []);
 
+  useEffect(() => {
     const fetchUserData = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // Fetch user profile
-        const userResponse = await publicHttp.get(`/users/${userId}`);
-        if (userResponse.data.success) {
-          setUser(userResponse.data.data);
-        } else {
-          throw new Error(userResponse.data.message || "Failed to fetch user");
-        }
+        // Simulate API call delay
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        // Fetch user articles (don't fail if this API has issues)
-        try {
-          const articlesResponse = await publicHttp.get(
-            `/users/${userId}/articles`,
-          );
-          if (articlesResponse.data.success) {
-            setArticles(articlesResponse.data.data || []);
-          }
-        } catch (articlesError) {
-          console.warn("Failed to fetch user articles:", articlesError);
-          // Don't fail the entire profile load, just show empty articles
-          setArticles([]);
-        }
+        // Mock user data
+        const mockUser: User = {
+          id: userId,
+          username: "johndoe",
+          name: "John Doe",
+          email: "john@example.com",
+          bio: "Passionate software engineer with 5+ years of experience in web development. Love building scalable applications and sharing knowledge with the community.",
+          avatar: {
+            url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+          },
+          location: "San Francisco, CA",
+          website: "https://johndoe.dev",
+          createdAt: "2023-01-15T00:00:00.000Z",
+          _count: {
+            articles: 12,
+            followers: 156,
+            following: 89,
+          },
+        };
+
+        // Mock articles data
+        const mockArticles: Article[] = [
+          {
+            id: "1",
+            title: "Building Scalable Web Applications with Next.js",
+            excerpt:
+              "Learn the best practices for building scalable web applications using Next.js, including performance optimization and deployment strategies.",
+            publishedAt: "2024-01-15T00:00:00.000Z",
+            readTime: 8,
+            likes: 45,
+            comments: 12,
+            tags: ["Next.js", "Web Development", "Performance"],
+          },
+          {
+            id: "2",
+            title: "Mastering TypeScript for React Developers",
+            excerpt:
+              "A comprehensive guide to using TypeScript effectively in React applications, covering advanced patterns and best practices.",
+            publishedAt: "2024-01-10T00:00:00.000Z",
+            readTime: 12,
+            likes: 67,
+            comments: 18,
+            tags: ["TypeScript", "React", "Programming"],
+          },
+          {
+            id: "3",
+            title: "The Future of Web Development: What's Next?",
+            excerpt:
+              "Exploring emerging trends and technologies that will shape the future of web development in the coming years.",
+            publishedAt: "2024-01-05T00:00:00.000Z",
+            readTime: 6,
+            likes: 34,
+            comments: 8,
+            tags: ["Web Development", "Trends", "Technology"],
+          },
+        ];
+
+        setUser(mockUser);
+        setArticles(mockArticles);
       } catch (err) {
+        setError("Failed to load user data");
         console.error("Error fetching user data:", err);
-        const errorMessage =
-          err instanceof Error ? err.message : "Failed to load user profile";
-        setError(errorMessage);
-        toast.error(errorMessage);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUserData();
-  }, [userId, isMounted]);
+    if (userId) {
+      fetchUserData();
+    }
+  }, [userId]);
 
   // Prevent hydration mismatch
   if (!isMounted) {
     return <div className="min-h-screen bg-background" />;
   }
 
-  // Loading state
+  // Loading state with new skeleton system
   if (loading) {
     return (
       <div className="bg-background">
         <div className="border-b bg-card">
           <div className="mx-auto max-w-4xl px-4 py-8">
-            <div className="flex items-start gap-6">
-              <div className="h-24 w-24 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse" />
-              <div className="flex-1 space-y-4">
-                <div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
-                <div className="h-6 w-96 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
-                <div className="h-4 w-64 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+            <Skeletonize loading={true}>
+              <div className="flex items-start gap-6">
+                <div className="h-24 w-24 rounded-full bg-gray-200" />
+                <div className="flex-1 space-y-4">
+                  <div className="h-8 w-48 bg-gray-200 rounded" />
+                  <div className="h-6 w-96 bg-gray-200 rounded" />
+                  <div className="h-4 w-64 bg-gray-200 rounded" />
+                </div>
               </div>
-            </div>
+            </Skeletonize>
           </div>
         </div>
       </div>
@@ -181,188 +254,132 @@ export default function UserProfilePage() {
                 </div>
                 {user.location && (
                   <div className="flex items-center gap-2">
-                    <User className="h-4 w-4" />
+                    <MapPin className="h-4 w-4" />
                     <span>{user.location}</span>
                   </div>
                 )}
-              </div>
-
-              {/* Social Links */}
-              <div className="flex items-center gap-4">
-                {user.socialLinks?.github && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0"
-                    asChild
-                  >
-                    <a
-                      href={user.socialLinks.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github className="h-4 w-4" />
-                    </a>
-                  </Button>
-                )}
-                {user.socialLinks?.twitter && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0"
-                    asChild
-                  >
-                    <a
-                      href={user.socialLinks.twitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Twitter className="h-4 w-4" />
-                    </a>
-                  </Button>
-                )}
                 {user.website && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0"
-                    asChild
-                  >
+                  <div className="flex items-center gap-2">
+                    <Globe className="h-4 w-4" />
                     <a
                       href={user.website}
                       target="_blank"
                       rel="noopener noreferrer"
+                      className="hover:text-foreground transition-colors"
                     >
-                      <Rss className="h-4 w-4" />
+                      {user.website.replace(/^https?:\/\//, "")}
                     </a>
-                  </Button>
+                  </div>
                 )}
+                <div className="flex items-center gap-2">
+                  <Mail className="h-4 w-4" />
+                  <span>{user.email}</span>
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div className="flex items-center gap-6 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-foreground">
+                    {user._count?.articles || 0}
+                  </span>
+                  <span className="text-muted-foreground">Articles</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-foreground">
+                    {user._count?.followers || 0}
+                  </span>
+                  <span className="text-muted-foreground">Followers</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-foreground">
+                    {user._count?.following || 0}
+                  </span>
+                  <span className="text-muted-foreground">Following</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Content Navigation Tabs */}
-      <div className="border-b bg-background">
-        <div className="mx-auto max-w-4xl px-4">
-          <div className="flex space-x-8">
-            <button
-              onClick={() => setActiveTab("articles")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === "articles"
-                  ? "border-foreground text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <span className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4" />
-                Articles {articles.length}
-              </span>
-            </button>
-            <button
-              onClick={() => setActiveTab("scraps")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === "scraps"
-                  ? "border-foreground text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <span className="flex items-center gap-2">
-                <PenTool className="h-4 w-4" />
-                Scraps 0
-              </span>
-            </button>
-            <button
-              onClick={() => setActiveTab("comments")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === "comments"
-                  ? "border-foreground text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <span className="flex items-center gap-2">
-                <MessageSquare className="h-4 w-4" />
-                Comments
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Content Area */}
+      {/* Articles Section */}
       <div className="mx-auto max-w-4xl px-4 py-8">
-        {activeTab === "articles" && (
-          <div className="space-y-6">
-            {articles.length > 0 ? (
-              articles.map((article) => (
-                <div
-                  key={article.id}
-                  className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex gap-2">
-                      {article.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
-                        >
-                          {tag.toUpperCase()}
-                        </span>
-                      ))}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-foreground mb-2">
+            Articles by {displayName}
+          </h2>
+          <p className="text-muted-foreground">
+            {articles.length} article{articles.length !== 1 ? "s" : ""}{" "}
+            published
+          </p>
+        </div>
+
+        <div className="space-y-6">
+          {articles.map((article) => (
+            <DraculaCard
+              key={article.id}
+              className="hover:shadow-md transition-shadow"
+            >
+              <DraculaCardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <DraculaCardTitle className="text-xl mb-2">
+                      <Link
+                        href={`/article/${article.id}`}
+                        className="hover:text-primary transition-colors"
+                      >
+                        {article.title}
+                      </Link>
+                    </DraculaCardTitle>
+                    <p className="text-muted-foreground mb-3">
+                      {article.excerpt}
+                    </p>
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <span>
+                        {new Date(article.publishedAt).toLocaleDateString()}
+                      </span>
+                      <span>{article.readTime} min read</span>
+                      <div className="flex items-center gap-1">
+                        <Heart className="h-4 w-4" />
+                        {article.likes}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <MessageCircle className="h-4 w-4" />
+                        {article.comments}
+                      </div>
                     </div>
-                    <PenTool className="h-8 w-8 text-gray-600 dark:text-gray-400" />
                   </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight">
-                    {article.title}
-                  </h3>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <span>
-                      {new Date(article.publishedAt).toLocaleDateString()}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Heart className="h-4 w-4" />
-                      {article.likesCount}
-                    </span>
-                    <span>{article.readTime} min read</span>
+                  <div className="flex items-center gap-2 ml-4">
+                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <Share2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
-              ))
-            ) : (
-              <div className="text-center py-12">
-                <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-foreground mb-2">
-                  No articles yet
-                </h3>
-                <p className="text-muted-foreground">
-                  {displayName} hasn&apos;t published any articles yet.
-                </p>
-              </div>
-            )}
-          </div>
-        )}
+              </DraculaCardHeader>
+              <DraculaCardContent>
+                <div className="flex items-center gap-2">
+                  {article.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </DraculaCardContent>
+            </DraculaCard>
+          ))}
+        </div>
 
-        {activeTab === "scraps" && (
+        {articles.length === 0 && (
           <div className="text-center py-12">
-            <PenTool className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-foreground mb-2">
-              No scraps yet
-            </h3>
-            <p className="text-muted-foreground">
-              {displayName} hasn&apos;t written any scraps yet.
-            </p>
-          </div>
-        )}
-
-        {activeTab === "comments" && (
-          <div className="text-center py-12">
-            <MessageSquare className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-foreground mb-2">
-              No comments yet
-            </h3>
-            <p className="text-muted-foreground">
-              {displayName} hasn&apos;t made any comments yet.
-            </p>
+            <div className="text-muted-foreground mb-4">
+              <MessageCircle className="h-16 w-16 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No Articles Yet</h3>
+              <p>This user hasn't published any articles yet.</p>
+            </div>
           </div>
         )}
       </div>

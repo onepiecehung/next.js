@@ -3,13 +3,21 @@
 import { useAtom } from "jotai";
 import { currentUserAtom } from "@/lib/auth-store";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Skeletonize } from "@/components/skeletonize";
 
 export default function WritePage() {
   const [user] = useAtom(currentUserAtom);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading delay
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     // Redirect to home if user is not authenticated
@@ -38,40 +46,42 @@ export default function WritePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            Write Your Article
-          </h1>
+        <Skeletonize loading={isLoading}>
+          <div className="bg-white rounded-lg shadow-sm border p-6">
+            <h1 className="text-3xl font-bold text-gray-900 mb-6">
+              Write Your Article
+            </h1>
 
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Title
-              </label>
-              <input
-                type="text"
-                placeholder="Enter your article title..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter your article title..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Content
-              </label>
-              <textarea
-                placeholder="Start writing your article..."
-                rows={12}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-              />
-            </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Content
+                </label>
+                <textarea
+                  placeholder="Start writing your article..."
+                  rows={12}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                />
+              </div>
 
-            <div className="flex justify-end space-x-3 pt-4">
-              <Button variant="outline">Save Draft</Button>
-              <Button>Publish Article</Button>
+              <div className="flex justify-end space-x-3 pt-4">
+                <Button variant="outline">Save Draft</Button>
+                <Button>Publish Article</Button>
+              </div>
             </div>
           </div>
-        </div>
+        </Skeletonize>
       </div>
     </div>
   );

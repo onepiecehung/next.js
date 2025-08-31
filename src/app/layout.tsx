@@ -5,8 +5,6 @@ import { Toaster } from "@/components/ui/sonner";
 import AuthProvider from "@/components/providers/auth-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { NoSSR } from "@/components/providers/no-ssr";
-import { LoadingProvider } from "@/components/providers/loading-provider";
-import { GlobalLoadingOverlay } from "@/components/ui/global-loading-overlay";
 import SiteNav from "@/components/site-nav";
 
 const geistSans = Geist({
@@ -36,15 +34,12 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         <NoSSR>
-          <LoadingProvider>
-            <ThemeProvider>
-              <AuthProvider>
-                <SiteNav />
-                {children}
-              </AuthProvider>
-            </ThemeProvider>
-            <GlobalLoadingOverlay />
-          </LoadingProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <SiteNav />
+              {children}
+            </AuthProvider>
+          </ThemeProvider>
         </NoSSR>
         <Toaster richColors position="top-center" />
       </body>
