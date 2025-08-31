@@ -23,6 +23,7 @@ import {
   Image as ImageIcon,
   Eye,
   Edit3,
+  Split,
 } from "lucide-react";
 
 interface TipTapEditorProps {
@@ -43,6 +44,7 @@ export function TipTapEditor({
   className = "",
 }: TipTapEditorProps) {
   const [isPreviewMode, setIsPreviewMode] = useState(false);
+  const [isSplitView, setIsSplitView] = useState(false);
   
   const editor = useEditor({
     extensions: [
@@ -237,10 +239,36 @@ export function TipTapEditor({
             <Eye className="h-4 w-4" />
           )}
         </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setIsSplitView(!isSplitView)}
+          className={isSplitView ? "bg-purple-100 text-purple-700" : ""}
+          title={isSplitView ? "Exit Split View" : "Enter Split View"}
+        >
+          <Split className="h-4 w-4" />
+        </Button>
       </div>
 
         {/* Editor Content */}
-        {isPreviewMode ? (
+        {isSplitView ? (
+          <div className="grid grid-cols-2 gap-0 min-h-[400px]">
+            {/* Left: Editor */}
+            <div className="split-view-editor pr-4">
+              <EditorContent editor={editor} />
+            </div>
+            {/* Right: Preview */}
+            <div className="split-view-preview pl-4">
+              <div className="prose prose-lg max-w-none">
+                <div 
+                  className="preview-content"
+                  dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
+                />
+              </div>
+            </div>
+          </div>
+        ) : isPreviewMode ? (
           <div className="p-4 min-h-[400px] prose prose-lg max-w-none">
             <div 
               className="preview-content"

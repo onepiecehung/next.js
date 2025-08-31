@@ -475,4 +475,21 @@
   .preview-content em {
     @apply italic text-foreground;
   }
+
+  /* Split View Styles */
+  .split-view-editor {
+    @apply border-r border-gray-200 dark:border-gray-600;
+  }
+
+  .split-view-preview {
+    @apply border-l border-gray-200 dark:border-gray-600;
+  }
+
+  /* Responsive Split View */
+  @media (max-width: 768px) {
+    .split-view-editor,
+    .split-view-preview {
+      @apply border-none;
+    }
+  }
 }
