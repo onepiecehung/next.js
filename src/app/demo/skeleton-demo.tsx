@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Skeletonize } from "@/components/skeletonize";
 import { useLoadingDelay } from "@/hooks/useLoadingDelay";
 
@@ -140,9 +141,11 @@ export function SkeletonDemo() {
           <div className="space-y-6">
             <div className="text-center">
               <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden bg-muted border-2 border-border">
-                <img
+                <Image
                   src={data?.avatar || "/avatar.png"}
                   alt="Demo Avatar"
+                  width={128}
+                  height={128}
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     // Fallback for missing avatar

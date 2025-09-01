@@ -1,10 +1,10 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { locales, defaultLocale } from "@/i18n/config";
+import { locales, defaultLocale, type Locale } from "@/i18n/config";
 
 interface I18nContextType {
-  locale: string;
+  locale: Locale;
   setLocale: (locale: string) => void;
   t: (key: string, namespace?: string) => string;
 }
@@ -24,8 +24,8 @@ interface I18nProviderProps {
 }
 
 export function I18nProvider({ children }: I18nProviderProps) {
-  const [locale, setLocaleState] = useState(defaultLocale);
-  const [messages, setMessages] = useState<any>(null);
+  const [locale, setLocaleState] = useState<Locale>(defaultLocale);
+  const [messages, setMessages] = useState<Record<string, Record<string, string>> | null>(null);
 
   useEffect(() => {
     // Load messages for current locale
@@ -48,8 +48,8 @@ export function I18nProvider({ children }: I18nProviderProps) {
   }, [locale]);
 
   const setLocale = (newLocale: string) => {
-    if (locales.includes(newLocale as any)) {
-      setLocaleState(newLocale);
+    if (locales.includes(newLocale as Locale)) {
+      setLocaleState(newLocale as Locale);
       // Store in localStorage
       localStorage.setItem("app-locale", newLocale);
     }
@@ -58,8 +58,8 @@ export function I18nProvider({ children }: I18nProviderProps) {
   useEffect(() => {
     // Load saved locale from localStorage
     const savedLocale = localStorage.getItem("app-locale");
-    if (savedLocale && locales.includes(savedLocale as any)) {
-      setLocaleState(savedLocale);
+    if (savedLocale && locales.includes(savedLocale as Locale)) {
+      setLocaleState(savedLocale as Locale);
     }
   }, []);
 
@@ -67,7 +67,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
     if (!messages) return key;
 
     const keys = key.split(".");
-    let value: any = messages[namespace];
+    let value: string | Record<string, string> | undefined = messages[namespace];
 
     for (const k of keys) {
       if (value && typeof value === "object" && k in value) {

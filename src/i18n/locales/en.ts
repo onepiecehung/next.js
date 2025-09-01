@@ -7,7 +7,7 @@ import demo from "./en/demo.json";
 import user from "./en/user.json";
 import home from "./en/home.json";
 
-export default {
+const enMessages = {
   common,
   profile,
   auth,
@@ -17,3 +17,5 @@ export default {
   user,
   home,
 };
+
+export default enMessages;

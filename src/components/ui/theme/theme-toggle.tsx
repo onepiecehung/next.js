@@ -16,7 +16,7 @@ import { useTheme } from "@/hooks/useTheme";
 
 interface ThemeToggleProps {
   variant?: "default" | "dracula" | "simple";
-  size?: "sm" | "md";
+  size?: "default" | "sm" | "lg" | "icon";
   showLabels?: boolean;
   className?: string;
 }
@@ -34,8 +34,6 @@ export function ThemeToggle({
   className = "",
 }: ThemeToggleProps) {
   const {
-    theme,
-    setTheme,
     mounted,
     isDark,
     toggleTheme,

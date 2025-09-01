@@ -7,7 +7,7 @@ import demo from "./vi/demo.json";
 import user from "./vi/user.json";
 import home from "./vi/home.json";
 
-export default {
+const viMessages = {
   common,
   profile,
   auth,
@@ -17,3 +17,5 @@ export default {
   user,
   home,
 };
+
+export default viMessages;

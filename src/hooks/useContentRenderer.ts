@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import Prism from 'prismjs';
 
 interface UseContentRendererOptions {
@@ -57,7 +57,7 @@ export function useContentRenderer(
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Function to highlight code blocks
-  const highlightCodeBlocks = () => {
+  const highlightCodeBlocks = useCallback(() => {
     if (!enableSyntaxHighlighting) return;
     
     const container = containerRef.current || document.querySelector(containerSelector);
@@ -67,7 +67,7 @@ export function useContentRenderer(
     codeBlocks.forEach((block) => {
       Prism.highlightElement(block);
     });
-  };
+  }, [enableSyntaxHighlighting, containerSelector]);
 
   // Function to get content HTML attributes
   const getContentProps = () => {
@@ -89,7 +89,7 @@ export function useContentRenderer(
     }, highlightDelay);
 
     return () => clearTimeout(timer);
-  }, [content, enableSyntaxHighlighting, highlightDelay]);
+  }, [content, enableSyntaxHighlighting, highlightDelay, highlightCodeBlocks]);
 
   return {
     containerRef,
