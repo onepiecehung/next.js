@@ -1,30 +1,30 @@
 "use client";
 
-import { useContentRenderer } from '@/hooks/useContentRenderer';
+import { useContentRenderer } from "@/hooks/useContentRenderer";
 
 interface ContentRendererProps {
   /**
    * HTML content string from database
    */
   content: string;
-  
+
   /**
    * CSS class name for the container
    */
   className?: string;
-  
+
   /**
    * Whether to enable syntax highlighting for code blocks
    * @default true
    */
   enableSyntaxHighlighting?: boolean;
-  
+
   /**
    * Delay before highlighting code blocks (in milliseconds)
    * @default 100
    */
   highlightDelay?: number;
-  
+
   /**
    * Custom container selector for highlighting
    */
@@ -33,14 +33,14 @@ interface ContentRendererProps {
 
 /**
  * Component for rendering HTML content from database with syntax highlighting
- * 
+ *
  * @example
  * ```tsx
  * // Basic usage
  * <ContentRenderer content={article.content} />
- * 
+ *
  * // With custom options
- * <ContentRenderer 
+ * <ContentRenderer
  *   content={article.content}
  *   className="custom-content"
  *   enableSyntaxHighlighting={true}
@@ -50,15 +50,15 @@ interface ContentRendererProps {
  */
 export function ContentRenderer({
   content,
-  className = '',
+  className = "",
   enableSyntaxHighlighting = true,
   highlightDelay = 100,
-  containerSelector
+  containerSelector,
 }: ContentRendererProps) {
   const { containerRef, getContentProps } = useContentRenderer(content, {
     enableSyntaxHighlighting,
     highlightDelay,
-    containerSelector
+    containerSelector,
   });
 
   if (!content) {
@@ -69,10 +69,7 @@ export function ContentRenderer({
   if (!contentProps) return null;
 
   return (
-    <div 
-      ref={containerRef}
-      className={`content-container ${className}`.trim()}
-    >
+    <div ref={containerRef} className={`content-container ${className}`.trim()}>
       <div {...contentProps} />
     </div>
   );

@@ -23,7 +23,13 @@ import {
   Input,
   Label,
 } from "@/components/ui";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/core";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/core";
 import { useI18n } from "@/components/providers/i18n-provider";
 import SignupForm from "./signup-form";
 
@@ -40,10 +46,14 @@ function extractErrorMessage(error: unknown, defaultMessage: string): string {
   if (error instanceof Error) {
     return error.message;
   }
-  
+
   if (typeof error === "object" && error !== null && "response" in error) {
     const response = (error as { response?: unknown }).response;
-    if (typeof response === "object" && response !== null && "data" in response) {
+    if (
+      typeof response === "object" &&
+      response !== null &&
+      "data" in response
+    ) {
       const data = (response as { data?: unknown }).data;
       if (typeof data === "object" && data !== null && "message" in data) {
         const message = (data as { message?: unknown }).message;
@@ -53,7 +63,7 @@ function extractErrorMessage(error: unknown, defaultMessage: string): string {
       }
     }
   }
-  
+
   return defaultMessage;
 }
 
@@ -98,7 +108,10 @@ export default function LoginDialog() {
       setShowPassword(false); // Reset password visibility
     } catch (error: unknown) {
       // Handle login errors and show appropriate error message
-      const errorMessage = extractErrorMessage(error, t("auth.login.error.default", "auth"));
+      const errorMessage = extractErrorMessage(
+        error,
+        t("auth.login.error.default", "auth"),
+      );
       toast.error(errorMessage);
     }
   };
@@ -122,10 +135,9 @@ export default function LoginDialog() {
         {/* Header kept minimal as the Card will contain the full title/description per login-01 */}
         <DialogHeader>
           <DialogTitle>
-            {showSignup 
+            {showSignup
               ? t("register.title", "auth") || "Register"
-              : t("auth.login.title", "auth") || "Login"
-            }
+              : t("auth.login.title", "auth") || "Login"}
           </DialogTitle>
         </DialogHeader>
 
@@ -137,7 +149,8 @@ export default function LoginDialog() {
             <CardHeader>
               <CardTitle>
                 {/* Title aligned with login-01, internationalized */}
-                {t("auth.login.cardTitle", "auth") || t("auth.login.title", "auth")}
+                {t("auth.login.cardTitle", "auth") ||
+                  t("auth.login.title", "auth")}
               </CardTitle>
               <CardDescription>
                 {/* Description aligned with login-01, fallback to a generic helper */}
@@ -152,7 +165,9 @@ export default function LoginDialog() {
                 <div className="flex flex-col gap-6">
                   {/* Email field */}
                   <div className="grid gap-3">
-                    <Label htmlFor="email">{t("auth.form.email", "auth")}</Label>
+                    <Label htmlFor="email">
+                      {t("auth.form.email", "auth")}
+                    </Label>
                     <Input
                       id="email"
                       type="email"
@@ -162,20 +177,25 @@ export default function LoginDialog() {
                       {...register("email")}
                     />
                     {errors.email && (
-                      <p className="text-sm text-red-500">{errors.email.message}</p>
+                      <p className="text-sm text-red-500">
+                        {errors.email.message}
+                      </p>
                     )}
                   </div>
 
                   {/* Password field + forgot link (decorative only here) */}
                   <div className="grid gap-3">
                     <div className="flex items-center">
-                      <Label htmlFor="password">{t("auth.form.password", "auth")}</Label>
+                      <Label htmlFor="password">
+                        {t("auth.form.password", "auth")}
+                      </Label>
                       <button
                         type="button"
                         className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                         aria-label="Forgot your password"
                       >
-                        {t("auth.form.forgotPassword", "auth") || "Forgot your password?"}
+                        {t("auth.form.forgotPassword", "auth") ||
+                          "Forgot your password?"}
                       </button>
                     </div>
                     <div className="relative">
@@ -191,7 +211,9 @@ export default function LoginDialog() {
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
                       >
                         {showPassword ? (
                           <EyeOff className="h-4 w-4" />
@@ -201,28 +223,36 @@ export default function LoginDialog() {
                       </button>
                     </div>
                     {errors.password && (
-                      <p className="text-sm text-red-500">{errors.password.message}</p>
+                      <p className="text-sm text-red-500">
+                        {errors.password.message}
+                      </p>
                     )}
                   </div>
 
                   {/* Actions: primary submit, optional provider button as placeholder */}
                   <div className="flex flex-col gap-3">
-                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={isSubmitting}
+                    >
                       {isSubmitting
                         ? t("auth.login.signingIn", "auth")
                         : t("auth.login.signIn", "auth")}
                     </Button>
                     {/* This extra button mirrors login-01; wire to provider auth if desired */}
                     <Button variant="outline" className="w-full" type="button">
-                      {t("auth.login.signInWithGoogle", "auth") || "Login with Google"}
+                      {t("auth.login.signInWithGoogle", "auth") ||
+                        "Login with Google"}
                     </Button>
                   </div>
                 </div>
                 {/* Footer text like in login-01 */}
                 <div className="mt-4 text-center text-sm">
-                  {t("auth.login.noAccount", "auth") || "Don't have an account?"} {" "}
-                  <button 
-                    type="button" 
+                  {t("auth.login.noAccount", "auth") ||
+                    "Don't have an account?"}{" "}
+                  <button
+                    type="button"
                     className="underline underline-offset-4"
                     onClick={() => setShowSignup(true)}
                   >

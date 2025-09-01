@@ -4,12 +4,12 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/core/button";
 import { Input } from "@/components/ui/core/input";
 import { Label } from "@/components/ui/core/label";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogFooter 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
 } from "@/components/ui/layout/dialog";
 import { Image as ImageIcon } from "lucide-react";
 
@@ -29,7 +29,7 @@ export function ImageDialog({ isOpen, onClose, onAddImage }: ImageDialogProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate URL
     if (!url.trim()) {
       setError("Please enter an image URL");
@@ -38,7 +38,7 @@ export function ImageDialog({ isOpen, onClose, onAddImage }: ImageDialogProps) {
 
     // Check if URL has protocol, if not add https://
     let finalUrl = url.trim();
-    if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
+    if (!finalUrl.startsWith("http://") && !finalUrl.startsWith("https://")) {
       finalUrl = `https://${finalUrl}`;
     }
 
@@ -69,7 +69,7 @@ export function ImageDialog({ isOpen, onClose, onAddImage }: ImageDialogProps) {
             Add Image
           </DialogTitle>
         </DialogHeader>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="image-url">Image URL</Label>
@@ -82,25 +82,21 @@ export function ImageDialog({ isOpen, onClose, onAddImage }: ImageDialogProps) {
                 setUrl(e.target.value);
                 if (error) setError("");
               }}
-              className={error ? "border-destructive focus-visible:ring-destructive/50" : ""}
+              className={
+                error
+                  ? "border-destructive focus-visible:ring-destructive/50"
+                  : ""
+              }
               autoFocus
             />
-            {error && (
-              <p className="text-sm text-destructive">{error}</p>
-            )}
+            {error && <p className="text-sm text-destructive">{error}</p>}
           </div>
-          
+
           <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClose}
-            >
+            <Button type="button" variant="outline" onClick={handleClose}>
               Cancel
             </Button>
-            <Button type="submit">
-              Add Image
-            </Button>
+            <Button type="submit">Add Image</Button>
           </DialogFooter>
         </form>
       </DialogContent>

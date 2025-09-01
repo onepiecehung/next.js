@@ -94,7 +94,7 @@ export default function SignupForm({
         values.password,
         values.name,
         values.dob,
-        values.phoneNumber
+        values.phoneNumber,
       );
 
       // Update access token in Jotai state
@@ -106,7 +106,7 @@ export default function SignupForm({
 
       // Show success message and close dialog
       toast.success(
-        t("toast.signup.success", "toast") || "Account created successfully!"
+        t("toast.signup.success", "toast") || "Account created successfully!",
       );
       reset();
       setShowPassword(false);
@@ -115,7 +115,7 @@ export default function SignupForm({
       // Handle signup errors and show appropriate error message
       const errorMessage = extractErrorMessage(
         error,
-        t("register.error.default", "auth") || "Signup failed"
+        t("register.error.default", "auth") || "Signup failed",
       );
       toast.error(errorMessage);
     }

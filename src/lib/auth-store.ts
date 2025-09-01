@@ -91,7 +91,10 @@ export async function signupAction(
     ...(phoneNumber && { phoneNumber }),
   };
 
-  const response = await http.post<ApiResponse<LoginResponse>>("/auth/signup", signupData);
+  const response = await http.post<ApiResponse<LoginResponse>>(
+    "/auth/signup",
+    signupData,
+  );
 
   // Check if API response is successful
   if (!response.data.success) {

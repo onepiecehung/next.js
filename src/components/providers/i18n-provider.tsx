@@ -25,7 +25,10 @@ interface I18nProviderProps {
 
 export function I18nProvider({ children }: I18nProviderProps) {
   const [locale, setLocaleState] = useState<Locale>(defaultLocale);
-  const [messages, setMessages] = useState<Record<string, Record<string, string>> | null>(null);
+  const [messages, setMessages] = useState<Record<
+    string,
+    Record<string, string>
+  > | null>(null);
 
   useEffect(() => {
     // Load messages for current locale
@@ -67,7 +70,8 @@ export function I18nProvider({ children }: I18nProviderProps) {
     if (!messages) return key;
 
     const keys = key.split(".");
-    let value: string | Record<string, string> | undefined = messages[namespace];
+    let value: string | Record<string, string> | undefined =
+      messages[namespace];
 
     for (const k of keys) {
       if (value && typeof value === "object" && k in value) {

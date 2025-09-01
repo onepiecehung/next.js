@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from 'react';
-import Prism from 'prismjs';
+import { useEffect, useRef, useCallback } from "react";
+import Prism from "prismjs";
 
 interface UseContentRendererOptions {
   /**
@@ -9,13 +9,13 @@ interface UseContentRendererOptions {
    * @default true
    */
   enableSyntaxHighlighting?: boolean;
-  
+
   /**
    * Delay before highlighting code blocks (in milliseconds)
    * @default 100
    */
   highlightDelay?: number;
-  
+
   /**
    * CSS selector for the container where content will be rendered
    * @default '.content-container'
@@ -25,17 +25,17 @@ interface UseContentRendererOptions {
 
 /**
  * Custom hook for rendering HTML content from database with syntax highlighting
- * 
+ *
  * @param content - HTML content string from database
  * @param options - Configuration options for the renderer
- * 
+ *
  * @returns Object containing ref and render function
- * 
+ *
  * @example
  * ```tsx
  * function DisplayContent({ contentFromDB }) {
  *   const { containerRef, renderContent } = useContentRenderer(contentFromDB);
- *   
+ *
  *   return (
  *     <div ref={containerRef} className="content-container">
  *       {renderContent()}
@@ -46,24 +46,25 @@ interface UseContentRendererOptions {
  */
 export function useContentRenderer(
   content: string,
-  options: UseContentRendererOptions = {}
+  options: UseContentRendererOptions = {},
 ) {
   const {
     enableSyntaxHighlighting = true,
     highlightDelay = 100,
-    containerSelector = '.content-container'
+    containerSelector = ".content-container",
   } = options;
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Function to highlight code blocks
   const highlightCodeBlocks = useCallback(() => {
     if (!enableSyntaxHighlighting) return;
-    
-    const container = containerRef.current || document.querySelector(containerSelector);
+
+    const container =
+      containerRef.current || document.querySelector(containerSelector);
     if (!container) return;
 
-    const codeBlocks = container.querySelectorAll('pre code');
+    const codeBlocks = container.querySelectorAll("pre code");
     codeBlocks.forEach((block) => {
       Prism.highlightElement(block);
     });
@@ -72,10 +73,10 @@ export function useContentRenderer(
   // Function to get content HTML attributes
   const getContentProps = () => {
     if (!content) return null;
-    
+
     return {
       className: "prose prose-lg max-w-none",
-      dangerouslySetInnerHTML: { __html: content }
+      dangerouslySetInnerHTML: { __html: content },
     };
   };
 
@@ -94,6 +95,6 @@ export function useContentRenderer(
   return {
     containerRef,
     getContentProps,
-    highlightCodeBlocks
+    highlightCodeBlocks,
   };
 }
