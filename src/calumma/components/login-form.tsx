@@ -1,14 +1,13 @@
 import { cn } from "@/lib/utils"
-import { Button } from "@/calumma/components/ui/button"
+import { Button, Input, Label } from "@/components/ui"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/calumma/components/ui/card"
-import { Input } from "@/calumma/components/ui/input"
-import { Label } from "@/calumma/components/ui/label"
+} from "@/components/ui/core"
+// Keep only one import for Input and Label above
 
 export function LoginForm({
   className,

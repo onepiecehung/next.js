@@ -18,19 +18,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  Button,
+  Input,
+  Label,
 } from "@/components/ui";
-// Use the newly generated shadcn login-01 UI primitives from the Calumma namespace
-// These provide the visual layout/styles for the login-01 block
-import { Button } from "@/calumma/components/ui/button";
-import { Input } from "@/calumma/components/ui/input";
-import { Label } from "@/calumma/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/calumma/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/core";
 import { useI18n } from "@/components/providers/i18n-provider";
 
 // Form validation schema

@@ -1,3 +1,4 @@
+// Re-export Calumma button so all core imports use a single, consistent implementation
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -20,12 +21,6 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
-        // Dracula theme variants
-        dracula:
-          "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-500/25",
-        vampire:
-          "bg-black text-white border-2 border-purple-500 hover:bg-purple-900 hover:border-purple-400",
-        neon: "bg-transparent text-cyan-400 border-2 border-cyan-400 hover:bg-cyan-400/10 hover:shadow-lg hover:shadow-cyan-400/25",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
@@ -38,7 +33,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 function Button({

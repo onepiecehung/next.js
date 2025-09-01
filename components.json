@@ -12,10 +12,10 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@/calumma/components",
-    "utils": "@/calumma/lib/utils",
-    "ui": "@/calumma/components/ui",
-    "lib": "@/calumma/lib",
-    "hooks": "@/calumma/hooks"
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
   }
 }
