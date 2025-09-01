@@ -128,7 +128,7 @@ jobs:
       - name: Run Web Vitals test
         run: |
           yarn global add lighthouse
-          lighthouse http://localhost:3000 --output=json --output-path=./lighthouse-report.json --chrome-flags="--headless --no-sandbox"
+          lighthouse http://localhost:3001 --output=json --output-path=./lighthouse-report.json --chrome-flags="--headless --no-sandbox"
           
       - name: Analyze Core Web Vitals
         run: |
