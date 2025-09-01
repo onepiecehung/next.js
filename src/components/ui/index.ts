@@ -29,6 +29,9 @@ export * from "./utilities";
 // Navigation Components
 export * from "./navigation";
 
+// Text Editor Components
+export * from "./text-editor";
+
 // Re-export commonly used components for convenience
 export { Button, buttonVariants } from "./core";
 export { Avatar, AvatarImage, AvatarFallback } from "./core";
@@ -45,5 +48,4 @@ export { ThemeToggle } from "./theme";
 export { XIcon } from "./icons";
 export { UserDropdown } from "./navigation";
 export { LanguageSwitcher } from "./language-switcher";
-export { TipTapEditor } from "./tiptap-editor";
 export { ContentRenderer } from "./content-renderer";
