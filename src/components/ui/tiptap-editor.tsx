@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -8,6 +8,8 @@ import Typography from "@tiptap/extension-typography";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import CodeBlock from "@tiptap/extension-code-block";
+import Underline from "@tiptap/extension-underline";
+import Highlight from "@tiptap/extension-highlight";
 
 import { Button } from "./core/button";
 import { NoSSR } from "../providers/no-ssr";
@@ -34,6 +36,9 @@ const CodeBlockWithPrism = CodeBlock.extend({
 import {
   Bold,
   Italic,
+  Underline as UnderlineIcon,
+  Strikethrough,
+  Highlighter,
   List,
   ListOrdered,
   Quote,
@@ -78,6 +83,13 @@ export function TipTapEditor({
         placeholder,
       }),
       Typography,
+      Underline,
+      Highlight.configure({
+        multicolor: false, // Single color highlight
+        HTMLAttributes: {
+          class: "bg-yellow-200 dark:bg-yellow-800/50 px-1 rounded",
+        },
+      }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
@@ -89,6 +101,8 @@ export function TipTapEditor({
         HTMLAttributes: {
           class: "max-w-full h-auto rounded-lg",
         },
+        allowBase64: true,
+        inline: false,
       }),
       CodeBlockWithPrism.configure({
         HTMLAttributes: {
@@ -143,23 +157,54 @@ export function TipTapEditor({
     immediatelyRender: false,
   });
 
+  // Memoize all handlers after editor is declared
+  const addImage = useCallback(() => {
+    const url = window.prompt("Enter image URL:");
+    console.log('Image URL entered:', url);
+    
+    if (url) {
+      try {
+        new URL(url);
+        console.log('URL is valid, adding to editor...');
+        editor?.chain().focus().setImage({ src: url }).run();
+        console.log('Image added successfully');
+      } catch (error) {
+        console.error('Invalid URL format:', error);
+        alert('Please enter a valid URL (e.g., https://example.com/image.jpg)');
+      }
+    } else {
+      console.log('No URL entered');
+    }
+  }, [editor]);
+
+  const addLink = useCallback(() => {
+    const url = window.prompt("Enter URL:");
+    if (url) {
+      editor?.chain().focus().setLink({ href: url }).run();
+    }
+  }, [editor]);
+
+  const handleBold = useCallback(() => editor?.chain().focus().toggleBold().run(), [editor]);
+  const handleItalic = useCallback(() => editor?.chain().focus().toggleItalic().run(), [editor]);
+  const handleUnderline = useCallback(() => editor?.chain().focus().toggleUnderline().run(), [editor]);
+  const handleStrike = useCallback(() => editor?.chain().focus().toggleStrike().run(), [editor]);
+  const handleHighlight = useCallback(() => editor?.chain().focus().toggleMark('highlight').run(), [editor]);
+  const handleH1 = useCallback(() => editor?.chain().focus().toggleHeading({ level: 1 }).run(), [editor]);
+  const handleH2 = useCallback(() => editor?.chain().focus().toggleHeading({ level: 2 }).run(), [editor]);
+  const handleBulletList = useCallback(() => {
+    console.log('Bullet list clicked');
+    editor?.chain().focus().toggleBulletList().run();
+  }, [editor]);
+  const handleOrderedList = useCallback(() => {
+    console.log('Ordered list clicked');
+    editor?.chain().focus().toggleOrderedList().run();
+  }, [editor]);
+  const handleBlockquote = useCallback(() => editor?.chain().focus().toggleBlockquote().run(), [editor]);
+  const handleCodeBlock = useCallback(() => editor?.chain().focus().toggleCodeBlock().run(), [editor]);
+
   if (!editor) {
     return null;
   }
-
-  const addImage = () => {
-    const url = window.prompt("Enter image URL:");
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
-  };
-
-  const addLink = () => {
-    const url = window.prompt("Enter URL:");
-    if (url) {
-      editor.chain().focus().setLink({ href: url }).run();
-    }
-  };
 
   return (
     <NoSSR>
@@ -170,7 +215,7 @@ export function TipTapEditor({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => editor.chain().focus().toggleBold().run()}
+            onClick={handleBold}
             className={`${
               editor.isActive("bold") 
                 ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
@@ -183,7 +228,7 @@ export function TipTapEditor({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => editor.chain().focus().toggleItalic().run()}
+            onClick={handleItalic}
             className={`${
               editor.isActive("italic") 
                 ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
@@ -193,14 +238,51 @@ export function TipTapEditor({
             <Italic className="h-4 w-4" />
           </Button>
 
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleUnderline}
+            className={`${
+              editor.isActive("underline") 
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
+                : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+            } transition-all duration-150`}
+          >
+            <UnderlineIcon className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleStrike}
+            className={`${
+              editor.isActive("strike") 
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
+                : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+            } transition-all duration-150`}
+          >
+            <Strikethrough className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleHighlight}
+            className={`${
+              editor.isActive("highlight") 
+                ? "bg-yellow-500/20 text-yellow-600 ring-1 ring-yellow-500/30" 
+                : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+            } transition-all duration-150`}
+          >
+            <Highlighter className="h-4 w-4" />
+          </Button>
+
           <div className="w-px h-6 bg-border mx-2" />
 
           <Button
             variant="ghost"
             size="sm"
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 1 }).run()
-            }
+            onClick={handleH1}
             className={`${
               editor.isActive("heading", { level: 1 }) 
                 ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
@@ -213,9 +295,7 @@ export function TipTapEditor({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 2 }).run()
-            }
+            onClick={handleH2}
             className={`${
               editor.isActive("heading", { level: 2 }) 
                 ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
@@ -230,10 +310,7 @@ export function TipTapEditor({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => {
-              console.log('Bullet list clicked');
-              editor.chain().focus().toggleBulletList().run();
-            }}
+            onClick={handleBulletList}
             className={`${
               editor.isActive("bulletList") 
                 ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
@@ -246,10 +323,7 @@ export function TipTapEditor({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => {
-              console.log('Ordered list clicked');
-              editor.chain().focus().toggleOrderedList().run();
-            }}
+            onClick={handleOrderedList}
             className={`${
               editor.isActive("orderedList") 
                 ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
@@ -264,7 +338,7 @@ export function TipTapEditor({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            onClick={handleBlockquote}
             className={`${
               editor.isActive("blockquote") 
                 ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
@@ -277,7 +351,7 @@ export function TipTapEditor({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+            onClick={handleCodeBlock}
             className={`${
               editor.isActive("codeBlock") 
                 ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
