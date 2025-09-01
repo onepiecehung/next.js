@@ -214,13 +214,13 @@ export default function SignupForm({
             {/* Name field (optional) */}
             <div className="grid gap-3">
               <Label htmlFor="name">
-                {t("auth.form.name", "auth") || "Full Name"}
+                {t("auth.form.username", "auth") || "Username"}
               </Label>
               <Input
                 id="name"
                 type="text"
                 placeholder={
-                  t("auth.form.namePlaceholder", "auth") ||
+                  t("auth.form.usernamePlaceholder", "auth") ||
                   "Enter your full name"
                 }
                 aria-invalid={!!errors.name}
@@ -239,6 +239,7 @@ export default function SignupForm({
               <Input
                 id="dob"
                 type="date"
+                className="relative [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-3 [&::-webkit-calendar-picker-indicator]:top-1/2 [&::-webkit-calendar-picker-indicator]:-translate-y-1/2 [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                 aria-invalid={!!errors.dob}
                 {...register("dob")}
               />
@@ -289,7 +290,7 @@ export default function SignupForm({
               className="underline underline-offset-4"
               onClick={onBackToLogin}
             >
-              {t("register.signIn", "auth") || "Sign in"}
+              {t("register.login", "auth") || "Login"}
             </button>
           </div>
         </form>
