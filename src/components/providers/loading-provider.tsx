@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, ReactNode } from "react";
+import { createContext, useContext, ReactNode, useMemo } from "react";
 import { useAtom } from "jotai";
 import { userProfileLoadingAtom } from "@/lib/auth-store";
 
@@ -24,15 +24,18 @@ const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
  * Manages global loading states and provides them to child components
  * Uses Jotai atoms for state management to ensure consistency across the app
  */
-export function LoadingProvider({ children }: { children: ReactNode }) {
+export function LoadingProvider({ children }: { readonly children: ReactNode }) {
   const [userProfileLoading, setUserProfileLoading] = useAtom(
     userProfileLoadingAtom,
   );
 
-  const value: LoadingContextType = {
-    userProfileLoading,
-    setUserProfileLoading,
-  };
+  const value: LoadingContextType = useMemo(
+    () => ({
+      userProfileLoading,
+      setUserProfileLoading,
+    }),
+    [userProfileLoading, setUserProfileLoading],
+  );
 
   return (
     <LoadingContext.Provider value={value}>{children}</LoadingContext.Provider>
