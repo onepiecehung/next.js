@@ -165,6 +165,16 @@
   .dark select {
     @apply border-border/70 hover:border-border/90 focus:border-ring focus:ring-ring/30;
   }
+  
+  /* Enhanced button styling for better visibility in dracula mode */
+  button {
+    @apply border-border/60 hover:border-border/80 focus:border-ring focus:ring-ring/20;
+  }
+  
+  /* Dark mode specific button enhancements */
+  .dark button {
+    @apply border-border/70 hover:border-border/90 focus:border-ring focus:ring-ring/30;
+  }
 }
 
 /* Skeleton loading utilities */
