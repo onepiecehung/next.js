@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -8,7 +8,7 @@ import Typography from "@tiptap/extension-typography";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import CodeBlock from "@tiptap/extension-code-block";
-import { Node } from '@tiptap/core';
+
 import { Button } from "./core/button";
 import { NoSSR } from "../providers/no-ssr";
 import Prism from "prismjs";
@@ -101,7 +101,8 @@ export function TipTapEditor({
     editorProps: {
       attributes: {
         // Enable dark typography inversion for better readability in Dracula mode
-        class: `prose prose-lg dark:prose-invert max-w-none focus:outline-none min-h-[400px] p-4 ${className}`,
+        // Remove prose class that might interfere with list styling
+        class: `max-w-none focus:outline-none min-h-[400px] p-4 ${className}`,
       },
     },
     onUpdate: ({ editor }) => {
@@ -170,20 +171,26 @@ export function TipTapEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={editor.isActive("bold") ? "bg-accent text-accent-foreground" : "text-muted-foreground"}
+            className={`${
+              editor.isActive("bold") 
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
+                : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+            } transition-all duration-150`}
           >
-            <Bold className="h-4 w-4 text-foreground" />
+            <Bold className="h-4 w-4" />
           </Button>
 
           <Button
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={
-              editor.isActive("italic") ? "bg-accent text-accent-foreground" : "text-muted-foreground"
-            }
+            className={`${
+              editor.isActive("italic") 
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
+                : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+            } transition-all duration-150`}
           >
-            <Italic className="h-4 w-4 text-foreground" />
+            <Italic className="h-4 w-4" />
           </Button>
 
           <div className="w-px h-6 bg-border mx-2" />
@@ -194,11 +201,13 @@ export function TipTapEditor({
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
             }
-            className={
-              editor.isActive("heading", { level: 1 }) ? "bg-accent text-accent-foreground" : "text-muted-foreground"
-            }
+            className={`${
+              editor.isActive("heading", { level: 1 }) 
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
+                : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+            } transition-all duration-150`}
           >
-            <Heading1 className="h-4 w-4 text-foreground" />
+            <Heading1 className="h-4 w-4" />
           </Button>
 
           <Button
@@ -207,11 +216,13 @@ export function TipTapEditor({
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
             }
-            className={
-              editor.isActive("heading", { level: 2 }) ? "bg-accent text-accent-foreground" : "text-muted-foreground"
-            }
+            className={`${
+              editor.isActive("heading", { level: 2 }) 
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
+                : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+            } transition-all duration-150`}
           >
-            <Heading2 className="h-4 w-4 text-foreground" />
+            <Heading2 className="h-4 w-4" />
           </Button>
 
           <div className="w-px h-6 bg-border mx-2" />
@@ -219,23 +230,33 @@ export function TipTapEditor({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={
-              editor.isActive("bulletList") ? "bg-accent text-accent-foreground" : "text-muted-foreground"
-            }
+            onClick={() => {
+              console.log('Bullet list clicked');
+              editor.chain().focus().toggleBulletList().run();
+            }}
+            className={`${
+              editor.isActive("bulletList") 
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
+                : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+            } transition-all duration-150`}
           >
-            <List className="h-4 w-4 text-foreground" />
+            <List className="h-4 w-4" />
           </Button>
 
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={
-              editor.isActive("orderedList") ? "bg-accent text-accent-foreground" : "text-muted-foreground"
-            }
+            onClick={() => {
+              console.log('Ordered list clicked');
+              editor.chain().focus().toggleOrderedList().run();
+            }}
+            className={`${
+              editor.isActive("orderedList") 
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
+                : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+            } transition-all duration-150`}
           >
-            <ListOrdered className="h-4 w-4 text-foreground" />
+            <ListOrdered className="h-4 w-4" />
           </Button>
 
           <div className="w-px h-6 bg-border mx-2" />
@@ -244,22 +265,26 @@ export function TipTapEditor({
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            className={
-              editor.isActive("blockquote") ? "bg-accent text-accent-foreground" : "text-muted-foreground"
-            }
+            className={`${
+              editor.isActive("blockquote") 
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
+                : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+            } transition-all duration-150`}
           >
-            <Quote className="h-4 w-4 text-foreground" />
+            <Quote className="h-4 w-4" />
           </Button>
 
           <Button
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-            className={
-              editor.isActive("codeBlock") ? "bg-accent text-accent-foreground" : "text-muted-foreground"
-            }
+            className={`${
+              editor.isActive("codeBlock") 
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
+                : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+            } transition-all duration-150`}
           >
-            <Code className="h-4 w-4 text-foreground" />
+            <Code className="h-4 w-4" />
           </Button>
 
           <div className="w-px h-6 bg-border mx-2" />
@@ -268,13 +293,22 @@ export function TipTapEditor({
             variant="ghost"
             size="sm"
             onClick={addLink}
-            className={editor.isActive("link") ? "bg-accent text-accent-foreground" : "text-muted-foreground"}
+            className={`${
+              editor.isActive("link") 
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30" 
+                : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+            } transition-all duration-150`}
           >
-            <LinkIcon className="h-4 w-4 text-foreground" />
+            <LinkIcon className="h-4 w-4" />
           </Button>
 
-          <Button variant="ghost" size="sm" onClick={addImage}>
-            <ImageIcon className="h-4 w-4 text-foreground" />
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={addImage}
+            className="text-muted-foreground hover:text-foreground hover:bg-accent/30 transition-all duration-150"
+          >
+            <ImageIcon className="h-4 w-4" />
           </Button>
 
           <div className="w-px h-6 bg-border mx-2" />
@@ -302,13 +336,17 @@ export function TipTapEditor({
               }, 100);
             }
           }}
-          className={isPreviewMode ? "bg-accent text-accent-foreground" : "text-muted-foreground"}
+          className={`${
+            isPreviewMode 
+              ? "bg-green-500/10 text-green-600 ring-1 ring-green-500/30" 
+              : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+          } transition-all duration-150`}
           title={isPreviewMode ? "Switch to Edit Mode" : "Switch to Preview Mode"}
         >
           {isPreviewMode ? (
-            <Edit3 className="h-4 w-4 text-foreground" />
+            <Edit3 className="h-4 w-4" />
           ) : (
-            <Eye className="h-4 w-4 text-foreground" />
+            <Eye className="h-4 w-4" />
           )}
         </Button>
 
@@ -335,10 +373,14 @@ export function TipTapEditor({
               }, 100);
             }
           }}
-          className={isSplitView ? "bg-accent text-accent-foreground" : "text-muted-foreground"}
+          className={`${
+            isSplitView 
+              ? "bg-purple-500/10 text-purple-600 ring-1 ring-purple-500/30" 
+              : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+          } transition-all duration-150`}
           title={isSplitView ? "Exit Split View" : "Enter Split View"}
         >
-          <Split className="h-4 w-4 text-foreground" />
+          <Split className="h-4 w-4" />
         </Button>
 
         <Button
@@ -353,10 +395,14 @@ export function TipTapEditor({
               setIsSplitView(false); // Tắt Split View khi vào Code Mode
             }
           }}
-          className={isCodeMode ? "bg-accent text-accent-foreground" : "text-muted-foreground"}
+          className={`${
+            isCodeMode 
+              ? "bg-orange-500/10 text-orange-600 ring-1 ring-orange-500/30" 
+              : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+          } transition-all duration-150`}
           title={isCodeMode ? "Switch to Edit Mode" : "View HTML Code"}
         >
-          <FileCode className="h-4 w-4 text-foreground" />
+          <FileCode className="h-4 w-4" />
         </Button>
       </div>
 
@@ -371,7 +417,7 @@ export function TipTapEditor({
                 </div>
                 {/* Right: Preview */}
                 <div className="split-view-preview pl-4">
-                  <div className="prose prose-lg dark:prose-invert max-w-none">
+                  <div className="max-w-none">
                     <div 
                       className="preview-content"
                       dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
@@ -384,7 +430,7 @@ export function TipTapEditor({
           
           if (isPreviewMode) {
             return (
-              <div className="p-4 min-h-[400px] prose prose-lg dark:prose-invert max-w-none">
+              <div className="p-4 min-h-[400px] max-w-none">
                 <div 
                   className="preview-content"
                   dangerouslySetInnerHTML={{ __html: editor.getHTML() }}

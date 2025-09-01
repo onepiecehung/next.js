@@ -396,6 +396,11 @@
   .ProseMirror ul,
   .ProseMirror ol {
     @apply mb-4 pl-6;
+    list-style-type: disc;
+  }
+
+  .ProseMirror ol {
+    list-style-type: decimal;
   }
 
   .ProseMirror li {
@@ -442,6 +447,11 @@
   .preview-content ul,
   .preview-content ol {
     @apply mb-4 pl-6 text-foreground;
+    list-style-type: disc;
+  }
+
+  .preview-content ol {
+    list-style-type: decimal;
   }
 
   .preview-content li {
