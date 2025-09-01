@@ -112,7 +112,7 @@
   --accent: #44475a; /* Dracula Current Line */
   --accent-foreground: #f8f8f2; /* Dracula Foreground */
   --destructive: #ff5555; /* Dracula Red */
-  --border: #6272a4; /* Dracula Comment */
+  --border: #6272a4; /* Dracula Comment - Enhanced for better visibility */
   --input: #44475a; /* Dracula Current Line */
   --ring: #bd93f9; /* Dracula Purple */
   --chart-1: #ff79c6; /* Dracula Pink */
@@ -136,6 +136,34 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Enhanced input styling for better visibility in dracula mode */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="date"],
+  input[type="number"],
+  input[type="search"],
+  input[type="url"],
+  textarea,
+  select {
+    @apply border-border/60 hover:border-border/80 focus:border-ring focus:ring-ring/20;
+  }
+  
+  /* Dark mode specific input enhancements */
+  .dark input[type="text"],
+  .dark input[type="email"],
+  .dark input[type="password"],
+  .dark input[type="tel"],
+  .dark input[type="date"],
+  .dark input[type="number"],
+  .dark input[type="search"],
+  .dark input[type="url"],
+  .dark textarea,
+  .dark select {
+    @apply border-border/70 hover:border-border/90 focus:border-ring focus:ring-ring/30;
   }
 }
 
