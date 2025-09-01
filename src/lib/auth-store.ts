@@ -73,6 +73,53 @@ export async function loginAction(
   return user;
 }
 
+// Signup action: handles user registration
+export async function signupAction(
+  username: string,
+  email: string,
+  password: string,
+  name?: string,
+  dob?: string,
+  phoneNumber?: string,
+): Promise<User> {
+  const signupData = {
+    username,
+    email,
+    password,
+    ...(name && { name }),
+    ...(dob && { dob }),
+    ...(phoneNumber && { phoneNumber }),
+  };
+
+  const response = await http.post<ApiResponse<LoginResponse>>("/auth/signup", signupData);
+
+  // Check if API response is successful
+  if (!response.data.success) {
+    throw new Error(response.data.message || "Signup failed");
+  }
+
+  const { user, token } = response.data.data;
+  const { accessToken, refreshToken } = token;
+
+  if (!accessToken) {
+    throw new Error("No access token returned from server");
+  }
+
+  // Store access token in memory (secure, not persisted)
+  setAccessToken(accessToken);
+
+  // Store refresh token in localStorage only if backend doesn't set HttpOnly cookies
+  // This is a fallback mechanism and should be avoided in production
+  if (refreshToken) {
+    setRefreshTokenFallback(refreshToken);
+    console.warn(
+      "⚠️ Using fallback refresh token storage - not secure for production",
+    );
+  }
+
+  return user;
+}
+
 // Fetch current user information
 export async function fetchMeAction(): Promise<User> {
   const response = await http.get<ApiResponse<User>>("/users/me");

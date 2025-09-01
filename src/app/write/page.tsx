@@ -1,7 +1,7 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { currentUserAtom } from "@/lib/auth-store";
+import { currentUserAtom, authLoadingAtom } from "@/lib/auth-store";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button, TipTapEditor } from "@/components/ui";
@@ -17,6 +17,7 @@ import { useI18n } from "@/components/providers/i18n-provider";
 export default function WritePage() {
   const { t } = useI18n();
   const [user] = useAtom(currentUserAtom);
+  const [authLoading] = useAtom(authLoadingAtom);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [title, setTitle] = useState("");
@@ -29,14 +30,14 @@ export default function WritePage() {
   }, []);
 
   useEffect(() => {
-    // Redirect to home if user is not authenticated
-    if (!user) {
+    // Redirect to home if user is not authenticated and auth is not loading
+    if (!user && !authLoading) {
       router.replace("/");
     }
-  }, [user, router]);
+  }, [user, authLoading, router]);
 
   // Show loading or redirect if not authenticated
-  if (!user) {
+  if (!user && !authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">

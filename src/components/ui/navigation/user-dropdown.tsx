@@ -135,8 +135,8 @@ export function UserDropdown({
           <LogOut className="mr-2 h-4 w-4" />
           <span>
             {isLoggingOut
-              ? t("userMenu.loggingOut", "common")
-              : t("userMenu.logout", "common")}
+              ? t("user.dropdown.loggingOut", "user")
+              : t("user.dropdown.logout", "user")}
           </span>
         </DropdownMenuItem>
       </DropdownMenuContent>

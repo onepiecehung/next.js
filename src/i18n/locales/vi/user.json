@@ -32,7 +32,8 @@
       "write": "Viết",
       "profile": "Hồ Sơ",
       "settings": "Cài Đặt",
-      "logout": "Đăng Xuất"
+      "logout": "Đăng Xuất",
+      "loggingOut": "Đang đăng xuất..."
     }
   }
 }

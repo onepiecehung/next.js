@@ -1,12 +1,12 @@
-import { cn } from "@/lib/utils"
-import { Button, Input, Label } from "@/components/ui"
+import { cn } from "@/lib/utils";
+import { Button, Input, Label } from "@/components/ui";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/core"
+} from "@/components/ui/core";
 // Keep only one import for Input and Label above
 
 export function LoginForm({
@@ -65,5 +65,5 @@ export function LoginForm({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
