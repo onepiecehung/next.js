@@ -57,43 +57,53 @@ export default function WritePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="container mx-auto px-6 py-8">
         <Skeletonize loading={isLoading}>
-          <div className="bg-card rounded-lg shadow-sm border border-border p-6">
-            <h1 className="text-3xl font-bold text-foreground mb-6">
-              {t("write.title", "write")}
-            </h1>
+          <div className="space-y-8">
+            {/* Header */}
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold text-foreground">
+                {t("write.title", "write")}
+              </h1>
+              <p className="text-muted-foreground">
+                Create and publish your articles with our modern rich text editor
+              </p>
+            </div>
 
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  {t("write.form.title", "write")}
-                </label>
-                <input
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder={t("write.form.titlePlaceholder", "write")}
-                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring"
-                />
-              </div>
+            {/* Main Content */}
+            <div className="bg-card rounded-lg shadow-sm border border-border p-6">
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    {t("write.form.title", "write")}
+                  </label>
+                  <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder={t("write.form.titlePlaceholder", "write")}
+                    className="w-full px-4 py-3 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-lg"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  {t("write.form.content", "write")}
-                </label>
-                <TipTapEditor
-                  content={content}
-                  onChange={setContent}
-                  placeholder={t("write.form.contentPlaceholder", "write")}
-                />
-              </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    {t("write.form.content", "write")}
+                  </label>
+                  <TipTapEditor
+                    content={content}
+                    onChange={setContent}
+                    placeholder={t("write.form.contentPlaceholder", "write")}
+                    className="min-h-[600px]"
+                  />
+                </div>
 
-              <div className="flex justify-end space-x-3 pt-4">
-                <Button variant="outline">
-                  {t("write.form.saveDraft", "write")}
-                </Button>
-                <Button>{t("write.form.publishArticle", "write")}</Button>
+                <div className="flex justify-end space-x-3 pt-6 border-t border-border">
+                  <Button variant="outline" size="lg">
+                    {t("write.form.saveDraft", "write")}
+                  </Button>
+                  <Button size="lg">{t("write.form.publishArticle", "write")}</Button>
+                </div>
               </div>
             </div>
           </div>

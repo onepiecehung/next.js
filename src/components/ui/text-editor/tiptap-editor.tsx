@@ -235,14 +235,15 @@ export function TipTapEditor({
       <div className="border border-border rounded-lg bg-card text-foreground focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20">
         {/* Toolbar */}
         <div className="flex items-center gap-1 p-2 border-b border-border bg-muted/50">
-          {/* History */}
-          <div className="flex items-center gap-1">
+          {/* Group 1: History & Undo/Redo */}
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
             <Button
               variant="ghost"
               size="sm"
               onClick={handleUndo}
               disabled={!editor.can().undo()}
               className="h-8 w-8 p-0"
+              title="Undo"
             >
               <Undo className="h-4 w-4" />
             </Button>
@@ -252,15 +253,14 @@ export function TipTapEditor({
               onClick={handleRedo}
               disabled={!editor.can().redo()}
               className="h-8 w-8 p-0"
+              title="Redo"
             >
               <Redo className="h-4 w-4" />
             </Button>
           </div>
 
-          <div className="w-px h-6 bg-border mx-2" />
-
-          {/* Text Formatting */}
-          <div className="flex items-center gap-1">
+          {/* Group 2: Text Formatting */}
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
             <Button
               variant="ghost"
               size="sm"
@@ -268,6 +268,7 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 editor.isActive("bold") ? "bg-primary/10 text-primary" : ""
               }`}
+              title="Bold"
             >
               <Bold className="h-4 w-4" />
             </Button>
@@ -278,6 +279,7 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 editor.isActive("italic") ? "bg-primary/10 text-primary" : ""
               }`}
+              title="Italic"
             >
               <Italic className="h-4 w-4" />
             </Button>
@@ -288,6 +290,7 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 editor.isActive("underline") ? "bg-primary/10 text-primary" : ""
               }`}
+              title="Underline"
             >
               <UnderlineIcon className="h-4 w-4" />
             </Button>
@@ -298,6 +301,7 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 editor.isActive("strike") ? "bg-primary/10 text-primary" : ""
               }`}
+              title="Strikethrough"
             >
               <Strikethrough className="h-4 w-4" />
             </Button>
@@ -308,6 +312,7 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 editor.isActive("highlight") ? "bg-yellow-500/20 text-yellow-600" : ""
               }`}
+              title="Highlight"
             >
               <Highlighter className="h-4 w-4" />
             </Button>
@@ -318,50 +323,49 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 editor.isActive("code") ? "bg-primary/10 text-primary" : ""
               }`}
+              title="Inline Code"
             >
               <Code className="h-4 w-4" />
             </Button>
           </div>
 
-          <div className="w-px h-6 bg-border mx-2" />
+          {/* Group 3: Headings & Structure */}
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 px-2" title="Headings">
+                  {getCurrentHeading()}
+                  <ChevronDown className="h-3 w-3 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-48">
+                <DropdownMenuItem onClick={handleH1} className="flex items-center gap-2">
+                  <Heading1 className="h-4 w-4" />
+                  <span>Heading 1</span>
+                  {editor.isActive("heading", { level: 1 }) && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleH2} className="flex items-center gap-2">
+                  <Heading2 className="h-4 w-4" />
+                  <span>Heading 2</span>
+                  {editor.isActive("heading", { level: 2 }) && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleH3} className="flex items-center gap-2">
+                  <Heading3 className="h-4 w-4" />
+                  <span>Heading 3</span>
+                  {editor.isActive("heading", { level: 3 }) && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
 
-          {/* Headings */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-8 px-2">
-                {getCurrentHeading()}
-                <ChevronDown className="h-3 w-3 ml-1" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48">
-              <DropdownMenuItem onClick={handleH1} className="flex items-center gap-2">
-                <Heading1 className="h-4 w-4" />
-                <span>Heading 1</span>
-                {editor.isActive("heading", { level: 1 }) && (
-                  <span className="ml-auto text-xs text-primary">✓</span>
-                )}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleH2} className="flex items-center gap-2">
-                <Heading2 className="h-4 w-4" />
-                <span>Heading 2</span>
-                {editor.isActive("heading", { level: 2 }) && (
-                  <span className="ml-auto text-xs text-primary">✓</span>
-                )}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleH3} className="flex items-center gap-2">
-                <Heading3 className="h-4 w-4" />
-                <span>Heading 3</span>
-                {editor.isActive("heading", { level: 3 }) && (
-                  <span className="ml-auto text-xs text-primary">✓</span>
-                )}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <div className="w-px h-6 bg-border mx-2" />
-
-          {/* Lists */}
-          <div className="flex items-center gap-1">
+          {/* Group 4: Lists */}
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
             <Button
               variant="ghost"
               size="sm"
@@ -369,6 +373,7 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 editor.isActive("bulletList") ? "bg-primary/10 text-primary" : ""
               }`}
+              title="Bullet List"
             >
               <List className="h-4 w-4" />
             </Button>
@@ -379,6 +384,7 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 editor.isActive("orderedList") ? "bg-primary/10 text-primary" : ""
               }`}
+              title="Numbered List"
             >
               <ListOrdered className="h-4 w-4" />
             </Button>
@@ -389,15 +395,14 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 editor.isActive("taskList") ? "bg-primary/10 text-primary" : ""
               }`}
+              title="Task List"
             >
               <CheckSquare className="h-4 w-4" />
             </Button>
           </div>
 
-          <div className="w-px h-6 bg-border mx-2" />
-
-          {/* Block Elements */}
-          <div className="flex items-center gap-1">
+          {/* Group 5: Block Elements */}
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
             <Button
               variant="ghost"
               size="sm"
@@ -405,6 +410,7 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 editor.isActive("blockquote") ? "bg-primary/10 text-primary" : ""
               }`}
+              title="Blockquote"
             >
               <Quote className="h-4 w-4" />
             </Button>
@@ -415,56 +421,55 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 editor.isActive("codeBlock") ? "bg-primary/10 text-primary" : ""
               }`}
+              title="Code Block"
             >
               <Code className="h-4 w-4" />
             </Button>
           </div>
 
-          <div className="w-px h-6 bg-border mx-2" />
+          {/* Group 6: Text Alignment */}
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="Text Alignment">
+                  {getAlignmentIcon()}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-48">
+                <DropdownMenuItem onClick={handleAlignLeft} className="flex items-center gap-2">
+                  <AlignLeft className="h-4 w-4" />
+                  <span>Align Left</span>
+                  {getCurrentAlignment() === "left" && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleAlignCenter} className="flex items-center gap-2">
+                  <AlignCenter className="h-4 w-4" />
+                  <span>Align Center</span>
+                  {getCurrentAlignment() === "center" && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleAlignRight} className="flex items-center gap-2">
+                  <AlignRight className="h-4 w-4" />
+                  <span>Align Right</span>
+                  {getCurrentAlignment() === "right" && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleAlignJustify} className="flex items-center gap-2">
+                  <AlignJustify className="h-4 w-4" />
+                  <span>Justify</span>
+                  {getCurrentAlignment() === "justify" && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
 
-          {/* Text Alignment */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                {getAlignmentIcon()}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48">
-              <DropdownMenuItem onClick={handleAlignLeft} className="flex items-center gap-2">
-                <AlignLeft className="h-4 w-4" />
-                <span>Align Left</span>
-                {getCurrentAlignment() === "left" && (
-                  <span className="ml-auto text-xs text-primary">✓</span>
-                )}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleAlignCenter} className="flex items-center gap-2">
-                <AlignCenter className="h-4 w-4" />
-                <span>Align Center</span>
-                {getCurrentAlignment() === "center" && (
-                  <span className="ml-auto text-xs text-primary">✓</span>
-                )}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleAlignRight} className="flex items-center gap-2">
-                <AlignRight className="h-4 w-4" />
-                <span>Align Right</span>
-                {getCurrentAlignment() === "right" && (
-                  <span className="ml-auto text-xs text-primary">✓</span>
-                )}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleAlignJustify} className="flex items-center gap-2">
-                <AlignJustify className="h-4 w-4" />
-                <span>Justify</span>
-                {getCurrentAlignment() === "justify" && (
-                  <span className="ml-auto text-xs text-primary">✓</span>
-                )}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <div className="w-px h-6 bg-border mx-2" />
-
-          {/* Media */}
-          <div className="flex items-center gap-1">
+          {/* Group 7: Media & Links */}
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
             <Button
               variant="ghost"
               size="sm"
@@ -472,6 +477,7 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 editor.isActive("link") ? "bg-primary/10 text-primary" : ""
               }`}
+              title="Add Link"
             >
               <LinkIcon className="h-4 w-4" />
             </Button>
@@ -480,6 +486,7 @@ export function TipTapEditor({
               size="sm"
               onClick={addImage}
               className="h-8 w-8 p-0"
+              title="Add Image"
             >
               <ImageIcon className="h-4 w-4" />
             </Button>
@@ -487,8 +494,8 @@ export function TipTapEditor({
 
           <div className="flex-1" />
 
-          {/* View Modes */}
-          <div className="flex items-center gap-1">
+          {/* Group 8: View Modes */}
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
             <Button
               variant="ghost"
               size="sm"
@@ -500,6 +507,7 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 isPreviewMode ? "bg-green-500/10 text-green-600" : ""
               }`}
+              title={isPreviewMode ? "Edit Mode" : "Preview Mode"}
             >
               {isPreviewMode ? <Edit3 className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </Button>
@@ -514,6 +522,7 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 isSplitView ? "bg-purple-500/10 text-purple-600" : ""
               }`}
+              title="Split View"
             >
               <Split className="h-4 w-4" />
             </Button>
@@ -528,6 +537,7 @@ export function TipTapEditor({
               className={`h-8 w-8 p-0 ${
                 isCodeMode ? "bg-orange-500/10 text-orange-600" : ""
               }`}
+              title="Code View"
             >
               <FileCode className="h-4 w-4" />
             </Button>
