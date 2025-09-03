@@ -44,3 +44,5 @@ export {
   FormMessage,
   FormField,
 } from "./form";
+
+export { Separator } from "./separator";

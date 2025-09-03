@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui";
 import Link from "next/link";
-import { BookOpen, PenTool, User, Sparkles } from "lucide-react";
+import { BookOpen, PenTool, User, Sparkles, Palette } from "lucide-react";
 import { useI18n } from "@/components/providers/i18n-provider";
 
 /**
@@ -55,7 +55,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Feature 1: Write */}
           <div className="bg-card border border-border rounded-lg p-6 text-center hover:border-primary/30 transition-colors">
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -92,7 +92,25 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* Feature 3: Discover */}
+          {/* Feature 3: Theming */}
+          <div className="bg-card border border-border rounded-lg p-6 text-center hover:border-primary/30 transition-colors">
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Palette className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold text-foreground mb-3">
+              Theming System
+            </h3>
+            <p className="text-muted-foreground mb-4">
+              Explore multiple themes and color schemes
+            </p>
+            <Link href="/demo/theming">
+              <Button variant="outline" size="sm">
+                View Themes
+              </Button>
+            </Link>
+          </div>
+
+          {/* Feature 4: Discover */}
           <div className="bg-card border border-border rounded-lg p-6 text-center hover:border-primary/30 transition-colors">
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <BookOpen className="h-8 w-8 text-primary" />
