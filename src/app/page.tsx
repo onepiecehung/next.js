@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui";
 import Link from "next/link";
-import { BookOpen, PenTool, User, Sparkles, Palette } from "lucide-react";
+import { BookOpen, PenTool, User, Sparkles, Palette, Edit3 } from "lucide-react";
 import { useI18n } from "@/components/providers/i18n-provider";
 
 /**
@@ -106,6 +106,24 @@ export default function HomePage() {
             <Link href="/demo/theming">
               <Button variant="outline" size="sm">
                 View Themes
+              </Button>
+            </Link>
+          </div>
+
+          {/* Feature 4: Rich Text Editor */}
+          <div className="bg-card border border-border rounded-lg p-6 text-center hover:border-primary/30 transition-colors">
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Edit3 className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold text-foreground mb-3">
+              Rich Text Editor
+            </h3>
+            <p className="text-muted-foreground mb-4">
+              Modern TipTap editor with advanced features
+            </p>
+            <Link href="/demo/editor">
+              <Button variant="outline" size="sm">
+                Try Editor
               </Button>
             </Link>
           </div>
