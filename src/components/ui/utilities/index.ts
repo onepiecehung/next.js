@@ -5,3 +5,4 @@
 
 export { ClientOnly, useClientOnly } from "./client-only";
 export { Toaster } from "./sonner";
+export { ContentRenderer } from "./content-renderer";

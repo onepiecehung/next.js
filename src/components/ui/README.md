@@ -6,13 +6,14 @@ This directory contains all reusable UI components organized by functionality.
 
 ```
 ui/
-├── core/           # Fundamental UI components (Button, Input, Label, Avatar)
-├── layout/         # Layout components (Dialog, Form, Dropdown)
-├── theme/          # Theme-related components (ThemeToggle)
+├── core/           # Fundamental UI components (Button, Input, Label, Avatar, Badge, Card)
+├── layout/         # Layout components (Dialog, Form, Dropdown, Separator)
+├── theme/          # Theme-related components (ThemeToggle, ThemeSwitcher, etc.)
 ├── dracula/        # Dracula theme components (DraculaButton, DraculaCard)
-├── icons/          # Custom icons (XIcon)
-├── utilities/      # Utility components (ClientOnly, Toaster)
-├── navigation/     # Navigation components (UserDropdown)
+├── icons/          # Custom icons (XIcon, GitHubIcon)
+├── utilities/      # Utility components (ClientOnly, Toaster, ContentRenderer)
+├── navigation/     # Navigation components (UserDropdown, LanguageSwitcher)
+├── text-editor/    # Text editor components (TipTapEditor, ImageDialog, LinkDialog)
 └── index.ts        # Main export file
 ```
 
@@ -28,6 +29,9 @@ import { Button, Avatar, Dialog, XIcon } from "@/components/ui";
 import { Button } from "@/components/ui/core";
 import { Dialog } from "@/components/ui/layout";
 import { XIcon } from "@/components/ui/icons";
+import { UserDropdown } from "@/components/ui/navigation";
+import { ContentRenderer } from "@/components/ui/utilities";
+import { TipTapEditor } from "@/components/ui/text-editor";
 ```
 
 ### Import Entire Category
@@ -50,13 +54,14 @@ import * as Layout from "@/components/ui/layout";
 
 ## Categories Explained
 
-- **Core**: Basic building blocks used everywhere
-- **Layout**: Components that structure the page
-- **Theme**: Components related to theming
-- **Dracula**: Specialized Dracula theme components
-- **Icons**: Custom icon implementations
-- **Utilities**: Helper and utility components
-- **Navigation**: Navigation-related components
+- **Core**: Basic building blocks used everywhere (Button, Input, Label, Avatar, Badge, Card)
+- **Layout**: Components that structure the page (Dialog, Form, Dropdown, Separator)
+- **Theme**: Components related to theming (ThemeToggle, ThemeSwitcher, ThemeComparison, etc.)
+- **Dracula**: Specialized Dracula theme components (DraculaButton, DraculaCard)
+- **Icons**: Custom icon implementations (XIcon, GitHubIcon)
+- **Utilities**: Helper and utility components (ClientOnly, Toaster, ContentRenderer)
+- **Navigation**: Navigation-related components (UserDropdown, LanguageSwitcher)
+- **Text Editor**: Rich text editing components (TipTapEditor, ImageDialog, LinkDialog)
 
 ## Migration from Old Structure
 

@@ -4,3 +4,4 @@
  */
 
 export { UserDropdown } from "./user-dropdown";
+export { LanguageSwitcher } from "./language-switcher";

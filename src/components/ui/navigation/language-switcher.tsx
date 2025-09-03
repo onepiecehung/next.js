@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "./core/button";
+import { Button } from "../core/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./layout/dropdown-menu";
+} from "../layout/dropdown-menu";
 import { Globe, Check } from "lucide-react";
 import { useI18n } from "@/components/providers/i18n-provider";
 

@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 import LoginDialog from "@/components/auth/login-dialog";
 import { ThemeToggle, UserDropdown } from "@/components/ui";
-import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import { LanguageSwitcher } from "@/components/ui/navigation";
 import {
   authLoadingAtom,
   clearUserState,
