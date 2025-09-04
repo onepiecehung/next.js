@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import { Card } from "@/components/ui/core/card"
-import { Badge } from "@/components/ui/core"
-import { useTheme } from "@/components/providers/theme-provider"
+import { Card } from "@/components/ui/core/card";
+import { Badge } from "@/components/ui/core";
+import { useTheme } from "@/components/providers/theme-provider";
 import {
   ThemeToggle,
   FullThemeToggle,
   SimpleThemeToggle,
   DraculaModeToggle,
-} from "./theme-toggle"
+} from "./theme-toggle";
 
 /**
  * Theme Toggle Demo Component
  * Showcases all available theme toggle variants
  */
 export function ThemeToggleDemo() {
-  const { theme, colorScheme } = useTheme()
+  const { theme, colorScheme } = useTheme();
 
   return (
     <Card className="p-6 space-y-6">
@@ -108,9 +108,7 @@ export function ThemeToggleDemo() {
             </p>
           </div>
           <div className="p-3 bg-muted rounded-md">
-            <code className="text-primary">
-              {`<SimpleThemeToggle />`}
-            </code>
+            <code className="text-primary">{`<SimpleThemeToggle />`}</code>
             <p className="text-muted-foreground mt-1">
               Quick light/dark toggle
             </p>
@@ -119,12 +117,10 @@ export function ThemeToggleDemo() {
             <code className="text-primary">
               {`<ThemeToggle variant="dracula" />`}
             </code>
-            <p className="text-muted-foreground mt-1">
-              Dracula-themed toggle
-            </p>
+            <p className="text-muted-foreground mt-1">Dracula-themed toggle</p>
           </div>
         </div>
       </div>
     </Card>
-  )
+  );
 }

@@ -1,22 +1,23 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/core/button"
-import { Card } from "@/components/ui/core/card"
-import { useTheme } from "@/components/providers/theme-provider"
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/layout/dropdown-menu"
-import { Palette } from "lucide-react"
+import { Button } from "@/components/ui/core/button";
+import { Card } from "@/components/ui/core/card";
+import { useTheme } from "@/components/providers/theme-provider";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/layout/dropdown-menu";
+import { Palette } from "lucide-react";
 
 interface ThemeSwitcherProps {
-  readonly className?: string
+  readonly className?: string;
 }
 
 export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
-  const { theme, colorScheme, setTheme, setColorScheme, themes, colorSchemes } = useTheme()
+  const { theme, colorScheme, setTheme, setColorScheme, themes, colorSchemes } =
+    useTheme();
 
   return (
     <div className={`flex items-center gap-2 ${className}`}>
@@ -25,7 +26,7 @@ export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="sm">
             <Palette className="h-4 w-4 mr-2" />
-            {themes.find(t => t.value === theme)?.label}
+            {themes.find((t) => t.value === theme)?.label}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
@@ -48,7 +49,7 @@ export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="sm">
-            {colorSchemes.find(cs => cs.value === colorScheme)?.icon}
+            {colorSchemes.find((cs) => cs.value === colorScheme)?.icon}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -65,17 +66,17 @@ export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
-  )
+  );
 }
 
 // Theme Preview Component
 export function ThemePreview() {
-  const { setTheme, themes } = useTheme()
+  const { setTheme, themes } = useTheme();
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-4">
       {themes.map((themeOption) => (
-        <Card 
+        <Card
           key={themeOption.value}
           className="p-4 cursor-pointer hover:ring-2 hover:ring-primary transition-all"
           onClick={() => setTheme(themeOption.value)}
@@ -101,9 +102,12 @@ export function ThemePreview() {
         </Card>
       ))}
     </div>
-  )
+  );
 }
 
 // Re-export types and hooks from theme provider
-export type { Theme, ColorScheme } from "@/components/providers/theme-provider"
-export { useTheme, useCurrentTheme } from "@/components/providers/theme-provider"
+export type { Theme, ColorScheme } from "@/components/providers/theme-provider";
+export {
+  useTheme,
+  useCurrentTheme,
+} from "@/components/providers/theme-provider";

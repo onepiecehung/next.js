@@ -2,7 +2,14 @@
 
 import { Button } from "@/components/ui";
 import Link from "next/link";
-import { BookOpen, PenTool, User, Sparkles, Palette, Edit3 } from "lucide-react";
+import {
+  BookOpen,
+  PenTool,
+  User,
+  Sparkles,
+  Palette,
+  Edit3,
+} from "lucide-react";
 import { useI18n } from "@/components/providers/i18n-provider";
 
 /**

@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { Card } from "@/components/ui/core/card"
-import { Button } from "@/components/ui/core/button"
-import { Badge } from "@/components/ui/core"
-import { useTheme } from "@/components/providers/theme-provider"
+import { Card } from "@/components/ui/core/card";
+import { Button } from "@/components/ui/core/button";
+import { Badge } from "@/components/ui/core";
+import { useTheme } from "@/components/providers/theme-provider";
 
 /**
  * Theme Comparison Component
  * Shows the subtle differences between themes in light mode
  */
 export function ThemeComparison() {
-  const { theme, setTheme, themes } = useTheme()
+  const { theme, setTheme, themes } = useTheme();
 
   return (
     <Card className="p-6 space-y-6">
@@ -24,12 +24,12 @@ export function ThemeComparison() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {themes.map((themeOption) => (
-          <Card 
+          <Card
             key={themeOption.value}
             className={`p-4 cursor-pointer transition-all ${
-              theme === themeOption.value 
-                ? 'ring-2 ring-primary bg-primary/5' 
-                : 'hover:ring-1 hover:ring-border'
+              theme === themeOption.value
+                ? "ring-2 ring-primary bg-primary/5"
+                : "hover:ring-1 hover:ring-border"
             }`}
             onClick={() => setTheme(themeOption.value)}
           >
@@ -37,10 +37,12 @@ export function ThemeComparison() {
               <div className="flex items-center justify-between">
                 <h4 className="font-medium">{themeOption.label}</h4>
                 {theme === themeOption.value && (
-                  <Badge variant="default" className="text-xs">Active</Badge>
+                  <Badge variant="default" className="text-xs">
+                    Active
+                  </Badge>
                 )}
               </div>
-              
+
               <p className="text-xs text-muted-foreground">
                 {themeOption.description}
               </p>
@@ -81,19 +83,34 @@ export function ThemeComparison() {
       </div>
 
       <div className="pt-4 border-t">
-        <h4 className="font-medium mb-3">Why the differences are subtle in light mode:</h4>
+        <h4 className="font-medium mb-3">
+          Why the differences are subtle in light mode:
+        </h4>
         <div className="space-y-2 text-sm text-muted-foreground">
-          <p>• <strong>Neutral:</strong> Pure grayscale (no color saturation)</p>
-          <p>• <strong>Stone:</strong> Slight warm undertone (brownish)</p>
-          <p>• <strong>Zinc:</strong> Slight cool undertone (bluish)</p>
-          <p>• <strong>Gray:</strong> Balanced with subtle blue tint</p>
-          <p>• <strong>Slate:</strong> More pronounced blue undertone</p>
-          <p>• <strong>Dracula:</strong> Completely different color palette</p>
+          <p>
+            • <strong>Neutral:</strong> Pure grayscale (no color saturation)
+          </p>
+          <p>
+            • <strong>Stone:</strong> Slight warm undertone (brownish)
+          </p>
+          <p>
+            • <strong>Zinc:</strong> Slight cool undertone (bluish)
+          </p>
+          <p>
+            • <strong>Gray:</strong> Balanced with subtle blue tint
+          </p>
+          <p>
+            • <strong>Slate:</strong> More pronounced blue undertone
+          </p>
+          <p>
+            • <strong>Dracula:</strong> Completely different color palette
+          </p>
         </div>
         <p className="text-sm text-muted-foreground mt-3">
-          <strong>Tip:</strong> Switch to dark mode to see more dramatic differences between themes!
+          <strong>Tip:</strong> Switch to dark mode to see more dramatic
+          differences between themes!
         </p>
       </div>
     </Card>
-  )
+  );
 }

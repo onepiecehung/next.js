@@ -66,7 +66,8 @@ export default function WritePage() {
                 {t("write.title", "write")}
               </h1>
               <p className="text-muted-foreground">
-                Create and publish your articles with our modern rich text editor
+                Create and publish your articles with our modern rich text
+                editor
               </p>
             </div>
 
@@ -102,7 +103,9 @@ export default function WritePage() {
                   <Button variant="outline" size="lg">
                     {t("write.form.saveDraft", "write")}
                   </Button>
-                  <Button size="lg">{t("write.form.publishArticle", "write")}</Button>
+                  <Button size="lg">
+                    {t("write.form.publishArticle", "write")}
+                  </Button>
                 </div>
               </div>
             </div>

@@ -99,7 +99,9 @@ export function ContentRenderer({
     useTipTapStyling ? "tiptap-content" : "",
     getVariantClasses(),
     className,
-  ].filter(Boolean).join(" ");
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div ref={containerRef} className={containerClasses}>

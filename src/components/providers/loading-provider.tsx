@@ -24,7 +24,11 @@ const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
  * Manages global loading states and provides them to child components
  * Uses Jotai atoms for state management to ensure consistency across the app
  */
-export function LoadingProvider({ children }: { readonly children: ReactNode }) {
+export function LoadingProvider({
+  children,
+}: {
+  readonly children: ReactNode;
+}) {
   const [userProfileLoading, setUserProfileLoading] = useAtom(
     userProfileLoadingAtom,
   );

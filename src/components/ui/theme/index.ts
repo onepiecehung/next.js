@@ -17,5 +17,8 @@ export { ThemeTest } from "./theme-test";
 export { ThemeToggleDemo } from "./theme-toggle-demo";
 export { ThemeComparison } from "./theme-comparison";
 export { ThemeDifferences } from "./theme-differences";
-export { useTheme, useCurrentTheme } from "@/components/providers/theme-provider";
+export {
+  useTheme,
+  useCurrentTheme,
+} from "@/components/providers/theme-provider";
 export type { Theme, ColorScheme } from "@/components/providers/theme-provider";

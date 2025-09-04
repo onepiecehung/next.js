@@ -184,7 +184,7 @@ export function TipTapEditor({
         editor.chain().focus().setImage({ src: url }).run();
       }
     },
-    [editor]
+    [editor],
   );
 
   const addLink = useCallback(() => {
@@ -197,7 +197,7 @@ export function TipTapEditor({
         editor.chain().focus().setLink({ href: url }).run();
       }
     },
-    [editor]
+    [editor],
   );
 
   // Formatting handlers
@@ -708,9 +708,7 @@ export function TipTapEditor({
                   <div className="p-2 text-xs text-muted-foreground bg-muted/30 border-b border-border/50 mb-4">
                     Preview
                   </div>
-                  <div className="preview-content">
-                    {highlightedContent}
-                  </div>
+                  <div className="preview-content">{highlightedContent}</div>
                 </div>
               </div>
             );
@@ -723,9 +721,7 @@ export function TipTapEditor({
                   Preview Mode
                 </div>
                 <div className="p-4">
-                  <div className="preview-content">
-                    {highlightedContent}
-                  </div>
+                  <div className="preview-content">{highlightedContent}</div>
                 </div>
               </div>
             );

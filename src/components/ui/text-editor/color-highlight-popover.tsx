@@ -3,11 +3,7 @@
 import React, { useState, useCallback } from "react";
 import { Editor } from "@tiptap/react";
 import { Button } from "../core/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../popover";
 import { Highlighter, Palette } from "lucide-react";
 
 interface ColorHighlightPopoverProps {
@@ -17,14 +13,42 @@ interface ColorHighlightPopoverProps {
 }
 
 const HIGHLIGHT_COLORS = [
-  { color: "var(--tt-color-highlight-yellow)", label: "Yellow", bgColor: "#fef08a" },
-  { color: "var(--tt-color-highlight-green)", label: "Green", bgColor: "#bbf7d0" },
-  { color: "var(--tt-color-highlight-blue)", label: "Blue", bgColor: "#bfdbfe" },
-  { color: "var(--tt-color-highlight-purple)", label: "Purple", bgColor: "#d8b4fe" },
+  {
+    color: "var(--tt-color-highlight-yellow)",
+    label: "Yellow",
+    bgColor: "#fef08a",
+  },
+  {
+    color: "var(--tt-color-highlight-green)",
+    label: "Green",
+    bgColor: "#bbf7d0",
+  },
+  {
+    color: "var(--tt-color-highlight-blue)",
+    label: "Blue",
+    bgColor: "#bfdbfe",
+  },
+  {
+    color: "var(--tt-color-highlight-purple)",
+    label: "Purple",
+    bgColor: "#d8b4fe",
+  },
   { color: "var(--tt-color-highlight-red)", label: "Red", bgColor: "#fecaca" },
-  { color: "var(--tt-color-highlight-orange)", label: "Orange", bgColor: "#fed7aa" },
-  { color: "var(--tt-color-highlight-pink)", label: "Pink", bgColor: "#fce7f3" },
-  { color: "var(--tt-color-highlight-gray)", label: "Gray", bgColor: "#e5e7eb" },
+  {
+    color: "var(--tt-color-highlight-orange)",
+    label: "Orange",
+    bgColor: "#fed7aa",
+  },
+  {
+    color: "var(--tt-color-highlight-pink)",
+    label: "Pink",
+    bgColor: "#fce7f3",
+  },
+  {
+    color: "var(--tt-color-highlight-gray)",
+    label: "Gray",
+    bgColor: "#e5e7eb",
+  },
 ];
 
 export function ColorHighlightPopover({
@@ -43,17 +67,13 @@ export function ColorHighlightPopover({
         editor.chain().focus().unsetHighlight().run();
       } else {
         // Apply highlight with specific color
-        editor
-          .chain()
-          .focus()
-          .setHighlight({ color })
-          .run();
+        editor.chain().focus().setHighlight({ color }).run();
       }
 
       onApplied?.({ color, label });
       setIsOpen(false);
     },
-    [editor, onApplied]
+    [editor, onApplied],
   );
 
   const handleRemoveHighlight = useCallback(() => {
@@ -89,7 +109,7 @@ export function ColorHighlightPopover({
             <Palette className="h-4 w-4" />
             Choose highlight color
           </div>
-          
+
           <div className="grid grid-cols-4 gap-2">
             {HIGHLIGHT_COLORS.map(({ color, label, bgColor }) => (
               <Button
@@ -101,11 +121,14 @@ export function ColorHighlightPopover({
                 onClick={() => handleHighlight(color, label)}
                 title={label}
               >
-                <div className="h-4 w-4 rounded-sm" style={{ backgroundColor: bgColor }} />
+                <div
+                  className="h-4 w-4 rounded-sm"
+                  style={{ backgroundColor: bgColor }}
+                />
               </Button>
             ))}
           </div>
-          
+
           {isHighlightActive && (
             <div className="pt-2 border-t border-border">
               <Button

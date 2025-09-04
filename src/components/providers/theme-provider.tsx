@@ -1,7 +1,14 @@
 "use client";
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { createContext, useContext, useEffect, useState, useMemo, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 
 // Theme types
 export type Theme = "neutral" | "stone" | "zinc" | "gray" | "slate" | "dracula";
@@ -29,7 +36,11 @@ const themes: { value: Theme; label: string; description: string }[] = [
   { value: "dracula", label: "Dracula", description: "Dark and vibrant" },
 ];
 
-const colorSchemes: { value: ColorScheme; label: string; icon: React.ReactNode }[] = [
+const colorSchemes: {
+  value: ColorScheme;
+  label: string;
+  icon: React.ReactNode;
+}[] = [
   { value: "light", label: "Light", icon: "☀️" },
   { value: "dark", label: "Dark", icon: "🌙" },
   { value: "system", label: "System", icon: "💻" },
@@ -56,16 +67,19 @@ export function ThemeProvider({
 
   useEffect(() => {
     setMounted(true);
-    
+
     // Load saved theme and color scheme from localStorage
     const savedTheme = localStorage.getItem("theme") as Theme;
     const savedColorScheme = localStorage.getItem("colorScheme") as ColorScheme;
-    
-    if (savedTheme && themes.some(t => t.value === savedTheme)) {
+
+    if (savedTheme && themes.some((t) => t.value === savedTheme)) {
       setThemeState(savedTheme);
     }
-    
-    if (savedColorScheme && colorSchemes.some(cs => cs.value === savedColorScheme)) {
+
+    if (
+      savedColorScheme &&
+      colorSchemes.some((cs) => cs.value === savedColorScheme)
+    ) {
       setColorSchemeState(savedColorScheme);
     }
   }, []);
@@ -74,13 +88,15 @@ export function ThemeProvider({
     if (!mounted) return;
 
     const root = document.documentElement;
-    
+
     // Apply theme
     root.setAttribute("data-theme", theme);
-    
+
     // Apply color scheme
     if (colorScheme === "system") {
-      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const systemPrefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
       if (systemPrefersDark) {
         root.classList.add("dark");
       } else {
@@ -105,14 +121,17 @@ export function ThemeProvider({
     setColorSchemeState(newColorScheme);
   };
 
-  const contextValue: ThemeContextType = useMemo(() => ({
-    theme,
-    colorScheme,
-    setTheme,
-    setColorScheme,
-    themes,
-    colorSchemes,
-  }), [theme, colorScheme, setTheme, setColorScheme]);
+  const contextValue: ThemeContextType = useMemo(
+    () => ({
+      theme,
+      colorScheme,
+      setTheme,
+      setColorScheme,
+      themes,
+      colorSchemes,
+    }),
+    [theme, colorScheme, setTheme, setColorScheme],
+  );
 
   return (
     <NextThemesProvider
@@ -155,15 +174,18 @@ export function useCurrentTheme() {
 
   useEffect(() => {
     setMounted(true);
-    
+
     const savedTheme = localStorage.getItem("theme") as Theme;
     const savedColorScheme = localStorage.getItem("colorScheme") as ColorScheme;
-    
-    if (savedTheme && themes.some(t => t.value === savedTheme)) {
+
+    if (savedTheme && themes.some((t) => t.value === savedTheme)) {
       setTheme(savedTheme);
     }
-    
-    if (savedColorScheme && colorSchemes.some(cs => cs.value === savedColorScheme)) {
+
+    if (
+      savedColorScheme &&
+      colorSchemes.some((cs) => cs.value === savedColorScheme)
+    ) {
       setColorScheme(savedColorScheme);
     }
   }, []);

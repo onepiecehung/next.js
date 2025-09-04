@@ -16,19 +16,21 @@ export function SyntaxHighlightedContent({ html }: { html: string }) {
     // Highlight all <pre><code> elements inside the ref
     ref.current.querySelectorAll("pre code").forEach((el) => {
       const element = el as HTMLElement;
-      
+
       // Get language from class (e.g., "language-javascript" -> "javascript")
       const cls = element.className || "";
-      const lang = (cls.match(/language-([\w-]+)/)?.[1]) as string | undefined;
-      
+      const lang = cls.match(/language-([\w-]+)/)?.[1] as string | undefined;
+
       if (lang && hljs.getLanguage(lang)) {
         // Use specific language if available
-        element.innerHTML = hljs.highlight(element.textContent ?? "", { language: lang }).value;
+        element.innerHTML = hljs.highlight(element.textContent ?? "", {
+          language: lang,
+        }).value;
       } else {
         // Auto-detect language
         element.innerHTML = hljs.highlightAuto(element.textContent ?? "").value;
       }
-      
+
       // Add hljs class for theme styling
       element.classList.add("hljs");
     });

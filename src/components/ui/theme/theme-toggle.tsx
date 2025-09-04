@@ -33,20 +33,17 @@ export function ThemeToggle({
   showLabels = true,
   className = "",
 }: ThemeToggleProps) {
-  const {
-    theme,
-    colorScheme,
-    setTheme,
-    setColorScheme,
-    themes,
-    colorSchemes,
-  } = useTheme();
+  const { theme, colorScheme, setTheme, setColorScheme, themes, colorSchemes } =
+    useTheme();
   const isMounted = useIsMounted();
 
   // Helper functions for backward compatibility
-  const isDark = colorScheme === "dark" || (colorScheme === "system" && 
-    typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches);
-  
+  const isDark =
+    colorScheme === "dark" ||
+    (colorScheme === "system" &&
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
+
   const toggleTheme = () => {
     if (isDark) {
       setColorScheme("light");
@@ -123,7 +120,9 @@ export function ThemeToggle({
             className={`px-3 border-purple-500/30 hover:border-purple-500/50 hover:bg-purple-500/10 transition-all duration-300 ${className}`}
           >
             <Palette className="mr-2 h-4 w-4" />
-            {showLabels && <span>{themes.find(t => t.value === theme)?.label}</span>}
+            {showLabels && (
+              <span>{themes.find((t) => t.value === theme)?.label}</span>
+            )}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent

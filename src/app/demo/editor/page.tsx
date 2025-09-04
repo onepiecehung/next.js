@@ -64,12 +64,15 @@ const editor = new TipTapEditor({
   };
 
   const getWordCount = () => {
-    const textContent = content.replace(/<[^>]*>/g, '');
-    return textContent.trim().split(/\s+/).filter(word => word.length > 0).length;
+    const textContent = content.replace(/<[^>]*>/g, "");
+    return textContent
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length;
   };
 
   const getCharacterCount = () => {
-    const textContent = content.replace(/<[^>]*>/g, '');
+    const textContent = content.replace(/<[^>]*>/g, "");
     return textContent.length;
   };
 
@@ -77,9 +80,12 @@ const editor = new TipTapEditor({
     <div className="container mx-auto p-6 space-y-8">
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold">Modern TipTap Editor with Grouped Toolbar</h1>
+        <h1 className="text-3xl font-bold">
+          Modern TipTap Editor with Grouped Toolbar
+        </h1>
         <p className="text-muted-foreground">
-          A responsive, feature-rich rich text editor with organized toolbar groups
+          A responsive, feature-rich rich text editor with organized toolbar
+          groups
         </p>
         <div className="flex items-center gap-4">
           <Badge variant="outline">Words: {getWordCount()}</Badge>
@@ -92,9 +98,12 @@ const editor = new TipTapEditor({
       {/* Editor */}
       <Card className="p-0">
         <div className="p-6 border-b">
-          <h2 className="text-xl font-semibold mb-2">Rich Text Editor with Grouped Toolbar</h2>
+          <h2 className="text-xl font-semibold mb-2">
+            Rich Text Editor with Grouped Toolbar
+          </h2>
           <p className="text-sm text-muted-foreground">
-            Notice how the toolbar is now organized into logical groups for better UX
+            Notice how the toolbar is now organized into logical groups for
+            better UX
           </p>
         </div>
         <div className="p-6">
@@ -119,7 +128,9 @@ const editor = new TipTapEditor({
             </ul>
           </div>
           <div className="space-y-2">
-            <h3 className="font-medium text-primary">Group 2: Text Formatting</h3>
+            <h3 className="font-medium text-primary">
+              Group 2: Text Formatting
+            </h3>
             <ul className="text-sm text-muted-foreground space-y-1">
               <li>• Bold, Italic, Underline</li>
               <li>• Strikethrough, Highlight</li>
@@ -142,7 +153,9 @@ const editor = new TipTapEditor({
             </ul>
           </div>
           <div className="space-y-2">
-            <h3 className="font-medium text-primary">Group 5: Block Elements</h3>
+            <h3 className="font-medium text-primary">
+              Group 5: Block Elements
+            </h3>
             <ul className="text-sm text-muted-foreground space-y-1">
               <li>• Blockquotes</li>
               <li>• Code Blocks</li>
@@ -176,7 +189,9 @@ const editor = new TipTapEditor({
 
       {/* Benefits */}
       <Card className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Benefits of Grouped Toolbar</h2>
+        <h2 className="text-xl font-semibold mb-4">
+          Benefits of Grouped Toolbar
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-3">
             <h3 className="font-medium">Improved UX</h3>
