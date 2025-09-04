@@ -75,7 +75,7 @@ export function useContentRenderer(
     if (!content) return null;
 
     return {
-      className: "prose prose-lg max-w-none",
+      className: "ProseMirror content-renderer",
       dangerouslySetInnerHTML: { __html: content },
     };
   };

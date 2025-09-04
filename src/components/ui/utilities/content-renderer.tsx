@@ -29,6 +29,18 @@ interface ContentRendererProps {
    * Custom container selector for highlighting
    */
   containerSelector?: string;
+
+  /**
+   * Whether to use TipTap editor styling
+   * @default true
+   */
+  useTipTapStyling?: boolean;
+
+  /**
+   * Custom styling variant
+   * @default "default"
+   */
+  variant?: "default" | "compact" | "minimal";
 }
 
 /**
@@ -54,7 +66,9 @@ export function ContentRenderer({
   enableSyntaxHighlighting = true,
   highlightDelay = 100,
   containerSelector,
-}: ContentRendererProps) {
+  useTipTapStyling = true,
+  variant = "default",
+}: Readonly<ContentRendererProps>) {
   const { containerRef, getContentProps } = useContentRenderer(content, {
     enableSyntaxHighlighting,
     highlightDelay,
@@ -68,8 +82,27 @@ export function ContentRenderer({
   const contentProps = getContentProps();
   if (!contentProps) return null;
 
+  // Determine styling classes based on options
+  const getVariantClasses = () => {
+    switch (variant) {
+      case "compact":
+        return "text-sm leading-relaxed";
+      case "minimal":
+        return "text-base leading-normal";
+      default:
+        return "text-base leading-relaxed";
+    }
+  };
+
+  const containerClasses = [
+    "content-container",
+    useTipTapStyling ? "tiptap-content" : "",
+    getVariantClasses(),
+    className,
+  ].filter(Boolean).join(" ");
+
   return (
-    <div ref={containerRef} className={`content-container ${className}`.trim()}>
+    <div ref={containerRef} className={containerClasses}>
       <div {...contentProps} />
     </div>
   );
