@@ -18,13 +18,20 @@ export default function EditorDemoPage() {
     <ul>
       <li>✅ <strong>History Group:</strong> Undo/Redo functionality</li>
       <li>✅ <strong>Text Formatting:</strong> Bold, Italic, Underline, Strikethrough, Highlight, Inline Code</li>
-      <li>✅ <strong>Headings & Structure:</strong> H1, H2, H3 dropdown</li>
+      <li>✅ <strong>Headings & Structure:</strong> H1, H2, H3, H4, H5 dropdown</li>
       <li>✅ <strong>Lists:</strong> Bullet, Numbered, and Task lists</li>
       <li>✅ <strong>Block Elements:</strong> Blockquotes and Code blocks</li>
       <li>✅ <strong>Text Alignment:</strong> Left, Center, Right, Justify</li>
       <li>✅ <strong>Media & Links:</strong> Add links and images</li>
       <li>✅ <strong>View Modes:</strong> Edit, Preview, Split View, Code View</li>
     </ul>
+
+    <h3>Heading Examples</h3>
+    <h1>Heading 1 - Main Title</h1>
+    <h2>Heading 2 - Section Title</h2>
+    <h3>Heading 3 - Subsection</h3>
+    <h4>Heading 4 - Sub-subsection</h4>
+    <h5>Heading 5 - Minor heading</h5>
 
     <h3>Task List Example</h3>
     <ul data-type="taskList">
@@ -33,15 +40,21 @@ export default function EditorDemoPage() {
       <li data-type="taskItem" data-checked="false">Another pending task</li>
     </ul>
 
+    <h3>Blockquote Example</h3>
     <blockquote>
-      <p>This is a blockquote example. Notice how the grouped toolbar makes it easier to find the right formatting options!</p>
+      <p>This is a clean blockquote example. Simple left border and italic text, just like in professional documentation.</p>
     </blockquote>
 
     <h3>Code Block Example</h3>
     <pre><code>function hello() {
-  console.log("Hello, Grouped TipTap Editor!");
-  return "Welcome to the modern editor with organized toolbar!";
-}</code></pre>
+  console.log("Hello, Clean TipTap Editor!");
+  return "Welcome to the modern editor!";
+}
+
+const editor = new TipTapEditor({
+  extensions: [StarterKit, CodeBlock, Blockquote],
+  content: "Start writing...",
+});</code></pre>
 
     <p>Try editing this content and explore all the grouped features in the toolbar above!</p>
   `);
@@ -116,7 +129,7 @@ export default function EditorDemoPage() {
           <div className="space-y-2">
             <h3 className="font-medium text-primary">Group 3: Structure</h3>
             <ul className="text-sm text-muted-foreground space-y-1">
-              <li>• Headings (H1, H2, H3)</li>
+              <li>• Headings (H1, H2, H3, H4, H5)</li>
               <li>• Dropdown selector</li>
             </ul>
           </div>

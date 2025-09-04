@@ -20,6 +20,7 @@ import { Button } from "../core/button";
 import { NoSSR } from "../../providers/no-ssr";
 import { LinkDialog } from "./link-dialog";
 import { ImageDialog } from "./image-dialog";
+import { ColorHighlightPopover } from "./color-highlight-popover";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,7 +32,7 @@ import {
   Italic,
   Underline as UnderlineIcon,
   Strikethrough,
-  Highlighter,
+
   List,
   ListOrdered,
   Quote,
@@ -39,6 +40,8 @@ import {
   Heading1,
   Heading2,
   Heading3,
+  Heading4,
+  Heading5,
   Link as LinkIcon,
   Image as ImageIcon,
   Eye,
@@ -85,8 +88,9 @@ export function TipTapEditor({
     extensions: [
       StarterKit.configure({
         codeBlock: false, // We'll use our custom code block
+        blockquote: {}, // Enable blockquote with default options
         heading: {
-          levels: [1, 2, 3],
+          levels: [1, 2, 3, 4, 5],
         },
       }),
       Placeholder.configure({
@@ -95,9 +99,9 @@ export function TipTapEditor({
       Typography,
       Underline,
       Highlight.configure({
-        multicolor: false,
+        multicolor: true,
         HTMLAttributes: {
-          class: "bg-yellow-200 dark:bg-yellow-800/50 px-1 rounded",
+          class: "px-1 rounded",
         },
       }),
       Link.configure({
@@ -115,7 +119,7 @@ export function TipTapEditor({
       }),
       CodeBlock.configure({
         HTMLAttributes: {
-          class: "bg-muted rounded-md p-4 font-mono text-sm overflow-x-auto",
+          class: "code-block",
         },
       }),
       TextAlign.configure({
@@ -150,7 +154,9 @@ export function TipTapEditor({
 
   const handleAddImage = useCallback(
     (url: string) => {
-      editor?.chain().focus().setImage({ src: url }).run();
+      if (editor) {
+        editor.chain().focus().setImage({ src: url }).run();
+      }
     },
     [editor],
   );
@@ -161,40 +167,86 @@ export function TipTapEditor({
 
   const handleAddLink = useCallback(
     (url: string) => {
-      editor?.chain().focus().setLink({ href: url }).run();
+      if (editor) {
+        editor.chain().focus().setLink({ href: url }).run();
+      }
     },
     [editor],
   );
 
   // Formatting handlers
-  const handleBold = useCallback(() => editor?.chain().focus().toggleBold().run(), [editor]);
-  const handleItalic = useCallback(() => editor?.chain().focus().toggleItalic().run(), [editor]);
-  const handleUnderline = useCallback(() => editor?.chain().focus().toggleUnderline().run(), [editor]);
-  const handleStrike = useCallback(() => editor?.chain().focus().toggleStrike().run(), [editor]);
-  const handleHighlight = useCallback(() => editor?.chain().focus().toggleMark("highlight").run(), [editor]);
-  const handleCode = useCallback(() => editor?.chain().focus().toggleCode().run(), [editor]);
-  const handleBlockquote = useCallback(() => editor?.chain().focus().toggleBlockquote().run(), [editor]);
-  const handleCodeBlock = useCallback(() => editor?.chain().focus().toggleCodeBlock().run(), [editor]);
+  const handleBold = useCallback(() => {
+    if (editor) editor.chain().focus().toggleBold().run();
+  }, [editor]);
+  const handleItalic = useCallback(() => {
+    if (editor) editor.chain().focus().toggleItalic().run();
+  }, [editor]);
+  const handleUnderline = useCallback(() => {
+    if (editor) editor.chain().focus().toggleUnderline().run();
+  }, [editor]);
+  const handleStrike = useCallback(() => {
+    if (editor) editor.chain().focus().toggleStrike().run();
+  }, [editor]);
+
+  const handleCode = useCallback(() => {
+    if (editor) editor.chain().focus().toggleCode().run();
+  }, [editor]);
+  const handleBlockquote = useCallback(() => {
+    if (editor) editor.chain().focus().toggleBlockquote().run();
+  }, [editor]);
+  const handleCodeBlock = useCallback(() => {
+    if (editor) editor.chain().focus().toggleCodeBlock().run();
+  }, [editor]);
 
   // Heading handlers
-  const handleH1 = useCallback(() => editor?.chain().focus().toggleHeading({ level: 1 }).run(), [editor]);
-  const handleH2 = useCallback(() => editor?.chain().focus().toggleHeading({ level: 2 }).run(), [editor]);
-  const handleH3 = useCallback(() => editor?.chain().focus().toggleHeading({ level: 3 }).run(), [editor]);
+  const handleH1 = useCallback(() => {
+    if (editor) editor.chain().focus().toggleHeading({ level: 1 }).run();
+  }, [editor]);
+  const handleH2 = useCallback(() => {
+    if (editor) editor.chain().focus().toggleHeading({ level: 2 }).run();
+  }, [editor]);
+  const handleH3 = useCallback(() => {
+    if (editor) editor.chain().focus().toggleHeading({ level: 3 }).run();
+  }, [editor]);
+  const handleH4 = useCallback(() => {
+    if (editor) editor.chain().focus().toggleHeading({ level: 4 }).run();
+  }, [editor]);
+  const handleH5 = useCallback(() => {
+    if (editor) editor.chain().focus().toggleHeading({ level: 5 }).run();
+  }, [editor]);
 
   // List handlers
-  const handleBulletList = useCallback(() => editor?.chain().focus().toggleBulletList().run(), [editor]);
-  const handleOrderedList = useCallback(() => editor?.chain().focus().toggleOrderedList().run(), [editor]);
-  const handleTaskList = useCallback(() => editor?.chain().focus().toggleTaskList().run(), [editor]);
+  const handleBulletList = useCallback(() => {
+    if (editor) editor.chain().focus().toggleBulletList().run();
+  }, [editor]);
+  const handleOrderedList = useCallback(() => {
+    if (editor) editor.chain().focus().toggleOrderedList().run();
+  }, [editor]);
+  const handleTaskList = useCallback(() => {
+    if (editor) editor.chain().focus().toggleTaskList().run();
+  }, [editor]);
 
   // Text alignment handlers
-  const handleAlignLeft = useCallback(() => editor?.chain().focus().setTextAlign("left").run(), [editor]);
-  const handleAlignCenter = useCallback(() => editor?.chain().focus().setTextAlign("center").run(), [editor]);
-  const handleAlignRight = useCallback(() => editor?.chain().focus().setTextAlign("right").run(), [editor]);
-  const handleAlignJustify = useCallback(() => editor?.chain().focus().setTextAlign("justify").run(), [editor]);
+  const handleAlignLeft = useCallback(() => {
+    if (editor) editor.chain().focus().setTextAlign("left").run();
+  }, [editor]);
+  const handleAlignCenter = useCallback(() => {
+    if (editor) editor.chain().focus().setTextAlign("center").run();
+  }, [editor]);
+  const handleAlignRight = useCallback(() => {
+    if (editor) editor.chain().focus().setTextAlign("right").run();
+  }, [editor]);
+  const handleAlignJustify = useCallback(() => {
+    if (editor) editor.chain().focus().setTextAlign("justify").run();
+  }, [editor]);
 
   // History handlers
-  const handleUndo = useCallback(() => editor?.chain().focus().undo().run(), [editor]);
-  const handleRedo = useCallback(() => editor?.chain().focus().redo().run(), [editor]);
+  const handleUndo = useCallback(() => {
+    if (editor) editor.chain().focus().undo().run();
+  }, [editor]);
+  const handleRedo = useCallback(() => {
+    if (editor) editor.chain().focus().redo().run();
+  }, [editor]);
 
   if (!editor) {
     return null;
@@ -205,6 +257,8 @@ export function TipTapEditor({
     if (editor.isActive("heading", { level: 1 })) return "H1";
     if (editor.isActive("heading", { level: 2 })) return "H2";
     if (editor.isActive("heading", { level: 3 })) return "H3";
+    if (editor.isActive("heading", { level: 4 })) return "H4";
+    if (editor.isActive("heading", { level: 5 })) return "H5";
     return "Paragraph";
   };
 
@@ -305,17 +359,13 @@ export function TipTapEditor({
             >
               <Strikethrough className="h-4 w-4" />
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleHighlight}
-              className={`h-8 w-8 p-0 ${
-                editor.isActive("highlight") ? "bg-yellow-500/20 text-yellow-600" : ""
-              }`}
-              title="Highlight"
-            >
-              <Highlighter className="h-4 w-4" />
-            </Button>
+            <ColorHighlightPopover
+              editor={editor}
+              hideWhenUnavailable={true}
+              onApplied={({ color, label }) => {
+                console.log(`Applied highlight: ${label} (${color})`);
+              }}
+            />
             <Button
               variant="ghost"
               size="sm"
@@ -357,6 +407,20 @@ export function TipTapEditor({
                   <Heading3 className="h-4 w-4" />
                   <span>Heading 3</span>
                   {editor.isActive("heading", { level: 3 }) && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleH4} className="flex items-center gap-2">
+                  <Heading4 className="h-4 w-4" />
+                  <span>Heading 4</span>
+                  {editor.isActive("heading", { level: 4 }) && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleH5} className="flex items-center gap-2">
+                  <Heading5 className="h-4 w-4" />
+                  <span>Heading 5</span>
+                  {editor.isActive("heading", { level: 5 }) && (
                     <span className="ml-auto text-xs text-primary">✓</span>
                   )}
                 </DropdownMenuItem>

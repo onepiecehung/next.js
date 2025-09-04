@@ -2,6 +2,19 @@
 .ProseMirror {
   outline: none;
   min-height: 400px;
+  padding: 1rem;
+  line-height: 1.6;
+  font-size: 1rem;
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: hsl(var(--muted-foreground));
+  pointer-events: none;
+  height: 0;
 }
 
 /* Task List Styles */
@@ -34,32 +47,65 @@
   margin: 0;
 }
 
-/* Code Block Styles */
+/* Code Block Styles - Enhanced with proper theming and higher specificity */
 .ProseMirror pre {
-  background: hsl(var(--muted));
-  border-radius: 0.5rem;
-  color: hsl(var(--foreground));
-  font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-  padding: 0.75rem 1rem;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  background: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  border-radius: 0.5rem !important;
+  color: #212529 !important;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace !important;
+  font-size: 0.875rem !important;
+  line-height: 1.6 !important;
+  padding: 1.25rem !important;
+  margin: 1.5rem 0 !important;
+  overflow-x: auto !important;
+  white-space: pre !important;
+  position: relative !important;
 }
 
 .ProseMirror pre code {
-  background: none;
-  color: inherit;
-  font-size: 0.875rem;
-  padding: 0;
+  background: none !important;
+  color: inherit !important;
+  font-size: inherit !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
 }
 
-/* Blockquote Styles */
+/* Code Block with specific class - Enhanced styling */
+.ProseMirror .code-block {
+  background: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  border-radius: 0.5rem !important;
+  color: #212529 !important;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace !important;
+  font-size: 0.875rem !important;
+  line-height: 1.6 !important;
+  padding: 1.25rem !important;
+  margin: 1.5rem 0 !important;
+  overflow-x: auto !important;
+  white-space: pre !important;
+  position: relative !important;
+}
+
+/* Blockquote Styles - Enhanced with proper theming and higher specificity */
 .ProseMirror blockquote {
-  border-left: 3px solid hsl(var(--border));
-  margin-left: 0;
-  margin-right: 0;
-  padding-left: 1rem;
-  font-style: italic;
-  color: hsl(var(--muted-foreground));
+  border-left: 4px solid #007bff !important;
+  background: rgba(0, 123, 255, 0.1) !important;
+  color: #6c757d !important;
+  font-style: italic !important;
+  margin: 1.5rem 0 !important;
+  padding: 1rem 1.25rem !important;
+  border-radius: 0 0.5rem 0.5rem 0 !important;
+  position: relative !important;
+}
+
+.ProseMirror blockquote p {
+  margin: 0 !important;
+  line-height: 1.6 !important;
+}
+
+.ProseMirror blockquote p:not(:last-child) {
+  margin-bottom: 0.75rem !important;
 }
 
 /* Link Styles */
@@ -91,6 +137,7 @@
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
   font-weight: 600;
+  color: hsl(var(--foreground));
 }
 
 .ProseMirror h1 {
@@ -105,38 +152,123 @@
   font-size: 1.5rem;
 }
 
+.ProseMirror h4 {
+  font-size: 1.25rem;
+}
+
+.ProseMirror h5 {
+  font-size: 1.125rem;
+}
+
+/* Paragraph Styles */
+.ProseMirror p {
+  margin: 0 0 1rem 0;
+  line-height: 1.6;
+}
+
+.ProseMirror p:last-child {
+  margin-bottom: 0;
+}
+
 /* List Styles */
 .ProseMirror ul,
 .ProseMirror ol {
   padding-left: 1.5rem;
+  margin: 1rem 0;
 }
 
 .ProseMirror li {
   margin: 0.25rem 0;
+  line-height: 1.6;
+}
+
+/* Inline Elements */
+.ProseMirror strong {
+  font-weight: 600;
+}
+
+.ProseMirror em {
+  font-style: italic;
+}
+
+.ProseMirror code {
+  background: #f8f9fa !important;
+  color: #212529 !important;
+  padding: 0.25rem 0.375rem !important;
+  border-radius: 0.375rem !important;
+  font-size: 0.875em !important;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace !important;
+  border: 1px solid #e9ecef !important;
+  font-weight: 500 !important;
+}
+
+/* Highlight Color Variables */
+:root {
+  --tt-color-highlight-yellow: #fef08a;
+  --tt-color-highlight-green: #bbf7d0;
+  --tt-color-highlight-blue: #bfdbfe;
+  --tt-color-highlight-purple: #d8b4fe;
+  --tt-color-highlight-red: #fecaca;
+  --tt-color-highlight-orange: #fed7aa;
+  --tt-color-highlight-pink: #fce7f3;
+  --tt-color-highlight-gray: #e5e7eb;
 }
 
 /* Highlight Styles */
 .ProseMirror mark {
-  background-color: hsl(var(--yellow-200));
   border-radius: 0.25rem;
   padding: 0.125rem 0.25rem;
+  color: inherit;
 }
 
-.dark .ProseMirror mark {
+.ProseMirror mark[data-color="var(--tt-color-highlight-yellow)"] {
+  background-color: var(--tt-color-highlight-yellow);
+}
+
+.ProseMirror mark[data-color="var(--tt-color-highlight-green)"] {
+  background-color: var(--tt-color-highlight-green);
+}
+
+.ProseMirror mark[data-color="var(--tt-color-highlight-blue)"] {
+  background-color: var(--tt-color-highlight-blue);
+}
+
+.ProseMirror mark[data-color="var(--tt-color-highlight-purple)"] {
+  background-color: var(--tt-color-highlight-purple);
+}
+
+.ProseMirror mark[data-color="var(--tt-color-highlight-red)"] {
+  background-color: var(--tt-color-highlight-red);
+}
+
+.ProseMirror mark[data-color="var(--tt-color-highlight-orange)"] {
+  background-color: var(--tt-color-highlight-orange);
+}
+
+.ProseMirror mark[data-color="var(--tt-color-highlight-pink)"] {
+  background-color: var(--tt-color-highlight-pink);
+}
+
+.ProseMirror mark[data-color="var(--tt-color-highlight-gray)"] {
+  background-color: var(--tt-color-highlight-gray);
+}
+
+/* Fallback for default highlight */
+.ProseMirror mark:not([data-color]) {
+  background-color: hsl(var(--yellow-200));
+}
+
+.dark .ProseMirror mark:not([data-color]) {
   background-color: hsl(var(--yellow-800) / 0.5);
 }
 
-/* Text Alignment */
-.ProseMirror .has-focus {
+/* Focus and Selection */
+.ProseMirror:focus {
   outline: none;
 }
 
-.ProseMirror p.is-editor-empty:first-child::before {
-  color: hsl(var(--muted-foreground));
-  content: attr(data-placeholder);
-  float: left;
-  height: 0;
-  pointer-events: none;
+.ProseMirror .has-focus {
+  outline: none;
 }
 
 /* Selection Styles */
@@ -152,16 +284,54 @@
   z-index: 2;
 }
 
-/* Focus Styles */
-.ProseMirror:focus {
-  outline: none;
+/* Theme-specific enhancements */
+[data-theme="dracula"] .ProseMirror blockquote {
+  border-left-color: #bd93f9 !important;
+  background: rgba(68, 71, 90, 0.3) !important;
+  color: #6272a4 !important;
 }
+
+[data-theme="dracula"] .ProseMirror pre,
+[data-theme="dracula"] .ProseMirror .code-block {
+  background: #44475a !important;
+  border-color: #6272a4 !important;
+  color: #f8f8f2 !important;
+}
+
+[data-theme="dracula"] .ProseMirror code {
+  background: #44475a !important;
+  border-color: #6272a4 !important;
+  color: #f8f8f2 !important;
+}
+
+/* Dark theme enhancements */
+.dark .ProseMirror blockquote {
+  background: rgba(0, 123, 255, 0.2) !important;
+  border-left-color: #007bff !important;
+  color: #adb5bd !important;
+}
+
+.dark .ProseMirror pre,
+.dark .ProseMirror .code-block {
+  background: #343a40 !important;
+  border-color: #495057 !important;
+  color: #f8f9fa !important;
+}
+
+.dark .ProseMirror code {
+  background: #343a40 !important;
+  border-color: #495057 !important;
+  color: #f8f9fa !important;
+}
+
+/* Light theme is handled by base styles above */
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .ProseMirror {
     font-size: 0.875rem;
     line-height: 1.5;
+    padding: 0.75rem;
   }
   
   .ProseMirror h1 {
@@ -174,5 +344,24 @@
   
   .ProseMirror h3 {
     font-size: 1.25rem;
+  }
+  
+  .ProseMirror h4 {
+    font-size: 1.125rem;
+  }
+  
+  .ProseMirror h5 {
+    font-size: 1rem;
+  }
+  
+  .ProseMirror blockquote {
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+  }
+  
+  .ProseMirror pre,
+  .ProseMirror .code-block {
+    padding: 1rem;
+    margin: 1rem 0;
   }
 }
