@@ -7,14 +7,13 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Typography from "@tiptap/extension-typography";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
-import CodeBlock from "@tiptap/extension-code-block";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
 import TextAlign from "@tiptap/extension-text-align";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import "./tiptap-editor.css";
-
 
 import { Button } from "../core/button";
 import { NoSSR } from "../../providers/no-ssr";
@@ -32,7 +31,6 @@ import {
   Italic,
   Underline as UnderlineIcon,
   Strikethrough,
-
   List,
   ListOrdered,
   Quote,
@@ -57,6 +55,18 @@ import {
   Redo,
   CheckSquare,
 } from "lucide-react";
+import { createLowlight } from "lowlight";
+import "highlight.js/styles/github.css";
+
+import javascript from "highlight.js/lib/languages/javascript";
+import typescript from "highlight.js/lib/languages/typescript";
+import css from "highlight.js/lib/languages/css";
+import xml from "highlight.js/lib/languages/xml";
+import json from "highlight.js/lib/languages/json";
+import bash from "highlight.js/lib/languages/bash";
+import python from "highlight.js/lib/languages/python";
+import java from "highlight.js/lib/languages/java";
+import sql from "highlight.js/lib/languages/sql";
 
 interface TipTapEditorProps {
   readonly content?: string;
@@ -87,7 +97,7 @@ export function TipTapEditor({
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        codeBlock: false, // We'll use our custom code block
+        codeBlock: false,
         blockquote: {}, // Enable blockquote with default options
         heading: {
           levels: [1, 2, 3, 4, 5],
@@ -117,7 +127,20 @@ export function TipTapEditor({
         allowBase64: true,
         inline: false,
       }),
-      CodeBlock.configure({
+      CodeBlockLowlight.configure({
+        defaultLanguage: "javascript",
+        languageClassPrefix: "language-",
+        lowlight: createLowlight({
+          javascript,
+          typescript,
+          css,
+          xml,
+          json,
+          bash,
+          python,
+          java,
+          sql,
+        }),
         HTMLAttributes: {
           class: "code-block",
         },
@@ -130,7 +153,6 @@ export function TipTapEditor({
       TaskItem.configure({
         nested: true,
       }),
-
     ],
     content,
     editable,
@@ -158,7 +180,7 @@ export function TipTapEditor({
         editor.chain().focus().setImage({ src: url }).run();
       }
     },
-    [editor],
+    [editor]
   );
 
   const addLink = useCallback(() => {
@@ -171,7 +193,7 @@ export function TipTapEditor({
         editor.chain().focus().setLink({ href: url }).run();
       }
     },
-    [editor],
+    [editor]
   );
 
   // Formatting handlers
@@ -383,41 +405,61 @@ export function TipTapEditor({
           <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-8 px-2" title="Headings">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-2"
+                  title="Headings"
+                >
                   {getCurrentHeading()}
                   <ChevronDown className="h-3 w-3 ml-1" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-48">
-                <DropdownMenuItem onClick={handleH1} className="flex items-center gap-2">
+                <DropdownMenuItem
+                  onClick={handleH1}
+                  className="flex items-center gap-2"
+                >
                   <Heading1 className="h-4 w-4" />
                   <span>Heading 1</span>
                   {editor.isActive("heading", { level: 1 }) && (
                     <span className="ml-auto text-xs text-primary">✓</span>
                   )}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleH2} className="flex items-center gap-2">
+                <DropdownMenuItem
+                  onClick={handleH2}
+                  className="flex items-center gap-2"
+                >
                   <Heading2 className="h-4 w-4" />
                   <span>Heading 2</span>
                   {editor.isActive("heading", { level: 2 }) && (
                     <span className="ml-auto text-xs text-primary">✓</span>
                   )}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleH3} className="flex items-center gap-2">
+                <DropdownMenuItem
+                  onClick={handleH3}
+                  className="flex items-center gap-2"
+                >
                   <Heading3 className="h-4 w-4" />
                   <span>Heading 3</span>
                   {editor.isActive("heading", { level: 3 }) && (
                     <span className="ml-auto text-xs text-primary">✓</span>
                   )}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleH4} className="flex items-center gap-2">
+                <DropdownMenuItem
+                  onClick={handleH4}
+                  className="flex items-center gap-2"
+                >
                   <Heading4 className="h-4 w-4" />
                   <span>Heading 4</span>
                   {editor.isActive("heading", { level: 4 }) && (
                     <span className="ml-auto text-xs text-primary">✓</span>
                   )}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleH5} className="flex items-center gap-2">
+                <DropdownMenuItem
+                  onClick={handleH5}
+                  className="flex items-center gap-2"
+                >
                   <Heading5 className="h-4 w-4" />
                   <span>Heading 5</span>
                   {editor.isActive("heading", { level: 5 }) && (
@@ -435,7 +477,9 @@ export function TipTapEditor({
               size="sm"
               onClick={handleBulletList}
               className={`h-8 w-8 p-0 ${
-                editor.isActive("bulletList") ? "bg-primary/10 text-primary" : ""
+                editor.isActive("bulletList")
+                  ? "bg-primary/10 text-primary"
+                  : ""
               }`}
               title="Bullet List"
             >
@@ -446,7 +490,9 @@ export function TipTapEditor({
               size="sm"
               onClick={handleOrderedList}
               className={`h-8 w-8 p-0 ${
-                editor.isActive("orderedList") ? "bg-primary/10 text-primary" : ""
+                editor.isActive("orderedList")
+                  ? "bg-primary/10 text-primary"
+                  : ""
               }`}
               title="Numbered List"
             >
@@ -472,7 +518,9 @@ export function TipTapEditor({
               size="sm"
               onClick={handleBlockquote}
               className={`h-8 w-8 p-0 ${
-                editor.isActive("blockquote") ? "bg-primary/10 text-primary" : ""
+                editor.isActive("blockquote")
+                  ? "bg-primary/10 text-primary"
+                  : ""
               }`}
               title="Blockquote"
             >
@@ -495,33 +543,50 @@ export function TipTapEditor({
           <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0" title="Text Alignment">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                  title="Text Alignment"
+                >
                   {getAlignmentIcon()}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-48">
-                <DropdownMenuItem onClick={handleAlignLeft} className="flex items-center gap-2">
+                <DropdownMenuItem
+                  onClick={handleAlignLeft}
+                  className="flex items-center gap-2"
+                >
                   <AlignLeft className="h-4 w-4" />
                   <span>Align Left</span>
                   {getCurrentAlignment() === "left" && (
                     <span className="ml-auto text-xs text-primary">✓</span>
                   )}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleAlignCenter} className="flex items-center gap-2">
+                <DropdownMenuItem
+                  onClick={handleAlignCenter}
+                  className="flex items-center gap-2"
+                >
                   <AlignCenter className="h-4 w-4" />
                   <span>Align Center</span>
                   {getCurrentAlignment() === "center" && (
                     <span className="ml-auto text-xs text-primary">✓</span>
                   )}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleAlignRight} className="flex items-center gap-2">
+                <DropdownMenuItem
+                  onClick={handleAlignRight}
+                  className="flex items-center gap-2"
+                >
                   <AlignRight className="h-4 w-4" />
                   <span>Align Right</span>
                   {getCurrentAlignment() === "right" && (
                     <span className="ml-auto text-xs text-primary">✓</span>
                   )}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleAlignJustify} className="flex items-center gap-2">
+                <DropdownMenuItem
+                  onClick={handleAlignJustify}
+                  className="flex items-center gap-2"
+                >
                   <AlignJustify className="h-4 w-4" />
                   <span>Justify</span>
                   {getCurrentAlignment() === "justify" && (
@@ -569,13 +634,21 @@ export function TipTapEditor({
                 setIsCodeMode(false);
               }}
               className={`h-8 w-8 p-0 transition-all duration-200 ${
-                isPreviewMode 
-                  ? "bg-green-500/15 text-green-600 border border-green-500/20 shadow-sm" 
+                isPreviewMode
+                  ? "bg-green-500/15 text-green-600 border border-green-500/20 shadow-sm"
                   : "hover:bg-green-500/5 hover:text-green-600"
               }`}
-              title={isPreviewMode ? "Switch to Edit Mode" : "Preview Mode - See how your content will look"}
+              title={
+                isPreviewMode
+                  ? "Switch to Edit Mode"
+                  : "Preview Mode - See how your content will look"
+              }
             >
-              {isPreviewMode ? <Edit3 className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {isPreviewMode ? (
+                <Edit3 className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
             </Button>
             <Button
               variant="ghost"
@@ -586,8 +659,8 @@ export function TipTapEditor({
                 setIsCodeMode(false);
               }}
               className={`h-8 w-8 p-0 transition-all duration-200 ${
-                isSplitView 
-                  ? "bg-purple-500/15 text-purple-600 border border-purple-500/20 shadow-sm" 
+                isSplitView
+                  ? "bg-purple-500/15 text-purple-600 border border-purple-500/20 shadow-sm"
                   : "hover:bg-purple-500/5 hover:text-purple-600"
               }`}
               title="Split View - Edit and preview side by side"
@@ -603,8 +676,8 @@ export function TipTapEditor({
                 setIsSplitView(false);
               }}
               className={`h-8 w-8 p-0 transition-all duration-200 ${
-                isCodeMode 
-                  ? "bg-orange-500/15 text-orange-600 border border-orange-500/20 shadow-sm" 
+                isCodeMode
+                  ? "bg-orange-500/15 text-orange-600 border border-orange-500/20 shadow-sm"
                   : "hover:bg-orange-500/5 hover:text-orange-600"
               }`}
               title="Code View - View raw HTML code"

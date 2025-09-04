@@ -87,6 +87,90 @@
   position: relative !important;
 }
 
+/* Syntax Highlighting Styles for Lowlight */
+.ProseMirror pre[data-language] {
+  background: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  border-radius: 0.5rem !important;
+  color: #212529 !important;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace !important;
+  font-size: 0.875rem !important;
+  line-height: 1.6 !important;
+  padding: 1.25rem !important;
+  margin: 1.5rem 0 !important;
+  overflow-x: auto !important;
+  white-space: pre !important;
+  position: relative !important;
+}
+
+.ProseMirror pre[data-language] code {
+  background: none !important;
+  color: inherit !important;
+  font-size: inherit !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Syntax highlighting token colors - Override highlight.js styles */
+.ProseMirror pre[data-language] .hljs-keyword,
+.ProseMirror pre[data-language] .hljs-selector-tag,
+.ProseMirror pre[data-language] .hljs-literal,
+.ProseMirror pre[data-language] .hljs-section,
+.ProseMirror pre[data-language] .hljs-link {
+  color: #d73a49 !important;
+}
+
+/* Override highlight.js base styles */
+.ProseMirror pre[data-language] .hljs {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+.ProseMirror pre[data-language] .hljs-function .hljs-keyword,
+.ProseMirror pre[data-language] .hljs-subst {
+  color: #6f42c1 !important;
+}
+
+.ProseMirror pre[data-language] .hljs-string,
+.ProseMirror pre[data-language] .hljs-name,
+.ProseMirror pre[data-language] .hljs-type,
+.ProseMirror pre[data-language] .hljs-attribute,
+.ProseMirror pre[data-language] .hljs-symbol,
+.ProseMirror pre[data-language] .hljs-bullet,
+.ProseMirror pre[data-language] .hljs-addition,
+.ProseMirror pre[data-language] .hljs-variable,
+.ProseMirror pre[data-language] .hljs-template-tag,
+.ProseMirror pre[data-language] .hljs-template-variable {
+  color: #032f62 !important;
+}
+
+.ProseMirror pre[data-language] .hljs-title,
+.ProseMirror pre[data-language] .hljs-class .hljs-title,
+.ProseMirror pre[data-language] .hljs-title.class_ {
+  color: #6f42c1 !important;
+}
+
+.ProseMirror pre[data-language] .hljs-comment,
+.ProseMirror pre[data-language] .hljs-quote,
+.ProseMirror pre[data-language] .hljs-deletion,
+.ProseMirror pre[data-language] .hljs-meta {
+  color: #6a737d !important;
+}
+
+.ProseMirror pre[data-language] .hljs-number {
+  color: #005cc5 !important;
+}
+
+.ProseMirror pre[data-language] .hljs-regexp,
+.ProseMirror pre[data-language] .hljs-link {
+  color: #032f62 !important;
+}
+
+.ProseMirror pre[data-language] .hljs-built_in,
+.ProseMirror pre[data-language] .hljs-builtin-name {
+  color: #6f42c1 !important;
+}
+
 /* Blockquote Styles - Enhanced with proper theming and higher specificity */
 .ProseMirror blockquote {
   border-left: 4px solid #007bff !important;
@@ -298,10 +382,75 @@
   color: #f8f8f2 !important;
 }
 
+[data-theme="dracula"] .ProseMirror pre[data-language] {
+  background: #44475a !important;
+  border-color: #6272a4 !important;
+  color: #f8f8f2 !important;
+}
+
 [data-theme="dracula"] .ProseMirror code {
   background: #44475a !important;
   border-color: #6272a4 !important;
   color: #f8f8f2 !important;
+}
+
+/* Dracula theme syntax highlighting */
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-keyword,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-selector-tag,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-literal,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-section,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-link {
+  color: #ff79c6 !important;
+}
+
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-function .hljs-keyword,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-subst {
+  color: #bd93f9 !important;
+}
+
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-string,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-name,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-type,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-attribute,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-symbol,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-bullet,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-addition,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-variable,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-template-tag,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-template-variable {
+  color: #f1fa8c !important;
+}
+
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-title,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-class .hljs-title,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-title.class_ {
+  color: #50fa7b !important;
+}
+
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-comment,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-quote,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-deletion,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-meta {
+  color: #6272a4 !important;
+}
+
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-number {
+  color: #bd93f9 !important;
+}
+
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-regexp,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-link {
+  color: #f1fa8c !important;
+}
+
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-built_in,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-builtin-name {
+  color: #8be9fd !important;
 }
 
 /* Dark theme enhancements */
@@ -318,10 +467,75 @@
   color: #f8f9fa !important;
 }
 
+.dark .ProseMirror pre[data-language] {
+  background: #343a40 !important;
+  border-color: #495057 !important;
+  color: #f8f9fa !important;
+}
+
 .dark .ProseMirror code {
   background: #343a40 !important;
   border-color: #495057 !important;
   color: #f8f9fa !important;
+}
+
+/* Dark theme syntax highlighting */
+.dark .ProseMirror pre[data-language] .hljs {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+.dark .ProseMirror pre[data-language] .hljs-keyword,
+.dark .ProseMirror pre[data-language] .hljs-selector-tag,
+.dark .ProseMirror pre[data-language] .hljs-literal,
+.dark .ProseMirror pre[data-language] .hljs-section,
+.dark .ProseMirror pre[data-language] .hljs-link {
+  color: #ff7b72 !important;
+}
+
+.dark .ProseMirror pre[data-language] .hljs-function .hljs-keyword,
+.dark .ProseMirror pre[data-language] .hljs-subst {
+  color: #d2a8ff !important;
+}
+
+.dark .ProseMirror pre[data-language] .hljs-string,
+.dark .ProseMirror pre[data-language] .hljs-name,
+.dark .ProseMirror pre[data-language] .hljs-type,
+.dark .ProseMirror pre[data-language] .hljs-attribute,
+.dark .ProseMirror pre[data-language] .hljs-symbol,
+.dark .ProseMirror pre[data-language] .hljs-bullet,
+.dark .ProseMirror pre[data-language] .hljs-addition,
+.dark .ProseMirror pre[data-language] .hljs-variable,
+.dark .ProseMirror pre[data-language] .hljs-template-tag,
+.dark .ProseMirror pre[data-language] .hljs-template-variable {
+  color: #a5d6ff !important;
+}
+
+.dark .ProseMirror pre[data-language] .hljs-title,
+.dark .ProseMirror pre[data-language] .hljs-class .hljs-title,
+.dark .ProseMirror pre[data-language] .hljs-title.class_ {
+  color: #d2a8ff !important;
+}
+
+.dark .ProseMirror pre[data-language] .hljs-comment,
+.dark .ProseMirror pre[data-language] .hljs-quote,
+.dark .ProseMirror pre[data-language] .hljs-deletion,
+.dark .ProseMirror pre[data-language] .hljs-meta {
+  color: #8b949e !important;
+}
+
+.dark .ProseMirror pre[data-language] .hljs-number {
+  color: #79c0ff !important;
+}
+
+.dark .ProseMirror pre[data-language] .hljs-regexp,
+.dark .ProseMirror pre[data-language] .hljs-link {
+  color: #a5d6ff !important;
+}
+
+.dark .ProseMirror pre[data-language] .hljs-built_in,
+.dark .ProseMirror pre[data-language] .hljs-builtin-name {
+  color: #d2a8ff !important;
 }
 
 /* Light theme is handled by base styles above */
@@ -417,6 +631,30 @@
   margin: 1rem 0 !important;
 }
 
+/* Content renderer syntax highlighting */
+.tiptap-content .ProseMirror pre[data-language] {
+  background: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  border-radius: 0.5rem !important;
+  color: #212529 !important;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace !important;
+  font-size: 0.875rem !important;
+  line-height: 1.6 !important;
+  padding: 1.25rem !important;
+  margin: 1.5rem 0 !important;
+  overflow-x: auto !important;
+  white-space: pre !important;
+  position: relative !important;
+}
+
+.tiptap-content .ProseMirror pre[data-language] code {
+  background: none !important;
+  color: inherit !important;
+  font-size: inherit !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
 /* Dark mode for content renderer */
 .dark .tiptap-content .ProseMirror h1,
 .dark .tiptap-content .ProseMirror h2,
@@ -446,6 +684,20 @@
 
 .dark .tiptap-content .ProseMirror em {
   color: #f8f9fa !important;
+}
+
+/* Dark mode content renderer syntax highlighting */
+.dark .tiptap-content .ProseMirror pre[data-language] {
+  background: #343a40 !important;
+  border-color: #495057 !important;
+  color: #f8f9fa !important;
+}
+
+/* Dracula theme content renderer syntax highlighting */
+[data-theme="dracula"] .tiptap-content .ProseMirror pre[data-language] {
+  background: #44475a !important;
+  border-color: #6272a4 !important;
+  color: #f8f8f2 !important;
 }
 
 /* Preview Content Styles - Enhanced for better display */
@@ -539,6 +791,30 @@
   margin: 1rem 0 !important;
 }
 
+/* Preview content syntax highlighting */
+.preview-content .ProseMirror pre[data-language] {
+  background: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  border-radius: 0.5rem !important;
+  color: #212529 !important;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace !important;
+  font-size: 0.875rem !important;
+  line-height: 1.6 !important;
+  padding: 1.25rem !important;
+  margin: 1.5rem 0 !important;
+  overflow-x: auto !important;
+  white-space: pre !important;
+  position: relative !important;
+}
+
+.preview-content .ProseMirror pre[data-language] code {
+  background: none !important;
+  color: inherit !important;
+  font-size: inherit !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
 /* Dark mode for preview content */
 .dark .preview-content .ProseMirror h1,
 .dark .preview-content .ProseMirror h2,
@@ -568,6 +844,20 @@
 
 .dark .preview-content .ProseMirror em {
   color: #f8f9fa !important;
+}
+
+/* Dark mode preview content syntax highlighting */
+.dark .preview-content .ProseMirror pre[data-language] {
+  background: #343a40 !important;
+  border-color: #495057 !important;
+  color: #f8f9fa !important;
+}
+
+/* Dracula theme preview content syntax highlighting */
+[data-theme="dracula"] .preview-content .ProseMirror pre[data-language] {
+  background: #44475a !important;
+  border-color: #6272a4 !important;
+  color: #f8f8f2 !important;
 }
 
 /* Responsive Design */
@@ -608,4 +898,66 @@
     padding: 1rem;
     margin: 1rem 0;
   }
+  
+  .ProseMirror pre[data-language] {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+}
+
+/* Additional syntax highlighting tokens for better coverage */
+.ProseMirror pre[data-language] .hljs-operator,
+.ProseMirror pre[data-language] .hljs-punctuation {
+  color: #d73a49 !important;
+}
+
+.ProseMirror pre[data-language] .hljs-property,
+.ProseMirror pre[data-language] .hljs-attr {
+  color: #005cc5 !important;
+}
+
+.ProseMirror pre[data-language] .hljs-tag {
+  color: #22863a !important;
+}
+
+.ProseMirror pre[data-language] .hljs-params {
+  color: #6f42c1 !important;
+}
+
+/* Dark theme additional tokens */
+.dark .ProseMirror pre[data-language] .hljs-operator,
+.dark .ProseMirror pre[data-language] .hljs-punctuation {
+  color: #ff7b72 !important;
+}
+
+.dark .ProseMirror pre[data-language] .hljs-property,
+.dark .ProseMirror pre[data-language] .hljs-attr {
+  color: #79c0ff !important;
+}
+
+.dark .ProseMirror pre[data-language] .hljs-tag {
+  color: #7ee787 !important;
+}
+
+.dark .ProseMirror pre[data-language] .hljs-params {
+  color: #d2a8ff !important;
+}
+
+/* Dracula theme additional tokens */
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-operator,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-punctuation {
+  color: #ff79c6 !important;
+}
+
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-property,
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-attr {
+  color: #bd93f9 !important;
+}
+
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-tag {
+  color: #50fa7b !important;
+}
+
+[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-params {
+  color: #8be9fd !important;
 }
