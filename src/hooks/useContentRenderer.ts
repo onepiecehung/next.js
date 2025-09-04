@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
-import Prism from "prismjs";
+import hljs from "highlight.js";
+import "highlight.js/styles/github.css";
 
 interface UseContentRendererOptions {
   /**
@@ -64,9 +65,26 @@ export function useContentRenderer(
       containerRef.current || document.querySelector(containerSelector);
     if (!container) return;
 
-    const codeBlocks = container.querySelectorAll("pre code");
-    codeBlocks.forEach((block) => {
-      Prism.highlightElement(block);
+    // Highlight all <pre><code> elements inside the container
+    container.querySelectorAll("pre code").forEach((el) => {
+      const element = el as HTMLElement;
+      
+      // Get language from class (e.g., "language-javascript" -> "javascript")
+      const cls = element.className || "";
+      const languageRegex = /language-([\w-]+)/;
+      const languageMatch = languageRegex.exec(cls);
+      const lang = languageMatch ? languageMatch[1] : undefined;
+      
+      if (lang && hljs.getLanguage(lang)) {
+        // Use specific language if available
+        element.innerHTML = hljs.highlight(element.textContent ?? "", { language: lang }).value;
+      } else {
+        // Auto-detect language
+        element.innerHTML = hljs.highlightAuto(element.textContent ?? "").value;
+      }
+      
+      // Add hljs class for theme styling
+      element.classList.add("hljs");
     });
   }, [enableSyntaxHighlighting, containerSelector]);
 
