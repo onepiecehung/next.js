@@ -57,6 +57,7 @@ import {
 } from "lucide-react";
 import { createLowlight } from "lowlight";
 import "highlight.js/styles/github.css";
+import { useSyntaxHighlighting } from "@/hooks/useSyntaxHighlighting";
 
 import javascript from "highlight.js/lib/languages/javascript";
 import typescript from "highlight.js/lib/languages/typescript";
@@ -168,6 +169,9 @@ export function TipTapEditor({
     },
     immediatelyRender: false,
   });
+
+  // Get highlighted HTML content for preview
+  const highlightedContent = useSyntaxHighlighting(editor?.getHTML() || "");
 
   // Memoized handlers
   const addImage = useCallback(() => {
@@ -705,10 +709,7 @@ export function TipTapEditor({
                     Preview
                   </div>
                   <div className="preview-content">
-                    <div
-                      className="ProseMirror"
-                      dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
-                    />
+                    {highlightedContent}
                   </div>
                 </div>
               </div>
@@ -723,10 +724,7 @@ export function TipTapEditor({
                 </div>
                 <div className="p-4">
                   <div className="preview-content">
-                    <div
-                      className="ProseMirror"
-                      dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
-                    />
+                    {highlightedContent}
                   </div>
                 </div>
               </div>

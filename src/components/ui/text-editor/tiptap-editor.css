@@ -111,65 +111,18 @@
   border-radius: 0 !important;
 }
 
-/* Syntax highlighting token colors - Override highlight.js styles */
-.ProseMirror pre[data-language] .hljs-keyword,
-.ProseMirror pre[data-language] .hljs-selector-tag,
-.ProseMirror pre[data-language] .hljs-literal,
-.ProseMirror pre[data-language] .hljs-section,
-.ProseMirror pre[data-language] .hljs-link {
-  color: #d73a49 !important;
-}
-
-/* Override highlight.js base styles */
+/* Override highlight.js base styles for better integration */
 .ProseMirror pre[data-language] .hljs {
   background: transparent !important;
   color: inherit !important;
 }
 
-.ProseMirror pre[data-language] .hljs-function .hljs-keyword,
-.ProseMirror pre[data-language] .hljs-subst {
-  color: #6f42c1 !important;
+/* Ensure code blocks have proper styling */
+.ProseMirror pre.code-block .hljs {
+  background: transparent !important;
+  color: inherit !important;
 }
 
-.ProseMirror pre[data-language] .hljs-string,
-.ProseMirror pre[data-language] .hljs-name,
-.ProseMirror pre[data-language] .hljs-type,
-.ProseMirror pre[data-language] .hljs-attribute,
-.ProseMirror pre[data-language] .hljs-symbol,
-.ProseMirror pre[data-language] .hljs-bullet,
-.ProseMirror pre[data-language] .hljs-addition,
-.ProseMirror pre[data-language] .hljs-variable,
-.ProseMirror pre[data-language] .hljs-template-tag,
-.ProseMirror pre[data-language] .hljs-template-variable {
-  color: #032f62 !important;
-}
-
-.ProseMirror pre[data-language] .hljs-title,
-.ProseMirror pre[data-language] .hljs-class .hljs-title,
-.ProseMirror pre[data-language] .hljs-title.class_ {
-  color: #6f42c1 !important;
-}
-
-.ProseMirror pre[data-language] .hljs-comment,
-.ProseMirror pre[data-language] .hljs-quote,
-.ProseMirror pre[data-language] .hljs-deletion,
-.ProseMirror pre[data-language] .hljs-meta {
-  color: #6a737d !important;
-}
-
-.ProseMirror pre[data-language] .hljs-number {
-  color: #005cc5 !important;
-}
-
-.ProseMirror pre[data-language] .hljs-regexp,
-.ProseMirror pre[data-language] .hljs-link {
-  color: #032f62 !important;
-}
-
-.ProseMirror pre[data-language] .hljs-built_in,
-.ProseMirror pre[data-language] .hljs-builtin-name {
-  color: #6f42c1 !important;
-}
 
 /* Blockquote Styles - Enhanced with proper theming and higher specificity */
 .ProseMirror blockquote {
@@ -905,59 +858,3 @@
   }
 }
 
-/* Additional syntax highlighting tokens for better coverage */
-.ProseMirror pre[data-language] .hljs-operator,
-.ProseMirror pre[data-language] .hljs-punctuation {
-  color: #d73a49 !important;
-}
-
-.ProseMirror pre[data-language] .hljs-property,
-.ProseMirror pre[data-language] .hljs-attr {
-  color: #005cc5 !important;
-}
-
-.ProseMirror pre[data-language] .hljs-tag {
-  color: #22863a !important;
-}
-
-.ProseMirror pre[data-language] .hljs-params {
-  color: #6f42c1 !important;
-}
-
-/* Dark theme additional tokens */
-.dark .ProseMirror pre[data-language] .hljs-operator,
-.dark .ProseMirror pre[data-language] .hljs-punctuation {
-  color: #ff7b72 !important;
-}
-
-.dark .ProseMirror pre[data-language] .hljs-property,
-.dark .ProseMirror pre[data-language] .hljs-attr {
-  color: #79c0ff !important;
-}
-
-.dark .ProseMirror pre[data-language] .hljs-tag {
-  color: #7ee787 !important;
-}
-
-.dark .ProseMirror pre[data-language] .hljs-params {
-  color: #d2a8ff !important;
-}
-
-/* Dracula theme additional tokens */
-[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-operator,
-[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-punctuation {
-  color: #ff79c6 !important;
-}
-
-[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-property,
-[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-attr {
-  color: #bd93f9 !important;
-}
-
-[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-tag {
-  color: #50fa7b !important;
-}
-
-[data-theme="dracula"] .ProseMirror pre[data-language] .hljs-params {
-  color: #8be9fd !important;
-}
