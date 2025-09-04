@@ -568,10 +568,12 @@ export function TipTapEditor({
                 setIsSplitView(false);
                 setIsCodeMode(false);
               }}
-              className={`h-8 w-8 p-0 ${
-                isPreviewMode ? "bg-green-500/10 text-green-600" : ""
+              className={`h-8 w-8 p-0 transition-all duration-200 ${
+                isPreviewMode 
+                  ? "bg-green-500/15 text-green-600 border border-green-500/20 shadow-sm" 
+                  : "hover:bg-green-500/5 hover:text-green-600"
               }`}
-              title={isPreviewMode ? "Edit Mode" : "Preview Mode"}
+              title={isPreviewMode ? "Switch to Edit Mode" : "Preview Mode - See how your content will look"}
             >
               {isPreviewMode ? <Edit3 className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </Button>
@@ -583,10 +585,12 @@ export function TipTapEditor({
                 setIsPreviewMode(false);
                 setIsCodeMode(false);
               }}
-              className={`h-8 w-8 p-0 ${
-                isSplitView ? "bg-purple-500/10 text-purple-600" : ""
+              className={`h-8 w-8 p-0 transition-all duration-200 ${
+                isSplitView 
+                  ? "bg-purple-500/15 text-purple-600 border border-purple-500/20 shadow-sm" 
+                  : "hover:bg-purple-500/5 hover:text-purple-600"
               }`}
-              title="Split View"
+              title="Split View - Edit and preview side by side"
             >
               <Split className="h-4 w-4" />
             </Button>
@@ -598,10 +602,12 @@ export function TipTapEditor({
                 setIsPreviewMode(false);
                 setIsSplitView(false);
               }}
-              className={`h-8 w-8 p-0 ${
-                isCodeMode ? "bg-orange-500/10 text-orange-600" : ""
+              className={`h-8 w-8 p-0 transition-all duration-200 ${
+                isCodeMode 
+                  ? "bg-orange-500/15 text-orange-600 border border-orange-500/20 shadow-sm" 
+                  : "hover:bg-orange-500/5 hover:text-orange-600"
               }`}
-              title="Code View"
+              title="Code View - View raw HTML code"
             >
               <FileCode className="h-4 w-4" />
             </Button>
@@ -612,17 +618,25 @@ export function TipTapEditor({
         {(() => {
           if (isSplitView) {
             return (
-              <div className="grid grid-cols-2 gap-0 min-h-[400px]">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[400px]">
                 {/* Left: Editor */}
-                <div className="border-r border-border">
+                <div className="border-r-0 lg:border-r border-b lg:border-b-0 border-border">
+                  <div className="p-2 text-xs text-muted-foreground bg-muted/30 border-b border-border/50">
+                    Editor
+                  </div>
                   <EditorContent editor={editor} />
                 </div>
                 {/* Right: Preview */}
-                <div className="p-4">
-                  <div
-                    className="prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl mx-auto max-w-none"
-                    dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
-                  />
+                <div className="p-4 overflow-y-auto bg-muted/20">
+                  <div className="p-2 text-xs text-muted-foreground bg-muted/30 border-b border-border/50 mb-4">
+                    Preview
+                  </div>
+                  <div className="preview-content">
+                    <div
+                      className="ProseMirror"
+                      dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
+                    />
+                  </div>
                 </div>
               </div>
             );
@@ -630,22 +644,34 @@ export function TipTapEditor({
 
           if (isPreviewMode) {
             return (
-              <div className="p-4 min-h-[400px]">
-                <div
-                  className="prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl mx-auto max-w-none"
-                  dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
-                />
+              <div className="min-h-[400px] overflow-y-auto">
+                <div className="p-2 text-xs text-muted-foreground bg-muted/30 border-b border-border/50">
+                  Preview Mode
+                </div>
+                <div className="p-4">
+                  <div className="preview-content">
+                    <div
+                      className="ProseMirror"
+                      dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
+                    />
+                  </div>
+                </div>
               </div>
             );
           }
 
           if (isCodeMode) {
             return (
-              <div className="p-4 min-h-[400px]">
-                <div className="bg-muted rounded-md p-4 font-mono text-sm overflow-x-auto">
-                  <pre className="language-html">
-                    <code className="language-html">{editor.getHTML()}</code>
-                  </pre>
+              <div className="min-h-[400px]">
+                <div className="p-2 text-xs text-muted-foreground bg-muted/30 border-b border-border/50">
+                  Code View - Raw HTML
+                </div>
+                <div className="p-4">
+                  <div className="bg-muted rounded-md p-4 font-mono text-sm overflow-x-auto">
+                    <pre className="language-html">
+                      <code className="language-html">{editor.getHTML()}</code>
+                    </pre>
+                  </div>
                 </div>
               </div>
             );

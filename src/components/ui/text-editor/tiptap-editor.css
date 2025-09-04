@@ -326,6 +326,128 @@
 
 /* Light theme is handled by base styles above */
 
+/* Preview Content Styles - Enhanced for better display */
+.preview-content .ProseMirror {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: auto !important;
+}
+
+.preview-content .ProseMirror h1,
+.preview-content .ProseMirror h2,
+.preview-content .ProseMirror h3,
+.preview-content .ProseMirror h4,
+.preview-content .ProseMirror h5,
+.preview-content .ProseMirror h6 {
+  color: hsl(var(--foreground)) !important;
+  font-weight: 600 !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.5rem !important;
+  line-height: 1.25 !important;
+}
+
+.preview-content .ProseMirror h1 {
+  font-size: 2.25rem !important;
+}
+
+.preview-content .ProseMirror h2 {
+  font-size: 1.875rem !important;
+}
+
+.preview-content .ProseMirror h3 {
+  font-size: 1.5rem !important;
+}
+
+.preview-content .ProseMirror h4 {
+  font-size: 1.25rem !important;
+}
+
+.preview-content .ProseMirror h5 {
+  font-size: 1.125rem !important;
+}
+
+.preview-content .ProseMirror p {
+  color: hsl(var(--foreground)) !important;
+  margin: 0 0 1rem 0 !important;
+  line-height: 1.6 !important;
+}
+
+.preview-content .ProseMirror p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.preview-content .ProseMirror ul,
+.preview-content .ProseMirror ol {
+  color: hsl(var(--foreground)) !important;
+  padding-left: 1.5rem !important;
+  margin: 1rem 0 !important;
+}
+
+.preview-content .ProseMirror li {
+  color: hsl(var(--foreground)) !important;
+  margin: 0.25rem 0 !important;
+  line-height: 1.6 !important;
+}
+
+.preview-content .ProseMirror strong {
+  color: hsl(var(--foreground)) !important;
+  font-weight: 600 !important;
+}
+
+.preview-content .ProseMirror em {
+  color: hsl(var(--foreground)) !important;
+  font-style: italic !important;
+}
+
+.preview-content .ProseMirror a {
+  color: hsl(var(--primary)) !important;
+  text-decoration: underline !important;
+}
+
+.preview-content .ProseMirror a:hover {
+  color: hsl(var(--primary) / 0.8) !important;
+}
+
+.preview-content .ProseMirror img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 0.5rem !important;
+  margin: 1rem 0 !important;
+}
+
+/* Dark mode for preview content */
+.dark .preview-content .ProseMirror h1,
+.dark .preview-content .ProseMirror h2,
+.dark .preview-content .ProseMirror h3,
+.dark .preview-content .ProseMirror h4,
+.dark .preview-content .ProseMirror h5,
+.dark .preview-content .ProseMirror h6 {
+  color: #f8f9fa !important;
+}
+
+.dark .preview-content .ProseMirror p {
+  color: #f8f9fa !important;
+}
+
+.dark .preview-content .ProseMirror ul,
+.dark .preview-content .ProseMirror ol {
+  color: #f8f9fa !important;
+}
+
+.dark .preview-content .ProseMirror li {
+  color: #f8f9fa !important;
+}
+
+.dark .preview-content .ProseMirror strong {
+  color: #f8f9fa !important;
+}
+
+.dark .preview-content .ProseMirror em {
+  color: #f8f9fa !important;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .ProseMirror {
