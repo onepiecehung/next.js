@@ -60,6 +60,11 @@ export async function loginAction(
 
   // Store access token in memory (secure, not persisted)
   setAccessToken(accessToken);
+  
+  // Also set a cookie for middleware to check
+  if (typeof document !== 'undefined') {
+    document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; SameSite=Strict`;
+  }
 
   // Store refresh token in localStorage only if backend doesn't set HttpOnly cookies
   // This is a fallback mechanism and should be avoided in production
@@ -110,6 +115,11 @@ export async function signupAction(
 
   // Store access token in memory (secure, not persisted)
   setAccessToken(accessToken);
+  
+  // Also set a cookie for middleware to check
+  if (typeof document !== 'undefined') {
+    document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; SameSite=Strict`;
+  }
 
   // Store refresh token in localStorage only if backend doesn't set HttpOnly cookies
   // This is a fallback mechanism and should be avoided in production
@@ -139,6 +149,11 @@ export async function fetchMeAction(): Promise<User> {
 export function clearUserState() {
   clearTokens();
   clearRefreshTokenFallback();
+  
+  // Clear the access token cookie
+  if (typeof document !== 'undefined') {
+    document.cookie = 'accessToken=; path=/; max-age=0; SameSite=Strict';
+  }
 }
 
 // Check if access token is valid and refresh if needed

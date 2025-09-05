@@ -1,13 +1,10 @@
 "use client";
 
-import { useAtom } from "jotai";
-import { currentUserAtom, authLoadingAtom } from "@/lib/auth-store";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, TipTapEditor } from "@/components/ui";
-import Link from "next/link";
 import { Skeletonize } from "@/components/skeletonize";
 import { useI18n } from "@/components/providers/i18n-provider";
+import { ProtectedRoute } from "@/components/auth/protected-route";
 
 /**
  * Internationalized Write Page Component
@@ -16,49 +13,21 @@ import { useI18n } from "@/components/providers/i18n-provider";
  */
 export default function WritePage() {
   const { t } = useI18n();
-  const [user] = useAtom(currentUserAtom);
-  const [authLoading] = useAtom(authLoadingAtom);
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  useEffect(() => {
-    // Simulate loading delay
+  // Simulate loading delay
+  React.useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 500);
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    // Redirect to home if user is not authenticated and auth is not loading
-    if (!user && !authLoading) {
-      router.replace("/");
-    }
-  }, [user, authLoading, router]);
-
-  // Show loading or redirect if not authenticated
-  if (!user && !authLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">
-            {t("write.accessDenied", "write")}
-          </h1>
-          <p className="text-muted-foreground mb-6">
-            {t("write.loginRequired", "write")}
-          </p>
-          <Link href="/">
-            <Button>{t("write.goToHome", "write")}</Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-6 py-8">
-        <Skeletonize loading={isLoading}>
+    <ProtectedRoute>
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-6 py-8">
+          <Skeletonize loading={isLoading}>
           <div className="space-y-8">
             {/* Header */}
             <div className="space-y-2">
@@ -110,8 +79,9 @@ export default function WritePage() {
               </div>
             </div>
           </div>
-        </Skeletonize>
+          </Skeletonize>
+        </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 }
