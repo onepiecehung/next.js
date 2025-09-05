@@ -32,5 +32,17 @@
   "themeLight": "Sáng",
   "themeDark": "Tối",
   "themeDracula": "Dracula",
-  "themeSystem": "Hệ thống"
+  "themeSystem": "Hệ thống",
+  "notFoundTitle": "Ôi! Không tìm thấy trang",
+  "notFoundDescription": "Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển. Đừng lo lắng, điều này xảy ra với tất cả chúng ta!",
+  "notFoundGoHome": "Về Trang Chủ",
+  "notFoundGoBack": "Quay Lại",
+  "notFoundSuggestions": "Bạn có thể làm gì?",
+  "notFoundSuggestion1": "Kiểm tra URL",
+  "notFoundSuggestion1Desc": "Đảm bảo địa chỉ web được viết đúng chính tả",
+  "notFoundSuggestion2": "Thử làm mới",
+  "notFoundSuggestion2Desc": "Nhấn F5 hoặc click nút làm mới",
+  "notFoundSuggestion3": "Đi đến trang chủ",
+  "notFoundSuggestion3Desc": "Bắt đầu lại từ trang chủ của chúng tôi",
+  "notFoundPopularLinks": "Trang phổ biến:"
 }

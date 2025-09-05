@@ -32,5 +32,17 @@
   "themeLight": "Light",
   "themeDark": "Dark",
   "themeDracula": "Dracula",
-  "themeSystem": "System"
+  "themeSystem": "System",
+  "notFoundTitle": "Oops! Page not found",
+  "notFoundDescription": "The page you're looking for doesn't exist or has been moved. Don't worry, it happens to the best of us!",
+  "notFoundGoHome": "Go Home",
+  "notFoundGoBack": "Go Back",
+  "notFoundSuggestions": "What can you do?",
+  "notFoundSuggestion1": "Check the URL",
+  "notFoundSuggestion1Desc": "Make sure the web address is spelled correctly",
+  "notFoundSuggestion2": "Try refreshing",
+  "notFoundSuggestion2Desc": "Press F5 or click the refresh button",
+  "notFoundSuggestion3": "Go to homepage",
+  "notFoundSuggestion3Desc": "Start fresh from our homepage",
+  "notFoundPopularLinks": "Popular pages:"
 }
