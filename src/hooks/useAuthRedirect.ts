@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAtom } from "jotai";
 import { currentUserAtom, authLoadingAtom } from "@/lib/auth-store";
@@ -14,17 +14,33 @@ export function useAuthRedirect() {
   const searchParams = useSearchParams();
   const [user] = useAtom(currentUserAtom);
   const [authLoading] = useAtom(authLoadingAtom);
+  const [hasRedirected, setHasRedirected] = React.useState(false);
 
   useEffect(() => {
     // Don't redirect while auth is still loading
-    if (authLoading) return;
+    if (authLoading) {
+      console.log('Auth is loading, waiting...');
+      return;
+    }
 
     // If user is authenticated, redirect to home or intended destination
-    if (user) {
+    if (user && !hasRedirected) {
       const redirectUrl = searchParams.get('redirect') || '/';
-      router.push(redirectUrl);
+      console.log('User authenticated, current path:', window.location.pathname, 'redirect to:', redirectUrl);
+      // Only redirect if we're not already on the target page
+      if (window.location.pathname !== redirectUrl) {
+        console.log('Redirecting to:', redirectUrl);
+        setHasRedirected(true);
+        router.push(redirectUrl);
+      } else {
+        console.log('Already on target page, no redirect needed');
+        setHasRedirected(true);
+      }
+    } else if (!user) {
+      console.log('User not authenticated');
+      setHasRedirected(false);
     }
-  }, [user, authLoading, router, searchParams]);
+  }, [user, authLoading, router, searchParams, hasRedirected]);
 
   return {
     user,

@@ -5,6 +5,7 @@ import { useAtom } from "jotai";
 import {
   currentUserAtom,
   accessTokenAtom,
+  authLoadingAtom,
   loginAction,
   fetchMeAction,
 } from "@/lib/auth-store";
@@ -67,9 +68,11 @@ function extractErrorMessage(error: unknown, defaultMessage: string): string {
  */
 export default function LoginPage() {
   const { t } = useI18n();
-  const { isAuthenticated, authLoading } = useAuthRedirect();
-  const [, setUser] = useAtom(currentUserAtom);
+  // const { isAuthenticated, authLoading } = useAuthRedirect();
+  const [user, setUser] = useAtom(currentUserAtom);
+  const [authLoading] = useAtom(authLoadingAtom);
   const [, setAccessToken] = useAtom(accessTokenAtom);
+  const isAuthenticated = !!user;
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -257,8 +260,8 @@ export default function LoginPage() {
                     disabled={isSubmitting || isLoading}
                   >
                     {isSubmitting || isLoading
-                      ? t("signingIn", "auth") || "Signing in..."
-                      : t("signIn", "auth") || "Sign In"}
+                      ? t("loggingIn", "auth") || "Logging in..."
+                      : t("login", "auth") || "Login"}
                   </Button>
                   <Button
                     variant="outline"
@@ -267,7 +270,7 @@ export default function LoginPage() {
                     onClick={handleGoogleLogin}
                     disabled={isLoading}
                   >
-                    {t("signInWithGoogle", "auth") ||
+                    {t("loginWithGoogle", "auth") ||
                       "Login with Google"}
                   </Button>
                 </div>
@@ -281,7 +284,7 @@ export default function LoginPage() {
                   href="/auth/register"
                   className="underline underline-offset-4 hover:text-primary transition-colors"
                 >
-                  {t("signUp", "auth") || "Sign up"}
+                  {t("register", "auth") || "Register"}
                 </Link>
               </div>
             </form>

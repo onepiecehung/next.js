@@ -13,6 +13,8 @@ const publicRoutes = ['/', '/demo', '/demo/theming']
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   
+  console.log('Middleware: Processing request to', pathname)
+  
   // Check if the current path is a protected route
   const isProtectedRoute = protectedRoutes.some(route => 
     pathname.startsWith(route)
@@ -31,6 +33,8 @@ export function middleware(request: NextRequest) {
   // Get the access token from cookies
   const accessToken = request.cookies.get('accessToken')?.value
   
+  console.log('Middleware: isProtectedRoute:', isProtectedRoute, 'isAuthRoute:', isAuthRoute, 'accessToken:', !!accessToken)
+  
   // If accessing a protected route without authentication
   if (isProtectedRoute && !accessToken) {
     // Redirect to login page with return URL
@@ -43,7 +47,14 @@ export function middleware(request: NextRequest) {
   if (isAuthRoute && accessToken) {
     // Get the redirect URL from query params or default to home
     const redirectUrl = request.nextUrl.searchParams.get('redirect') || '/'
-    return NextResponse.redirect(new URL(redirectUrl, request.url))
+    console.log('Middleware: User authenticated on auth route, redirect to:', redirectUrl)
+    // Only redirect if we're not already on the target page
+    if (pathname !== redirectUrl) {
+      console.log('Middleware: Redirecting from', pathname, 'to', redirectUrl)
+      return NextResponse.redirect(new URL(redirectUrl, request.url))
+    } else {
+      console.log('Middleware: Already on target page, no redirect needed')
+    }
   }
   
   // Allow the request to continue

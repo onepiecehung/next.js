@@ -397,8 +397,8 @@ export default function RegisterPage() {
                     onClick={handleGoogleSignup}
                     disabled={isLoading}
                   >
-                    {t("signUpWithGoogle", "auth") ||
-                      "Sign up with Google"}
+                    {t("registerWithGoogle", "auth") ||
+                      "Register with Google"}
                   </Button>
                 </div>
               </div>
@@ -411,7 +411,7 @@ export default function RegisterPage() {
                   href="/auth/login"
                   className="underline underline-offset-4 hover:text-primary transition-colors"
                 >
-                  {t("signIn", "auth") || "Login"}
+                  {t("login", "auth") || "Login"}
                 </Link>
               </div>
             </form>

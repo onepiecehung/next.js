@@ -63,7 +63,8 @@ export async function loginAction(
   
   // Also set a cookie for middleware to check
   if (typeof document !== 'undefined') {
-    document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; SameSite=Strict`;
+    // Set cookie with longer expiration and proper attributes
+    document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; SameSite=Strict; Secure`;
   }
 
   // Store refresh token in localStorage only if backend doesn't set HttpOnly cookies
@@ -118,7 +119,8 @@ export async function signupAction(
   
   // Also set a cookie for middleware to check
   if (typeof document !== 'undefined') {
-    document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; SameSite=Strict`;
+    // Set cookie with longer expiration and proper attributes
+    document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; SameSite=Strict; Secure`;
   }
 
   // Store refresh token in localStorage only if backend doesn't set HttpOnly cookies
@@ -159,11 +161,14 @@ export function clearUserState() {
 // Check if access token is valid and refresh if needed
 export async function checkAndRefreshToken(): Promise<boolean> {
   try {
+    console.log('checkAndRefreshToken: Starting token check...');
     // Try to fetch user data to check if token is valid
     // The http interceptor will handle 401 and refresh automatically
-    await fetchMeAction();
+    const user = await fetchMeAction();
+    console.log('checkAndRefreshToken: Token is valid, user:', user);
     return true;
-  } catch {
+  } catch (error) {
+    console.log('checkAndRefreshToken: Token check failed:', error);
     // If any error occurs (including 401), clear state and return false
     // The interceptor will have already tried to refresh the token
     clearUserState();

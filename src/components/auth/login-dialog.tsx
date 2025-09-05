@@ -237,12 +237,12 @@ export default function LoginDialog() {
                       disabled={isSubmitting}
                     >
                       {isSubmitting
-                        ? t("signingIn", "auth")
-                        : t("signIn", "auth")}
+                        ? t("loggingIn", "auth")
+                        : t("login", "auth")}
                     </Button>
                     {/* This extra button mirrors login-01; wire to provider auth if desired */}
                     <Button variant="outline" className="w-full" type="button">
-                      {t("signInWithGoogle", "auth") ||
+                      {t("loginWithGoogle", "auth") ||
                         "Login with Google"}
                     </Button>
                   </div>
@@ -256,7 +256,7 @@ export default function LoginDialog() {
                     className="underline underline-offset-4"
                     onClick={() => setShowSignup(true)}
                   >
-                    {t("signUp", "auth") || "Sign up"}
+                    {t("register", "auth") || "Register"}
                   </button>
                 </div>
               </form>

@@ -5,7 +5,6 @@ import { useAtom } from "jotai";
 import {
   currentUserAtom,
   authLoadingAtom,
-  checkAndRefreshToken,
   fetchMeAction,
 } from "@/lib/auth-store";
 import { ClientOnly } from "@/components/ui";
@@ -13,7 +12,7 @@ import { ClientOnly } from "@/components/ui";
 export default function AuthProvider({
   children,
 }: {
-  children: React.ReactNode;
+  readonly children: React.ReactNode;
 }) {
   const [, setUser] = useAtom(currentUserAtom);
   const [, setAuthLoading] = useAtom(authLoadingAtom);
@@ -22,22 +21,21 @@ export default function AuthProvider({
     // Check if user is already authenticated on app load
     const checkAuth = async () => {
       try {
+        console.log('AuthProvider: Starting auth check...');
         setAuthLoading(true);
 
-        // Check if user is already authenticated on app load
-        const isTokenValid = await checkAndRefreshToken();
-        if (isTokenValid) {
-          // Token is valid, fetch user data
-          const user = await fetchMeAction();
-          setUser(user);
-        } else {
-          // Token is invalid and refresh failed, clear state
-          setUser(null);
-        }
-      } catch {
-        // User is not authenticated, clear state
+        // Try to fetch user data directly
+        // If there's a valid token, this will succeed
+        // If not, it will fail and we'll clear the state
+        const user = await fetchMeAction();
+        console.log('AuthProvider: User fetched successfully:', user);
+        setUser(user);
+      } catch (error) {
+        // User is not authenticated or API failed, clear state
+        console.log('AuthProvider: Auth check failed:', error);
         setUser(null);
       } finally {
+        console.log('AuthProvider: Auth check complete, setting loading to false');
         setAuthLoading(false);
       }
     };

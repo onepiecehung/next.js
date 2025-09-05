@@ -290,7 +290,7 @@ export default function SignupForm({
               className="underline underline-offset-4"
               onClick={onBackToLogin}
             >
-              {t("signIn", "auth") || "Login"}
+              {t("login", "auth") || "Login"}
             </button>
           </div>
         </form>
