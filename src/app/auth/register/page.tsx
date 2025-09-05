@@ -159,10 +159,10 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+    <div className="flex min-h-svh w-full items-center justify-center p-4 sm:p-6 md:p-10">
       <div className="w-full max-w-md">
         {/* Back to home link */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <Link 
             href="/" 
             className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -187,7 +187,7 @@ export default function RegisterPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-4 sm:gap-6">
                 {/* Username field */}
                 <div className="grid gap-3">
                   <Label htmlFor="username">

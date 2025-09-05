@@ -103,6 +103,8 @@ export function TipTapEditor({
         heading: {
           levels: [1, 2, 3, 4, 5],
         },
+        link: false, // Disable default link extension to use custom one
+        underline: false, // Disable default underline extension to use custom one
       }),
       Placeholder.configure({
         placeholder,
@@ -314,9 +316,9 @@ export function TipTapEditor({
     <NoSSR>
       <div className="border border-border rounded-lg bg-card text-foreground focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20">
         {/* Toolbar */}
-        <div className="flex items-center gap-1 p-2 border-b border-border bg-muted/50">
+        <div className="flex flex-wrap items-center gap-1 p-2 border-b border-border bg-muted/50 overflow-x-auto">
           {/* Group 1: History & Undo/Redo */}
-          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50 flex-shrink-0">
             <Button
               variant="ghost"
               size="sm"
@@ -340,7 +342,7 @@ export function TipTapEditor({
           </div>
 
           {/* Group 2: Text Formatting */}
-          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50 flex-shrink-0">
             <Button
               variant="ghost"
               size="sm"
@@ -406,7 +408,7 @@ export function TipTapEditor({
           </div>
 
           {/* Group 3: Headings & Structure */}
-          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50 flex-shrink-0">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -475,7 +477,7 @@ export function TipTapEditor({
           </div>
 
           {/* Group 4: Lists */}
-          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50 flex-shrink-0">
             <Button
               variant="ghost"
               size="sm"
@@ -516,7 +518,7 @@ export function TipTapEditor({
           </div>
 
           {/* Group 5: Block Elements */}
-          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50 flex-shrink-0">
             <Button
               variant="ghost"
               size="sm"
@@ -544,7 +546,7 @@ export function TipTapEditor({
           </div>
 
           {/* Group 6: Text Alignment */}
-          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50 flex-shrink-0">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -602,7 +604,7 @@ export function TipTapEditor({
           </div>
 
           {/* Group 7: Media & Links */}
-          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50 flex-shrink-0">
             <Button
               variant="ghost"
               size="sm"
@@ -628,7 +630,7 @@ export function TipTapEditor({
           <div className="flex-1" />
 
           {/* Group 8: View Modes */}
-          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50">
+          <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50 flex-shrink-0">
             <Button
               variant="ghost"
               size="sm"

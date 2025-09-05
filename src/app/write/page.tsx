@@ -26,22 +26,22 @@ export default function WritePage() {
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-6 py-8">
+        <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-8">
           <Skeletonize loading={isLoading}>
           <div className="space-y-8">
             {/* Header */}
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold text-foreground">
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
                 {t("writeTitle", "write")}
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-sm sm:text-base text-muted-foreground">
                 Create and publish your articles with our modern rich text
                 editor
               </p>
             </div>
 
             {/* Main Content */}
-            <div className="bg-card rounded-lg shadow-sm border border-border p-6">
+            <div className="bg-card rounded-lg shadow-sm border border-border p-4 sm:p-6">
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
@@ -52,7 +52,7 @@ export default function WritePage() {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder={t("writeFormTitlePlaceholder", "write")}
-                    className="w-full px-4 py-3 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-lg"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-base sm:text-lg"
                   />
                 </div>
 
@@ -64,15 +64,15 @@ export default function WritePage() {
                     content={content}
                     onChange={setContent}
                     placeholder={t("writeFormContentPlaceholder", "write")}
-                    className="min-h-[600px]"
+                    className="min-h-[400px] sm:min-h-[600px]"
                   />
                 </div>
 
-                <div className="flex justify-end space-x-3 pt-6 border-t border-border">
-                  <Button variant="outline" size="lg">
+                <div className="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-border">
+                  <Button variant="outline" size="lg" className="w-full sm:w-auto">
                     {t("writeFormSaveDraft", "write")}
                   </Button>
-                  <Button size="lg">
+                  <Button size="lg" className="w-full sm:w-auto">
                     {t("writeFormPublishArticle", "write")}
                   </Button>
                 </div>

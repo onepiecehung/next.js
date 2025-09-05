@@ -23,7 +23,7 @@ import {
   CardTitle,
 } from "@/components/ui/core";
 import { useI18n } from "@/components/providers/i18n-provider";
-import { useAuthRedirect } from "@/hooks/useAuthRedirect";
+// import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 import Link from "next/link";
 
 // Form validation schema
@@ -68,7 +68,6 @@ function extractErrorMessage(error: unknown, defaultMessage: string): string {
  */
 export default function LoginPage() {
   const { t } = useI18n();
-  // const { isAuthenticated, authLoading } = useAuthRedirect();
   const [user, setUser] = useAtom(currentUserAtom);
   const [authLoading] = useAtom(authLoadingAtom);
   const [, setAccessToken] = useAtom(accessTokenAtom);
@@ -150,10 +149,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+    <div className="flex min-h-svh w-full items-center justify-center p-4 sm:p-6 md:p-10">
       <div className="w-full max-w-sm">
         {/* Back to home link */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <Link 
             href="/" 
             className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -178,7 +177,7 @@ export default function LoginPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-4 sm:gap-6">
                 {/* Email field */}
                 <div className="grid gap-3">
                   <Label htmlFor="email">
@@ -253,7 +252,7 @@ export default function LoginPage() {
                 </div>
 
                 {/* Submit buttons */}
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-2 sm:gap-3">
                   <Button
                     type="submit"
                     className="w-full"

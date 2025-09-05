@@ -110,12 +110,12 @@ export default function ProfilePage() {
     <div className="bg-background min-h-screen">
       {/* Profile Header Section */}
       <div className="border-b border-border bg-card">
-        <div className="mx-auto max-w-4xl px-4 py-8">
+        <div className="mx-auto max-w-4xl px-4 py-6 sm:py-8">
           <Skeletonize loading={isLoading}>
-            <div className="flex items-start gap-6">
+            <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
               {/* Avatar */}
-              <div className="flex-shrink-0">
-                <Avatar className="h-24 w-24 ring-2 ring-primary/20">
+              <div className="flex-shrink-0 mx-auto sm:mx-0">
+                <Avatar className="h-20 w-20 sm:h-24 sm:w-24 ring-2 ring-primary/20">
                   {hasAvatar && (
                     <AvatarImage
                       src={profileData.avatar?.url}
@@ -131,23 +131,23 @@ export default function ProfilePage() {
 
               {/* User Info */}
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-4 mb-3">
-                  <h1 className="text-3xl font-bold text-foreground">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
                     {displayName}
                   </h1>
                   {currentUser && currentUser.id === userId && (
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-primary/30 hover:border-primary/50 hover:bg-primary/10"
+                        className="border-primary/30 hover:border-primary/50 hover:bg-primary/10 text-xs sm:text-sm"
                       >
                         {t("buttonEdit", "common")}
                       </Button>
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-primary/30 hover:border-primary/50 hover:bg-primary/10"
+                        className="border-primary/30 hover:border-primary/50 hover:bg-primary/10 text-xs sm:text-sm"
                       >
                         {t("buttonSave", "common")}
                       </Button>
@@ -155,13 +155,13 @@ export default function ProfilePage() {
                   )}
                 </div>
 
-                <p className="text-muted-foreground text-lg mb-4 leading-relaxed">
+                <p className="text-muted-foreground text-base sm:text-lg mb-4 leading-relaxed">
                   Full-stack developer passionate about creating beautiful and
                   functional web applications. Love working with React, Next.js,
                   and modern web technologies.
                 </p>
 
-                <div className="flex items-center gap-6 mb-4">
+                <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-4">
                   <span className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Eye className="h-4 w-4 text-chart-3" />
                     1.2k Views
@@ -173,7 +173,7 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Social Links */}
-                <div className="flex items-center gap-4">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                   <Button
                     key="github"
                     variant="ghost"
@@ -208,11 +208,11 @@ export default function ProfilePage() {
       {/* Content Navigation Tabs */}
       <div className="border-b border-border bg-background">
         <div className="mx-auto max-w-4xl px-4">
-          <div className="flex space-x-8">
+          <div className="flex flex-wrap space-x-4 sm:space-x-8 overflow-x-auto">
             <button
               key="articles"
               onClick={() => setActiveTab("articles")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+              className={`py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap ${
                 activeTab === "articles"
                   ? "border-primary text-primary"
                   : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30"
@@ -226,7 +226,7 @@ export default function ProfilePage() {
             <button
               key="scraps"
               onClick={() => setActiveTab("scraps")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+              className={`py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap ${
                 activeTab === "scraps"
                   ? "border-primary text-primary"
                   : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30"
@@ -240,7 +240,7 @@ export default function ProfilePage() {
             <button
               key="comments"
               onClick={() => setActiveTab("comments")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+              className={`py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap ${
                 activeTab === "comments"
                   ? "border-primary text-primary"
                   : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30"
@@ -256,20 +256,20 @@ export default function ProfilePage() {
       </div>
 
       {/* Content Area */}
-      <div className="mx-auto max-w-4xl px-4 py-8">
+      <div className="mx-auto max-w-4xl px-4 py-6 sm:py-8">
         {activeTab === "articles" && (
           <Skeletonize loading={isLoading}>
             <div className="space-y-6">
               {/* Article Card 1 */}
-              <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
+              <div className="bg-card border border-border rounded-lg p-4 sm:p-6 hover:border-primary/30 transition-colors group">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 mb-3">
                   {t("categoriesTech", "profile")}
                 </span>
-                <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
+                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
                   Building a Modern Next.js Application with TypeScript and
                   Tailwind CSS
                 </h3>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-muted-foreground">
                   <span>2 {t("contentDaysAgo", "profile")}</span>
                   <span className="flex items-center gap-1">
                     <Heart className="h-4 w-4 text-chart-1" />6
@@ -279,14 +279,14 @@ export default function ProfilePage() {
               </div>
 
               {/* Article Card 2 */}
-              <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
+              <div className="bg-card border border-border rounded-lg p-4 sm:p-6 hover:border-primary/30 transition-colors group">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-chart-2/10 text-chart-2 border border-chart-2/20 mb-3">
                   {t("categoriesTutorial", "profile")}
                 </span>
-                <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
+                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
                   Complete Guide to Authentication with Next.js and JWT
                 </h3>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-muted-foreground">
                   <span>1 {t("contentWeeksAgo", "profile")}</span>
                   <span className="flex items-center gap-1">
                     <Heart className="h-4 w-4 text-chart-1" />
