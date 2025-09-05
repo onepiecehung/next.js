@@ -69,7 +69,7 @@ function extractErrorMessage(error: unknown, defaultMessage: string): string {
 export default function SignupForm({
   onBackToLogin,
 }: {
-  onBackToLogin: () => void;
+  readonly onBackToLogin: () => void;
 }) {
   const { t } = useI18n();
   const [, setUser] = useAtom(currentUserAtom);
@@ -106,7 +106,7 @@ export default function SignupForm({
 
       // Show success message and close dialog
       toast.success(
-        t("toast.signup.success", "toast") || "Account created successfully!",
+        t("toastLoginSuccess", "toast") || "Account created successfully!",
       );
       reset();
       setShowPassword(false);
@@ -115,7 +115,7 @@ export default function SignupForm({
       // Handle signup errors and show appropriate error message
       const errorMessage = extractErrorMessage(
         error,
-        t("register.error.default", "auth") || "Signup failed",
+        t("registerErrorDefault", "auth") || "Signup failed",
       );
       toast.error(errorMessage);
     }
@@ -125,13 +125,13 @@ export default function SignupForm({
     <Card>
       <CardHeader>
         <CardTitle>
-          {t("register.cardTitle", "auth") ||
-            t("register.title", "auth") ||
+          {t("registerCardTitle", "auth") ||
+            t("registerTitle", "auth") ||
             "Create Account"}
         </CardTitle>
         <CardDescription>
-          {t("register.cardDescription", "auth") ||
-            t("register.subtitle", "auth") ||
+          {t("registerCardDescription", "auth") ||
+            t("registerSubtitle", "auth") ||
             "Enter your information below to create your account"}
         </CardDescription>
       </CardHeader>
@@ -141,13 +141,13 @@ export default function SignupForm({
             {/* Username field */}
             <div className="grid gap-3">
               <Label htmlFor="username">
-                {t("auth.form.username", "auth") || "Username"}
+                {t("username", "auth") || "Username"}
               </Label>
               <Input
                 id="username"
                 type="text"
                 placeholder={
-                  t("auth.form.usernamePlaceholder", "auth") ||
+                  t("usernamePlaceholder", "auth") ||
                   "Enter your username"
                 }
                 required
@@ -163,11 +163,11 @@ export default function SignupForm({
 
             {/* Email field */}
             <div className="grid gap-3">
-              <Label htmlFor="email">{t("auth.form.email", "auth")}</Label>
+              <Label htmlFor="email">{t("email", "auth")}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder={t("auth.form.emailPlaceholder", "auth")}
+                placeholder={t("emailPlaceholder", "auth")}
                 required
                 aria-invalid={!!errors.email}
                 {...register("email")}
@@ -180,13 +180,13 @@ export default function SignupForm({
             {/* Password field */}
             <div className="grid gap-3">
               <Label htmlFor="password">
-                {t("auth.form.password", "auth")}
+                {t("password", "auth")}
               </Label>
               <div className="relative">
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder={t("auth.form.passwordPlaceholder", "auth")}
+                  placeholder={t("passwordPlaceholder", "auth")}
                   required
                   aria-invalid={!!errors.password}
                   {...register("password")}
@@ -214,13 +214,13 @@ export default function SignupForm({
             {/* Name field (optional) */}
             <div className="grid gap-3">
               <Label htmlFor="name">
-                {t("auth.form.username", "auth") || "Username"}
+                {t("fullName", "auth") || "Full Name"}
               </Label>
               <Input
                 id="name"
                 type="text"
                 placeholder={
-                  t("auth.form.usernamePlaceholder", "auth") ||
+                  t("fullNamePlaceholder", "auth") ||
                   "Enter your full name"
                 }
                 aria-invalid={!!errors.name}
@@ -234,7 +234,7 @@ export default function SignupForm({
             {/* Date of Birth field (optional) */}
             <div className="grid gap-3">
               <Label htmlFor="dob">
-                {t("auth.form.dob", "auth") || "Date of Birth"}
+                {t("dob", "auth") || "Date of Birth"}
               </Label>
               <Input
                 id="dob"
@@ -251,13 +251,13 @@ export default function SignupForm({
             {/* Phone Number field (optional) */}
             <div className="grid gap-3">
               <Label htmlFor="phoneNumber">
-                {t("auth.form.phoneNumber", "auth") || "Phone Number"}
+                {t("phoneNumber", "auth") || "Phone Number"}
               </Label>
               <Input
                 id="phoneNumber"
                 type="tel"
                 placeholder={
-                  t("auth.form.phoneNumberPlaceholder", "auth") ||
+                  t("phoneNumberPlaceholder", "auth") ||
                   "Enter your phone number"
                 }
                 aria-invalid={!!errors.phoneNumber}
@@ -274,23 +274,23 @@ export default function SignupForm({
             <div className="flex flex-col gap-3">
               <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting
-                  ? t("register.creatingAccount", "auth") ||
+                  ? t("creatingAccount", "auth") ||
                     "Creating Account..."
-                  : t("register.createAccount", "auth") || "Create Account"}
+                  : t("createAccount", "auth") || "Create Account"}
               </Button>
             </div>
           </div>
 
           {/* Footer text */}
           <div className="mt-4 text-center text-sm">
-            {t("register.alreadyHaveAccount", "auth") ||
+            {t("alreadyHaveAccount", "auth") ||
               "Already have an account?"}{" "}
             <button
               type="button"
               className="underline underline-offset-4"
               onClick={onBackToLogin}
             >
-              {t("register.login", "auth") || "Login"}
+              {t("signIn", "auth") || "Login"}
             </button>
           </div>
         </form>

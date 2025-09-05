@@ -27,10 +27,10 @@ export default function HomePage() {
         <div className="mx-auto max-w-4xl px-4 py-16 text-center">
           <div className="mb-8">
             <h1 className="text-5xl font-bold text-foreground mb-6">
-              {t("home.hero.title", "home")}
+              {t("heroTitle", "home")}
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              {t("home.hero.description", "home")}
+              {t("heroDescription", "home")}
             </p>
           </div>
 
@@ -38,13 +38,13 @@ export default function HomePage() {
             <Link href="/profile">
               <Button size="lg" className="px-8">
                 <User className="mr-2 h-5 w-5" />
-                {t("home.hero.viewProfile", "home")}
+                {t("heroViewProfile", "home")}
               </Button>
             </Link>
             <Link href="/write">
               <Button variant="outline" size="lg" className="px-8">
                 <PenTool className="mr-2 h-5 w-5" />
-                {t("home.hero.startWriting", "home")}
+                {t("heroStartWriting", "home")}
               </Button>
             </Link>
           </div>
@@ -55,10 +55,10 @@ export default function HomePage() {
       <div className="mx-auto max-w-4xl px-4 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-foreground mb-4">
-            {t("home.features.title", "home")}
+            {t("featuresTitle", "home")}
           </h2>
           <p className="text-lg text-muted-foreground">
-            {t("home.features.subtitle", "home")}
+            {t("featuresSubtitle", "home")}
           </p>
         </div>
 
@@ -69,14 +69,14 @@ export default function HomePage() {
               <PenTool className="h-8 w-8 text-primary" />
             </div>
             <h3 className="text-xl font-semibold text-foreground mb-3">
-              {t("home.features.write.title", "home")}
+              {t("writeTitle", "home")}
             </h3>
             <p className="text-muted-foreground mb-4">
-              {t("home.features.write.description", "home")}
+              {t("writeDescription", "home")}
             </p>
             <Link href="/write">
               <Button variant="outline" size="sm">
-                {t("home.features.write.button", "home")}
+                {t("writeButton", "home")}
               </Button>
             </Link>
           </div>
@@ -87,14 +87,14 @@ export default function HomePage() {
               <User className="h-8 w-8 text-primary" />
             </div>
             <h3 className="text-xl font-semibold text-foreground mb-3">
-              {t("home.features.profile.title", "home")}
+              {t("profileTitle", "home")}
             </h3>
             <p className="text-muted-foreground mb-4">
-              {t("home.features.profile.description", "home")}
+              {t("profileDescription", "home")}
             </p>
             <Link href="/profile">
               <Button variant="outline" size="sm">
-                {t("home.features.profile.button", "home")}
+                {t("profileButton", "home")}
               </Button>
             </Link>
           </div>
@@ -141,14 +141,14 @@ export default function HomePage() {
               <BookOpen className="h-8 w-8 text-primary" />
             </div>
             <h3 className="text-xl font-semibold text-foreground mb-3">
-              {t("home.features.discover.title", "home")}
+              {t("discoverTitle", "home")}
             </h3>
             <p className="text-muted-foreground mb-4">
-              {t("home.features.discover.description", "home")}
+              {t("discoverDescription", "home")}
             </p>
             <Link href="/demo">
               <Button variant="outline" size="sm">
-                {t("home.features.discover.button", "home")}
+                {t("discoverButton", "home")}
               </Button>
             </Link>
           </div>
@@ -160,10 +160,10 @@ export default function HomePage() {
         <div className="mx-auto max-w-4xl px-4 py-16 text-center">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-foreground mb-4">
-              {t("home.cta.title", "home")}
+              {t("ctaTitle", "home")}
             </h2>
             <p className="text-lg text-muted-foreground">
-              {t("home.cta.subtitle", "home")}
+              {t("ctaSubtitle", "home")}
             </p>
           </div>
 
@@ -171,12 +171,12 @@ export default function HomePage() {
             <Link href="/profile">
               <Button size="lg" className="px-8">
                 <Sparkles className="mr-2 h-5 w-5" />
-                {t("home.cta.getStarted", "home")}
+                {t("ctaGetStarted", "home")}
               </Button>
             </Link>
             <Link href="/demo">
               <Button variant="outline" size="lg" className="px-8">
-                {t("home.cta.learnMore", "home")}
+                {t("ctaLearnMore", "home")}
               </Button>
             </Link>
           </div>

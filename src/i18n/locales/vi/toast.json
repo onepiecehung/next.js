@@ -1,11 +1,19 @@
 {
-  "toast": {
-    "login": {
-      "success": "Đăng nhập thành công!"
-    },
-    "logout": {
-      "success": "Đăng xuất thành công",
-      "error": "Đăng xuất thất bại"
-    }
-  }
+  "toastLoginSuccess": "Đăng nhập thành công!",
+  "toastLogoutSuccess": "Đăng xuất thành công",
+  "toastLogoutError": "Đăng xuất thất bại",
+  "authLoginSuccess": "Đăng nhập thành công",
+  "authLoginFailed": "Đăng nhập thất bại. Vui lòng thử lại.",
+  "authLogoutSuccess": "Đăng xuất thành công",
+  "authLogoutFailed": "Đăng xuất thất bại",
+  "authRegisterSuccess": "Tạo tài khoản thành công",
+  "authRegisterFailed": "Đăng ký thất bại. Vui lòng thử lại.",
+  "profileUpdateSuccess": "Cập nhật hồ sơ thành công",
+  "profileUpdateFailed": "Cập nhật hồ sơ thất bại",
+  "profileAvatarUpdateSuccess": "Cập nhật ảnh đại diện thành công",
+  "profileAvatarUpdateFailed": "Cập nhật ảnh đại diện thất bại",
+  "generalOperationSuccess": "Thao tác hoàn thành thành công",
+  "generalOperationFailed": "Thao tác thất bại. Vui lòng thử lại.",
+  "generalNetworkError": "Lỗi mạng. Vui lòng kiểm tra kết nối của bạn.",
+  "generalValidationError": "Vui lòng kiểm tra thông tin nhập vào và thử lại."
 }

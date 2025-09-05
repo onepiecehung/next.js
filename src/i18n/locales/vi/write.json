@@ -1,16 +1,12 @@
 {
-  "write": {
-    "accessDenied": "Truy Cập Bị Từ Chối",
-    "loginRequired": "Bạn cần đăng nhập để truy cập trang này.",
-    "goToHome": "Về Trang Chủ",
-    "title": "Viết Bài Viết Của Bạn",
-    "form": {
-      "title": "Tiêu Đề",
-      "titlePlaceholder": "Nhập tiêu đề bài viết...",
-      "content": "Nội Dung",
-      "contentPlaceholder": "Bắt đầu viết bài viết của bạn...",
-      "saveDraft": "Lưu Bản Nháp",
-      "publishArticle": "Xuất Bản Bài Viết"
-    }
-  }
+  "writeAccessDenied": "Truy Cập Bị Từ Chối",
+  "writeLoginRequired": "Bạn cần đăng nhập để truy cập trang này.",
+  "writeGoToHome": "Về Trang Chủ",
+  "writeTitle": "Viết Bài Viết Của Bạn",
+  "writeFormTitle": "Tiêu Đề",
+  "writeFormTitlePlaceholder": "Nhập tiêu đề bài viết...",
+  "writeFormContent": "Nội Dung",
+  "writeFormContentPlaceholder": "Bắt đầu viết bài viết của bạn...",
+  "writeFormSaveDraft": "Lưu Bản Nháp",
+  "writeFormPublishArticle": "Xuất Bản Bài Viết"
 }

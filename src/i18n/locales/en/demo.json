@@ -1,7 +1,5 @@
 {
-  "demo": {
-    "title": "Auto Skeleton Demo",
-    "description": "This demo shows automatic page-level skeleton loading that preserves the existing DOM layout. The same content is used for both loading and loaded states, ensuring no reflow jumps.",
-    "loading": "Loading demo..."
-  }
+  "demoTitle": "Auto Skeleton Demo",
+  "demoDescription": "This demo shows automatic page-level skeleton loading that preserves the existing DOM layout. The same content is used for both loading and loaded states, ensuring no reflow jumps.",
+  "demoLoading": "Loading demo..."
 }

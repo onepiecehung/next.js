@@ -1,54 +1,36 @@
 {
-  "common": {
-    "nav": {
-      "brand": "Medium-ish"
-    },
-    "userMenu": {
-      "write": "Viết",
-      "profile": "Hồ Sơ",
-      "settings": "Cài Đặt",
-      "logout": "Đăng Xuất",
-      "loggingOut": "Đang đăng xuất..."
-    },
-    "buttons": {
-      "edit": "Sửa",
-      "save": "Lưu",
-      "cancel": "Hủy",
-      "delete": "Xóa",
-      "confirm": "Xác Nhận",
-      "close": "Đóng"
-    },
-    "loading": {
-      "loading": "Đang tải...",
-      "pleaseWait": "Vui lòng chờ...",
-      "processing": "Đang xử lý..."
-    },
-    "error": {
-      "somethingWentWrong": "Đã xảy ra lỗi",
-      "tryAgain": "Vui lòng thử lại",
-      "notFound": "Không tìm thấy"
-    },
-    "labels": {
-      "email": "Email",
-      "password": "Mật khẩu",
-      "username": "Tên đăng nhập",
-      "name": "Tên",
-      "avatar": "Ảnh đại diện",
-      "search": "Tìm kiếm",
-      "filter": "Lọc",
-      "sort": "Sắp xếp"
-    },
-    "status": {
-      "success": "Thành công",
-      "error": "Lỗi",
-      "warning": "Cảnh báo",
-      "info": "Thông tin"
-    },
-    "themes": {
-      "light": "Sáng",
-      "dark": "Tối",
-      "dracula": "Dracula",
-      "system": "Hệ thống"
-    }
-  }
+  "navBrand": "Medium-ish",
+  "userMenuWrite": "Viết",
+  "userMenuProfile": "Hồ Sơ",
+  "userMenuSettings": "Cài Đặt",
+  "userMenuLogout": "Đăng Xuất",
+  "userMenuLoggingOut": "Đang đăng xuất...",
+  "buttonEdit": "Sửa",
+  "buttonSave": "Lưu",
+  "buttonCancel": "Hủy",
+  "buttonDelete": "Xóa",
+  "buttonConfirm": "Xác Nhận",
+  "buttonClose": "Đóng",
+  "loadingLoading": "Đang tải...",
+  "loadingPleaseWait": "Vui lòng chờ...",
+  "loadingProcessing": "Đang xử lý...",
+  "errorSomethingWentWrong": "Đã xảy ra lỗi",
+  "errorTryAgain": "Vui lòng thử lại",
+  "errorNotFound": "Không tìm thấy",
+  "labelEmail": "Email",
+  "labelPassword": "Mật khẩu",
+  "labelUsername": "Tên đăng nhập",
+  "labelName": "Tên",
+  "labelAvatar": "Ảnh đại diện",
+  "labelSearch": "Tìm kiếm",
+  "labelFilter": "Lọc",
+  "labelSort": "Sắp xếp",
+  "statusSuccess": "Thành công",
+  "statusError": "Lỗi",
+  "statusWarning": "Cảnh báo",
+  "statusInfo": "Thông tin",
+  "themeLight": "Sáng",
+  "themeDark": "Tối",
+  "themeDracula": "Dracula",
+  "themeSystem": "Hệ thống"
 }

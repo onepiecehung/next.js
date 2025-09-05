@@ -113,7 +113,7 @@ export default function RegisterPage() {
 
       // Show success message
       toast.success(
-        t("toast.signup.success", "toast") || "Account created successfully!"
+        t("toastLoginSuccess", "toast") || "Account created successfully!"
       );
       
       // Reset form
@@ -126,7 +126,7 @@ export default function RegisterPage() {
       // Handle signup errors and show appropriate error message
       const errorMessage = extractErrorMessage(
         error,
-        t("register.error.default", "auth") || "Signup failed. Please try again."
+        t("registerErrorDefault", "auth") || "Signup failed. Please try again."
       );
       toast.error(errorMessage);
     } finally {
@@ -175,13 +175,13 @@ export default function RegisterPage() {
         <Card>
           <CardHeader>
             <CardTitle>
-              {t("register.cardTitle", "auth") ||
-                t("register.title", "auth") ||
+              {t("registerCardTitle", "auth") ||
+                t("registerTitle", "auth") ||
                 "Create Account"}
             </CardTitle>
             <CardDescription>
-              {t("register.cardDescription", "auth") ||
-                t("register.subtitle", "auth") ||
+              {t("registerCardDescription", "auth") ||
+                t("registerSubtitle", "auth") ||
                 "Enter your information below to create your account"}
             </CardDescription>
           </CardHeader>
@@ -191,14 +191,14 @@ export default function RegisterPage() {
                 {/* Username field */}
                 <div className="grid gap-3">
                   <Label htmlFor="username">
-                    {t("auth.form.username", "auth") || "Username"}
+                    {t("username", "auth") || "Username"}
                     <span className="text-red-500 ml-1">*</span>
                   </Label>
                   <Input
                     id="username"
                     type="text"
                     placeholder={
-                      t("auth.form.usernamePlaceholder", "auth") ||
+                      t("usernamePlaceholder", "auth") ||
                       "Enter your username"
                     }
                     required
@@ -215,14 +215,14 @@ export default function RegisterPage() {
                 {/* Email field */}
                 <div className="grid gap-3">
                   <Label htmlFor="email">
-                    {t("auth.form.email", "auth") || "Email"}
+                    {t("email", "auth") || "Email"}
                     <span className="text-red-500 ml-1">*</span>
                   </Label>
                   <Input
                     id="email"
                     type="email"
                     placeholder={
-                      t("auth.form.emailPlaceholder", "auth") ||
+                      t("emailPlaceholder", "auth") ||
                       "m@example.com"
                     }
                     required
@@ -239,7 +239,7 @@ export default function RegisterPage() {
                 {/* Password field */}
                 <div className="grid gap-3">
                   <Label htmlFor="password">
-                    {t("auth.form.password", "auth") || "Password"}
+                    {t("password", "auth") || "Password"}
                     <span className="text-red-500 ml-1">*</span>
                   </Label>
                   <div className="relative">
@@ -247,7 +247,7 @@ export default function RegisterPage() {
                       id="password"
                       type={showPassword ? "text" : "password"}
                       placeholder={
-                        t("auth.form.passwordPlaceholder", "auth") ||
+                        t("passwordPlaceholder", "auth") ||
                         "Enter your password"
                       }
                       required
@@ -277,7 +277,7 @@ export default function RegisterPage() {
                 {/* Confirm Password field */}
                 <div className="grid gap-3">
                   <Label htmlFor="confirmPassword">
-                    {t("auth.form.confirmPassword", "auth") || "Confirm Password"}
+                    {t("confirmPassword", "auth") || "Confirm Password"}
                     <span className="text-red-500 ml-1">*</span>
                   </Label>
                   <div className="relative">
@@ -285,7 +285,7 @@ export default function RegisterPage() {
                       id="confirmPassword"
                       type={showConfirmPassword ? "text" : "password"}
                       placeholder={
-                        t("auth.form.confirmPasswordPlaceholder", "auth") ||
+                        t("confirmPasswordPlaceholder", "auth") ||
                         "Confirm your password"
                       }
                       required
@@ -315,14 +315,14 @@ export default function RegisterPage() {
                 {/* Name field (optional) */}
                 <div className="grid gap-3">
                   <Label htmlFor="name">
-                    {t("auth.form.fullName", "auth") || "Full Name"}
+                    {t("fullName", "auth") || "Full Name"}
                     <span className="text-muted-foreground ml-1">(optional)</span>
                   </Label>
                   <Input
                     id="name"
                     type="text"
                     placeholder={
-                      t("auth.form.fullNamePlaceholder", "auth") ||
+                      t("fullNamePlaceholder", "auth") ||
                       "Enter your full name"
                     }
                     aria-invalid={!!errors.name}
@@ -338,7 +338,7 @@ export default function RegisterPage() {
                 {/* Date of Birth field (optional) */}
                 <div className="grid gap-3">
                   <Label htmlFor="dob">
-                    {t("auth.form.dob", "auth") || "Date of Birth"}
+                    {t("dob", "auth") || "Date of Birth"}
                     <span className="text-muted-foreground ml-1">(optional)</span>
                   </Label>
                   <Input
@@ -358,14 +358,14 @@ export default function RegisterPage() {
                 {/* Phone Number field (optional) */}
                 <div className="grid gap-3">
                   <Label htmlFor="phoneNumber">
-                    {t("auth.form.phoneNumber", "auth") || "Phone Number"}
+                    {t("phoneNumber", "auth") || "Phone Number"}
                     <span className="text-muted-foreground ml-1">(optional)</span>
                   </Label>
                   <Input
                     id="phoneNumber"
                     type="tel"
                     placeholder={
-                      t("auth.form.phoneNumberPlaceholder", "auth") ||
+                      t("phoneNumberPlaceholder", "auth") ||
                       "Enter your phone number"
                     }
                     aria-invalid={!!errors.phoneNumber}
@@ -386,9 +386,9 @@ export default function RegisterPage() {
                     disabled={isSubmitting || isLoading}
                   >
                     {isSubmitting || isLoading
-                      ? t("register.creatingAccount", "auth") ||
+                      ? t("creatingAccount", "auth") ||
                         "Creating Account..."
-                      : t("register.createAccount", "auth") || "Create Account"}
+                      : t("createAccount", "auth") || "Create Account"}
                   </Button>
                   <Button
                     variant="outline"
@@ -397,7 +397,7 @@ export default function RegisterPage() {
                     onClick={handleGoogleSignup}
                     disabled={isLoading}
                   >
-                    {t("register.signUpWithGoogle", "auth") ||
+                    {t("signUpWithGoogle", "auth") ||
                       "Sign up with Google"}
                   </Button>
                 </div>
@@ -405,13 +405,13 @@ export default function RegisterPage() {
 
               {/* Footer text with link to login */}
               <div className="mt-4 text-center text-sm">
-                {t("register.alreadyHaveAccount", "auth") ||
+                {t("alreadyHaveAccount", "auth") ||
                   "Already have an account?"}{" "}
                 <Link
                   href="/auth/login"
                   className="underline underline-offset-4 hover:text-primary transition-colors"
                 >
-                  {t("register.login", "auth") || "Login"}
+                  {t("signIn", "auth") || "Login"}
                 </Link>
               </div>
             </form>

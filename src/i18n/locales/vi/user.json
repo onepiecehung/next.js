@@ -1,39 +1,23 @@
 {
-  "user": {
-    "error": {
-      "title": "Lỗi",
-      "fetchFailed": "Không thể tải dữ liệu người dùng"
-    },
-    "notFound": {
-      "title": "Không Tìm Thấy Người Dùng",
-      "description": "Không thể tìm thấy hồ sơ người dùng được yêu cầu."
-    },
-    "actions": {
-      "follow": "Theo Dõi",
-      "message": "Nhắn Tin"
-    },
-    "joined": "Tham Gia",
-    "stats": {
-      "articles": "Bài Viết",
-      "followers": "Người Theo Dõi",
-      "following": "Đang Theo Dõi"
-    },
-    "articles": {
-      "title": "Bài Viết Của",
-      "count": "bài viết",
-      "published": "đã xuất bản",
-      "readTime": "phút đọc",
-      "noArticles": {
-        "title": "Chưa Có Bài Viết",
-        "description": "Người dùng này chưa xuất bản bài viết nào."
-      }
-    },
-    "dropdown": {
-      "write": "Viết",
-      "profile": "Hồ Sơ",
-      "settings": "Cài Đặt",
-      "logout": "Đăng Xuất",
-      "loggingOut": "Đang đăng xuất..."
-    }
-  }
+  "userErrorTitle": "Lỗi",
+  "userErrorFetchFailed": "Không thể tải dữ liệu người dùng",
+  "userNotFoundTitle": "Không Tìm Thấy Người Dùng",
+  "userNotFoundDescription": "Không thể tìm thấy hồ sơ người dùng được yêu cầu.",
+  "userActionsFollow": "Theo Dõi",
+  "userActionsMessage": "Nhắn Tin",
+  "userJoined": "Tham Gia",
+  "userStatsArticles": "Bài Viết",
+  "userStatsFollowers": "Người Theo Dõi",
+  "userStatsFollowing": "Đang Theo Dõi",
+  "userArticlesTitle": "Bài Viết Của",
+  "userArticlesCount": "bài viết",
+  "userArticlesPublished": "đã xuất bản",
+  "userArticlesReadTime": "phút đọc",
+  "userArticlesNoArticlesTitle": "Chưa Có Bài Viết",
+  "userArticlesNoArticlesDescription": "Người dùng này chưa xuất bản bài viết nào.",
+  "userDropdownWrite": "Viết",
+  "userDropdownProfile": "Hồ Sơ",
+  "userDropdownSettings": "Cài Đặt",
+  "userDropdownLogout": "Đăng Xuất",
+  "userDropdownLoggingOut": "Đang đăng xuất..."
 }

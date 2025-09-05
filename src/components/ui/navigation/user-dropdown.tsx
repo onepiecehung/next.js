@@ -106,21 +106,21 @@ export function UserDropdown({
         <DropdownMenuItem asChild>
           <Link href="/write" className="cursor-pointer">
             <PenTool className="mr-2 h-4 w-4" />
-            <span>{t("user.dropdown.write", "user")}</span>
+            <span>{t("userDropdownWrite", "user")}</span>
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
           <Link href={`/users/${user.id}`} className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />
-            <span>{t("user.dropdown.profile", "user")}</span>
+            <span>{t("userDropdownProfile", "user")}</span>
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
           <Link href="/settings" className="cursor-pointer">
             <Settings className="mr-2 h-4 w-4" />
-            <span>{t("user.dropdown.settings", "user")}</span>
+            <span>{t("userDropdownSettings", "user")}</span>
           </Link>
         </DropdownMenuItem>
 
@@ -135,8 +135,8 @@ export function UserDropdown({
           <LogOut className="mr-2 h-4 w-4" />
           <span>
             {isLoggingOut
-              ? t("user.dropdown.loggingOut", "user")
-              : t("user.dropdown.logout", "user")}
+              ? t("userDropdownLoggingOut", "user")
+              : t("userDropdownLogout", "user")}
           </span>
         </DropdownMenuItem>
       </DropdownMenuContent>

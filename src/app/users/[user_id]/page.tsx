@@ -78,7 +78,7 @@ export default function ProfilePage() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-foreground mb-4">
-            {t("user.error.title", "user")}
+            {t("userErrorTitle", "user")}
           </h1>
           <p className="text-muted-foreground">{error}</p>
         </div>
@@ -92,10 +92,10 @@ export default function ProfilePage() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-foreground mb-4">
-            {t("user.notFound.title", "user")}
+            {t("userNotFoundTitle", "user")}
           </h1>
           <p className="text-muted-foreground">
-            {t("user.notFound.description", "user")}
+            {t("userNotFoundDescription", "user")}
           </p>
         </div>
       </div>
@@ -142,14 +142,14 @@ export default function ProfilePage() {
                         size="sm"
                         className="border-primary/30 hover:border-primary/50 hover:bg-primary/10"
                       >
-                        {t("common.buttons.edit", "common")}
+                        {t("buttonEdit", "common")}
                       </Button>
                       <Button
                         variant="outline"
                         size="sm"
                         className="border-primary/30 hover:border-primary/50 hover:bg-primary/10"
                       >
-                        {t("common.buttons.save", "common")}
+                        {t("buttonSave", "common")}
                       </Button>
                     </div>
                   )}
@@ -168,7 +168,7 @@ export default function ProfilePage() {
                   </span>
                   <span className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Heart className="h-4 w-4 text-chart-1" />
-                    12 {t("header.likes", "profile")}
+                    12 {t("headerLikes", "profile")}
                   </span>
                 </div>
 
@@ -220,7 +220,7 @@ export default function ProfilePage() {
             >
               <span className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4" />
-                {t("tabs.articles", "profile")} 3
+                {t("tabsArticles", "profile")} 3
               </span>
             </button>
             <button
@@ -234,7 +234,7 @@ export default function ProfilePage() {
             >
               <span className="flex items-center gap-2">
                 <PenTool className="h-4 w-4" />
-                {t("tabs.scraps", "profile")} 0
+                {t("tabsScraps", "profile")} 0
               </span>
             </button>
             <button
@@ -248,7 +248,7 @@ export default function ProfilePage() {
             >
               <span className="flex items-center gap-2">
                 <MessageSquare className="h-4 w-4" />
-                {t("tabs.comments", "profile")}
+                {t("tabsComments", "profile")}
               </span>
             </button>
           </div>
@@ -263,53 +263,53 @@ export default function ProfilePage() {
               {/* Article Card 1 */}
               <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 mb-3">
-                  {t("categories.tech", "profile")}
+                  {t("categoriesTech", "profile")}
                 </span>
                 <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
                   Building a Modern Next.js Application with TypeScript and
                   Tailwind CSS
                 </h3>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>2 {t("content.daysAgo", "profile")}</span>
+                  <span>2 {t("contentDaysAgo", "profile")}</span>
                   <span className="flex items-center gap-1">
                     <Heart className="h-4 w-4 text-chart-1" />6
                   </span>
-                  <span>8 {t("content.readTime", "profile")}</span>
+                  <span>8 {t("contentReadTime", "profile")}</span>
                 </div>
               </div>
 
               {/* Article Card 2 */}
               <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-chart-2/10 text-chart-2 border border-chart-2/20 mb-3">
-                  {t("categories.tutorial", "profile")}
+                  {t("categoriesTutorial", "profile")}
                 </span>
                 <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
                   Complete Guide to Authentication with Next.js and JWT
                 </h3>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>1 {t("content.weeksAgo", "profile")}</span>
+                  <span>1 {t("contentWeeksAgo", "profile")}</span>
                   <span className="flex items-center gap-1">
                     <Heart className="h-4 w-4 text-chart-1" />
                     12
                   </span>
-                  <span>12 {t("content.readTime", "profile")}</span>
+                  <span>12 {t("contentReadTime", "profile")}</span>
                 </div>
               </div>
 
               {/* Article Card 3 */}
               <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-chart-4/10 text-chart-4 border border-chart-4/20 mb-3">
-                  {t("categories.insights", "profile")}
+                  {t("categoriesInsights", "profile")}
                 </span>
                 <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
                   State Management Best Practices in React Applications
                 </h3>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>2 {t("content.weeksAgo", "profile")}</span>
+                  <span>2 {t("contentWeeksAgo", "profile")}</span>
                   <span className="flex items-center gap-1">
                     <Heart className="h-4 w-4 text-chart-1" />8
                   </span>
-                  <span>6 {t("content.readTime", "profile")}</span>
+                  <span>6 {t("contentReadTime", "profile")}</span>
                 </div>
               </div>
             </div>
@@ -321,10 +321,10 @@ export default function ProfilePage() {
             <div className="text-center py-12">
               <PenTool className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-medium text-foreground mb-2">
-                {t("content.noScraps", "profile")}
+                {t("contentNoScraps", "profile")}
               </h3>
               <p className="text-muted-foreground">
-                {t("content.noScrapsDescription", "profile")}
+                {t("contentNoScrapsDescription", "profile")}
               </p>
             </div>
           </Skeletonize>
@@ -335,10 +335,10 @@ export default function ProfilePage() {
             <div className="text-center py-12">
               <MessageSquare className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-medium text-foreground mb-2">
-                {t("content.noComments", "profile")}
+                {t("contentNoComments", "profile")}
               </h3>
               <p className="text-muted-foreground">
-                {t("content.noCommentsDescription", "profile")}
+                {t("contentNoCommentsDescription", "profile")}
               </p>
             </div>
           </Skeletonize>

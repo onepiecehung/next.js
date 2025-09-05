@@ -97,7 +97,7 @@ export default function LoginPage() {
 
       // Show success message
       toast.success(
-        t("toast.login.success", "toast") || "Login successful!"
+        t("toastLoginSuccess", "toast") || "Login successful!"
       );
       
       // Reset form
@@ -109,7 +109,7 @@ export default function LoginPage() {
       // Handle login errors and show appropriate error message
       const errorMessage = extractErrorMessage(
         error,
-        t("auth.login.error.default", "auth") || "Login failed. Please check your credentials."
+        t("loginErrorDefault", "auth") || "Login failed. Please check your credentials."
       );
       toast.error(errorMessage);
     } finally {
@@ -163,13 +163,13 @@ export default function LoginPage() {
         <Card>
           <CardHeader>
             <CardTitle>
-              {t("auth.login.cardTitle", "auth") ||
-                t("auth.login.title", "auth") ||
+              {t("loginCardTitle", "auth") ||
+                t("loginTitle", "auth") ||
                 "Login to your account"}
             </CardTitle>
             <CardDescription>
-              {t("auth.login.cardDescription", "auth") ||
-                t("auth.login.subtitle", "auth") ||
+              {t("loginCardDescription", "auth") ||
+                t("loginSubtitle", "auth") ||
                 "Enter your email below to login to your account"}
             </CardDescription>
           </CardHeader>
@@ -179,13 +179,13 @@ export default function LoginPage() {
                 {/* Email field */}
                 <div className="grid gap-3">
                   <Label htmlFor="email">
-                    {t("auth.form.email", "auth") || "Email"}
+                    {t("email", "auth") || "Email"}
                   </Label>
                   <Input
                     id="email"
                     type="email"
                     placeholder={
-                      t("auth.form.emailPlaceholder", "auth") ||
+                      t("emailPlaceholder", "auth") ||
                       "m@example.com"
                     }
                     required
@@ -203,7 +203,7 @@ export default function LoginPage() {
                 <div className="grid gap-3">
                   <div className="flex items-center">
                     <Label htmlFor="password">
-                      {t("auth.form.password", "auth") || "Password"}
+                      {t("password", "auth") || "Password"}
                     </Label>
                     <button
                       type="button"
@@ -211,7 +211,7 @@ export default function LoginPage() {
                       onClick={handleForgotPassword}
                       aria-label="Forgot your password"
                     >
-                      {t("auth.form.forgotPassword", "auth") ||
+                                              {t("forgotPassword", "auth") ||
                         "Forgot your password?"}
                     </button>
                   </div>
@@ -220,7 +220,7 @@ export default function LoginPage() {
                       id="password"
                       type={showPassword ? "text" : "password"}
                       placeholder={
-                        t("auth.form.passwordPlaceholder", "auth") ||
+                        t("passwordPlaceholder", "auth") ||
                         "Enter your password"
                       }
                       required
@@ -257,8 +257,8 @@ export default function LoginPage() {
                     disabled={isSubmitting || isLoading}
                   >
                     {isSubmitting || isLoading
-                      ? t("auth.login.signingIn", "auth") || "Signing in..."
-                      : t("auth.login.signIn", "auth") || "Sign In"}
+                      ? t("signingIn", "auth") || "Signing in..."
+                      : t("signIn", "auth") || "Sign In"}
                   </Button>
                   <Button
                     variant="outline"
@@ -267,7 +267,7 @@ export default function LoginPage() {
                     onClick={handleGoogleLogin}
                     disabled={isLoading}
                   >
-                    {t("auth.login.signInWithGoogle", "auth") ||
+                    {t("signInWithGoogle", "auth") ||
                       "Login with Google"}
                   </Button>
                 </div>
@@ -275,13 +275,13 @@ export default function LoginPage() {
 
               {/* Footer text with link to register */}
               <div className="mt-4 text-center text-sm">
-                {t("auth.login.noAccount", "auth") ||
+                {t("noAccount", "auth") ||
                   "Don't have an account?"}{" "}
                 <Link
                   href="/auth/register"
                   className="underline underline-offset-4 hover:text-primary transition-colors"
                 >
-                  {t("auth.login.signUp", "auth") || "Sign up"}
+                  {t("signUp", "auth") || "Sign up"}
                 </Link>
               </div>
             </form>

@@ -1,39 +1,23 @@
 {
-  "user": {
-    "error": {
-      "title": "Error",
-      "fetchFailed": "Failed to fetch user data"
-    },
-    "notFound": {
-      "title": "User Not Found",
-      "description": "The requested user profile could not be found."
-    },
-    "actions": {
-      "follow": "Follow",
-      "message": "Message"
-    },
-    "joined": "Joined",
-    "stats": {
-      "articles": "Articles",
-      "followers": "Followers",
-      "following": "Following"
-    },
-    "articles": {
-      "title": "Articles by",
-      "count": "article",
-      "published": "published",
-      "readTime": "min read",
-      "noArticles": {
-        "title": "No Articles Yet",
-        "description": "This user hasn't published any articles yet."
-      }
-    },
-    "dropdown": {
-      "write": "Write",
-      "profile": "Profile",
-      "settings": "Settings",
-      "logout": "Logout",
-      "loggingOut": "Logging out..."
-    }
-  }
+  "userErrorTitle": "Error",
+  "userErrorFetchFailed": "Failed to fetch user data",
+  "userNotFoundTitle": "User Not Found",
+  "userNotFoundDescription": "The requested user profile could not be found.",
+  "userActionsFollow": "Follow",
+  "userActionsMessage": "Message",
+  "userJoined": "Joined",
+  "userStatsArticles": "Articles",
+  "userStatsFollowers": "Followers",
+  "userStatsFollowing": "Following",
+  "userArticlesTitle": "Articles by",
+  "userArticlesCount": "article",
+  "userArticlesPublished": "published",
+  "userArticlesReadTime": "min read",
+  "userArticlesNoArticlesTitle": "No Articles Yet",
+  "userArticlesNoArticlesDescription": "This user hasn't published any articles yet.",
+  "userDropdownWrite": "Write",
+  "userDropdownProfile": "Profile",
+  "userDropdownSettings": "Settings",
+  "userDropdownLogout": "Logout",
+  "userDropdownLoggingOut": "Logging out..."
 }

@@ -17,16 +17,16 @@ export default function DemoPage() {
       <div className="mx-auto max-w-6xl">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-4">
-            {t("demo.title", "demo")}
+            {t("demoTitle", "demo")}
           </h1>
           <p className="text-lg text-muted-foreground">
-            {t("demo.description", "demo")}
+            {t("demoDescription", "demo")}
           </p>
         </div>
 
         <Suspense
           fallback={
-            <div className="text-center py-8">{t("demo.loading", "demo")}</div>
+            <div className="text-center py-8">{t("demoLoading", "demo")}</div>
           }
         >
           <SkeletonDemo />

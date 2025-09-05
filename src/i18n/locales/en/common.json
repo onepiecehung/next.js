@@ -1,54 +1,36 @@
 {
-  "common": {
-    "nav": {
-      "brand": "Medium-ish"
-    },
-    "userMenu": {
-      "write": "Write",
-      "profile": "Profile",
-      "settings": "Settings",
-      "logout": "Logout",
-      "loggingOut": "Logging out..."
-    },
-    "buttons": {
-      "edit": "Edit",
-      "save": "Save",
-      "cancel": "Cancel",
-      "delete": "Delete",
-      "confirm": "Confirm",
-      "close": "Close"
-    },
-    "loading": {
-      "loading": "Loading...",
-      "pleaseWait": "Please wait...",
-      "processing": "Processing..."
-    },
-    "error": {
-      "somethingWentWrong": "Something went wrong",
-      "tryAgain": "Please try again",
-      "notFound": "Not found"
-    }
-  },
-  "labels": {
-    "email": "Email",
-    "password": "Password",
-    "username": "Username",
-    "name": "Name",
-    "avatar": "Avatar",
-    "search": "Search",
-    "filter": "Filter",
-    "sort": "Sort"
-  },
-  "status": {
-    "success": "Success",
-    "error": "Error",
-    "warning": "Warning",
-    "info": "Information"
-  },
-  "themes": {
-    "light": "Light",
-    "dark": "Dark",
-    "dracula": "Dracula",
-    "system": "System"
-  }
+  "navBrand": "Medium-ish",
+  "userMenuWrite": "Write",
+  "userMenuProfile": "Profile",
+  "userMenuSettings": "Settings",
+  "userMenuLogout": "Logout",
+  "userMenuLoggingOut": "Logging out...",
+  "buttonEdit": "Edit",
+  "buttonSave": "Save",
+  "buttonCancel": "Cancel",
+  "buttonDelete": "Delete",
+  "buttonConfirm": "Confirm",
+  "buttonClose": "Close",
+  "loadingLoading": "Loading...",
+  "loadingPleaseWait": "Please wait...",
+  "loadingProcessing": "Processing...",
+  "errorSomethingWentWrong": "Something went wrong",
+  "errorTryAgain": "Please try again",
+  "errorNotFound": "Not found",
+  "labelEmail": "Email",
+  "labelPassword": "Password",
+  "labelUsername": "Username",
+  "labelName": "Name",
+  "labelAvatar": "Avatar",
+  "labelSearch": "Search",
+  "labelFilter": "Filter",
+  "labelSort": "Sort",
+  "statusSuccess": "Success",
+  "statusError": "Error",
+  "statusWarning": "Warning",
+  "statusInfo": "Information",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themeDracula": "Dracula",
+  "themeSystem": "System"
 }

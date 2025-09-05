@@ -32,7 +32,7 @@ export default function WritePage() {
             {/* Header */}
             <div className="space-y-2">
               <h1 className="text-3xl font-bold text-foreground">
-                {t("write.title", "write")}
+                {t("writeTitle", "write")}
               </h1>
               <p className="text-muted-foreground">
                 Create and publish your articles with our modern rich text
@@ -45,35 +45,35 @@ export default function WritePage() {
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
-                    {t("write.form.title", "write")}
+                    {t("writeFormTitle", "write")}
                   </label>
                   <input
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder={t("write.form.titlePlaceholder", "write")}
+                    placeholder={t("writeFormTitlePlaceholder", "write")}
                     className="w-full px-4 py-3 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-lg"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
-                    {t("write.form.content", "write")}
+                    {t("writeFormContent", "write")}
                   </label>
                   <TipTapEditor
                     content={content}
                     onChange={setContent}
-                    placeholder={t("write.form.contentPlaceholder", "write")}
+                    placeholder={t("writeFormContentPlaceholder", "write")}
                     className="min-h-[600px]"
                   />
                 </div>
 
                 <div className="flex justify-end space-x-3 pt-6 border-t border-border">
                   <Button variant="outline" size="lg">
-                    {t("write.form.saveDraft", "write")}
+                    {t("writeFormSaveDraft", "write")}
                   </Button>
                   <Button size="lg">
-                    {t("write.form.publishArticle", "write")}
+                    {t("writeFormPublishArticle", "write")}
                   </Button>
                 </div>
               </div>

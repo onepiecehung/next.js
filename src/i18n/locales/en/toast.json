@@ -1,31 +1,19 @@
 {
-  "toast": {
-    "login": {
-      "success": "Successfully logged in!"
-    },
-    "logout": {
-      "success": "Successfully logged out",
-      "error": "Logout failed"
-    }
-  },
-  "auth": {
-    "loginSuccess": "Successfully logged in",
-    "loginFailed": "Login failed. Please try again.",
-    "logoutSuccess": "Successfully logged out",
-    "logoutFailed": "Logout failed",
-    "registerSuccess": "Account created successfully",
-    "registerFailed": "Registration failed. Please try again."
-  },
-  "profile": {
-    "updateSuccess": "Profile updated successfully",
-    "updateFailed": "Failed to update profile",
-    "avatarUpdateSuccess": "Avatar updated successfully",
-    "avatarUpdateFailed": "Failed to update avatar"
-  },
-  "general": {
-    "operationSuccess": "Operation completed successfully",
-    "operationFailed": "Operation failed. Please try again.",
-    "networkError": "Network error. Please check your connection.",
-    "validationError": "Please check your input and try again."
-  }
+  "toastLoginSuccess": "Successfully logged in!",
+  "toastLogoutSuccess": "Successfully logged out",
+  "toastLogoutError": "Logout failed",
+  "authLoginSuccess": "Successfully logged in",
+  "authLoginFailed": "Login failed. Please try again.",
+  "authLogoutSuccess": "Successfully logged out",
+  "authLogoutFailed": "Logout failed",
+  "authRegisterSuccess": "Account created successfully",
+  "authRegisterFailed": "Registration failed. Please try again.",
+  "profileUpdateSuccess": "Profile updated successfully",
+  "profileUpdateFailed": "Failed to update profile",
+  "profileAvatarUpdateSuccess": "Avatar updated successfully",
+  "profileAvatarUpdateFailed": "Failed to update avatar",
+  "generalOperationSuccess": "Operation completed successfully",
+  "generalOperationFailed": "Operation failed. Please try again.",
+  "generalNetworkError": "Network error. Please check your connection.",
+  "generalValidationError": "Please check your input and try again."
 }

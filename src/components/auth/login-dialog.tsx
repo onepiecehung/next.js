@@ -102,7 +102,7 @@ export default function LoginDialog() {
       setUser(completeUser);
 
       // Show success message and close dialog
-      toast.success(t("toast.login.success", "toast"));
+      toast.success(t("toastLoginSuccess", "toast"));
       setOpen(false);
       reset(); // Clear form
       setShowPassword(false); // Reset password visibility
@@ -110,7 +110,7 @@ export default function LoginDialog() {
       // Handle login errors and show appropriate error message
       const errorMessage = extractErrorMessage(
         error,
-        t("auth.login.error.default", "auth"),
+        t("loginErrorDefault", "auth"),
       );
       toast.error(errorMessage);
     }
@@ -129,15 +129,15 @@ export default function LoginDialog() {
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {/* Use the existing trigger button but this could also be swapped to Calumma Button if desired */}
-        <Button variant="outline">{t("auth.login.button", "auth")}</Button>
+        <Button variant="outline">{t("loginButton", "auth")}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">
         {/* Header kept minimal as the Card will contain the full title/description per login-01 */}
         <DialogHeader>
           <DialogTitle>
             {showSignup
-              ? t("register.title", "auth") || "Register"
-              : t("auth.login.title", "auth") || "Login"}
+              ? t("registerTitle", "auth") || "Register"
+              : t("loginTitle", "auth") || "Login"}
           </DialogTitle>
         </DialogHeader>
 
@@ -149,13 +149,13 @@ export default function LoginDialog() {
             <CardHeader>
               <CardTitle>
                 {/* Title aligned with login-01, internationalized */}
-                {t("auth.login.cardTitle", "auth") ||
-                  t("auth.login.title", "auth")}
+                {t("loginCardTitle", "auth") ||
+                  t("loginTitle", "auth")}
               </CardTitle>
               <CardDescription>
                 {/* Description aligned with login-01, fallback to a generic helper */}
-                {t("auth.login.cardDescription", "auth") ||
-                  t("auth.login.subtitle", "auth") ||
+                {t("loginCardDescription", "auth") ||
+                  t("loginSubtitle", "auth") ||
                   "Enter your email below to login to your account"}
               </CardDescription>
             </CardHeader>
@@ -166,12 +166,12 @@ export default function LoginDialog() {
                   {/* Email field */}
                   <div className="grid gap-3">
                     <Label htmlFor="email">
-                      {t("auth.form.email", "auth")}
+                      {t("email", "auth")}
                     </Label>
                     <Input
                       id="email"
                       type="email"
-                      placeholder={t("auth.form.emailPlaceholder", "auth")}
+                      placeholder={t("emailPlaceholder", "auth")}
                       required
                       aria-invalid={!!errors.email}
                       {...register("email")}
@@ -187,14 +187,14 @@ export default function LoginDialog() {
                   <div className="grid gap-3">
                     <div className="flex items-center">
                       <Label htmlFor="password">
-                        {t("auth.form.password", "auth")}
+                        {t("password", "auth")}
                       </Label>
                       <button
                         type="button"
                         className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                         aria-label="Forgot your password"
                       >
-                        {t("auth.form.forgotPassword", "auth") ||
+                        {t("forgotPassword", "auth") ||
                           "Forgot your password?"}
                       </button>
                     </div>
@@ -202,7 +202,7 @@ export default function LoginDialog() {
                       <Input
                         id="password"
                         type={showPassword ? "text" : "password"}
-                        placeholder={t("auth.form.passwordPlaceholder", "auth")}
+                        placeholder={t("passwordPlaceholder", "auth")}
                         required
                         aria-invalid={!!errors.password}
                         {...register("password")}
@@ -237,26 +237,26 @@ export default function LoginDialog() {
                       disabled={isSubmitting}
                     >
                       {isSubmitting
-                        ? t("auth.login.signingIn", "auth")
-                        : t("auth.login.signIn", "auth")}
+                        ? t("signingIn", "auth")
+                        : t("signIn", "auth")}
                     </Button>
                     {/* This extra button mirrors login-01; wire to provider auth if desired */}
                     <Button variant="outline" className="w-full" type="button">
-                      {t("auth.login.signInWithGoogle", "auth") ||
+                      {t("signInWithGoogle", "auth") ||
                         "Login with Google"}
                     </Button>
                   </div>
                 </div>
                 {/* Footer text like in login-01 */}
                 <div className="mt-4 text-center text-sm">
-                  {t("auth.login.noAccount", "auth") ||
+                  {t("noAccount", "auth") ||
                     "Don't have an account?"}{" "}
                   <button
                     type="button"
                     className="underline underline-offset-4"
                     onClick={() => setShowSignup(true)}
                   >
-                    {t("auth.login.signUp", "auth") || "Sign up"}
+                    {t("signUp", "auth") || "Sign up"}
                   </button>
                 </div>
               </form>
