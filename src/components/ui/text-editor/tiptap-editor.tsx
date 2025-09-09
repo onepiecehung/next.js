@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, ReactNodeViewRenderer } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Typography from "@tiptap/extension-typography";
@@ -14,6 +14,7 @@ import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import "./tiptap-editor.css";
+import { MermaidRenderer } from "./mermaid-renderer";
 
 import { Button } from "../core/button";
 import { NoSSR } from "../../providers/no-ssr";
@@ -146,6 +147,15 @@ export function TipTapEditor({
         }),
         HTMLAttributes: {
           class: "code-block",
+        },
+        addNodeView() {
+          return ReactNodeViewRenderer(({ node, updateAttributes, selected }) => {
+            const language = node.attrs.language;
+            if (language === "mermaid") {
+              return <MermaidRenderer node={node} updateAttributes={updateAttributes} selected={selected} />;
+            }
+            return null;
+          });
         },
       }),
       TextAlign.configure({
