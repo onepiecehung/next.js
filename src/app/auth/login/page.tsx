@@ -8,6 +8,7 @@ import {
   authLoadingAtom,
   loginAction,
   fetchMeAction,
+  loginWithGoogleAction,
 } from "@/lib/auth-store";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -23,12 +24,11 @@ import {
   CardTitle,
 } from "@/components/ui/core";
 import { useI18n } from "@/components/providers/i18n-provider";
-// import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 import Link from "next/link";
 
 // Form validation schema
 const loginSchema = z.object({
-  email: z.string().min(1, "Email is required").email({ message: "Please enter a valid email address" }),
+  email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
@@ -124,9 +124,68 @@ export default function LoginPage() {
     toast.info("Forgot password functionality coming soon!");
   };
 
-  const handleGoogleLogin = () => {
-    // Placeholder for Google OAuth
-    toast.info("Google login functionality coming soon!");
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    try {
+      // Attempt to login with Google using Firebase
+      const user = await loginWithGoogleAction();
+
+      // Update access token in Jotai state (optional, for UI sync)
+      setAccessToken(null); // We keep the actual token in http layer memory
+
+      // Set the user in state
+      setUser(user);
+
+      // Show success message
+      toast.success(
+        t("toastLoginSuccess", "toast") || "Login successful!"
+      );
+      
+      // Reset form
+      reset();
+      setShowPassword(false);
+      
+      // Redirect will be handled by useAuthRedirect hook
+    } catch (error: unknown) {
+      // Handle specific Firebase auth errors
+      if (error && typeof error === 'object' && 'code' in error) {
+        const firebaseError = error as { code: string; message: string };
+        
+        switch (firebaseError.code) {
+          case 'auth/cancelled-popup-request':
+            // User cancelled the popup - don't show error message
+            return;
+          case 'auth/popup-closed-by-user':
+            // User closed the popup - don't show error message
+            return;
+          case 'auth/popup-blocked':
+            toast.error(t("popupBlocked", "auth") || "Popup was blocked. Please allow popups and try again.");
+            return;
+          case 'auth/unauthorized-domain':
+            toast.error(t("unauthorizedDomain", "auth") || "This domain is not authorized for Google login.");
+            return;
+          case 'auth/account-exists-with-different-credential':
+            toast.error(t("accountExistsDifferentCredential", "auth") || "An account already exists with this email using a different login method.");
+            return;
+          default:
+            // Show generic error for other cases
+            const errorMessage = extractErrorMessage(
+              error,
+              t("googleLoginError", "auth") || "Google login failed. Please try again."
+            );
+            toast.error(errorMessage);
+        }
+      } else {
+        // Handle non-Firebase errors
+        const errorMessage = extractErrorMessage(
+          error,
+          t("googleLoginError", "auth") || "Google login failed. Please try again."
+        );
+        toast.error(errorMessage);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Show loading state while auth is being checked
@@ -267,10 +326,11 @@ export default function LoginPage() {
                     className="w-full"
                     type="button"
                     onClick={handleGoogleLogin}
-                    disabled={isLoading}
+                    disabled={isLoading || isSubmitting}
                   >
-                    {t("loginWithGoogle", "auth") ||
-                      "Login with Google"}
+                    {isLoading
+                      ? t("loggingIn", "auth") || "Logging in..."
+                      : t("loginWithGoogle", "auth") || "Login with Google"}
                   </Button>
                 </div>
               </div>

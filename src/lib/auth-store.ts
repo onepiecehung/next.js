@@ -9,6 +9,7 @@ import {
   clearRefreshTokenFallback,
 } from "@/lib/http";
 import type { User, ApiResponse, LoginResponse } from "@/lib/types";
+import { signInWithGoogle, signOutFirebase, convertFirebaseUserToUser } from "@/lib/firebase";
 
 // Jotai atoms for state management
 export const accessTokenAtom = atom<string | null>(null);
@@ -176,9 +177,39 @@ export async function checkAndRefreshToken(): Promise<boolean> {
   }
 }
 
+// Firebase Google login action
+export async function loginWithGoogleAction(): Promise<User> {
+  try {
+    // Sign in with Google using Firebase
+    const firebaseUser = await signInWithGoogle();
+    
+    // Convert Firebase user to our User type
+    const user = convertFirebaseUserToUser(firebaseUser);
+    
+    // Get Firebase ID token for backend authentication
+    const idToken = await firebaseUser.getIdToken();
+    
+    // Store the Firebase ID token as access token
+    setAccessToken(idToken);
+    
+    // Set cookie for middleware to check
+    if (typeof document !== 'undefined') {
+      document.cookie = `accessToken=${idToken}; path=/; max-age=3600; SameSite=Strict; Secure`;
+    }
+    
+    return user;
+  } catch (error) {
+    console.error('Firebase Google login error:', error);
+    throw error;
+  }
+}
+
 // Logout action: clears all tokens and user state
 export async function logoutAction() {
   try {
+    // Sign out from Firebase if user was logged in via Firebase
+    await signOutFirebase();
+    
     // Attempt to call logout endpoint (best effort)
     await http.post("/auth/logout");
   } catch {
