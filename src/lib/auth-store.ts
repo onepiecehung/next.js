@@ -9,7 +9,7 @@ import {
   clearRefreshTokenFallback,
 } from "@/lib/http";
 import type { User, ApiResponse, LoginResponse, FirebaseLoginRequest } from "@/lib/types";
-import { signInWithGoogle, signOutFirebase } from "@/lib/firebase";
+import { signInWithGoogle, signInWithGithub, signOutFirebase } from "@/lib/firebase";
 
 // Jotai atoms for state management
 export const accessTokenAtom = atom<string | null>(null);
@@ -223,6 +223,56 @@ export async function loginWithGoogleAction(): Promise<User> {
     return user;
   } catch (error) {
     console.error('Firebase Google login error:', error);
+    throw error;
+  }
+}
+
+// Firebase GitHub login action
+export async function loginWithGithubAction(): Promise<User> {
+  try {
+    // Step 1: Sign in with GitHub using Firebase
+    const firebaseUser = await signInWithGithub();
+    
+    // Step 2: Get Firebase ID token
+    const idToken = await firebaseUser.getIdToken();
+    
+    // Step 3: Send ID token to backend for authentication
+    const requestBody: FirebaseLoginRequest = {
+      idToken: idToken
+    };
+    const response = await http.post<ApiResponse<LoginResponse>>("/auth/firebase/login", requestBody);
+
+    // Check if API response is successful
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Firebase authentication failed");
+    }
+
+    const { user, token } = response.data.data;
+    const { accessToken, refreshToken } = token;
+
+    if (!accessToken) {
+      throw new Error("No access token returned from server");
+    }
+
+    // Step 4: Store access token in memory (secure, not persisted)
+    setAccessToken(accessToken);
+    
+    // Step 5: Set cookie for middleware to check
+    if (typeof document !== 'undefined') {
+      document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; SameSite=Strict; Secure`;
+    }
+
+    // Step 6: Store refresh token in localStorage only if backend doesn't set HttpOnly cookies
+    if (refreshToken) {
+      setRefreshTokenFallback(refreshToken);
+      console.warn(
+        "⚠️ Using fallback refresh token storage - not secure for production",
+      );
+    }
+    
+    return user;
+  } catch (error) {
+    console.error('Firebase GitHub login error:', error);
     throw error;
   }
 }

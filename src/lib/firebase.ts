@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, User as FirebaseUser } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, GithubAuthProvider, signInWithPopup, signOut, User as FirebaseUser } from 'firebase/auth';
 
 // Firebase configuration
 // You need to replace these with your actual Firebase project configuration
@@ -26,6 +26,12 @@ googleProvider.setCustomParameters({
   prompt: 'select_account'
 });
 
+// Initialize GitHub Auth Provider
+export const githubProvider = new GithubAuthProvider();
+
+// Configure GitHub provider
+githubProvider.addScope('user:email');
+
 /**
  * Sign in with Google using Firebase Auth
  * @returns Promise<FirebaseUser> - The authenticated Firebase user
@@ -36,6 +42,20 @@ export const signInWithGoogle = async (): Promise<FirebaseUser> => {
     return result.user;
   } catch (error) {
     console.error('Error signing in with Google:', error);
+    throw error;
+  }
+};
+
+/**
+ * Sign in with GitHub using Firebase Auth
+ * @returns Promise<FirebaseUser> - The authenticated Firebase user
+ */
+export const signInWithGithub = async (): Promise<FirebaseUser> => {
+  try {
+    const result = await signInWithPopup(auth, githubProvider);
+    return result.user;
+  } catch (error) {
+    console.error('Error signing in with GitHub:', error);
     throw error;
   }
 };

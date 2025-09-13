@@ -15,7 +15,8 @@ This project now includes Firebase authentication support for Google login. Foll
 2. Click "Get started"
 3. Go to the "Sign-in method" tab
 4. Enable "Google" as a sign-in provider
-5. Add your domain to the authorized domains list
+5. Enable "GitHub" as a sign-in provider
+6. Add your domain to the authorized domains list
 
 ## 3. Get Firebase Configuration
 
@@ -41,6 +42,7 @@ NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 
 ## 5. Configure OAuth Consent Screen (if needed)
 
+### Google OAuth Setup
 If you haven't set up OAuth consent screen for Google:
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
@@ -49,31 +51,47 @@ If you haven't set up OAuth consent screen for Google:
 4. Configure the consent screen with your app information
 5. Add your domain to authorized domains
 
+### GitHub OAuth Setup
+To enable GitHub authentication:
+
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
+2. Click "New OAuth App"
+3. Fill in the application details:
+   - **Application name**: Your app name
+   - **Homepage URL**: Your app URL
+   - **Authorization callback URL**: `https://your-project-id.firebaseapp.com/__/auth/handler`
+4. Click "Register application"
+5. Copy the **Client ID** and **Client Secret**
+6. In Firebase Console, go to Authentication > Sign-in method > GitHub
+7. Paste the Client ID and Client Secret
+8. Save the configuration
+
 ## 6. Test the Integration
 
 1. Start your development server: `yarn dev`
 2. Navigate to the login page or open the login dialog
-3. Click "Login with Google" button
-4. Complete the Google OAuth flow
+3. Click "Login with Google" or "Login with GitHub" button
+4. Complete the OAuth flow
 5. Verify that the user is logged in successfully
 
 ## Features Added
 
 - ✅ Firebase configuration setup
-- ✅ Google OAuth authentication
+- ✅ **Google OAuth authentication**
+- ✅ **GitHub OAuth authentication**
 - ✅ **Two-step authentication flow**: Firebase → Backend
 - ✅ **Backend JWT integration**: Firebase ID token → Backend JWT
 - ✅ Integration with existing auth store
-- ✅ Login dialog with Google button
-- ✅ Login page with Google button
+- ✅ Login dialog with Google & GitHub buttons
+- ✅ Login page with Google & GitHub buttons
 - ✅ Internationalization support (English/Vietnamese)
 - ✅ Error handling and loading states
 - ✅ Automatic token management
 
 ## Authentication Flow
 
-1. **User clicks "Login with Google"**
-2. **Firebase Authentication**: User authenticates with Google via Firebase
+1. **User clicks "Login with Google/GitHub"**
+2. **Firebase Authentication**: User authenticates with Google/GitHub via Firebase
 3. **Get Firebase ID Token**: Firebase returns ID token
 4. **Backend Authentication**: Send ID token to `/auth/firebase/login`
 5. **Backend Verification**: Backend verifies Firebase ID token
