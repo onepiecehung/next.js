@@ -61,13 +61,25 @@ If you haven't set up OAuth consent screen for Google:
 
 - ✅ Firebase configuration setup
 - ✅ Google OAuth authentication
-- ✅ User data conversion from Firebase to app format
+- ✅ **Two-step authentication flow**: Firebase → Backend
+- ✅ **Backend JWT integration**: Firebase ID token → Backend JWT
 - ✅ Integration with existing auth store
 - ✅ Login dialog with Google button
 - ✅ Login page with Google button
 - ✅ Internationalization support (English/Vietnamese)
 - ✅ Error handling and loading states
 - ✅ Automatic token management
+
+## Authentication Flow
+
+1. **User clicks "Login with Google"**
+2. **Firebase Authentication**: User authenticates with Google via Firebase
+3. **Get Firebase ID Token**: Firebase returns ID token
+4. **Backend Authentication**: Send ID token to `/auth/firebase/login`
+5. **Backend Verification**: Backend verifies Firebase ID token
+6. **JWT Generation**: Backend returns JWT tokens (access + refresh)
+7. **Token Storage**: Store JWT tokens for API authentication
+8. **User Login**: User is logged in with backend JWT system
 
 ## File Structure
 
@@ -102,9 +114,54 @@ src/
 6. **Environment variables not loading:** Make sure `.env.local` is in the project root and restart the dev server
 7. **DNS_PROBE_FINISHED_NXDOMAIN:** Check your Firebase project configuration and domain settings
 
+## Backend API Requirements
+
+Your backend needs to implement the following endpoint:
+
+### POST `/auth/firebase/login`
+
+**Request Body:**
+```json
+{
+  "idToken": "firebase_id_token_here"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "user": {
+      "id": "user_id",
+      "email": "user@example.com",
+      "name": "User Name",
+      "username": "username",
+      "avatar": {
+        "url": "avatar_url",
+        "key": "avatar_key"
+      },
+      // ... other user fields
+    },
+    "token": {
+      "accessToken": "jwt_access_token",
+      "refreshToken": "jwt_refresh_token"
+    }
+  },
+  "message": "Login successful"
+}
+```
+
+**Backend Implementation:**
+1. Verify Firebase ID token using Firebase Admin SDK
+2. Extract user information from verified token
+3. Create or update user in your database
+4. Generate JWT tokens (access + refresh)
+5. Return user data and JWT tokens
+
 ## Next Steps
 
-- Configure your backend to verify Firebase ID tokens
+- ✅ Configure your backend to verify Firebase ID tokens
 - Add more OAuth providers (Facebook, Apple, etc.)
 - Implement user profile synchronization
 - Add proper error handling for different Firebase auth errors

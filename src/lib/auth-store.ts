@@ -8,8 +8,8 @@ import {
   setRefreshTokenFallback,
   clearRefreshTokenFallback,
 } from "@/lib/http";
-import type { User, ApiResponse, LoginResponse } from "@/lib/types";
-import { signInWithGoogle, signOutFirebase, convertFirebaseUserToUser } from "@/lib/firebase";
+import type { User, ApiResponse, LoginResponse, FirebaseLoginRequest } from "@/lib/types";
+import { signInWithGoogle, signOutFirebase } from "@/lib/firebase";
 
 // Jotai atoms for state management
 export const accessTokenAtom = atom<string | null>(null);
@@ -180,21 +180,44 @@ export async function checkAndRefreshToken(): Promise<boolean> {
 // Firebase Google login action
 export async function loginWithGoogleAction(): Promise<User> {
   try {
-    // Sign in with Google using Firebase
+    // Step 1: Sign in with Google using Firebase
     const firebaseUser = await signInWithGoogle();
     
-    // Convert Firebase user to our User type
-    const user = convertFirebaseUserToUser(firebaseUser);
-    
-    // Get Firebase ID token for backend authentication
+    // Step 2: Get Firebase ID token
     const idToken = await firebaseUser.getIdToken();
     
-    // Store the Firebase ID token as access token
-    setAccessToken(idToken);
+    // Step 3: Send ID token to backend for authentication
+    const requestBody: FirebaseLoginRequest = {
+      idToken: idToken
+    };
+    const response = await http.post<ApiResponse<LoginResponse>>("/auth/firebase/login", requestBody);
+
+    // Check if API response is successful
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Firebase authentication failed");
+    }
+
+    const { user, token } = response.data.data;
+    const { accessToken, refreshToken } = token;
+
+    if (!accessToken) {
+      throw new Error("No access token returned from server");
+    }
+
+    // Step 4: Store access token in memory (secure, not persisted)
+    setAccessToken(accessToken);
     
-    // Set cookie for middleware to check
+    // Step 5: Set cookie for middleware to check
     if (typeof document !== 'undefined') {
-      document.cookie = `accessToken=${idToken}; path=/; max-age=3600; SameSite=Strict; Secure`;
+      document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; SameSite=Strict; Secure`;
+    }
+
+    // Step 6: Store refresh token in localStorage only if backend doesn't set HttpOnly cookies
+    if (refreshToken) {
+      setRefreshTokenFallback(refreshToken);
+      console.warn(
+        "⚠️ Using fallback refresh token storage - not secure for production",
+      );
     }
     
     return user;

@@ -56,6 +56,7 @@ export const signOutFirebase = async (): Promise<void> => {
  * Convert Firebase User to our User type
  * @param firebaseUser - Firebase user object
  * @returns User object compatible with our auth system
+ * @deprecated This function is no longer used as backend returns user data
  */
 export const convertFirebaseUserToUser = (firebaseUser: FirebaseUser) => {
   return {
