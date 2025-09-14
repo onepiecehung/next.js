@@ -1,5 +1,12 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, GithubAuthProvider, signInWithPopup, signOut, User as FirebaseUser } from 'firebase/auth';
+import { initializeApp } from "firebase/app";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup,
+  signOut,
+  User as FirebaseUser,
+} from "firebase/auth";
 
 // Firebase configuration
 // You need to replace these with your actual Firebase project configuration
@@ -23,14 +30,14 @@ export const googleProvider = new GoogleAuthProvider();
 
 // Configure Google provider
 googleProvider.setCustomParameters({
-  prompt: 'select_account'
+  prompt: "select_account",
 });
 
 // Initialize GitHub Auth Provider
 export const githubProvider = new GithubAuthProvider();
 
 // Configure GitHub provider
-githubProvider.addScope('user:email');
+githubProvider.addScope("user:email");
 
 /**
  * Sign in with Google using Firebase Auth
@@ -41,7 +48,7 @@ export const signInWithGoogle = async (): Promise<FirebaseUser> => {
     const result = await signInWithPopup(auth, googleProvider);
     return result.user;
   } catch (error) {
-    console.error('Error signing in with Google:', error);
+    console.error("Error signing in with Google:", error);
     throw error;
   }
 };
@@ -55,7 +62,7 @@ export const signInWithGithub = async (): Promise<FirebaseUser> => {
     const result = await signInWithPopup(auth, githubProvider);
     return result.user;
   } catch (error) {
-    console.error('Error signing in with GitHub:', error);
+    console.error("Error signing in with GitHub:", error);
     throw error;
   }
 };
@@ -67,7 +74,7 @@ export const signOutFirebase = async (): Promise<void> => {
   try {
     await signOut(auth);
   } catch (error) {
-    console.error('Error signing out:', error);
+    console.error("Error signing out:", error);
     throw error;
   }
 };
@@ -86,20 +93,21 @@ export const convertFirebaseUserToUser = (firebaseUser: FirebaseUser) => {
     deletedAt: null,
     version: 1,
     name: firebaseUser.displayName || null,
-    username: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || '',
-    status: 'active',
-    role: 'user',
-    email: firebaseUser.email || '',
+    username:
+      firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "",
+    status: "active",
+    role: "user",
+    email: firebaseUser.email || "",
     dob: null,
     phoneNumber: null,
-    oauthProvider: 'google',
+    oauthProvider: "google",
     oauthId: firebaseUser.uid,
-    authMethod: 'oauth',
+    authMethod: "oauth",
     isEmailVerified: firebaseUser.emailVerified,
     isPhoneVerified: false,
     avatar: {
-      url: firebaseUser.photoURL || '',
-      key: firebaseUser.photoURL || '',
+      url: firebaseUser.photoURL || "",
+      key: firebaseUser.photoURL || "",
     },
   };
 };

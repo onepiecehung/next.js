@@ -24,7 +24,7 @@ export default function NotFoundPage() {
             <h1 className="text-8xl sm:text-9xl font-bold text-primary/20 select-none">
               404
             </h1>
-            
+
             {/* Floating Elements */}
             <div className="absolute top-4 left-4 w-3 h-3 bg-primary/30 rounded-full animate-pulse"></div>
             <div className="absolute top-8 right-8 w-2 h-2 bg-chart-2/40 rounded-full animate-pulse delay-100"></div>
@@ -39,7 +39,7 @@ export default function NotFoundPage() {
             {t("notFoundTitle", "common") || "Oops! Page not found"}
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-lg mx-auto">
-            {t("notFoundDescription", "common") || 
+            {t("notFoundDescription", "common") ||
               "The page you're looking for doesn't exist or has been moved. Don't worry, it happens to the best of us!"}
           </p>
         </div>
@@ -52,10 +52,10 @@ export default function NotFoundPage() {
               {t("notFoundGoHome", "common") || "Go Home"}
             </Button>
           </Link>
-          
-          <Button 
-            variant="outline" 
-            size="lg" 
+
+          <Button
+            variant="outline"
+            size="lg"
             className="w-full sm:w-auto px-6 sm:px-8"
             onClick={() => window.history.back()}
           >
@@ -69,7 +69,7 @@ export default function NotFoundPage() {
           <h3 className="text-lg font-semibold text-foreground mb-4 text-center">
             {t("notFoundSuggestions", "common") || "What can you do?"}
           </h3>
-          
+
           <div className="space-y-3">
             <div className="flex items-start gap-3">
               <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -80,7 +80,8 @@ export default function NotFoundPage() {
                   {t("notFoundSuggestion1", "common") || "Check the URL"}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {t("notFoundSuggestion1Desc", "common") || "Make sure the web address is spelled correctly"}
+                  {t("notFoundSuggestion1Desc", "common") ||
+                    "Make sure the web address is spelled correctly"}
                 </p>
               </div>
             </div>
@@ -94,7 +95,8 @@ export default function NotFoundPage() {
                   {t("notFoundSuggestion2", "common") || "Try refreshing"}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {t("notFoundSuggestion2Desc", "common") || "Press F5 or click the refresh button"}
+                  {t("notFoundSuggestion2Desc", "common") ||
+                    "Press F5 or click the refresh button"}
                 </p>
               </div>
             </div>
@@ -108,7 +110,8 @@ export default function NotFoundPage() {
                   {t("notFoundSuggestion3", "common") || "Go to homepage"}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {t("notFoundSuggestion3Desc", "common") || "Start fresh from our homepage"}
+                  {t("notFoundSuggestion3Desc", "common") ||
+                    "Start fresh from our homepage"}
                 </p>
               </div>
             </div>
@@ -121,26 +124,26 @@ export default function NotFoundPage() {
             {t("notFoundPopularLinks", "common") || "Popular pages:"}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-2">
-            <Link 
-              href="/write" 
+            <Link
+              href="/write"
               className="text-xs px-3 py-1 bg-muted hover:bg-muted/80 rounded-full transition-colors"
             >
               {t("writeTitle", "write") || "Write"}
             </Link>
-            <Link 
-              href="/demo" 
+            <Link
+              href="/demo"
               className="text-xs px-3 py-1 bg-muted hover:bg-muted/80 rounded-full transition-colors"
             >
               {t("demoTitle", "demo") || "Demo"}
             </Link>
-            <Link 
-              href="/demo/theming" 
+            <Link
+              href="/demo/theming"
               className="text-xs px-3 py-1 bg-muted hover:bg-muted/80 rounded-full transition-colors"
             >
               {t("themingTitle", "demo") || "Theming"}
             </Link>
-            <Link 
-              href="/demo/editor" 
+            <Link
+              href="/demo/editor"
               className="text-xs px-3 py-1 bg-muted hover:bg-muted/80 rounded-full transition-colors"
             >
               {t("editorTitle", "demo") || "Editor"}

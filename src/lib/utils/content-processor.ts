@@ -33,7 +33,9 @@ export interface ContentProcessorOptions {
 /**
  * Initialize Mermaid with configuration
  */
-export function initializeMermaid(config: ContentProcessorOptions["mermaidConfig"] = {}) {
+export function initializeMermaid(
+  config: ContentProcessorOptions["mermaidConfig"] = {},
+) {
   mermaid.initialize({
     startOnLoad: false,
     theme: "default",
@@ -140,7 +142,10 @@ export async function renderMermaidDiagram(code: string, content: HTMLElement) {
 /**
  * Handle Mermaid diagram processing
  */
-export async function handleMermaidDiagram(element: HTMLElement, parentPre: HTMLElement) {
+export async function handleMermaidDiagram(
+  element: HTMLElement,
+  parentPre: HTMLElement,
+) {
   try {
     const code = element.textContent || "";
     if (code.trim()) {
@@ -156,7 +161,10 @@ export async function handleMermaidDiagram(element: HTMLElement, parentPre: HTML
 /**
  * Handle syntax highlighting for code blocks
  */
-export function handleSyntaxHighlighting(element: HTMLElement, lang: string | undefined) {
+export function handleSyntaxHighlighting(
+  element: HTMLElement,
+  lang: string | undefined,
+) {
   if (lang && hljs.getLanguage(lang)) {
     element.innerHTML = hljs.highlight(element.textContent ?? "", {
       language: lang,
@@ -172,18 +180,16 @@ export function handleSyntaxHighlighting(element: HTMLElement, lang: string | un
  */
 export async function processCodeBlocks(
   container: HTMLElement,
-  options: ContentProcessorOptions = {}
+  options: ContentProcessorOptions = {},
 ) {
-  const {
-    enableSyntaxHighlighting = true,
-    enableMermaidDiagrams = true,
-  } = options;
+  const { enableSyntaxHighlighting = true, enableMermaidDiagrams = true } =
+    options;
 
   if (!enableSyntaxHighlighting && !enableMermaidDiagrams) return;
 
   // Process all <pre><code> elements inside the container
   const codeElements = Array.from(container.querySelectorAll("pre code"));
-  
+
   for (const el of codeElements) {
     const element = el as HTMLElement;
     const parentPre = element.parentElement as HTMLElement;

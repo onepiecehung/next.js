@@ -68,6 +68,38 @@ export interface FirebaseLoginRequest {
   idToken: string;
 }
 
+// OTP-related types
+export interface OTPRequestRequest {
+  email: string;
+}
+
+export interface OTPRequestResponse {
+  success: boolean;
+  message: string;
+  data: {
+    requestId: string;
+    expiresIn: number; // seconds
+  };
+}
+
+export interface OTPVerifyRequest {
+  email: string;
+  code: string;
+  requestId: string;
+}
+
+export interface OTPVerifyResponse {
+  success: boolean;
+  message: string;
+  data: {
+    user: User;
+    token: {
+      accessToken: string;
+      refreshToken: string;
+    };
+  };
+}
+
 export interface LoginResponse {
   user: User;
   token: {

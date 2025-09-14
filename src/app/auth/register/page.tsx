@@ -26,18 +26,23 @@ import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 import Link from "next/link";
 
 // Form validation schema for signup
-const signupSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  email: z.string().min(1, "Email is required").email({ message: "Please enter a valid email address" }),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(6, "Please confirm your password"),
-  name: z.string().optional(),
-  dob: z.string().optional(),
-  phoneNumber: z.string().optional(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+const signupSchema = z
+  .object({
+    username: z.string().min(3, "Username must be at least 3 characters"),
+    email: z
+      .string()
+      .min(1, "Email is required")
+      .email({ message: "Please enter a valid email address" }),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string().min(6, "Please confirm your password"),
+    name: z.string().optional(),
+    dob: z.string().optional(),
+    phoneNumber: z.string().optional(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
@@ -113,20 +118,20 @@ export default function RegisterPage() {
 
       // Show success message
       toast.success(
-        t("toastLoginSuccess", "toast") || "Account created successfully!"
+        t("toastLoginSuccess", "toast") || "Account created successfully!",
       );
-      
+
       // Reset form
       reset();
       setShowPassword(false);
       setShowConfirmPassword(false);
-      
+
       // Redirect will be handled by useAuthRedirect hook
     } catch (error: unknown) {
       // Handle signup errors and show appropriate error message
       const errorMessage = extractErrorMessage(
         error,
-        t("registerErrorDefault", "auth") || "Signup failed. Please try again."
+        t("registerErrorDefault", "auth") || "Signup failed. Please try again.",
       );
       toast.error(errorMessage);
     } finally {
@@ -163,8 +168,8 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         {/* Back to home link */}
         <div className="mb-4 sm:mb-6">
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -198,8 +203,7 @@ export default function RegisterPage() {
                     id="username"
                     type="text"
                     placeholder={
-                      t("usernamePlaceholder", "auth") ||
-                      "Enter your username"
+                      t("usernamePlaceholder", "auth") || "Enter your username"
                     }
                     required
                     aria-invalid={!!errors.username}
@@ -222,8 +226,7 @@ export default function RegisterPage() {
                     id="email"
                     type="email"
                     placeholder={
-                      t("emailPlaceholder", "auth") ||
-                      "m@example.com"
+                      t("emailPlaceholder", "auth") || "m@example.com"
                     }
                     required
                     aria-invalid={!!errors.email}
@@ -258,7 +261,9 @@ export default function RegisterPage() {
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
                     >
                       {showPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -294,9 +299,13 @@ export default function RegisterPage() {
                     />
                     <button
                       type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                      aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                      aria-label={
+                        showConfirmPassword ? "Hide password" : "Show password"
+                      }
                     >
                       {showConfirmPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -316,14 +325,15 @@ export default function RegisterPage() {
                 <div className="grid gap-3">
                   <Label htmlFor="name">
                     {t("fullName", "auth") || "Full Name"}
-                    <span className="text-muted-foreground ml-1">(optional)</span>
+                    <span className="text-muted-foreground ml-1">
+                      (optional)
+                    </span>
                   </Label>
                   <Input
                     id="name"
                     type="text"
                     placeholder={
-                      t("fullNamePlaceholder", "auth") ||
-                      "Enter your full name"
+                      t("fullNamePlaceholder", "auth") || "Enter your full name"
                     }
                     aria-invalid={!!errors.name}
                     {...register("name")}
@@ -339,7 +349,9 @@ export default function RegisterPage() {
                 <div className="grid gap-3">
                   <Label htmlFor="dob">
                     {t("dob", "auth") || "Date of Birth"}
-                    <span className="text-muted-foreground ml-1">(optional)</span>
+                    <span className="text-muted-foreground ml-1">
+                      (optional)
+                    </span>
                   </Label>
                   <Input
                     id="dob"
@@ -349,9 +361,7 @@ export default function RegisterPage() {
                     {...register("dob")}
                   />
                   {errors.dob && (
-                    <p className="text-sm text-red-500">
-                      {errors.dob.message}
-                    </p>
+                    <p className="text-sm text-red-500">{errors.dob.message}</p>
                   )}
                 </div>
 
@@ -359,7 +369,9 @@ export default function RegisterPage() {
                 <div className="grid gap-3">
                   <Label htmlFor="phoneNumber">
                     {t("phoneNumber", "auth") || "Phone Number"}
-                    <span className="text-muted-foreground ml-1">(optional)</span>
+                    <span className="text-muted-foreground ml-1">
+                      (optional)
+                    </span>
                   </Label>
                   <Input
                     id="phoneNumber"
@@ -386,8 +398,7 @@ export default function RegisterPage() {
                     disabled={isSubmitting || isLoading}
                   >
                     {isSubmitting || isLoading
-                      ? t("creatingAccount", "auth") ||
-                        "Creating Account..."
+                      ? t("creatingAccount", "auth") || "Creating Account..."
                       : t("createAccount", "auth") || "Create Account"}
                   </Button>
                   <Button
@@ -397,16 +408,14 @@ export default function RegisterPage() {
                     onClick={handleGoogleSignup}
                     disabled={isLoading}
                   >
-                    {t("registerWithGoogle", "auth") ||
-                      "Register with Google"}
+                    {t("registerWithGoogle", "auth") || "Register with Google"}
                   </Button>
                 </div>
               </div>
 
               {/* Footer text with link to login */}
               <div className="mt-4 text-center text-sm">
-                {t("alreadyHaveAccount", "auth") ||
-                  "Already have an account?"}{" "}
+                {t("alreadyHaveAccount", "auth") || "Already have an account?"}{" "}
                 <Link
                   href="/auth/login"
                   className="underline underline-offset-4 hover:text-primary transition-colors"

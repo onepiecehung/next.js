@@ -42,7 +42,11 @@ export default function HomePage() {
               </Button>
             </Link>
             <Link href="/write">
-              <Button variant="outline" size="lg" className="px-6 sm:px-8 w-full sm:w-auto">
+              <Button
+                variant="outline"
+                size="lg"
+                className="px-6 sm:px-8 w-full sm:w-auto"
+              >
                 <PenTool className="mr-2 h-5 w-5" />
                 {t("heroStartWriting", "home")}
               </Button>
@@ -175,7 +179,11 @@ export default function HomePage() {
               </Button>
             </Link>
             <Link href="/demo">
-              <Button variant="outline" size="lg" className="px-6 sm:px-8 w-full sm:w-auto">
+              <Button
+                variant="outline"
+                size="lg"
+                className="px-6 sm:px-8 w-full sm:w-auto"
+              >
                 {t("ctaLearnMore", "home")}
               </Button>
             </Link>

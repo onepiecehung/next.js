@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/core";
 import { useI18n } from "@/components/providers/i18n-provider";
 import SignupForm from "./signup-form";
+import OTPLoginForm from "./otp-login-form";
 
 // Form validation schema
 const loginSchema = z.object({
@@ -81,6 +82,7 @@ export default function LoginDialog() {
   const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [loginMode, setLoginMode] = useState<"password" | "otp">("password");
 
   const {
     register,
@@ -136,30 +138,40 @@ export default function LoginDialog() {
       setShowPassword(false); // Reset password visibility
     } catch (error: unknown) {
       // Handle specific Firebase auth errors
-      if (error && typeof error === 'object' && 'code' in error) {
+      if (error && typeof error === "object" && "code" in error) {
         const firebaseError = error as { code: string; message: string };
-        
+
         switch (firebaseError.code) {
-          case 'auth/cancelled-popup-request':
+          case "auth/cancelled-popup-request":
             // User cancelled the popup - don't show error message
             return;
-          case 'auth/popup-closed-by-user':
+          case "auth/popup-closed-by-user":
             // User closed the popup - don't show error message
             return;
-          case 'auth/popup-blocked':
-            toast.error(t("popupBlocked", "auth") || "Popup was blocked. Please allow popups and try again.");
+          case "auth/popup-blocked":
+            toast.error(
+              t("popupBlocked", "auth") ||
+                "Popup was blocked. Please allow popups and try again.",
+            );
             return;
-          case 'auth/unauthorized-domain':
-            toast.error(t("unauthorizedDomain", "auth") || "This domain is not authorized for Google login.");
+          case "auth/unauthorized-domain":
+            toast.error(
+              t("unauthorizedDomain", "auth") ||
+                "This domain is not authorized for Google login.",
+            );
             return;
-          case 'auth/account-exists-with-different-credential':
-            toast.error(t("accountExistsDifferentCredential", "auth") || "An account already exists with this email using a different login method.");
+          case "auth/account-exists-with-different-credential":
+            toast.error(
+              t("accountExistsDifferentCredential", "auth") ||
+                "An account already exists with this email using a different login method.",
+            );
             return;
           default:
             // Show generic error for other cases
             const errorMessage = extractErrorMessage(
               error,
-              t("googleLoginError", "auth") || "Google login failed. Please try again.",
+              t("googleLoginError", "auth") ||
+                "Google login failed. Please try again.",
             );
             toast.error(errorMessage);
         }
@@ -167,7 +179,8 @@ export default function LoginDialog() {
         // Handle non-Firebase errors
         const errorMessage = extractErrorMessage(
           error,
-          t("googleLoginError", "auth") || "Google login failed. Please try again.",
+          t("googleLoginError", "auth") ||
+            "Google login failed. Please try again.",
         );
         toast.error(errorMessage);
       }
@@ -192,30 +205,40 @@ export default function LoginDialog() {
       setShowPassword(false); // Reset password visibility
     } catch (error: unknown) {
       // Handle specific Firebase auth errors
-      if (error && typeof error === 'object' && 'code' in error) {
+      if (error && typeof error === "object" && "code" in error) {
         const firebaseError = error as { code: string; message: string };
-        
+
         switch (firebaseError.code) {
-          case 'auth/cancelled-popup-request':
+          case "auth/cancelled-popup-request":
             // User cancelled the popup - don't show error message
             return;
-          case 'auth/popup-closed-by-user':
+          case "auth/popup-closed-by-user":
             // User closed the popup - don't show error message
             return;
-          case 'auth/popup-blocked':
-            toast.error(t("popupBlocked", "auth") || "Popup was blocked. Please allow popups and try again.");
+          case "auth/popup-blocked":
+            toast.error(
+              t("popupBlocked", "auth") ||
+                "Popup was blocked. Please allow popups and try again.",
+            );
             return;
-          case 'auth/unauthorized-domain':
-            toast.error(t("unauthorizedDomain", "auth") || "This domain is not authorized for GitHub login.");
+          case "auth/unauthorized-domain":
+            toast.error(
+              t("unauthorizedDomain", "auth") ||
+                "This domain is not authorized for GitHub login.",
+            );
             return;
-          case 'auth/account-exists-with-different-credential':
-            toast.error(t("accountExistsDifferentCredential", "auth") || "An account already exists with this email using a different login method.");
+          case "auth/account-exists-with-different-credential":
+            toast.error(
+              t("accountExistsDifferentCredential", "auth") ||
+                "An account already exists with this email using a different login method.",
+            );
             return;
           default:
             // Show generic error for other cases
             const errorMessage = extractErrorMessage(
               error,
-              t("githubLoginError", "auth") || "GitHub login failed. Please try again.",
+              t("githubLoginError", "auth") ||
+                "GitHub login failed. Please try again.",
             );
             toast.error(errorMessage);
         }
@@ -223,7 +246,8 @@ export default function LoginDialog() {
         // Handle non-Firebase errors
         const errorMessage = extractErrorMessage(
           error,
-          t("githubLoginError", "auth") || "GitHub login failed. Please try again.",
+          t("githubLoginError", "auth") ||
+            "GitHub login failed. Please try again.",
         );
         toast.error(errorMessage);
       }
@@ -236,6 +260,7 @@ export default function LoginDialog() {
       reset(); // Clear form when dialog closes
       setShowPassword(false); // Reset password visibility when dialog closes
       setShowSignup(false); // Reset to login view when dialog closes
+      setLoginMode("password"); // Reset to password login mode
     }
   };
 
@@ -258,13 +283,17 @@ export default function LoginDialog() {
         {/* login-01 layout: Card + Header + Content */}
         {showSignup ? (
           <SignupForm onBackToLogin={() => setShowSignup(false)} />
+        ) : loginMode === "otp" ? (
+          <OTPLoginForm
+            onBack={() => setLoginMode("password")}
+            onSuccess={() => setOpen(false)}
+          />
         ) : (
           <Card>
             <CardHeader>
               <CardTitle>
                 {/* Title aligned with login-01, internationalized */}
-                {t("loginCardTitle", "auth") ||
-                  t("loginTitle", "auth")}
+                {t("loginCardTitle", "auth") || t("loginTitle", "auth")}
               </CardTitle>
               <CardDescription>
                 {/* Description aligned with login-01, fallback to a generic helper */}
@@ -279,9 +308,7 @@ export default function LoginDialog() {
                 <div className="flex flex-col gap-6">
                   {/* Email field */}
                   <div className="grid gap-3">
-                    <Label htmlFor="email">
-                      {t("email", "auth")}
-                    </Label>
+                    <Label htmlFor="email">{t("email", "auth")}</Label>
                     <Input
                       id="email"
                       type="email"
@@ -300,16 +327,13 @@ export default function LoginDialog() {
                   {/* Password field + forgot link (decorative only here) */}
                   <div className="grid gap-3">
                     <div className="flex items-center">
-                      <Label htmlFor="password">
-                        {t("password", "auth")}
-                      </Label>
+                      <Label htmlFor="password">{t("password", "auth")}</Label>
                       <button
                         type="button"
                         className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                         aria-label="Forgot your password"
                       >
-                        {t("forgotPassword", "auth") ||
-                          "Forgot your password?"}
+                        {t("forgotPassword", "auth") || "Forgot your password?"}
                       </button>
                     </div>
                     <div className="relative">
@@ -354,24 +378,24 @@ export default function LoginDialog() {
                         ? t("loggingIn", "auth")
                         : t("login", "auth")}
                     </Button>
-                    
+
                     {/* Social login buttons */}
                     <div className="grid grid-cols-2 gap-2">
                       {/* Google login button */}
-                      <Button 
-                        variant="outline" 
-                        className="w-full" 
+                      <Button
+                        variant="outline"
+                        className="w-full"
                         type="button"
                         onClick={handleGoogleLogin}
                         disabled={isSubmitting}
                       >
                         {t("loginWithGoogle", "auth") || "Google"}
                       </Button>
-                      
+
                       {/* GitHub login button */}
-                      <Button 
-                        variant="outline" 
-                        className="w-full" 
+                      <Button
+                        variant="outline"
+                        className="w-full"
                         type="button"
                         onClick={handleGithubLogin}
                         disabled={isSubmitting}
@@ -381,10 +405,20 @@ export default function LoginDialog() {
                     </div>
                   </div>
                 </div>
+                {/* Login mode toggle */}
+                <div className="mt-4 text-center">
+                  <button
+                    type="button"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    onClick={() => setLoginMode("otp")}
+                  >
+                    {t("loginWithOTP", "auth") || "Login with OTP instead"}
+                  </button>
+                </div>
+
                 {/* Footer text like in login-01 */}
                 <div className="mt-4 text-center text-sm">
-                  {t("noAccount", "auth") ||
-                    "Don't have an account?"}{" "}
+                  {t("noAccount", "auth") || "Don't have an account?"}{" "}
                   <button
                     type="button"
                     className="underline underline-offset-4"

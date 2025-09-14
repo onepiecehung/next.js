@@ -21,21 +21,23 @@ export default function AuthProvider({
     // Check if user is already authenticated on app load
     const checkAuth = async () => {
       try {
-        console.log('AuthProvider: Starting auth check...');
+        console.log("AuthProvider: Starting auth check...");
         setAuthLoading(true);
 
         // Try to fetch user data directly
         // If there's a valid token, this will succeed
         // If not, it will fail and we'll clear the state
         const user = await fetchMeAction();
-        console.log('AuthProvider: User fetched successfully:', user);
+        console.log("AuthProvider: User fetched successfully:", user);
         setUser(user);
       } catch (error) {
         // User is not authenticated or API failed, clear state
-        console.log('AuthProvider: Auth check failed:', error);
+        console.log("AuthProvider: Auth check failed:", error);
         setUser(null);
       } finally {
-        console.log('AuthProvider: Auth check complete, setting loading to false');
+        console.log(
+          "AuthProvider: Auth check complete, setting loading to false",
+        );
         setAuthLoading(false);
       }
     };

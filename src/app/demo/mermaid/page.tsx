@@ -73,14 +73,18 @@ export default function MermaidDemoPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-4">Mermaid Diagrams Demo</h1>
         <p className="text-muted-foreground">
-          This demo shows how Mermaid diagrams work in the TipTap editor. 
-          Create code blocks with <code className="bg-muted px-1 rounded">language-mermaid</code> to render diagrams.
+          This demo shows how Mermaid diagrams work in the TipTap editor. Create
+          code blocks with{" "}
+          <code className="bg-muted px-1 rounded">language-mermaid</code> to
+          render diagrams.
         </p>
       </div>
 
       <div className="space-y-6">
         <div>
-          <h2 className="text-xl font-semibold mb-4">Editor with Mermaid Support</h2>
+          <h2 className="text-xl font-semibold mb-4">
+            Editor with Mermaid Support
+          </h2>
           <TipTapEditor
             content={content}
             onChange={setContent}
@@ -90,16 +94,36 @@ export default function MermaidDemoPage() {
         </div>
 
         <div className="mt-8 p-6 bg-muted/50 rounded-lg">
-          <h3 className="text-lg font-semibold mb-3">Supported Diagram Types</h3>
+          <h3 className="text-lg font-semibold mb-3">
+            Supported Diagram Types
+          </h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>• <strong>Flowcharts:</strong> Process flows, decision trees, workflows</li>
-            <li>• <strong>Sequence Diagrams:</strong> System interactions, API calls</li>
-            <li>• <strong>Gantt Charts:</strong> Project timelines, schedules</li>
-            <li>• <strong>Pie Charts:</strong> Data distribution, percentages</li>
-            <li>• <strong>Journey Maps:</strong> User experience flows</li>
-            <li>• <strong>Git Graphs:</strong> Git branching and merging</li>
-            <li>• <strong>Mind Maps:</strong> Hierarchical information</li>
-            <li>• <strong>Timeline:</strong> Chronological events</li>
+            <li>
+              • <strong>Flowcharts:</strong> Process flows, decision trees,
+              workflows
+            </li>
+            <li>
+              • <strong>Sequence Diagrams:</strong> System interactions, API
+              calls
+            </li>
+            <li>
+              • <strong>Gantt Charts:</strong> Project timelines, schedules
+            </li>
+            <li>
+              • <strong>Pie Charts:</strong> Data distribution, percentages
+            </li>
+            <li>
+              • <strong>Journey Maps:</strong> User experience flows
+            </li>
+            <li>
+              • <strong>Git Graphs:</strong> Git branching and merging
+            </li>
+            <li>
+              • <strong>Mind Maps:</strong> Hierarchical information
+            </li>
+            <li>
+              • <strong>Timeline:</strong> Chronological events
+            </li>
           </ul>
         </div>
 
@@ -108,8 +132,20 @@ export default function MermaidDemoPage() {
             💡 Pro Tips
           </h3>
           <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
-            <li>• Use <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">Ctrl+Enter</code> to save when editing diagrams</li>
-            <li>• Press <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">Esc</code> to cancel editing</li>
+            <li>
+              • Use{" "}
+              <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">
+                Ctrl+Enter
+              </code>{" "}
+              to save when editing diagrams
+            </li>
+            <li>
+              • Press{" "}
+              <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">
+                Esc
+              </code>{" "}
+              to cancel editing
+            </li>
             <li>• Diagrams automatically resize to fit the container</li>
             <li>• Switch between edit, preview, and split view modes</li>
             <li>• Diagrams work in all themes (light, dark, dracula)</li>

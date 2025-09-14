@@ -2,7 +2,11 @@
 
 import { useEffect, useRef, useCallback, useState } from "react";
 import "highlight.js/styles/github.css";
-import { initializeMermaid, processCodeBlocks, ContentProcessorOptions } from "../lib/utils/content-processor";
+import {
+  initializeMermaid,
+  processCodeBlocks,
+  ContentProcessorOptions,
+} from "../lib/utils/content-processor";
 
 interface UseContentRendererOptions extends ContentProcessorOptions {
   /**
@@ -87,7 +91,8 @@ export function useContentRenderer(
 
   // Effect to process code blocks when content changes
   useEffect(() => {
-    if (!content || (!enableSyntaxHighlighting && !enableMermaidDiagrams)) return;
+    if (!content || (!enableSyntaxHighlighting && !enableMermaidDiagrams))
+      return;
 
     // Use setTimeout to ensure DOM is fully rendered
     const timer = setTimeout(() => {
@@ -95,7 +100,13 @@ export function useContentRenderer(
     }, highlightDelay);
 
     return () => clearTimeout(timer);
-  }, [content, enableSyntaxHighlighting, enableMermaidDiagrams, highlightDelay, processCodeBlocksInContainer]);
+  }, [
+    content,
+    enableSyntaxHighlighting,
+    enableMermaidDiagrams,
+    highlightDelay,
+    processCodeBlocksInContainer,
+  ]);
 
   return {
     containerRef,

@@ -94,7 +94,7 @@ export const MermaidCodeBlockExtension = Node.create({
           if (typeof element === "string") return false;
           const codeElement = element.querySelector("code");
           if (!codeElement) return false;
-          
+
           const languageMatch = /language-(\w+)/.exec(codeElement.className);
           const language = languageMatch?.[1];
           return language === "mermaid" ? { language: "mermaid" } : false;
@@ -105,7 +105,7 @@ export const MermaidCodeBlockExtension = Node.create({
 
   renderHTML({ node, HTMLAttributes }) {
     const { language, code } = node.attrs;
-    
+
     if (language === "mermaid") {
       return [
         "div",

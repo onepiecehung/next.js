@@ -149,13 +149,21 @@ export function TipTapEditor({
           class: "code-block",
         },
         addNodeView() {
-          return ReactNodeViewRenderer(({ node, updateAttributes, selected }) => {
-            const language = node.attrs.language;
-            if (language === "mermaid") {
-              return <MermaidRenderer node={node} updateAttributes={updateAttributes} selected={selected} />;
-            }
-            return null;
-          });
+          return ReactNodeViewRenderer(
+            ({ node, updateAttributes, selected }) => {
+              const language = node.attrs.language;
+              if (language === "mermaid") {
+                return (
+                  <MermaidRenderer
+                    node={node}
+                    updateAttributes={updateAttributes}
+                    selected={selected}
+                  />
+                );
+              }
+              return null;
+            },
+          );
         },
       }),
       TextAlign.configure({

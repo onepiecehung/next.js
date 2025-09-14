@@ -19,25 +19,30 @@ export function useAuthRedirect() {
   useEffect(() => {
     // Don't redirect while auth is still loading
     if (authLoading) {
-      console.log('Auth is loading, waiting...');
+      console.log("Auth is loading, waiting...");
       return;
     }
 
     // If user is authenticated, redirect to home or intended destination
     if (user && !hasRedirected) {
-      const redirectUrl = searchParams.get('redirect') || '/';
-      console.log('User authenticated, current path:', window.location.pathname, 'redirect to:', redirectUrl);
+      const redirectUrl = searchParams.get("redirect") || "/";
+      console.log(
+        "User authenticated, current path:",
+        window.location.pathname,
+        "redirect to:",
+        redirectUrl,
+      );
       // Only redirect if we're not already on the target page
       if (window.location.pathname !== redirectUrl) {
-        console.log('Redirecting to:', redirectUrl);
+        console.log("Redirecting to:", redirectUrl);
         setHasRedirected(true);
         router.push(redirectUrl);
       } else {
-        console.log('Already on target page, no redirect needed');
+        console.log("Already on target page, no redirect needed");
         setHasRedirected(true);
       }
     } else if (!user) {
-      console.log('User not authenticated');
+      console.log("User not authenticated");
       setHasRedirected(false);
     }
   }, [user, authLoading, router, searchParams, hasRedirected]);

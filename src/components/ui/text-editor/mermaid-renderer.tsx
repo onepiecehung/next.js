@@ -19,7 +19,11 @@ interface MermaidRendererProps {
  * Mermaid Diagram Renderer Component
  * Renders Mermaid diagrams using the Mermaid library
  */
-export function MermaidRenderer({ node, updateAttributes, selected }: MermaidRendererProps) {
+export function MermaidRenderer({
+  node,
+  updateAttributes,
+  selected,
+}: MermaidRendererProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -81,7 +85,7 @@ export function MermaidRenderer({ node, updateAttributes, selected }: MermaidRen
 
         // Render the diagram
         const { svg } = await mermaid.render(id, node.attrs.code);
-        
+
         if (containerRef.current) {
           containerRef.current.innerHTML = svg;
         }
@@ -89,7 +93,9 @@ export function MermaidRenderer({ node, updateAttributes, selected }: MermaidRen
         setIsLoading(false);
       } catch (err) {
         console.error("Mermaid rendering error:", err);
-        setError(err instanceof Error ? err.message : "Failed to render diagram");
+        setError(
+          err instanceof Error ? err.message : "Failed to render diagram",
+        );
         setIsLoading(false);
       }
     };
@@ -177,7 +183,7 @@ export function MermaidRenderer({ node, updateAttributes, selected }: MermaidRen
             Edit
           </button>
         </div>
-        
+
         <div className="mermaid-content">
           {isLoading && (
             <div className="flex items-center justify-center p-8 text-muted-foreground">
@@ -185,14 +191,14 @@ export function MermaidRenderer({ node, updateAttributes, selected }: MermaidRen
               <span className="ml-2">Rendering diagram...</span>
             </div>
           )}
-          
+
           {error && (
             <div className="p-4 bg-destructive/10 border border-destructive/20 rounded text-destructive text-sm">
               <div className="font-medium">Diagram Error:</div>
               <div className="mt-1">{error}</div>
             </div>
           )}
-          
+
           {!isLoading && !error && (
             <div
               ref={containerRef}

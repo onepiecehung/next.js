@@ -147,8 +147,7 @@ export default function SignupForm({
                 id="username"
                 type="text"
                 placeholder={
-                  t("usernamePlaceholder", "auth") ||
-                  "Enter your username"
+                  t("usernamePlaceholder", "auth") || "Enter your username"
                 }
                 required
                 aria-invalid={!!errors.username}
@@ -179,9 +178,7 @@ export default function SignupForm({
 
             {/* Password field */}
             <div className="grid gap-3">
-              <Label htmlFor="password">
-                {t("password", "auth")}
-              </Label>
+              <Label htmlFor="password">{t("password", "auth")}</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -220,8 +217,7 @@ export default function SignupForm({
                 id="name"
                 type="text"
                 placeholder={
-                  t("fullNamePlaceholder", "auth") ||
-                  "Enter your full name"
+                  t("fullNamePlaceholder", "auth") || "Enter your full name"
                 }
                 aria-invalid={!!errors.name}
                 {...register("name")}
@@ -233,9 +229,7 @@ export default function SignupForm({
 
             {/* Date of Birth field (optional) */}
             <div className="grid gap-3">
-              <Label htmlFor="dob">
-                {t("dob", "auth") || "Date of Birth"}
-              </Label>
+              <Label htmlFor="dob">{t("dob", "auth") || "Date of Birth"}</Label>
               <Input
                 id="dob"
                 type="date"
@@ -274,8 +268,7 @@ export default function SignupForm({
             <div className="flex flex-col gap-3">
               <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting
-                  ? t("creatingAccount", "auth") ||
-                    "Creating Account..."
+                  ? t("creatingAccount", "auth") || "Creating Account..."
                   : t("createAccount", "auth") || "Create Account"}
               </Button>
             </div>
@@ -283,8 +276,7 @@ export default function SignupForm({
 
           {/* Footer text */}
           <div className="mt-4 text-center text-sm">
-            {t("alreadyHaveAccount", "auth") ||
-              "Already have an account?"}{" "}
+            {t("alreadyHaveAccount", "auth") || "Already have an account?"}{" "}
             <button
               type="button"
               className="underline underline-offset-4"

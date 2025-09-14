@@ -2,7 +2,10 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import "highlight.js/styles/github.css";
-import { initializeMermaid, processCodeBlocks } from "../lib/utils/content-processor";
+import {
+  initializeMermaid,
+  processCodeBlocks,
+} from "../lib/utils/content-processor";
 
 /**
  * Component to highlight HTML content with syntax highlighting and Mermaid diagrams
