@@ -1,0 +1,20 @@
+/* Custom Google Icon Styling */
+.google-icon {
+  /* Base icon styles */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Custom hover effects if needed */
+.google-icon:hover {
+  /* Add any custom hover effects here */
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+/* Dark mode adjustments if needed */
+@media (prefers-color-scheme: dark) {
+  .google-icon {
+    /* Dark mode specific styles */
+  }
+}
