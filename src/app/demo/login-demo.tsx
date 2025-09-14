@@ -20,10 +20,6 @@ export default function LoginDemo() {
     console.log("OTP login clicked");
   };
 
-  const handleXLogin = () => {
-    console.log("X login clicked");
-  };
-
   const handleRegister = () => {
     console.log("Register clicked");
   };
