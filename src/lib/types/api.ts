@@ -78,7 +78,7 @@ export interface OTPRequestResponse {
   message: string;
   data: {
     requestId: string;
-    expiresIn: number; // seconds
+    expiresInSec: number; // seconds
   };
 }
 

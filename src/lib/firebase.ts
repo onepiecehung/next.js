@@ -3,6 +3,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   GithubAuthProvider,
+  OAuthProvider,
   signInWithPopup,
   signOut,
   User as FirebaseUser,
@@ -39,6 +40,13 @@ export const githubProvider = new GithubAuthProvider();
 // Configure GitHub provider
 githubProvider.addScope("user:email");
 
+// Initialize X (Twitter) Auth Provider
+export const xProvider = new OAuthProvider("twitter.com");
+
+// Configure X provider
+xProvider.addScope("tweet.read");
+xProvider.addScope("users.read");
+
 /**
  * Sign in with Google using Firebase Auth
  * @returns Promise<FirebaseUser> - The authenticated Firebase user
@@ -63,6 +71,20 @@ export const signInWithGithub = async (): Promise<FirebaseUser> => {
     return result.user;
   } catch (error) {
     console.error("Error signing in with GitHub:", error);
+    throw error;
+  }
+};
+
+/**
+ * Sign in with X (Twitter) using Firebase Auth
+ * @returns Promise<FirebaseUser> - The authenticated Firebase user
+ */
+export const signInWithX = async (): Promise<FirebaseUser> => {
+  try {
+    const result = await signInWithPopup(auth, xProvider);
+    return result.user;
+  } catch (error) {
+    console.error("Error signing in with X:", error);
     throw error;
   }
 };

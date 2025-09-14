@@ -320,8 +320,8 @@ export async function requestOTPAction(
     }
 
     return {
-      requestId: response.data.data.requestId,
-      expiresIn: response.data.data.expiresIn,
+      requestId: response.data.data?.requestId,
+      expiresIn: response.data.data?.expiresInSec,
     };
   } catch (error) {
     console.error("OTP request error:", error);

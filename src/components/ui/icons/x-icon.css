@@ -1,20 +1,21 @@
-/* Custom X Icon Styling */
+/* X (Twitter) Icon Styles */
 .x-icon {
-  /* Base icon styles */
-  display: inline-block;
-  vertical-align: middle;
+  fill: currentColor;
+  transition: fill 0.2s ease-in-out;
 }
 
-/* Custom hover effects if needed */
+/* Hover state for better UX */
 .x-icon:hover {
-  /* Add any custom hover effects here */
-  transform: scale(1.05);
-  transition: transform 0.2s ease;
+  fill: #1da1f2; /* Twitter blue */
 }
 
-/* Dark mode adjustments if needed */
+/* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .x-icon {
-    /* Dark mode specific styles */
+    fill: #ffffff;
+  }
+  
+  .x-icon:hover {
+    fill: #1da1f2;
   }
 }
