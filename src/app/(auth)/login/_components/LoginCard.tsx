@@ -5,14 +5,34 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
-import { EmailField, PasswordField, FormError, FormSuccess } from "./FormFields";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui";
+import {
+  EmailField,
+  PasswordField,
+  FormError,
+  FormSuccess,
+} from "./FormFields";
 import { SocialButtons, SocialSeparator, SocialError } from "./SocialButtons";
-import { loginSchema, LoginFormData, mapServerError, AUTH_ERRORS } from "@/lib/validators/auth";
+import {
+  loginSchema,
+  LoginFormData,
+  mapServerError,
+  AUTH_ERRORS,
+} from "@/lib/validators/auth";
 import { useI18n } from "@/components/providers/i18n-provider";
 
 interface LoginCardProps {
-  onSubmitEmailPassword?: (data: { email: string; password: string }) => Promise<void> | void;
+  onSubmitEmailPassword?: (data: {
+    email: string;
+    password: string;
+  }) => Promise<void> | void;
   onGoogle?: () => Promise<void> | void;
   onGithub?: () => Promise<void> | void;
   onForgotPassword?: () => void;
@@ -50,7 +70,9 @@ export const LoginCard: React.FC<LoginCardProps> = ({
 }) => {
   const { t } = useI18n();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [oauthLoading, setOauthLoading] = useState<"google" | "github" | null>(null);
+  const [oauthLoading, setOauthLoading] = useState<"google" | "github" | null>(
+    null,
+  );
 
   const {
     register,
@@ -75,31 +97,34 @@ export const LoginCard: React.FC<LoginCardProps> = ({
       toast.success(t("toastLoginSuccess", "toast") || "Login successful!");
     } catch (error) {
       const errorMessage = mapServerError(error);
-      
+
       // Map common server errors to user-friendly messages
-      if (errorMessage.includes("invalid") || errorMessage.includes("incorrect")) {
-        setError("root", { 
-          message: AUTH_ERRORS.INVALID_CREDENTIALS 
+      if (
+        errorMessage.includes("invalid") ||
+        errorMessage.includes("incorrect")
+      ) {
+        setError("root", {
+          message: AUTH_ERRORS.INVALID_CREDENTIALS,
         });
       } else if (errorMessage.includes("locked")) {
-        setError("root", { 
-          message: AUTH_ERRORS.ACCOUNT_LOCKED 
+        setError("root", {
+          message: AUTH_ERRORS.ACCOUNT_LOCKED,
         });
       } else if (errorMessage.includes("verify")) {
-        setError("root", { 
-          message: AUTH_ERRORS.EMAIL_NOT_VERIFIED 
+        setError("root", {
+          message: AUTH_ERRORS.EMAIL_NOT_VERIFIED,
         });
       } else if (errorMessage.includes("attempts")) {
-        setError("root", { 
-          message: AUTH_ERRORS.TOO_MANY_ATTEMPTS 
+        setError("root", {
+          message: AUTH_ERRORS.TOO_MANY_ATTEMPTS,
         });
       } else if (errorMessage.includes("network")) {
-        setError("root", { 
-          message: AUTH_ERRORS.NETWORK_ERROR 
+        setError("root", {
+          message: AUTH_ERRORS.NETWORK_ERROR,
         });
       } else {
-        setError("root", { 
-          message: AUTH_ERRORS.UNKNOWN_ERROR 
+        setError("root", {
+          message: AUTH_ERRORS.UNKNOWN_ERROR,
         });
       }
     } finally {
@@ -142,7 +167,9 @@ export const LoginCard: React.FC<LoginCardProps> = ({
   const isAnyLoading = isSubmitting || oauthLoading !== null;
 
   return (
-    <Card className={`w-full max-w-sm border-muted-foreground/10 shadow-sm ${className}`}>
+    <Card
+      className={`w-full max-w-sm border-muted-foreground/10 shadow-sm ${className}`}
+    >
       <CardHeader className="space-y-1 pb-4">
         {showBackButton && onBack && (
           <Button
@@ -166,24 +193,16 @@ export const LoginCard: React.FC<LoginCardProps> = ({
 
       <CardContent className="space-y-6">
         {/* Success Message */}
-        {successMessage && (
-          <FormSuccess message={successMessage} />
-        )}
+        {successMessage && <FormSuccess message={successMessage} />}
 
         {/* Server Error */}
-        {serverError && (
-          <FormError error={serverError} />
-        )}
+        {serverError && <FormError error={serverError} />}
 
         {/* Social Error */}
-        {socialError && (
-          <SocialError error={socialError} />
-        )}
+        {socialError && <SocialError error={socialError} />}
 
         {/* Form Error */}
-        {errors.root && (
-          <FormError error={errors.root.message} />
-        )}
+        {errors.root && <FormError error={errors.root.message} />}
 
         {/* Email/Password Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -218,9 +237,7 @@ export const LoginCard: React.FC<LoginCardProps> = ({
         </form>
 
         {/* Social Login Separator */}
-        {(onGoogle || onGithub) && (
-          <SocialSeparator />
-        )}
+        {(onGoogle || onGithub) && <SocialSeparator />}
 
         {/* Social Login Buttons */}
         {(onGoogle || onGithub) && (

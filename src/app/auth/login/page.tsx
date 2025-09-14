@@ -3,10 +3,7 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import {
-  currentUserAtom,
-  authLoadingAtom,
-} from "@/lib/auth-store";
+import { currentUserAtom, authLoadingAtom } from "@/lib/auth-store";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 import LoginFormShared from "@/components/auth/login-form-shared";
@@ -85,7 +82,9 @@ export default function LoginPage() {
             onBack={handleBack}
             showBackButton={true}
             title={t("loginTitle", "auth") || "Welcome back!"}
-            description={t("loginSubtitle", "auth") || "Please login to continue"}
+            description={
+              t("loginSubtitle", "auth") || "Please login to continue"
+            }
           />
         )}
       </div>

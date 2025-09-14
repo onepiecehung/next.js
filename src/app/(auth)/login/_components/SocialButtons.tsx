@@ -98,9 +98,7 @@ export const SocialSeparator: React.FC<SocialSeparatorProps> = ({
         <div className="w-full border-t border-border/50" />
       </div>
       <div className="relative flex justify-center text-sm">
-        <span className="px-2 bg-background text-muted-foreground">
-          {text}
-        </span>
+        <span className="px-2 bg-background text-muted-foreground">{text}</span>
       </div>
     </div>
   );
@@ -122,7 +120,7 @@ export const SocialError: React.FC<SocialErrorProps> = ({
   if (!error) return null;
 
   return (
-    <div 
+    <div
       className={`p-3 rounded-md bg-destructive/10 border border-destructive/20 ${className}`}
       role="alert"
       aria-live="polite"

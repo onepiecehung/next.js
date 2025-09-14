@@ -114,19 +114,22 @@ export function useLogin() {
             return { success: false, error: null };
           }
           case "auth/popup-blocked": {
-            const errorMessage = t("popupBlocked", "auth") ||
+            const errorMessage =
+              t("popupBlocked", "auth") ||
               "Popup was blocked. Please allow popups and try again.";
             toast.error(errorMessage);
             return { success: false, error: errorMessage };
           }
           case "auth/unauthorized-domain": {
-            const errorMessage = t("unauthorizedDomain", "auth") ||
+            const errorMessage =
+              t("unauthorizedDomain", "auth") ||
               "This domain is not authorized for Google login.";
             toast.error(errorMessage);
             return { success: false, error: errorMessage };
           }
           case "auth/account-exists-with-different-credential": {
-            const errorMessage = t("accountExistsDifferentCredential", "auth") ||
+            const errorMessage =
+              t("accountExistsDifferentCredential", "auth") ||
               "An account already exists with this email using a different login method.";
             toast.error(errorMessage);
             return { success: false, error: errorMessage };
@@ -189,19 +192,22 @@ export function useLogin() {
             return { success: false, error: null };
           }
           case "auth/popup-blocked": {
-            const errorMessage = t("popupBlocked", "auth") ||
+            const errorMessage =
+              t("popupBlocked", "auth") ||
               "Popup was blocked. Please allow popups and try again.";
             toast.error(errorMessage);
             return { success: false, error: errorMessage };
           }
           case "auth/unauthorized-domain": {
-            const errorMessage = t("unauthorizedDomain", "auth") ||
+            const errorMessage =
+              t("unauthorizedDomain", "auth") ||
               "This domain is not authorized for GitHub login.";
             toast.error(errorMessage);
             return { success: false, error: errorMessage };
           }
           case "auth/account-exists-with-different-credential": {
-            const errorMessage = t("accountExistsDifferentCredential", "auth") ||
+            const errorMessage =
+              t("accountExistsDifferentCredential", "auth") ||
               "An account already exists with this email using a different login method.";
             toast.error(errorMessage);
             return { success: false, error: errorMessage };
@@ -264,19 +270,22 @@ export function useLogin() {
             return { success: false, error: null };
           }
           case "auth/popup-blocked": {
-            const errorMessage = t("popupBlocked", "auth") ||
+            const errorMessage =
+              t("popupBlocked", "auth") ||
               "Popup was blocked. Please allow popups and try again.";
             toast.error(errorMessage);
             return { success: false, error: errorMessage };
           }
           case "auth/unauthorized-domain": {
-            const errorMessage = t("unauthorizedDomain", "auth") ||
+            const errorMessage =
+              t("unauthorizedDomain", "auth") ||
               "This domain is not authorized for X login.";
             toast.error(errorMessage);
             return { success: false, error: errorMessage };
           }
           case "auth/account-exists-with-different-credential": {
-            const errorMessage = t("accountExistsDifferentCredential", "auth") ||
+            const errorMessage =
+              t("accountExistsDifferentCredential", "auth") ||
               "An account already exists with this email using a different login method.";
             toast.error(errorMessage);
             return { success: false, error: errorMessage };
@@ -285,8 +294,7 @@ export function useLogin() {
             // Show generic error for other cases
             const errorMessage = extractErrorMessage(
               error,
-              t("xLoginError", "auth") ||
-                "X login failed. Please try again.",
+              t("xLoginError", "auth") || "X login failed. Please try again.",
             );
             toast.error(errorMessage);
             return { success: false, error: errorMessage };
@@ -296,8 +304,7 @@ export function useLogin() {
         // Handle non-Firebase errors
         const errorMessage = extractErrorMessage(
           error,
-          t("xLoginError", "auth") ||
-            "X login failed. Please try again.",
+          t("xLoginError", "auth") || "X login failed. Please try again.",
         );
         toast.error(errorMessage);
         return { success: false, error: errorMessage };

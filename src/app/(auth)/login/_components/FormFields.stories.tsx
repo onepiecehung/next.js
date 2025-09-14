@@ -2,7 +2,13 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginFormData } from "@/lib/validators/auth";
-import { EmailField, PasswordField, OTPField, FormError, FormSuccess } from "./FormFields";
+import {
+  EmailField,
+  PasswordField,
+  OTPField,
+  FormError,
+  FormSuccess,
+} from "./FormFields";
 
 // Wrapper component for form fields that need react-hook-form
 const FormWrapper = ({ children, ...props }: any) => {
@@ -48,9 +54,7 @@ type Story = StoryObj<typeof meta>;
 export const EmailFieldDefault: Story = {
   render: () => (
     <FormWrapper>
-      {(form: any) => (
-        <EmailField register={form.register} />
-      )}
+      {(form: any) => <EmailField register={form.register} />}
     </FormWrapper>
   ),
 };
@@ -63,8 +67,8 @@ export const EmailFieldWithError: Story = {
   render: () => (
     <FormWrapper>
       {(form: any) => (
-        <EmailField 
-          register={form.register} 
+        <EmailField
+          register={form.register}
           error={{ message: "Please enter a valid email address" }}
         />
       )}
@@ -79,12 +83,7 @@ export const EmailFieldWithError: Story = {
 export const EmailFieldDisabled: Story = {
   render: () => (
     <FormWrapper>
-      {(form: any) => (
-        <EmailField 
-          register={form.register} 
-          disabled={true}
-        />
-      )}
+      {(form: any) => <EmailField register={form.register} disabled={true} />}
     </FormWrapper>
   ),
 };
@@ -96,9 +95,7 @@ export const EmailFieldDisabled: Story = {
 export const PasswordFieldDefault: Story = {
   render: () => (
     <FormWrapper>
-      {(form: any) => (
-        <PasswordField register={form.register} />
-      )}
+      {(form: any) => <PasswordField register={form.register} />}
     </FormWrapper>
   ),
 };
@@ -111,8 +108,8 @@ export const PasswordFieldWithForgot: Story = {
   render: () => (
     <FormWrapper>
       {(form: any) => (
-        <PasswordField 
-          register={form.register} 
+        <PasswordField
+          register={form.register}
           onForgotPassword={() => console.log("Forgot password clicked")}
         />
       )}
@@ -128,8 +125,8 @@ export const PasswordFieldWithError: Story = {
   render: () => (
     <FormWrapper>
       {(form: any) => (
-        <PasswordField 
-          register={form.register} 
+        <PasswordField
+          register={form.register}
           error={{ message: "Password must be at least 6 characters" }}
         />
       )}
@@ -145,10 +142,7 @@ export const PasswordFieldDisabled: Story = {
   render: () => (
     <FormWrapper>
       {(form: any) => (
-        <PasswordField 
-          register={form.register} 
-          disabled={true}
-        />
+        <PasswordField register={form.register} disabled={true} />
       )}
     </FormWrapper>
   ),
@@ -161,9 +155,7 @@ export const PasswordFieldDisabled: Story = {
 export const OTPFieldDefault: Story = {
   render: () => (
     <FormWrapper>
-      {(form: any) => (
-        <OTPField register={form.register} />
-      )}
+      {(form: any) => <OTPField register={form.register} />}
     </FormWrapper>
   ),
 };
@@ -176,8 +168,8 @@ export const OTPFieldWithError: Story = {
   render: () => (
     <FormWrapper>
       {(form: any) => (
-        <OTPField 
-          register={form.register} 
+        <OTPField
+          register={form.register}
           error={{ message: "OTP code must be 6 digits" }}
         />
       )}
@@ -192,12 +184,7 @@ export const OTPFieldWithError: Story = {
 export const OTPFieldDisabled: Story = {
   render: () => (
     <FormWrapper>
-      {(form: any) => (
-        <OTPField 
-          register={form.register} 
-          disabled={true}
-        />
-      )}
+      {(form: any) => <OTPField register={form.register} disabled={true} />}
     </FormWrapper>
   ),
 };
@@ -232,8 +219,8 @@ export const AllFields: Story = {
       {(form: any) => (
         <div className="space-y-4">
           <EmailField register={form.register} />
-          <PasswordField 
-            register={form.register} 
+          <PasswordField
+            register={form.register}
             onForgotPassword={() => console.log("Forgot password clicked")}
           />
           <OTPField register={form.register} />

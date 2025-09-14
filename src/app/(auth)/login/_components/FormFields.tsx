@@ -32,15 +32,12 @@ export const EmailField: React.FC<EmailFieldProps> = ({
 }) => {
   return (
     <div className="space-y-2">
-      <Label 
-        htmlFor="email" 
-        className="text-sm font-medium text-foreground"
-      >
+      <Label htmlFor="email" className="text-sm font-medium text-foreground">
         Email address
       </Label>
       <div className="relative">
-        <User 
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" 
+        <User
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none"
           size={16}
         />
         <Input
@@ -55,8 +52,8 @@ export const EmailField: React.FC<EmailFieldProps> = ({
         />
       </div>
       {error && (
-        <p 
-          id="email-error" 
+        <p
+          id="email-error"
           className="text-sm text-destructive"
           role="alert"
           aria-live="polite"
@@ -87,8 +84,8 @@ export const PasswordField: React.FC<PasswordFieldProps> = ({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <Label 
-          htmlFor="password" 
+        <Label
+          htmlFor="password"
           className="text-sm font-medium text-foreground"
         >
           Password
@@ -105,8 +102,8 @@ export const PasswordField: React.FC<PasswordFieldProps> = ({
         )}
       </div>
       <div className="relative">
-        <Lock 
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" 
+        <Lock
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none"
           size={16}
         />
         <Input
@@ -135,8 +132,8 @@ export const PasswordField: React.FC<PasswordFieldProps> = ({
         </button>
       </div>
       {error && (
-        <p 
-          id="password-error" 
+        <p
+          id="password-error"
           className="text-sm text-destructive"
           role="alert"
           aria-live="polite"
@@ -173,10 +170,7 @@ export const OTPField: React.FC<OTPFieldProps> = ({
 
   return (
     <div className="space-y-2">
-      <Label 
-        htmlFor="otp-code" 
-        className="text-sm font-medium text-foreground"
-      >
+      <Label htmlFor="otp-code" className="text-sm font-medium text-foreground">
         Verification code
       </Label>
       <Input
@@ -194,8 +188,8 @@ export const OTPField: React.FC<OTPFieldProps> = ({
         {...register("code")}
       />
       {error && (
-        <p 
-          id="otp-error" 
+        <p
+          id="otp-error"
           className="text-sm text-destructive"
           role="alert"
           aria-live="polite"
@@ -216,21 +210,19 @@ interface FormErrorProps {
   className?: string;
 }
 
-export const FormError: React.FC<FormErrorProps> = ({ 
-  error, 
-  className = "" 
+export const FormError: React.FC<FormErrorProps> = ({
+  error,
+  className = "",
 }) => {
   if (!error) return null;
 
   return (
-    <div 
+    <div
       className={`p-3 rounded-md bg-destructive/10 border border-destructive/20 ${className}`}
       role="alert"
       aria-live="polite"
     >
-      <p className="text-sm text-destructive font-medium">
-        {error}
-      </p>
+      <p className="text-sm text-destructive font-medium">{error}</p>
     </div>
   );
 };
@@ -244,14 +236,14 @@ interface FormSuccessProps {
   className?: string;
 }
 
-export const FormSuccess: React.FC<FormSuccessProps> = ({ 
-  message, 
-  className = "" 
+export const FormSuccess: React.FC<FormSuccessProps> = ({
+  message,
+  className = "",
 }) => {
   if (!message) return null;
 
   return (
-    <div 
+    <div
       className={`p-3 rounded-md bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 ${className}`}
     >
       <output className="text-sm text-green-700 dark:text-green-400 font-medium">

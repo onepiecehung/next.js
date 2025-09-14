@@ -27,14 +27,17 @@ export default function LoginPage() {
   const [user, setUser] = useAtom(currentUserAtom);
   const [authLoading] = useAtom(authLoadingAtom);
   const [, setAccessToken] = useAtom(accessTokenAtom);
-  
+
   // Redirect if already authenticated
   useAuthRedirect();
 
   const isAuthenticated = !!user;
 
   // Handle email/password login
-  const handleEmailPasswordLogin = async (data: { email: string; password: string }) => {
+  const handleEmailPasswordLogin = async (data: {
+    email: string;
+    password: string;
+  }) => {
     const user = await loginAction(data.email, data.password);
     setUser(user);
     setAccessToken(null); // Token is stored in http layer
@@ -117,7 +120,10 @@ export default function LoginPage() {
           onBack={handleBack}
           showBackButton={false}
           title={t("loginTitle", "auth") || "Welcome back"}
-          description={t("loginSubtitle", "auth") || "Enter your credentials to access your account"}
+          description={
+            t("loginSubtitle", "auth") ||
+            "Enter your credentials to access your account"
+          }
         />
 
         {/* Additional Info */}
@@ -146,11 +152,11 @@ export default function LoginPage() {
 
 /*
  * NextAuth Integration Example (commented out)
- * 
+ *
  * If you want to use NextAuth instead of custom auth, replace the handlers above with:
- * 
+ *
  * import { signIn } from "next-auth/react";
- * 
+ *
  * const handleEmailPasswordLogin = async (data: { email: string; password: string }) => {
  *   await signIn("credentials", {
  *     email: data.email,
@@ -158,11 +164,11 @@ export default function LoginPage() {
  *     redirect: false,
  *   });
  * };
- * 
+ *
  * const handleGoogleLogin = async () => {
  *   await signIn("google", { redirect: false });
  * };
- * 
+ *
  * const handleGithubLogin = async () => {
  *   await signIn("github", { redirect: false });
  * };

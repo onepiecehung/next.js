@@ -9,7 +9,8 @@ const meta: Meta<typeof SocialButtons> = {
     layout: "centered",
     docs: {
       description: {
-        component: "Social login buttons with individual loading states and error handling.",
+        component:
+          "Social login buttons with individual loading states and error handling.",
       },
     },
   },
@@ -17,9 +18,9 @@ const meta: Meta<typeof SocialButtons> = {
     onGoogle: { action: "Google login clicked" },
     onGithub: { action: "GitHub login clicked" },
     disabled: { control: "boolean" },
-    oauthLoading: { 
-      control: "select", 
-      options: [null, "google", "github"] 
+    oauthLoading: {
+      control: "select",
+      options: [null, "google", "github"],
     },
   },
   args: {
@@ -117,7 +118,9 @@ export const SeparatorCustomText: Story = {
  * Shows social login error message
  */
 export const ErrorMessage: Story = {
-  render: () => <SocialError error="Google login is temporarily unavailable. Please try again later." />,
+  render: () => (
+    <SocialError error="Google login is temporarily unavailable. Please try again later." />
+  ),
 };
 
 /**
@@ -128,10 +131,7 @@ export const CompleteSection: Story = {
   render: () => (
     <div className="space-y-4">
       <SocialSeparator />
-      <SocialButtons 
-        onGoogle={fn()} 
-        onGithub={fn()} 
-      />
+      <SocialButtons onGoogle={fn()} onGithub={fn()} />
       <SocialError error="One or more social login providers are currently unavailable." />
     </div>
   ),

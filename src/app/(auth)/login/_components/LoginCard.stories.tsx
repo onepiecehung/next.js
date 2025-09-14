@@ -9,7 +9,8 @@ const meta: Meta<typeof LoginCard> = {
     layout: "centered",
     docs: {
       description: {
-        component: "Main login card component with email/password authentication and social login options.",
+        component:
+          "Main login card component with email/password authentication and social login options.",
       },
     },
   },
@@ -96,7 +97,8 @@ export const WithServerError: Story = {
  */
 export const WithSocialError: Story = {
   args: {
-    socialError: "Google login is temporarily unavailable. Please try again later.",
+    socialError:
+      "Google login is temporarily unavailable. Please try again later.",
   },
 };
 

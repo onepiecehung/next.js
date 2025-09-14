@@ -2,7 +2,10 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { LoginCard } from "@/app/(auth)/login/_components/LoginCard";
-import { EmailField, PasswordField } from "@/app/(auth)/login/_components/FormFields";
+import {
+  EmailField,
+  PasswordField,
+} from "@/app/(auth)/login/_components/FormFields";
 import { SocialButtons } from "@/app/(auth)/login/_components/SocialButtons";
 
 // Mock the i18n provider
@@ -10,9 +13,9 @@ jest.mock("@/components/providers/i18n-provider", () => ({
   useI18n: () => ({
     t: (key: string, namespace?: string) => {
       const translations: Record<string, string> = {
-        "loginTitle": "Welcome back",
-        "loginSubtitle": "Enter your credentials to access your account",
-        "toastLoginSuccess": "Login successful!",
+        loginTitle: "Welcome back",
+        loginSubtitle: "Enter your credentials to access your account",
+        toastLoginSuccess: "Login successful!",
       };
       return translations[key] || key;
     },
@@ -48,12 +51,14 @@ describe("LoginCard", () => {
         onForgotPassword={mockOnForgotPassword}
         onOTPLogin={mockOnOTPLogin}
         onRegister={mockOnRegister}
-      />
+      />,
     );
 
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /sign in/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /sign in/i }),
+    ).toBeInTheDocument();
   });
 
   it("shows validation errors for invalid email", async () => {
@@ -66,7 +71,7 @@ describe("LoginCard", () => {
         onForgotPassword={mockOnForgotPassword}
         onOTPLogin={mockOnOTPLogin}
         onRegister={mockOnRegister}
-      />
+      />,
     );
 
     const emailInput = screen.getByLabelText(/email address/i);
@@ -76,7 +81,9 @@ describe("LoginCard", () => {
     await user.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/please enter a valid email address/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/please enter a valid email address/i),
+      ).toBeInTheDocument();
     });
   });
 
@@ -90,7 +97,7 @@ describe("LoginCard", () => {
         onForgotPassword={mockOnForgotPassword}
         onOTPLogin={mockOnOTPLogin}
         onRegister={mockOnRegister}
-      />
+      />,
     );
 
     const passwordInput = screen.getByLabelText(/password/i);
@@ -100,7 +107,9 @@ describe("LoginCard", () => {
     await user.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/password must be at least 6 characters/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/password must be at least 6 characters/i),
+      ).toBeInTheDocument();
     });
   });
 
@@ -114,7 +123,7 @@ describe("LoginCard", () => {
         onForgotPassword={mockOnForgotPassword}
         onOTPLogin={mockOnOTPLogin}
         onRegister={mockOnRegister}
-      />
+      />,
     );
 
     const emailInput = screen.getByLabelText(/email address/i);
@@ -145,7 +154,7 @@ describe("LoginCard", () => {
         onForgotPassword={mockOnForgotPassword}
         onOTPLogin={mockOnOTPLogin}
         onRegister={mockOnRegister}
-      />
+      />,
     );
 
     const emailInput = screen.getByLabelText(/email address/i);
@@ -158,7 +167,9 @@ describe("LoginCard", () => {
 
     await waitFor(() => {
       expect(screen.getByText(/signing in/i)).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /signing in/i })).toBeDisabled();
+      expect(
+        screen.getByRole("button", { name: /signing in/i }),
+      ).toBeDisabled();
     });
   });
 
@@ -172,10 +183,12 @@ describe("LoginCard", () => {
         onForgotPassword={mockOnForgotPassword}
         onOTPLogin={mockOnOTPLogin}
         onRegister={mockOnRegister}
-      />
+      />,
     );
 
-    const googleButton = screen.getByRole("button", { name: /continue with google/i });
+    const googleButton = screen.getByRole("button", {
+      name: /continue with google/i,
+    });
     await user.click(googleButton);
 
     expect(mockOnGoogle).toHaveBeenCalled();
@@ -191,10 +204,12 @@ describe("LoginCard", () => {
         onForgotPassword={mockOnForgotPassword}
         onOTPLogin={mockOnOTPLogin}
         onRegister={mockOnRegister}
-      />
+      />,
     );
 
-    const githubButton = screen.getByRole("button", { name: /continue with github/i });
+    const githubButton = screen.getByRole("button", {
+      name: /continue with github/i,
+    });
     await user.click(githubButton);
 
     expect(mockOnGithub).toHaveBeenCalled();
@@ -210,7 +225,7 @@ describe("LoginCard", () => {
         onForgotPassword={mockOnForgotPassword}
         onOTPLogin={mockOnOTPLogin}
         onRegister={mockOnRegister}
-      />
+      />,
     );
 
     const forgotPasswordLink = screen.getByText(/forgot password/i);
@@ -229,7 +244,7 @@ describe("LoginCard", () => {
         onForgotPassword={mockOnForgotPassword}
         onOTPLogin={mockOnOTPLogin}
         onRegister={mockOnRegister}
-      />
+      />,
     );
 
     const otpLink = screen.getByText(/sign in with verification code/i);
@@ -248,7 +263,7 @@ describe("LoginCard", () => {
         onForgotPassword={mockOnForgotPassword}
         onOTPLogin={mockOnOTPLogin}
         onRegister={mockOnRegister}
-      />
+      />,
     );
 
     const registerLink = screen.getByText(/sign up/i);
@@ -272,11 +287,14 @@ describe("EmailField", () => {
   it("shows error message when error is provided", () => {
     const mockRegister = jest.fn();
     const error = { message: "Email is required" };
-    
+
     render(<EmailField register={mockRegister} error={error} />);
 
     expect(screen.getByText("Email is required")).toBeInTheDocument();
-    expect(screen.getByText("Email is required")).toHaveAttribute("role", "alert");
+    expect(screen.getByText("Email is required")).toHaveAttribute(
+      "role",
+      "alert",
+    );
   });
 
   it("disables input when disabled prop is true", () => {
@@ -320,12 +338,12 @@ describe("PasswordField", () => {
   it("shows forgot password link when onForgotPassword is provided", () => {
     const mockRegister = jest.fn();
     const mockOnForgotPassword = jest.fn();
-    
+
     render(
-      <PasswordField 
-        register={mockRegister} 
-        onForgotPassword={mockOnForgotPassword} 
-      />
+      <PasswordField
+        register={mockRegister}
+        onForgotPassword={mockOnForgotPassword}
+      />,
     );
 
     expect(screen.getByText(/forgot password/i)).toBeInTheDocument();
@@ -335,12 +353,12 @@ describe("PasswordField", () => {
     const user = userEvent.setup();
     const mockRegister = jest.fn();
     const mockOnForgotPassword = jest.fn();
-    
+
     render(
-      <PasswordField 
-        register={mockRegister} 
-        onForgotPassword={mockOnForgotPassword} 
-      />
+      <PasswordField
+        register={mockRegister}
+        onForgotPassword={mockOnForgotPassword}
+      />,
     );
 
     const forgotPasswordLink = screen.getByText(/forgot password/i);
@@ -355,14 +373,18 @@ describe("SocialButtons", () => {
     const mockOnGoogle = jest.fn();
     render(<SocialButtons onGoogle={mockOnGoogle} />);
 
-    expect(screen.getByRole("button", { name: /continue with google/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /continue with google/i }),
+    ).toBeInTheDocument();
   });
 
   it("renders GitHub button when onGithub is provided", () => {
     const mockOnGithub = jest.fn();
     render(<SocialButtons onGithub={mockOnGithub} />);
 
-    expect(screen.getByRole("button", { name: /continue with github/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /continue with github/i }),
+    ).toBeInTheDocument();
   });
 
   it("shows loading state for Google button when oauthLoading is google", () => {
@@ -370,7 +392,9 @@ describe("SocialButtons", () => {
     render(<SocialButtons onGoogle={mockOnGoogle} oauthLoading="google" />);
 
     expect(screen.getByText(/connecting/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /continue with google/i })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: /continue with google/i }),
+    ).toBeDisabled();
   });
 
   it("shows loading state for GitHub button when oauthLoading is github", () => {
@@ -378,22 +402,28 @@ describe("SocialButtons", () => {
     render(<SocialButtons onGithub={mockOnGithub} oauthLoading="github" />);
 
     expect(screen.getByText(/connecting/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /continue with github/i })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: /continue with github/i }),
+    ).toBeDisabled();
   });
 
   it("disables all buttons when disabled prop is true", () => {
     const mockOnGoogle = jest.fn();
     const mockOnGithub = jest.fn();
-    
+
     render(
-      <SocialButtons 
-        onGoogle={mockOnGoogle} 
-        onGithub={mockOnGithub} 
-        disabled={true} 
-      />
+      <SocialButtons
+        onGoogle={mockOnGoogle}
+        onGithub={mockOnGithub}
+        disabled={true}
+      />,
     );
 
-    expect(screen.getByRole("button", { name: /continue with google/i })).toBeDisabled();
-    expect(screen.getByRole("button", { name: /continue with github/i })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: /continue with google/i }),
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: /continue with github/i }),
+    ).toBeDisabled();
   });
 });

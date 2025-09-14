@@ -48,7 +48,13 @@ export default function LoginFormShared({
   description = "Please login to continue",
   className = "",
 }: LoginFormSharedProps) {
-  const { isLoading, handleEmailPasswordLogin, handleGoogleLogin, handleGithubLogin, handleXLogin } = useLogin();
+  const {
+    isLoading,
+    handleEmailPasswordLogin,
+    handleGoogleLogin,
+    handleGithubLogin,
+    handleXLogin,
+  } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -61,7 +67,10 @@ export default function LoginFormShared({
   });
 
   const onSubmit = async (values: LoginFormValues) => {
-    const result = await handleEmailPasswordLogin(values.email, values.password);
+    const result = await handleEmailPasswordLogin(
+      values.email,
+      values.password,
+    );
     if (result.success) {
       reset();
       setShowPassword(false);
@@ -149,9 +158,7 @@ export default function LoginFormShared({
             />
           </div>
           {errors.email && (
-            <p className="text-sm text-red-500">
-              {errors.email.message}
-            </p>
+            <p className="text-sm text-red-500">{errors.email.message}</p>
           )}
         </div>
 
@@ -172,9 +179,7 @@ export default function LoginFormShared({
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-              aria-label={
-                showPassword ? "Hide password" : "Show password"
-              }
+              aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
                 <EyeOff className="h-4 w-4" />
@@ -184,9 +189,7 @@ export default function LoginFormShared({
             </button>
           </div>
           {errors.password && (
-            <p className="text-sm text-red-500">
-              {errors.password.message}
-            </p>
+            <p className="text-sm text-red-500">{errors.password.message}</p>
           )}
           {/* Forgot password link */}
           <div className="text-right">
@@ -234,7 +237,7 @@ export default function LoginFormShared({
         >
           <GoogleIcon className="h-6 w-6" />
         </button>
-        
+
         <button
           type="button"
           onClick={handleGithubClick}
@@ -244,7 +247,7 @@ export default function LoginFormShared({
         >
           <GitHubIcon className="h-6 w-6" />
         </button>
-        
+
         <button
           type="button"
           onClick={handleXClick}
@@ -268,10 +271,12 @@ export default function LoginFormShared({
             Login with OTP instead
           </button>
         </div>
-        
+
         {/* Register Link */}
         <div className="text-sm">
-          <span className="text-muted-foreground">Don&apos;t have an account? </span>
+          <span className="text-muted-foreground">
+            Don&apos;t have an account?{" "}
+          </span>
           <button
             type="button"
             className="text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
