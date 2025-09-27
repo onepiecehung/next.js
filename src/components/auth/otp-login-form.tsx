@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import {
   currentUserAtom,
@@ -109,6 +109,32 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
     }
   }, [countdown]);
 
+  // Handle OTP verification (Step 2) - moved up to avoid temporal dead zone
+  const handleOTPSubmit = React.useCallback(
+    async (values: OTPFormValues) => {
+      setIsLoading(true);
+      try {
+        const user = await verifyOTPAction(email, values.code, requestId);
+
+        setUser(user);
+        setAccessToken(null); // Token is stored in http layer
+
+        toast.success(t("otpVerifySuccess", "auth") || "Login successful!");
+
+        onSuccess();
+      } catch (error: unknown) {
+        const errorMessage = extractErrorMessage(
+          error,
+          t("otpVerifyError", "auth") || "Invalid OTP code. Please try again.",
+        );
+        toast.error(errorMessage);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [email, requestId, onSuccess, t],
+  );
+
   // Auto-submit when OTP is complete
   const otpCode = otpForm.watch("code");
   useEffect(() => {
@@ -148,31 +174,6 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
     }
   };
 
-  // Handle OTP verification (Step 2)
-  const handleOTPSubmit = React.useCallback(
-    async (values: OTPFormValues) => {
-      setIsLoading(true);
-      try {
-        const user = await verifyOTPAction(email, values.code, requestId);
-
-        setUser(user);
-        setAccessToken(null); // Token is stored in http layer
-
-        toast.success(t("otpVerifySuccess", "auth") || "Login successful!");
-
-        onSuccess();
-      } catch (error: unknown) {
-        const errorMessage = extractErrorMessage(
-          error,
-          t("otpVerifyError", "auth") || "Invalid OTP code. Please try again.",
-        );
-        toast.error(errorMessage);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [email, requestId, setUser, setAccessToken, t, onSuccess],
-  );
 
   // Handle resend OTP
   const handleResendOTP = async () => {
