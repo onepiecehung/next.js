@@ -312,27 +312,29 @@ export default function LoginFormShared({
       {/* Footer links - Only show in email form view */}
       {showEmailForm && (
         <div className="space-y-4 text-center">
-          {/* OTP Login Link */}
+          {/* OTP Login Button */}
           <div className="py-2">
             <button
               type="button"
-              className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
               onClick={handleOTPClick}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-blue-50 hover:bg-blue-100 transition-all duration-200 text-blue-700 font-medium"
             >
+              <Mail className="h-4 w-4" />
               {t("loginWithOTPInstead", "auth")}
             </button>
           </div>
 
-          {/* Register Link */}
-          <div className="text-sm">
-            <span className="text-muted-foreground">
-              {t("dontHaveAccount", "auth")}{" "}
-            </span>
+          {/* Register Section */}
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground text-center">
+              {t("dontHaveAccount", "auth")}
+            </p>
             <button
               type="button"
-              className="text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
               onClick={handleRegisterClick}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-green-50 hover:bg-green-100 transition-all duration-200 text-green-700 font-medium"
             >
+              <Mail className="h-4 w-4" />
               {t("register", "auth")}
             </button>
           </div>
