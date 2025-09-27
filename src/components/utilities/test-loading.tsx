@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui";
-import { useLoading } from "@/components/providers/loading-provider";
+import { useLoading } from "@/components/providers";
 
 /**
  * Test Loading Component

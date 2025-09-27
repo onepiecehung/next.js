@@ -7,7 +7,7 @@ import {
   authLoadingAtom,
   fetchMeAction,
 } from "@/lib/auth-store";
-import { ClientOnly } from "@/components/ui";
+import { ClientOnly } from "@/components/utilities";
 
 export default function AuthProvider({
   children,

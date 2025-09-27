@@ -1,6 +1,7 @@
 /**
- * Core UI Components Index
- * Exports all fundamental UI components that are used across the application
+ * UI Primitives Index
+ * Basic building blocks for UI components
+ * These are the most fundamental, reusable components
  */
 
 export { Avatar, AvatarImage, AvatarFallback } from "./avatar";

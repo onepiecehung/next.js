@@ -10,7 +10,7 @@ import {
   Palette,
   Edit3,
 } from "lucide-react";
-import { useI18n } from "@/components/providers/i18n-provider";
+import { useI18n } from "@/components/providers";
 
 /**
  * Internationalized Home Page Component

@@ -6,9 +6,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, ArrowLeft, Mail, Lock } from "lucide-react";
 import { Button, Input } from "@/components/ui";
-import { GoogleIcon, GitHubIcon, XIcon } from "@/components/ui/icons";
+import { GoogleIcon, GitHubIcon, XIcon } from "@/components/ui/icons/brand-icons";
 import { useLogin } from "@/hooks/useLogin";
-import { useI18n } from "@/components/providers/i18n-provider";
+import { useI18n } from "@/components/providers";
 
 // Form validation schema - will be created inside component to access i18n
 type LoginFormValues = {

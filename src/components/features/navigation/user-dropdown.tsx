@@ -16,8 +16,7 @@ import {
   AvatarImage,
   AvatarFallback,
 } from "@/components/ui";
-import { useIsMounted } from "@/components/providers/no-ssr";
-import { useI18n } from "@/components/providers/i18n-provider";
+import { useIsMounted, useI18n } from "@/components/providers";
 
 interface UserDropdownProps {
   user: {

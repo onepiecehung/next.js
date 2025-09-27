@@ -21,7 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/core";
-import { useI18n } from "@/components/providers/i18n-provider";
+import { useI18n } from "@/components/providers";
 
 // Form validation schema for signup
 const signupSchema = z.object({

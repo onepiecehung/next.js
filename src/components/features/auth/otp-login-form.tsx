@@ -22,7 +22,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui";
-import { useI18n } from "@/components/providers/i18n-provider";
+import { useI18n } from "@/components/providers";
 
 // Form validation schemas
 const emailSchema = z.object({

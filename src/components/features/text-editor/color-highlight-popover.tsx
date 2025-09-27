@@ -2,8 +2,8 @@
 
 import React, { useState, useCallback } from "react";
 import { Editor } from "@tiptap/react";
-import { Button } from "../core/button";
-import { Popover, PopoverContent, PopoverTrigger } from "../popover";
+import { Button } from "@/components/ui/primitives";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui";
 import { Highlighter, Palette } from "lucide-react";
 
 interface ColorHighlightPopoverProps {
