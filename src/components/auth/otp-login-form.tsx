@@ -244,6 +244,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
               id="email"
               type="email"
               placeholder={t("emailPlaceholder", "auth") || "you@example.com"}
+              className="h-12"
               {...emailForm.register("email")}
               disabled={isLoading}
             />

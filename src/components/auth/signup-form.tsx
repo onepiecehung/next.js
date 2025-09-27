@@ -159,6 +159,7 @@ export default function SignupForm({
                 placeholder={
                   t("usernamePlaceholder", "auth") || "Enter your username"
                 }
+                className="h-12"
                 required
                 aria-invalid={!!errors.username}
                 {...register("username")}
@@ -177,6 +178,7 @@ export default function SignupForm({
                 id="email"
                 type="email"
                 placeholder={t("emailPlaceholder", "auth")}
+                className="h-12"
                 required
                 aria-invalid={!!errors.email}
                 {...register("email")}
@@ -194,6 +196,7 @@ export default function SignupForm({
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder={t("passwordPlaceholder", "auth")}
+                  className="h-12"
                   required
                   aria-invalid={!!errors.password}
                   {...register("password")}
@@ -229,6 +232,7 @@ export default function SignupForm({
                 placeholder={
                   t("fullNamePlaceholder", "auth") || "Enter your full name"
                 }
+                className="h-12"
                 aria-invalid={!!errors.name}
                 {...register("name")}
               />
@@ -243,7 +247,7 @@ export default function SignupForm({
               <Input
                 id="dob"
                 type="date"
-                className="relative [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-3 [&::-webkit-calendar-picker-indicator]:top-1/2 [&::-webkit-calendar-picker-indicator]:-translate-y-1/2 [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                className="h-12 relative [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-3 [&::-webkit-calendar-picker-indicator]:top-1/2 [&::-webkit-calendar-picker-indicator]:-translate-y-1/2 [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                 aria-invalid={!!errors.dob}
                 {...register("dob")}
               />
@@ -264,6 +268,7 @@ export default function SignupForm({
                   t("phoneNumberPlaceholder", "auth") ||
                   "Enter your phone number"
                 }
+                className="h-12"
                 aria-invalid={!!errors.phoneNumber}
                 {...register("phoneNumber")}
               />

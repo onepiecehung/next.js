@@ -244,7 +244,7 @@ export default function LoginFormShared({
                   id="email"
                   type="email"
                   placeholder={t("emailAddress", "auth")}
-                  className="pl-10"
+                  className="pl-10 h-12"
                   required
                   aria-invalid={!!errors.email}
                   {...register("email")}
@@ -263,7 +263,7 @@ export default function LoginFormShared({
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder={t("password", "auth")}
-                  className="pl-10 pr-10"
+                  className="pl-10 pr-10 h-12"
                   required
                   aria-invalid={!!errors.password}
                   {...register("password")}
