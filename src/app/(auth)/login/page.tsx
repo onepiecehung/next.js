@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

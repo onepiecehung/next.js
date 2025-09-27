@@ -8,6 +8,7 @@ import { Eye, EyeOff, ArrowLeft, Mail, Lock } from "lucide-react";
 import { Button, Input } from "@/components/ui";
 import { GoogleIcon, GitHubIcon, XIcon } from "@/components/ui/icons";
 import { useLogin } from "@/hooks/useLogin";
+import { useI18n } from "@/components/providers/i18n-provider";
 
 // Form validation schema
 const loginSchema = z.object({
@@ -48,6 +49,7 @@ export default function LoginFormShared({
   description = "Please login to continue",
   className = "",
 }: LoginFormSharedProps) {
+  const { t } = useI18n();
   const {
     isLoading,
     handleEmailPasswordLogin,
@@ -221,7 +223,7 @@ export default function LoginFormShared({
         </div>
         <div className="relative flex justify-center text-sm">
           <span className="bg-background px-4 text-gray-500 font-medium">
-            Or continue with
+            {t("orContinueWith", "auth")}
           </span>
         </div>
       </div>

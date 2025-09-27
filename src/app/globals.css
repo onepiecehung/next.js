@@ -18,6 +18,12 @@
   * {
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   }
+
+  /* OTP Input caret animation */
+  @keyframes caret-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
 }
 
 @theme inline {

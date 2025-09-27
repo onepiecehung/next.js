@@ -4,6 +4,7 @@ import React from "react";
 import { Button } from "@/components/ui";
 import { GoogleIcon, GitHubIcon } from "@/components/ui/icons";
 import { Loader2 } from "lucide-react";
+import { useI18n } from "@/components/providers/i18n-provider";
 
 interface SocialButtonsProps {
   onGoogle?: () => Promise<void> | void;
@@ -89,16 +90,18 @@ interface SocialSeparatorProps {
 }
 
 export const SocialSeparator: React.FC<SocialSeparatorProps> = ({
-  text = "or continue with",
+  text,
   className = "",
 }) => {
+  const { t } = useI18n();
+  const separatorText = text || t("orContinueWith", "auth");
   return (
     <div className={`relative ${className}`}>
       <div className="absolute inset-0 flex items-center">
         <div className="w-full border-t border-border/50" />
       </div>
       <div className="relative flex justify-center text-sm">
-        <span className="px-2 bg-background text-muted-foreground">{text}</span>
+        <span className="px-2 bg-background text-muted-foreground">{separatorText}</span>
       </div>
     </div>
   );

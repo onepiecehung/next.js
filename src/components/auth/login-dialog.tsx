@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog, DialogContent, DialogTrigger, Button } from "@/components/ui";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button, VisuallyHidden } from "@/components/ui";
 import { useI18n } from "@/components/providers/i18n-provider";
 import SignupForm from "./signup-form";
 import OTPLoginForm from "./otp-login-form";
@@ -52,6 +52,15 @@ export default function LoginDialog() {
         <Button variant="outline">{t("loginButton", "auth")}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
+        <VisuallyHidden>
+          <DialogTitle>
+            {(() => {
+              if (showSignup) return t("signupTitle", "auth");
+              if (loginMode === "otp") return t("otpLoginTitle", "auth");
+              return t("loginTitle", "auth");
+            })()}
+          </DialogTitle>
+        </VisuallyHidden>
         {(() => {
           if (showSignup) {
             return <SignupForm onBackToLogin={() => setShowSignup(false)} />;

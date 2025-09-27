@@ -32,6 +32,9 @@ export * from "./navigation";
 // Text Editor Components
 export * from "./text-editor";
 
+// Input OTP Component
+export * from "./input-otp";
+
 // Re-export commonly used components for convenience
 export { Button, buttonVariants } from "./core";
 export { Avatar, AvatarImage, AvatarFallback } from "./core";
@@ -48,3 +51,9 @@ export { ThemeToggle } from "./theme";
 export { XIcon } from "./icons";
 export { UserDropdown, LanguageSwitcher } from "./navigation";
 export { ContentRenderer } from "./utilities";
+export {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+} from "./input-otp";

@@ -13,7 +13,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { ArrowLeft, Mail, RefreshCw } from "lucide-react";
-import { Button, Input, Label } from "@/components/ui";
+import {
+  Button,
+  Input,
+  Label,
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui";
 import { useI18n } from "@/components/providers/i18n-provider";
 
 // Form validation schemas
@@ -21,14 +29,15 @@ const emailSchema = z.object({
   email: z
     .string()
     .min(1, "Email is required")
-    .email("Please enter a valid email address"),
+    .email({ message: "Please enter a valid email address" }),
 });
 
 const otpSchema = z.object({
   code: z
     .string()
     .min(6, "OTP code must be 6 digits")
-    .max(6, "OTP code must be 6 digits"),
+    .max(6, "OTP code must be 6 digits")
+    .regex(/^\d{6}$/, "OTP code must contain only digits"),
 });
 
 type EmailFormValues = z.infer<typeof emailSchema>;
@@ -100,6 +109,18 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
     }
   }, [countdown]);
 
+  // Auto-submit when OTP is complete
+  const otpCode = otpForm.watch("code");
+  useEffect(() => {
+    if (otpCode && otpCode.length === 6 && !isLoading) {
+      // Small delay to ensure the UI updates
+      const timer = setTimeout(() => {
+        otpForm.handleSubmit(handleOTPSubmit)();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [otpCode, isLoading, otpForm, handleOTPSubmit]);
+
   // Handle email submission (Step 1)
   const handleEmailSubmit = async (values: EmailFormValues) => {
     setIsLoading(true);
@@ -128,27 +149,30 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
   };
 
   // Handle OTP verification (Step 2)
-  const handleOTPSubmit = async (values: OTPFormValues) => {
-    setIsLoading(true);
-    try {
-      const user = await verifyOTPAction(email, values.code, requestId);
+  const handleOTPSubmit = React.useCallback(
+    async (values: OTPFormValues) => {
+      setIsLoading(true);
+      try {
+        const user = await verifyOTPAction(email, values.code, requestId);
 
-      setUser(user);
-      setAccessToken(null); // Token is stored in http layer
+        setUser(user);
+        setAccessToken(null); // Token is stored in http layer
 
-      toast.success(t("otpVerifySuccess", "auth") || "Login successful!");
+        toast.success(t("otpVerifySuccess", "auth") || "Login successful!");
 
-      onSuccess();
-    } catch (error: unknown) {
-      const errorMessage = extractErrorMessage(
-        error,
-        t("otpVerifyError", "auth") || "Invalid OTP code. Please try again.",
-      );
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        onSuccess();
+      } catch (error: unknown) {
+        const errorMessage = extractErrorMessage(
+          error,
+          t("otpVerifyError", "auth") || "Invalid OTP code. Please try again.",
+        );
+        toast.error(errorMessage);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [email, requestId, setUser, setAccessToken, t, onSuccess],
+  );
 
   // Handle resend OTP
   const handleResendOTP = async () => {
@@ -255,19 +279,33 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
           onSubmit={otpForm.handleSubmit(handleOTPSubmit)}
           className="space-y-4"
         >
-          <div className="space-y-2">
-            <Label htmlFor="code">{t("otpCode", "auth") || "OTP Code"}</Label>
-            <Input
-              id="code"
-              type="text"
-              placeholder="123456"
-              maxLength={6}
-              {...otpForm.register("code")}
-              disabled={isLoading}
-              className="text-center text-lg tracking-widest"
-            />
+          <div className="space-y-4">
+            <Label htmlFor="code" className="text-center block">
+              {t("otpCode", "auth") || "OTP Code"}
+            </Label>
+            <div className="flex justify-center">
+              <InputOTP
+                maxLength={6}
+                value={otpForm.watch("code") || ""}
+                onChange={(value) => otpForm.setValue("code", value)}
+                disabled={isLoading}
+                className="gap-2"
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
             {otpForm.formState.errors.code && (
-              <p className="text-sm text-red-500">
+              <p className="text-sm text-red-500 text-center">
                 {otpForm.formState.errors.code.message}
               </p>
             )}
