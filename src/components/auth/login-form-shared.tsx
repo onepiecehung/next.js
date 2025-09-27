@@ -10,16 +10,11 @@ import { GoogleIcon, GitHubIcon, XIcon } from "@/components/ui/icons";
 import { useLogin } from "@/hooks/useLogin";
 import { useI18n } from "@/components/providers/i18n-provider";
 
-// Form validation schema
-const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, "Email is required")
-    .email({ message: "Please enter a valid email address" }),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
+// Form validation schema - will be created inside component to access i18n
+type LoginFormValues = {
+  email: string;
+  password: string;
+};
 
 interface LoginFormSharedProps {
   readonly onSuccess?: () => void;
@@ -58,6 +53,15 @@ export default function LoginFormShared({
     handleXLogin,
   } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
+
+  // Create validation schema with i18n messages
+  const loginSchema = z.object({
+    email: z
+      .string()
+      .min(1, t("emailRequired", "auth"))
+      .email({ message: t("emailInvalid", "auth") }),
+    password: z.string().min(6, t("passwordMinLength", "auth")),
+  });
 
   const {
     register,
@@ -133,7 +137,7 @@ export default function LoginFormShared({
           className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to home
+          {t("backToHome", "auth")}
         </button>
       )}
 
@@ -152,7 +156,7 @@ export default function LoginFormShared({
             <Input
               id="email"
               type="email"
-              placeholder="Email address"
+              placeholder={t("emailAddress", "auth")}
               className="pl-10"
               required
               aria-invalid={!!errors.email}
@@ -171,7 +175,7 @@ export default function LoginFormShared({
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
-              placeholder="Password"
+              placeholder={t("password", "auth")}
               className="pl-10 pr-10"
               required
               aria-invalid={!!errors.password}
@@ -181,7 +185,7 @@ export default function LoginFormShared({
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-label={showPassword ? t("hidePassword", "auth") : t("showPassword", "auth")}
             >
               {showPassword ? (
                 <EyeOff className="h-4 w-4" />
@@ -199,9 +203,9 @@ export default function LoginFormShared({
               type="button"
               onClick={handleForgotPasswordClick}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Forgot your password"
+              aria-label={t("forgotPassword", "auth")}
             >
-              Forgot password?
+              {t("forgotPassword", "auth")}
             </button>
           </div>
         </div>
@@ -212,7 +216,7 @@ export default function LoginFormShared({
           className="w-full"
           disabled={isSubmitting || isLoading}
         >
-          {isSubmitting || isLoading ? "Logging in..." : "Login"}
+          {isSubmitting || isLoading ? t("loggingIn", "auth") : t("login", "auth")}
         </Button>
       </form>
 
@@ -270,21 +274,21 @@ export default function LoginFormShared({
             className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
             onClick={handleOTPClick}
           >
-            Login with OTP instead
+            {t("loginWithOTPInstead", "auth")}
           </button>
         </div>
 
         {/* Register Link */}
         <div className="text-sm">
           <span className="text-muted-foreground">
-            Don&apos;t have an account?{" "}
+            {t("dontHaveAccount", "auth")}{" "}
           </span>
           <button
             type="button"
             className="text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
             onClick={handleRegisterClick}
           >
-            Register
+            {t("register", "auth")}
           </button>
         </div>
       </div>
