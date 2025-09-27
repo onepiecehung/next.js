@@ -44,5 +44,6 @@
   "notFoundSuggestion2Desc": "Press F5 or click the refresh button",
   "notFoundSuggestion3": "Go to homepage",
   "notFoundSuggestion3Desc": "Start fresh from our homepage",
-  "notFoundPopularLinks": "Popular pages:"
+  "notFoundPopularLinks": "Popular pages:",
+  "back": "Back"
 }
