@@ -12,7 +12,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { Button, Input, Label } from "@/components/ui";
 import {
   Card,
@@ -136,6 +136,16 @@ export default function SignupForm({
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {/* Back to login button */}
+        <button
+          type="button"
+          onClick={onBackToLogin}
+          className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {t("backToLogin", "auth")}
+        </button>
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-6">
             {/* Username field */}
