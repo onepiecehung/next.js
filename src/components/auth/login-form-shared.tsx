@@ -138,8 +138,8 @@ export default function LoginFormShared({
 
   return (
     <div className={`space-y-6 ${className}`}>
-      {/* Back to home button */}
-      {showBackButton && (
+      {/* Back button - conditional based on view */}
+      {showBackButton && !showEmailForm && (
         <button
           type="button"
           onClick={handleBackClick}
@@ -147,6 +147,17 @@ export default function LoginFormShared({
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           {t("backToHome", "auth")}
+        </button>
+      )}
+      
+      {showEmailForm && (
+        <button
+          type="button"
+          onClick={handleBackToSocial}
+          className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {t("backToSocial", "auth")}
         </button>
       )}
 
@@ -206,15 +217,16 @@ export default function LoginFormShared({
           </div>
 
           {/* Alternative login option */}
-          <div className="text-center">
-            <p className="text-sm text-muted-foreground mb-3">
+          <div className="text-center space-y-3">
+            <p className="text-sm text-muted-foreground">
               {t("dontHaveGoogleAccount", "auth")}
             </p>
             <button
               type="button"
               onClick={handleEmailLoginClick}
-              className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all duration-200 text-gray-700 font-medium"
             >
+              <Mail className="h-4 w-4" />
               {t("loginWithEmailInstead", "auth")}
             </button>
           </div>
@@ -223,17 +235,6 @@ export default function LoginFormShared({
         <>
           {/* Email login form - Secondary view */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Back to social login button */}
-            <div className="flex justify-start">
-              <button
-                type="button"
-                onClick={handleBackToSocial}
-                className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {t("backToSocial", "auth")}
-              </button>
-            </div>
 
             {/* Email field with icon */}
             <div className="space-y-2">
