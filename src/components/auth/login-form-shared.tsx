@@ -53,6 +53,7 @@ export default function LoginFormShared({
     handleXLogin,
   } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(false);
 
   // Create validation schema with i18n messages
   const loginSchema = z.object({
@@ -127,6 +128,14 @@ export default function LoginFormShared({
     onBack?.();
   };
 
+  const handleEmailLoginClick = () => {
+    setShowEmailForm(true);
+  };
+
+  const handleBackToSocial = () => {
+    setShowEmailForm(false);
+  };
+
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Back to home button */}
@@ -143,155 +152,191 @@ export default function LoginFormShared({
 
       {/* Welcome message */}
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold">{title}</h2>
-        <p className="text-muted-foreground">{description}</p>
+        <h2 className="text-2xl font-bold">
+          {showEmailForm ? t("emailLoginTitle", "auth") : title}
+        </h2>
+        <p className="text-muted-foreground">
+          {showEmailForm ? description : t("welcomeMessage", "auth")}
+        </p>
       </div>
 
-      {/* Login form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Email field with icon */}
-        <div className="space-y-2">
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              id="email"
-              type="email"
-              placeholder={t("emailAddress", "auth")}
-              className="pl-10"
-              required
-              aria-invalid={!!errors.email}
-              {...register("email")}
-            />
-          </div>
-          {errors.email && (
-            <p className="text-sm text-red-500">{errors.email.message}</p>
-          )}
-        </div>
-
-        {/* Password field with icon */}
-        <div className="space-y-2">
-          <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              id="password"
-              type={showPassword ? "text" : "password"}
-              placeholder={t("password", "auth")}
-              className="pl-10 pr-10"
-              required
-              aria-invalid={!!errors.password}
-              {...register("password")}
-            />
+      {/* Conditional rendering based on view */}
+      {!showEmailForm ? (
+        <>
+          {/* Social login buttons - Primary view */}
+          <div className="space-y-4">
+            {/* Google Login Button */}
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-              aria-label={showPassword ? t("hidePassword", "auth") : t("showPassword", "auth")}
+              onClick={handleGoogleClick}
+              disabled={isLoading || isSubmitting}
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
             >
-              {showPassword ? (
-                <EyeOff className="h-4 w-4" />
-              ) : (
-                <Eye className="h-4 w-4" />
+              <GoogleIcon className="h-5 w-5" />
+              <span className="font-medium text-gray-700">
+                {t("loginWithGoogle", "auth")}
+              </span>
+            </button>
+
+            {/* GitHub Login Button */}
+            <button
+              type="button"
+              onClick={handleGithubClick}
+              disabled={isLoading || isSubmitting}
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+            >
+              <GitHubIcon className="h-5 w-5" />
+              <span className="font-medium text-gray-700">
+                {t("loginWithGithub", "auth")}
+              </span>
+            </button>
+
+            {/* X Login Button */}
+            <button
+              type="button"
+              onClick={handleXClick}
+              disabled={isLoading || isSubmitting}
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+            >
+              <XIcon className="h-5 w-5" />
+              <span className="font-medium text-gray-700">
+                {t("loginWithX", "auth")}
+              </span>
+            </button>
+          </div>
+
+          {/* Alternative login option */}
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground mb-3">
+              {t("dontHaveGoogleAccount", "auth")}
+            </p>
+            <button
+              type="button"
+              onClick={handleEmailLoginClick}
+              className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
+            >
+              {t("loginWithEmailInstead", "auth")}
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Email login form - Secondary view */}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Back to social login button */}
+            <div className="flex justify-start">
+              <button
+                type="button"
+                onClick={handleBackToSocial}
+                className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                {t("backToSocial", "auth")}
+              </button>
+            </div>
+
+            {/* Email field with icon */}
+            <div className="space-y-2">
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder={t("emailAddress", "auth")}
+                  className="pl-10"
+                  required
+                  aria-invalid={!!errors.email}
+                  {...register("email")}
+                />
+              </div>
+              {errors.email && (
+                <p className="text-sm text-red-500">{errors.email.message}</p>
               )}
-            </button>
-          </div>
-          {errors.password && (
-            <p className="text-sm text-red-500">{errors.password.message}</p>
-          )}
-          {/* Forgot password link */}
-          <div className="text-right">
+            </div>
+
+            {/* Password field with icon */}
+            <div className="space-y-2">
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder={t("password", "auth")}
+                  className="pl-10 pr-10"
+                  required
+                  aria-invalid={!!errors.password}
+                  {...register("password")}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label={showPassword ? t("hidePassword", "auth") : t("showPassword", "auth")}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+              {errors.password && (
+                <p className="text-sm text-red-500">{errors.password.message}</p>
+              )}
+              {/* Forgot password link */}
+              <div className="text-right">
+                <button
+                  type="button"
+                  onClick={handleForgotPasswordClick}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label={t("forgotPassword", "auth")}
+                >
+                  {t("forgotPassword", "auth")}
+                </button>
+              </div>
+            </div>
+
+            {/* Login button */}
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isSubmitting || isLoading}
+            >
+              {isSubmitting || isLoading ? t("loggingIn", "auth") : t("login", "auth")}
+            </Button>
+          </form>
+        </>
+      )}
+
+      {/* Footer links - Only show in email form view */}
+      {showEmailForm && (
+        <div className="space-y-4 text-center">
+          {/* OTP Login Link */}
+          <div className="py-2">
             <button
               type="button"
-              onClick={handleForgotPasswordClick}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              aria-label={t("forgotPassword", "auth")}
+              className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
+              onClick={handleOTPClick}
             >
-              {t("forgotPassword", "auth")}
+              {t("loginWithOTPInstead", "auth")}
+            </button>
+          </div>
+
+          {/* Register Link */}
+          <div className="text-sm">
+            <span className="text-muted-foreground">
+              {t("dontHaveAccount", "auth")}{" "}
+            </span>
+            <button
+              type="button"
+              className="text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
+              onClick={handleRegisterClick}
+            >
+              {t("register", "auth")}
             </button>
           </div>
         </div>
-
-        {/* Login button */}
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isSubmitting || isLoading}
-        >
-          {isSubmitting || isLoading ? t("loggingIn", "auth") : t("login", "auth")}
-        </Button>
-      </form>
-
-      {/* Divider */}
-      <div className="relative my-6">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-200" />
-        </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="bg-background px-4 text-gray-500 font-medium">
-            {t("orContinueWith", "auth")}
-          </span>
-        </div>
-      </div>
-
-      {/* Social login buttons */}
-      <div className="flex justify-center gap-4">
-        <button
-          type="button"
-          onClick={handleGoogleClick}
-          disabled={isLoading || isSubmitting}
-          className="flex items-center justify-center w-12 h-12 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
-          title="Login with Google"
-        >
-          <GoogleIcon className="h-6 w-6" />
-        </button>
-
-        <button
-          type="button"
-          onClick={handleGithubClick}
-          disabled={isLoading || isSubmitting}
-          className="flex items-center justify-center w-12 h-12 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
-          title="Login with GitHub"
-        >
-          <GitHubIcon className="h-6 w-6" />
-        </button>
-
-        <button
-          type="button"
-          onClick={handleXClick}
-          disabled={isLoading || isSubmitting}
-          className="flex items-center justify-center w-12 h-12 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
-          title="Login with X"
-        >
-          <XIcon className="h-6 w-6" />
-        </button>
-      </div>
-
-      {/* Footer links */}
-      <div className="space-y-4 text-center">
-        {/* OTP Login Link */}
-        <div className="py-2">
-          <button
-            type="button"
-            className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
-            onClick={handleOTPClick}
-          >
-            {t("loginWithOTPInstead", "auth")}
-          </button>
-        </div>
-
-        {/* Register Link */}
-        <div className="text-sm">
-          <span className="text-muted-foreground">
-            {t("dontHaveAccount", "auth")}{" "}
-          </span>
-          <button
-            type="button"
-            className="text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
-            onClick={handleRegisterClick}
-          >
-            {t("register", "auth")}
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
