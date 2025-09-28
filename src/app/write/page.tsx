@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui";
-import { TipTapEditor } from "@/components/features/text-editor";
-import { Skeletonize } from "@/components/utilities";
-import { useI18n } from "@/components/providers";
-import { ProtectedRoute } from "@/components/features/auth";
+import { Button, TipTapEditor } from "@/components/ui";
+import { Skeletonize } from "@/components/skeletonize";
+import { useI18n } from "@/components/providers/i18n-provider";
+import { ProtectedRoute } from "@/components/auth/protected-route";
 
 /**
  * Internationalized Write Page Component

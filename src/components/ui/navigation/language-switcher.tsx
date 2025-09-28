@@ -1,14 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/primitives";
+import { Button } from "../core/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/layout";
+} from "../layout/dropdown-menu";
 import { Globe, Check } from "lucide-react";
-import { useI18n } from "@/components/providers";
+import { useI18n } from "@/components/providers/i18n-provider";
 
 /**
  * Simple Language Switcher Component

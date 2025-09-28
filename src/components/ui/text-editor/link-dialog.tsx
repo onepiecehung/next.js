@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Input, Label } from "@/components/ui/primitives";
+import { Button } from "@/components/ui/core/button";
+import { Input } from "@/components/ui/core/input";
+import { Label } from "@/components/ui/core/label";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui";
+} from "@/components/ui/layout/dialog";
 import { Link as LinkIcon } from "lucide-react";
 
 /**
@@ -16,9 +18,9 @@ import { Link as LinkIcon } from "lucide-react";
  * Beautiful popup dialog for adding links to the editor
  */
 interface LinkDialogProps {
-  readonly isOpen: boolean;
-  readonly onClose: () => void;
-  readonly onAddLink: (url: string) => void;
+  isOpen: boolean;
+  onClose: () => void;
+  onAddLink: (url: string) => void;
 }
 
 export function LinkDialog({ isOpen, onClose, onAddLink }: LinkDialogProps) {

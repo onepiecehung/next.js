@@ -5,16 +5,16 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { LoginDialog } from "@/components/features/auth";
+import LoginDialog from "@/components/auth/login-dialog";
 import { ThemeToggle, UserDropdown } from "@/components/ui";
-import { LanguageSwitcher } from "./language-switcher";
+import { LanguageSwitcher } from "@/components/ui/navigation";
 import {
   authLoadingAtom,
   clearUserState,
   currentUserAtom,
   logoutAction,
 } from "@/lib/auth-store";
-import { useI18n } from "@/components/providers";
+import { useI18n } from "@/components/providers/i18n-provider";
 
 /**
  * Internationalized Site Navigation Component

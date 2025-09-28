@@ -1,24 +1,18 @@
 /**
  * Main UI Components Index
  * Central export file for all UI components organized by category
- * 
+ *
  * Usage:
- * - Import specific components: import { Button } from "@/components/ui/primitives";
- * - Import all from category: import * as Primitives from "@/components/ui/primitives";
+ * - Import specific components: import { Button } from "@/components/ui/core";
+ * - Import all from category: import * as Core from "@/components/ui/core";
  * - Import everything: import * as UI from "@/components/ui";
  */
 
-// Primitives (Basic building blocks)
-export * from "./primitives";
+// Core UI Components
+export * from "./core";
 
 // Layout Components
 export * from "./layout";
-
-// Forms
-export * from "./forms";
-
-// Icons
-export * from "./icons";
 
 // Theme Components
 export * from "./theme";
@@ -26,11 +20,26 @@ export * from "./theme";
 // Dracula Theme Components
 export * from "./dracula";
 
+// Custom Icons
+export * from "./icons";
+
+// Utility Components
+export * from "./utilities";
+
+// Navigation Components
+export * from "./navigation";
+
+// Text Editor Components
+export * from "./text-editor";
+
+// Input OTP Component
+export * from "./input-otp";
+
 // Re-export commonly used components for convenience
-export { Button, buttonVariants } from "./primitives";
-export { Avatar, AvatarImage, AvatarFallback } from "./primitives";
-export { Input } from "./primitives";
-export { Label } from "./primitives";
+export { Button, buttonVariants } from "./core";
+export { Avatar, AvatarImage, AvatarFallback } from "./core";
+export { Input } from "./core";
+export { Label } from "./core";
 export { Dialog, DialogContent, DialogTrigger } from "./layout";
 export {
   DropdownMenu,
@@ -39,4 +48,12 @@ export {
   DropdownMenuItem,
 } from "./layout";
 export { ThemeToggle } from "./theme";
-export { XIcon, GitHubIcon, GoogleIcon } from "./icons";
+export { XIcon } from "./icons";
+export { UserDropdown, LanguageSwitcher } from "./navigation";
+export { ContentRenderer } from "./utilities";
+export {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+} from "./input-otp";

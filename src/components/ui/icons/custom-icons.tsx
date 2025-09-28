@@ -9,8 +9,5 @@ export { XIcon } from "./x-icon";
 export { GitHubIcon } from "./github-icon";
 export { GoogleIcon } from "./google-icon";
 
-// Alternative export path from custom-icons
-export * from "./custom-icons";
-
 // Add more custom brand icons here as needed
 // export { CustomIcon } from "./custom-icon";

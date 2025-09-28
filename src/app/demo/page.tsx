@@ -2,7 +2,7 @@
 
 import { Suspense } from "react";
 import { SkeletonDemo } from "./skeleton-demo";
-import { useI18n } from "@/components/providers";
+import { useI18n } from "@/components/providers/i18n-provider";
 
 /**
  * Internationalized Demo page showcasing the automatic skeleton loading technique

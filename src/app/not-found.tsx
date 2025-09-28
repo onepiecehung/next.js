@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui";
 import { Home, ArrowLeft, Search, RefreshCw } from "lucide-react";
-import { useI18n } from "@/components/providers";
+import { useI18n } from "@/components/providers/i18n-provider";
 
 /**
  * 404 Not Found Page Component

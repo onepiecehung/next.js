@@ -2,14 +2,12 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui";
-import { 
-  AuthProvider, 
-  ThemeProvider, 
-  NoSSR, 
-  LoadingProvider, 
-  I18nProvider 
-} from "@/components/providers";
-import { SiteNav } from "@/components/features/navigation";
+import AuthProvider from "@/components/providers/auth-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { NoSSR } from "@/components/providers/no-ssr";
+import { LoadingProvider } from "@/components/providers/loading-provider";
+import { I18nProvider } from "@/components/providers/i18n-provider";
+import SiteNav from "@/components/site-nav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

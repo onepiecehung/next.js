@@ -1,0 +1,21 @@
+/* X (Twitter) Icon Styles */
+.x-icon {
+  fill: currentColor;
+  transition: fill 0.2s ease-in-out;
+}
+
+/* Hover state for better UX */
+.x-icon:hover {
+  fill: #1da1f2; /* Twitter blue */
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .x-icon {
+    fill: #ffffff;
+  }
+  
+  .x-icon:hover {
+    fill: #1da1f2;
+  }
+}

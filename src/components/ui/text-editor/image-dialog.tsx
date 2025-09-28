@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Input, Label } from "@/components/ui/primitives";
+import { Button } from "@/components/ui/core/button";
+import { Input } from "@/components/ui/core/input";
+import { Label } from "@/components/ui/core/label";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui";
+} from "@/components/ui/layout/dialog";
 import { Image as ImageIcon } from "lucide-react";
 
 /**
@@ -16,9 +18,9 @@ import { Image as ImageIcon } from "lucide-react";
  * Beautiful popup dialog for adding images to the editor
  */
 interface ImageDialogProps {
-  readonly isOpen: boolean;
-  readonly onClose: () => void;
-  readonly onAddImage: (url: string) => void;
+  isOpen: boolean;
+  onClose: () => void;
+  onAddImage: (url: string) => void;
 }
 
 export function ImageDialog({ isOpen, onClose, onAddImage }: ImageDialogProps) {
