@@ -13,7 +13,7 @@ ui/
 ├── icons/          # Custom icons (XIcon, GitHubIcon)
 ├── utilities/      # Utility components (ClientOnly, Toaster, ContentRenderer)
 ├── navigation/     # Navigation components (UserDropdown, LanguageSwitcher)
-├── text-editor/    # Text editor components (TipTapEditor, ImageDialog, LinkDialog)
+├── text-editor/    # Text editor components (moved to features/text-editor)
 └── index.ts        # Main export file
 ```
 
@@ -31,7 +31,7 @@ import { Dialog } from "@/components/ui/layout";
 import { XIcon } from "@/components/ui/icons";
 import { UserDropdown } from "@/components/ui/navigation";
 import { ContentRenderer } from "@/components/ui/utilities";
-import { TipTapEditor } from "@/components/ui/text-editor";
+import { TipTapEditor } from "@/components/features/text-editor";
 ```
 
 ### Import Entire Category
@@ -61,7 +61,7 @@ import * as Layout from "@/components/ui/layout";
 - **Icons**: Custom icon implementations (XIcon, GitHubIcon)
 - **Utilities**: Helper and utility components (ClientOnly, Toaster, ContentRenderer)
 - **Navigation**: Navigation-related components (UserDropdown, LanguageSwitcher)
-- **Text Editor**: Rich text editing components (TipTapEditor, ImageDialog, LinkDialog)
+- **Text Editor**: Rich text editing components (moved to features/text-editor)
 
 ## Migration from Old Structure
 

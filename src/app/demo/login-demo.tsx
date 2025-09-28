@@ -1,7 +1,7 @@
 "use client";
 
-import LoginDialog from "@/components/auth/login-dialog";
-import LoginFormShared from "@/components/auth/login-form-shared";
+import { LoginDialog } from "@/components/features/auth";
+import { LoginFormShared } from "@/components/features/auth";
 
 /**
  * Login Components Demo

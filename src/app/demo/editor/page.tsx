@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TipTapEditor } from "@/components/ui/text-editor/tiptap-editor";
+import { TipTapEditor } from "@/components/features/text-editor";
 import { Card } from "@/components/ui/core/card";
 import { Button } from "@/components/ui/core/button";
 import { Badge } from "@/components/ui/core";

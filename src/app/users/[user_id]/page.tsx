@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import { useIsMounted } from "@/components/providers/no-ssr";
-import { Skeletonize } from "@/components/skeletonize";
+import { Skeletonize } from "@/components/shared";
 import {
   Avatar,
   AvatarFallback,

@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { currentUserAtom, authLoadingAtom } from "@/lib/auth-store";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { useAuthRedirect } from "@/hooks/useAuthRedirect";
-import LoginFormShared from "@/components/auth/login-form-shared";
-import OTPLoginForm from "@/components/auth/otp-login-form";
+import { LoginFormShared } from "@/components/features/auth";
+import { OTPLoginForm } from "@/components/features/auth";
 
 /**
  * Login Page Component

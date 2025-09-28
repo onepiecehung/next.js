@@ -1,6 +1,6 @@
 "use client";
 
-import { TipTapEditor } from "@/components/ui/text-editor/tiptap-editor";
+import { TipTapEditor } from "@/components/features/text-editor";
 import { useState } from "react";
 
 /**

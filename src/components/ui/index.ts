@@ -29,8 +29,7 @@ export * from "./utilities";
 // Navigation Components
 export * from "./navigation";
 
-// Text Editor Components
-export * from "./text-editor";
+// Text Editor Components - moved to features/text-editor
 
 // Input OTP Component
 export * from "./input-otp";

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Skeletonize } from "@/components/skeletonize";
+import { Skeletonize } from "@/components/shared";
 import { useLoadingDelay } from "@/hooks/useLoadingDelay";
 
 /**

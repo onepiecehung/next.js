@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import LoginDialog from "@/components/auth/login-dialog";
+import { LoginDialog } from "@/components/features/auth";
 import { ThemeToggle, UserDropdown } from "@/components/ui";
 import { LanguageSwitcher } from "@/components/ui/navigation";
 import {
