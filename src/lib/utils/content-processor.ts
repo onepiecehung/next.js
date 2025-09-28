@@ -23,10 +23,10 @@ export interface ContentProcessorOptions {
    * Mermaid initialization options
    */
   mermaidConfig?: {
-    theme?: string;
+    theme?: "default" | "base" | "dark" | "forest" | "neutral" | "null";
     securityLevel?: "loose" | "strict" | "antiscript" | "sandbox";
     fontFamily?: string;
-    [key: string]: any;
+    [key: string]: unknown;
   };
 }
 
@@ -34,7 +34,7 @@ export interface ContentProcessorOptions {
  * Initialize Mermaid with configuration
  */
 export function initializeMermaid(
-  config: ContentProcessorOptions["mermaidConfig"] = {},
+  config: ContentProcessorOptions["mermaidConfig"] = {}
 ) {
   mermaid.initialize({
     startOnLoad: false,
@@ -57,7 +57,7 @@ export function initializeMermaid(
     journey: {
       useMaxWidth: true,
     },
-    gitgraph: {
+    gitGraph: {
       useMaxWidth: true,
     },
     mindmap: {
@@ -144,7 +144,7 @@ export async function renderMermaidDiagram(code: string, content: HTMLElement) {
  */
 export async function handleMermaidDiagram(
   element: HTMLElement,
-  parentPre: HTMLElement,
+  parentPre: HTMLElement
 ) {
   try {
     const code = element.textContent || "";
@@ -163,7 +163,7 @@ export async function handleMermaidDiagram(
  */
 export function handleSyntaxHighlighting(
   element: HTMLElement,
-  lang: string | undefined,
+  lang: string | undefined
 ) {
   if (lang && hljs.getLanguage(lang)) {
     element.innerHTML = hljs.highlight(element.textContent ?? "", {
@@ -180,7 +180,7 @@ export function handleSyntaxHighlighting(
  */
 export async function processCodeBlocks(
   container: HTMLElement,
-  options: ContentProcessorOptions = {},
+  options: ContentProcessorOptions = {}
 ) {
   const { enableSyntaxHighlighting = true, enableMermaidDiagrams = true } =
     options;
