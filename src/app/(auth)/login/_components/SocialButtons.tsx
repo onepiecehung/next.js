@@ -101,7 +101,9 @@ export const SocialSeparator: React.FC<SocialSeparatorProps> = ({
         <div className="w-full border-t border-border/50" />
       </div>
       <div className="relative flex justify-center text-sm">
-        <span className="px-2 bg-background text-muted-foreground">{separatorText}</span>
+        <span className="px-2 bg-background text-muted-foreground">
+          {separatorText}
+        </span>
       </div>
     </div>
   );

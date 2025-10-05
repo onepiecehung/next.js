@@ -6,7 +6,7 @@
 // Auth feature
 export * from "./auth";
 
-// Navigation feature  
+// Navigation feature
 export * from "./navigation";
 
 // Text Editor feature

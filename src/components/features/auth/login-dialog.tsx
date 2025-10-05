@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button, VisuallyHidden } from "@/components/ui";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+  Button,
+  VisuallyHidden,
+} from "@/components/ui";
 import { useI18n } from "@/components/providers/i18n-provider";
 import SignupForm from "./signup-form";
 import OTPLoginForm from "./otp-login-form";

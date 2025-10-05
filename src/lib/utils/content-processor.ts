@@ -69,10 +69,8 @@ export async function processCodeBlocks(
   container: Element,
   options: ContentProcessorOptions = {},
 ): Promise<void> {
-  const {
-    enableSyntaxHighlighting = true,
-    enableMermaidDiagrams = true,
-  } = options;
+  const { enableSyntaxHighlighting = true, enableMermaidDiagrams = true } =
+    options;
 
   try {
     // Process Mermaid diagrams
@@ -94,8 +92,8 @@ export async function processCodeBlocks(
  * @param container - The DOM container to process
  */
 async function processMermaidDiagrams(container: Element): Promise<void> {
-  const mermaidElements = container.querySelectorAll('[data-mermaid]');
-  
+  const mermaidElements = container.querySelectorAll("[data-mermaid]");
+
   for (const element of mermaidElements) {
     try {
       const code = element.textContent || "";
@@ -103,13 +101,13 @@ async function processMermaidDiagrams(container: Element): Promise<void> {
 
       // Generate unique ID for this diagram
       const id = `mermaid-${Math.random().toString(36).substring(2, 11)}`;
-      
+
       // Render the diagram
       const { svg } = await mermaid.render(id, code);
       element.innerHTML = svg;
     } catch (error) {
       console.error("Failed to render Mermaid diagram:", error);
-      element.innerHTML = `<div class="mermaid-error">Failed to render diagram: ${error instanceof Error ? error.message : 'Unknown error'}</div>`;
+      element.innerHTML = `<div class="mermaid-error">Failed to render diagram: ${error instanceof Error ? error.message : "Unknown error"}</div>`;
     }
   }
 }
@@ -122,14 +120,14 @@ async function processSyntaxHighlighting(container: Element): Promise<void> {
   // This is a placeholder for syntax highlighting
   // In a real implementation, you would use a library like highlight.js
   // or prism.js to highlight code blocks
-  
-  const codeBlocks = container.querySelectorAll('pre code');
-  
+
+  const codeBlocks = container.querySelectorAll("pre code");
+
   for (const codeBlock of codeBlocks) {
     // Add basic styling for code blocks
     const pre = codeBlock.parentElement;
     if (pre) {
-      pre.classList.add('code-block');
+      pre.classList.add("code-block");
     }
   }
 }

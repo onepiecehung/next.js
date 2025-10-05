@@ -3,7 +3,11 @@
 import React, { useState, useCallback } from "react";
 import { Editor } from "@tiptap/react";
 import { Button } from "@/components/ui/core/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Highlighter, Palette } from "lucide-react";
 
 interface ColorHighlightPopoverProps {

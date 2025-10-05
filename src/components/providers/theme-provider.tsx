@@ -1,13 +1,7 @@
 "use client";
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useMemo,
-} from "react";
+import { createContext, useContext, useEffect, useState, useMemo } from "react";
 
 // Theme types
 export type Theme = "neutral" | "stone" | "zinc" | "gray" | "slate" | "dracula";
@@ -112,13 +106,13 @@ export function ThemeProvider({
     localStorage.setItem("colorScheme", colorScheme);
   }, [theme, colorScheme, mounted]);
 
-
   const contextValue: ThemeContextType = useMemo(
     () => ({
       theme,
       colorScheme,
       setTheme: (newTheme: Theme) => setThemeState(newTheme),
-      setColorScheme: (newColorScheme: ColorScheme) => setColorSchemeState(newColorScheme),
+      setColorScheme: (newColorScheme: ColorScheme) =>
+        setColorSchemeState(newColorScheme),
       themes,
       colorSchemes,
     }),

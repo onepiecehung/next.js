@@ -149,7 +149,7 @@ export default function LoginFormShared({
           {t("backToHome", "auth")}
         </button>
       )}
-      
+
       {showEmailForm && (
         <button
           type="button"
@@ -235,7 +235,6 @@ export default function LoginFormShared({
         <>
           {/* Email login form - Secondary view */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-
             {/* Email field with icon */}
             <div className="space-y-2">
               <div className="relative">
@@ -272,7 +271,11 @@ export default function LoginFormShared({
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                  aria-label={showPassword ? t("hidePassword", "auth") : t("showPassword", "auth")}
+                  aria-label={
+                    showPassword
+                      ? t("hidePassword", "auth")
+                      : t("showPassword", "auth")
+                  }
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -282,7 +285,9 @@ export default function LoginFormShared({
                 </button>
               </div>
               {errors.password && (
-                <p className="text-sm text-red-500">{errors.password.message}</p>
+                <p className="text-sm text-red-500">
+                  {errors.password.message}
+                </p>
               )}
               {/* Forgot password link */}
               <div className="text-right">
@@ -303,7 +308,9 @@ export default function LoginFormShared({
               className="w-full h-12 text-base font-medium"
               disabled={isSubmitting || isLoading}
             >
-              {isSubmitting || isLoading ? t("loggingIn", "auth") : t("login", "auth")}
+              {isSubmitting || isLoading
+                ? t("loggingIn", "auth")
+                : t("login", "auth")}
             </Button>
           </form>
         </>

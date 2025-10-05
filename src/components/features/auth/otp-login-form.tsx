@@ -174,7 +174,6 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
     }
   };
 
-
   // Handle resend OTP
   const handleResendOTP = async () => {
     setIsLoading(true);
