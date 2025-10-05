@@ -23,7 +23,7 @@ import {
   GitHubIcon,
   XIcon,
 } from "@/components/ui";
-import { fetchUserProfile, User } from "@/lib/api/users";
+import { UserAPI, User } from "@/lib/api/users";
 import { currentUserAtom } from "@/lib/auth-store";
 
 /**
@@ -51,7 +51,7 @@ export default function ProfilePage() {
         setIsLoading(true);
         setError(null);
 
-        const data = await fetchUserProfile(userId);
+        const data = await UserAPI.getUserProfile(userId);
         setProfileData(data);
       } catch (err) {
         setError(
