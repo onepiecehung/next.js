@@ -19,5 +19,11 @@
   "imageEditorCancel": "Hủy",
   "imageEditorSave": "Lưu",
   "imageEditorCrop": "Cắt",
-  "imageEditorReset": "Làm lại"
+  "imageEditorReset": "Làm lại",
+  "writeFormTitleRequired": "Tiêu đề là bắt buộc",
+  "writeFormTitleTooLong": "Tiêu đề phải ít hơn 256 ký tự",
+  "writeFormContentRequired": "Nội dung là bắt buộc",
+  "writeFormSummaryTooLong": "Tóm tắt phải ít hơn 1000 ký tự",
+  "writeFormTagsTooMany": "Tối đa 20 thẻ",
+  "writeFormSuccess": "Tạo bài viết thành công!"
 }

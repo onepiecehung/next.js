@@ -8,6 +8,7 @@ import { useI18n } from "@/components/providers/i18n-provider";
 interface ImageUploadProps {
   readonly value?: File | null;
   readonly onChange: (file: File | null) => void;
+  readonly onUploadBatch?: (uploaded: { id: string; url: string }[]) => void;
   readonly className?: string;
   readonly placeholder?: string;
   readonly disabled?: boolean;
@@ -25,6 +26,7 @@ interface ImageUploadProps {
 export function ImageUpload({
   value,
   onChange,
+  onUploadBatch,
   className,
   placeholder = "Click to upload or drag and drop",
   disabled = false,
@@ -101,10 +103,11 @@ export function ImageUpload({
     
     if (disabled) return;
 
-    const file = event.dataTransfer.files[0];
-    if (file) {
-      handleFileSelect(file);
-    }
+    const files = Array.from(event.dataTransfer.files).slice(0, 3);
+    if (files.length === 0) return;
+    // For cover image, use the first file; batch upload callback if provided
+    const first = files[0];
+    handleFileSelect(first);
   };
 
   // Handle click to open file dialog
@@ -170,7 +173,14 @@ export function ImageUpload({
           ref={fileInputRef}
           type="file"
           accept={acceptedTypes.join(",")}
-          onChange={handleInputChange}
+          multiple
+          onChange={(e) => {
+            const files = Array.from(e.target.files || []).slice(0, 3);
+            if (files.length > 0) {
+              // For cover, take the first file to edit/crop
+              handleFileSelect(files[0]);
+            }
+          }}
           className="hidden"
           disabled={disabled}
         />

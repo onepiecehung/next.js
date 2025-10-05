@@ -6,6 +6,10 @@ import { TipTapEditor } from "@/components/features/text-editor";
 import { Skeletonize } from "@/components/shared";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { ProtectedRoute } from "@/components/features/auth";
+import { useCreateArticle } from "@/hooks/useCreateArticle";
+import { useArticleForm } from "@/hooks/useArticleForm";
+import { toast } from "sonner";
+import { MediaAPI } from "@/lib/api/media";
 
 /**
  * Internationalized Write Page Component
@@ -15,15 +19,120 @@ import { ProtectedRoute } from "@/components/features/auth";
 export default function WritePage() {
   const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(true);
-  const [coverImage, setCoverImage] = useState<File | null>(null);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  
+  // Use article form hook
+  const {
+    coverImage,
+    setCoverImage,
+    title,
+    setTitle,
+    content,
+    setContent,
+    summary,
+    setSummary,
+    tags,
+    setTags,
+    visibility,
+    setVisibility,
+    validateForm,
+    resetForm,
+    showValidationErrors,
+    wordCount,
+    readTimeMinutes,
+  } = useArticleForm();
+
+  // Use create article hook
+  const {
+    createDraft,
+    publishArticle,
+    isLoading: isSubmitting,
+  } = useCreateArticle({
+    onSuccess: () => {
+      toast.success(t("writeFormSuccess", "write") || "Article created successfully!");
+      resetForm();
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to create article");
+    },
+  });
 
   // Simulate loading delay
   React.useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 500);
     return () => clearTimeout(timer);
   }, []);
+
+  // Handle save draft
+  const handleSaveDraft = async () => {
+    const errors = validateForm();
+    if (errors.length > 0) {
+      showValidationErrors(errors);
+      return;
+    }
+
+    try {
+      // Upload cover image first if exists
+      let coverImageId: string | undefined = undefined;
+      let coverImageUrl: string | undefined = undefined;
+      if (coverImage) {
+        const uploaded = await MediaAPI.upload([coverImage]);
+        if (uploaded[0]) {
+          coverImageId = uploaded[0].id;
+          coverImageUrl = uploaded[0].url;
+        }
+      }
+      await createDraft({
+        title,
+        content,
+        summary: summary || undefined,
+        contentFormat: 'html',
+        visibility,
+        tags: tags.length > 0 ? tags : undefined,
+        wordCount,
+        readTimeMinutes,
+        coverImageId,
+        coverImageUrl,
+      });
+    } catch {
+      // Error handled by hook
+    }
+  };
+
+  // Handle publish article
+  const handlePublishArticle = async () => {
+    const errors = validateForm();
+    if (errors.length > 0) {
+      showValidationErrors(errors);
+      return;
+    }
+
+    try {
+      // Upload cover image first if exists
+      let coverImageId: string | undefined = undefined;
+      let coverImageUrl: string | undefined = undefined;
+      if (coverImage) {
+        const uploaded = await MediaAPI.upload([coverImage]);
+        if (uploaded[0]) {
+          coverImageId = uploaded[0].id;
+          coverImageUrl = uploaded[0].url;
+        }
+      }
+      await publishArticle({
+        title,
+        content,
+        summary: summary || undefined,
+        contentFormat: 'html',
+        visibility,
+        tags: tags.length > 0 ? tags : undefined,
+        wordCount,
+        readTimeMinutes,
+        coverImageId,
+        coverImageUrl,
+      });
+    } catch {
+      // Error handled by hook
+    }
+  };
 
   return (
     <ProtectedRoute>
@@ -95,11 +204,18 @@ export default function WritePage() {
                       variant="outline"
                       size="lg"
                       className="w-full sm:w-auto"
+                      onClick={handleSaveDraft}
+                      disabled={isSubmitting}
                     >
-                      {t("writeFormSaveDraft", "write")}
+                      {isSubmitting ? "Saving..." : t("writeFormSaveDraft", "write")}
                     </Button>
-                    <Button size="lg" className="w-full sm:w-auto">
-                      {t("writeFormPublishArticle", "write")}
+                    <Button 
+                      size="lg" 
+                      className="w-full sm:w-auto"
+                      onClick={handlePublishArticle}
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? "Publishing..." : t("writeFormPublishArticle", "write")}
                     </Button>
                   </div>
                 </div>

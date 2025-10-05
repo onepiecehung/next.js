@@ -19,5 +19,11 @@
   "imageEditorCancel": "Cancel",
   "imageEditorSave": "Save",
   "imageEditorCrop": "Crop",
-  "imageEditorReset": "Reset"
+  "imageEditorReset": "Reset",
+  "writeFormTitleRequired": "Title is required",
+  "writeFormTitleTooLong": "Title must be less than 256 characters",
+  "writeFormContentRequired": "Content is required",
+  "writeFormSummaryTooLong": "Summary must be less than 1000 characters",
+  "writeFormTagsTooMany": "Maximum 20 tags allowed",
+  "writeFormSuccess": "Article created successfully!"
 }
