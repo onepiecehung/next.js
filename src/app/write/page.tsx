@@ -10,6 +10,15 @@ import { useCreateArticle } from "@/hooks/useCreateArticle";
 import { useArticleForm } from "@/hooks/useArticleForm";
 import { toast } from "sonner";
 import { MediaAPI } from "@/lib/api/media";
+import { useAtom } from "jotai";
+import { currentUserAtom } from "@/lib/auth-store";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "@/components/ui/layout/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
 /**
  * Internationalized Write Page Component
@@ -19,6 +28,7 @@ import { MediaAPI } from "@/lib/api/media";
 export default function WritePage() {
   const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(true);
+  const [currentUser] = useAtom(currentUserAtom);
   
   // Use article form hook
   const {
@@ -28,8 +38,6 @@ export default function WritePage() {
     setTitle,
     content,
     setContent,
-    summary,
-    setSummary,
     tags,
     setTags,
     visibility,
@@ -84,7 +92,6 @@ export default function WritePage() {
       await createDraft({
         title,
         content,
-        summary: summary || undefined,
         contentFormat: 'html',
         visibility,
         tags: tags.length > 0 ? tags : undefined,
@@ -92,6 +99,7 @@ export default function WritePage() {
         readTimeMinutes,
         coverImageId,
         coverImageUrl,
+        userId: currentUser?.id,
       });
     } catch {
       // Error handled by hook
@@ -120,7 +128,6 @@ export default function WritePage() {
       await publishArticle({
         title,
         content,
-        summary: summary || undefined,
         contentFormat: 'html',
         visibility,
         tags: tags.length > 0 ? tags : undefined,
@@ -128,6 +135,7 @@ export default function WritePage() {
         readTimeMinutes,
         coverImageId,
         coverImageUrl,
+        userId: currentUser?.id,
       });
     } catch {
       // Error handled by hook
@@ -183,9 +191,15 @@ export default function WritePage() {
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
                       placeholder={t("writeFormTitlePlaceholder", "write")}
+                      maxLength={256}
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-base sm:text-lg"
                     />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {title.length}/256 characters
+                    </p>
                   </div>
+
+
 
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
@@ -197,26 +211,88 @@ export default function WritePage() {
                       placeholder={t("writeFormContentPlaceholder", "write")}
                       className="min-h-[400px] sm:min-h-[600px]"
                     />
+                    <div className="flex justify-between items-center mt-2 text-xs text-muted-foreground">
+                      <span>{wordCount} words</span>
+                      <span>{readTimeMinutes} min read</span>
+                    </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-border">
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="w-full sm:w-auto"
-                      onClick={handleSaveDraft}
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? "Saving..." : t("writeFormSaveDraft", "write")}
-                    </Button>
-                    <Button 
-                      size="lg" 
-                      className="w-full sm:w-auto"
-                      onClick={handlePublishArticle}
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? "Publishing..." : t("writeFormPublishArticle", "write")}
-                    </Button>
+                  {/* Tags Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      {t("writeFormTags", "write")}
+                    </label>
+                    <input
+                      type="text"
+                      value={tags.join(', ')}
+                      onChange={(e) => {
+                        const tagList = e.target.value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+                        setTags(tagList.slice(0, 20)); // Limit to 20 tags
+                      }}
+                      placeholder={t("writeFormTagsPlaceholder", "write")}
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm sm:text-base"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {tags.length}/20 tags (separate with commas)
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-6 border-t border-border">
+                    {/* Visibility Dropdown */}
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground">{t("writeFormVisibility", "write")}:</span>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="outline" size="sm" className="gap-2">
+                            {visibility === 'public' && t("writeFormVisibilityPublic", "write")}
+                            {visibility === 'unlisted' && t("writeFormVisibilityUnlisted", "write")}
+                            {visibility === 'private' && t("writeFormVisibilityPrivate", "write")}
+                            <ChevronDown className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start">
+                          <DropdownMenuItem 
+                            onClick={() => setVisibility('public')}
+                            className={visibility === 'public' ? 'bg-accent' : ''}
+                          >
+                            {t("writeFormVisibilityPublic", "write")}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            onClick={() => setVisibility('unlisted')}
+                            className={visibility === 'unlisted' ? 'bg-accent' : ''}
+                          >
+                            {t("writeFormVisibilityUnlisted", "write")}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            onClick={() => setVisibility('private')}
+                            className={visibility === 'private' ? 'bg-accent' : ''}
+                          >
+                            {t("writeFormVisibilityPrivate", "write")}
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        className="w-full sm:w-auto"
+                        onClick={handleSaveDraft}
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? "Saving..." : t("writeFormSaveDraft", "write")}
+                      </Button>
+                      <Button 
+                        size="lg" 
+                        className="w-full sm:w-auto"
+                        onClick={handlePublishArticle}
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? "Publishing..." : t("writeFormPublishArticle", "write")}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,0 +1,23 @@
+{
+  "articleViewTitle": "Bài Viết",
+  "articleViewLoading": "Đang tải bài viết...",
+  "articleViewError": "Không thể tải bài viết",
+  "articleViewNotFound": "Không tìm thấy bài viết",
+  "articleViewBackToHome": "Về Trang Chủ",
+  "articleViewPublishedOn": "Xuất bản ngày",
+  "articleViewReadTime": "phút đọc",
+  "articleViewWordCount": "từ",
+  "articleViewTags": "Thẻ",
+  "articleViewNoTags": "Không có thẻ",
+  "articleViewVisibility": "Hiển thị",
+  "articleViewVisibilityPublic": "Công khai",
+  "articleViewVisibilityUnlisted": "Không Công khai",
+  "articleViewVisibilityPrivate": "Riêng tư",
+  "articleViewStatus": "Trạng thái",
+  "articleViewStatusDraft": "Bản nháp",
+  "articleViewStatusPublished": "Đã xuất bản",
+  "articleViewStatusScheduled": "Đã lên lịch",
+  "articleViewStatusArchived": "Đã lưu trữ",
+  "articleViewAuthor": "Tác giả",
+  "articleViewLastUpdated": "Cập nhật lần cuối"
+}

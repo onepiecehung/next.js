@@ -35,9 +35,6 @@ export function useArticleForm(options?: UseArticleFormOptions) {
       errors.push(t('writeFormContentRequired', 'write') || 'Content is required');
     }
 
-    if (summary && summary.length > 1000) {
-      errors.push(t('writeFormSummaryTooLong', 'write') || 'Summary must be less than 1000 characters');
-    }
 
     if (tags.length > 20) {
       errors.push(t('writeFormTagsTooMany', 'write') || 'Maximum 20 tags allowed');

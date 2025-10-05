@@ -1,0 +1,23 @@
+{
+  "articleViewTitle": "Article",
+  "articleViewLoading": "Loading article...",
+  "articleViewError": "Failed to load article",
+  "articleViewNotFound": "Article not found",
+  "articleViewBackToHome": "Back to Home",
+  "articleViewPublishedOn": "Published on",
+  "articleViewReadTime": "min read",
+  "articleViewWordCount": "words",
+  "articleViewTags": "Tags",
+  "articleViewNoTags": "No tags",
+  "articleViewVisibility": "Visibility",
+  "articleViewVisibilityPublic": "Public",
+  "articleViewVisibilityUnlisted": "Unlisted", 
+  "articleViewVisibilityPrivate": "Private",
+  "articleViewStatus": "Status",
+  "articleViewStatusDraft": "Draft",
+  "articleViewStatusPublished": "Published",
+  "articleViewStatusScheduled": "Scheduled",
+  "articleViewStatusArchived": "Archived",
+  "articleViewAuthor": "Author",
+  "articleViewLastUpdated": "Last updated"
+}
