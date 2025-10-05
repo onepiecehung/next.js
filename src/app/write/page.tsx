@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui";
+import { Button, ImageUpload } from "@/components/ui";
 import { TipTapEditor } from "@/components/features/text-editor";
 import { Skeletonize } from "@/components/shared";
 import { useI18n } from "@/components/providers/i18n-provider";
@@ -15,6 +15,7 @@ import { ProtectedRoute } from "@/components/features/auth";
 export default function WritePage() {
   const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(true);
+  const [coverImage, setCoverImage] = useState<File | null>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -44,6 +45,24 @@ export default function WritePage() {
               {/* Main Content */}
               <div className="bg-card rounded-lg shadow-sm border border-border p-4 sm:p-6">
                 <div className="space-y-6">
+                  {/* Cover Image Upload */}
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      {t("writeFormCoverImage", "write")}
+                    </label>
+                    <p className="text-xs text-muted-foreground mb-3">
+                      {t("writeFormCoverImageDescription", "write")}
+                    </p>
+                    <ImageUpload
+                      value={coverImage}
+                      onChange={setCoverImage}
+                      placeholder={t("writeFormCoverImagePlaceholder", "write")}
+                      maxSizeInMB={10}
+                      acceptedTypes={["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]}
+                    />
+                  </div>
+
+                  {/* Title Input */}
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                       {t("writeFormTitle", "write")}
