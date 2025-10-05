@@ -1,14 +1,14 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, setLogLevel } from "firebase/app";
 import {
   getAuth,
   GoogleAuthProvider,
   GithubAuthProvider,
-  OAuthProvider,
   signInWithPopup,
   signOut,
   User as FirebaseUser,
+  TwitterAuthProvider,
 } from "firebase/auth";
-
+setLogLevel("debug");
 // Firebase configuration
 // You need to replace these with your actual Firebase project configuration
 const firebaseConfig = {
@@ -41,10 +41,9 @@ export const githubProvider = new GithubAuthProvider();
 githubProvider.addScope("user:email");
 
 // Initialize X (Twitter) Auth Provider
-export const xProvider = new OAuthProvider("twitter.com");
+export const xProvider = new TwitterAuthProvider();
 
 // Configure X provider
-xProvider.addScope("tweet.read");
 xProvider.addScope("users.read");
 
 /**
