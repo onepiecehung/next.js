@@ -6,10 +6,16 @@
   "writeFormCoverImage": "Cover Image",
   "writeFormCoverImagePlaceholder": "Click to upload or drag and drop your cover image",
   "writeFormCoverImageDescription": "Upload a cover image for your article (JPEG, PNG, GIF, WebP up to 10MB)",
+  "writeFormCoverImageEdit": "Edit",
+  "writeFormCoverImageRemove": "Remove",
   "writeFormTitle": "Title",
   "writeFormTitlePlaceholder": "Enter your article title...",
   "writeFormContent": "Content",
   "writeFormContentPlaceholder": "Start writing your article...",
   "writeFormSaveDraft": "Save Draft",
-  "writeFormPublishArticle": "Publish Article"
+  "writeFormPublishArticle": "Publish Article",
+  "imageEditorTitle": "Edit Image",
+  "imageEditorInstructions": "Drag to move the crop area • Use the handle to resize • Fixed aspect ratio: {ratio}:1",
+  "imageEditorCancel": "Cancel",
+  "imageEditorSave": "Save Cropped Image"
 }

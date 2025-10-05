@@ -59,6 +59,8 @@ export default function WritePage() {
                       placeholder={t("writeFormCoverImagePlaceholder", "write")}
                       maxSizeInMB={10}
                       acceptedTypes={["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]}
+                      enableCrop={true}
+                      aspectRatio={16/9}
                     />
                   </div>
 

@@ -6,10 +6,16 @@
   "writeFormCoverImage": "Ảnh Bìa",
   "writeFormCoverImagePlaceholder": "Nhấp để tải lên hoặc kéo thả ảnh bìa của bạn",
   "writeFormCoverImageDescription": "Tải lên ảnh bìa cho bài viết của bạn (JPEG, PNG, GIF, WebP tối đa 10MB)",
+  "writeFormCoverImageEdit": "Chỉnh Sửa",
+  "writeFormCoverImageRemove": "Xóa",
   "writeFormTitle": "Tiêu Đề",
   "writeFormTitlePlaceholder": "Nhập tiêu đề bài viết...",
   "writeFormContent": "Nội Dung",
   "writeFormContentPlaceholder": "Bắt đầu viết bài viết của bạn...",
   "writeFormSaveDraft": "Lưu Bản Nháp",
-  "writeFormPublishArticle": "Xuất Bản Bài Viết"
+  "writeFormPublishArticle": "Xuất Bản Bài Viết",
+  "imageEditorTitle": "Chỉnh Sửa Ảnh",
+  "imageEditorInstructions": "Kéo để di chuyển vùng cắt • Sử dụng handle để thay đổi kích thước • Tỷ lệ cố định: {ratio}:1",
+  "imageEditorCancel": "Hủy",
+  "imageEditorSave": "Lưu Ảnh Đã Cắt"
 }

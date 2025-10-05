@@ -2,6 +2,8 @@ import * as React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
+import { ImageCropDialog } from "./image-crop-dialog";
+import { useI18n } from "@/components/providers/i18n-provider";
 
 interface ImageUploadProps {
   readonly value?: File | null;
@@ -11,6 +13,8 @@ interface ImageUploadProps {
   readonly disabled?: boolean;
   readonly maxSizeInMB?: number;
   readonly acceptedTypes?: string[];
+  readonly enableCrop?: boolean;
+  readonly aspectRatio?: number;
 }
 
 /**
@@ -26,9 +30,14 @@ export function ImageUpload({
   disabled = false,
   maxSizeInMB = 10,
   acceptedTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"],
+  enableCrop = false,
+  aspectRatio = 16 / 9,
 }: ImageUploadProps) {
+  const { t } = useI18n();
   const [isDragOver, setIsDragOver] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [isEditorOpen, setIsEditorOpen] = React.useState(false);
+  const [tempFile, setTempFile] = React.useState<File | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   // Validate file type and size
@@ -57,7 +66,12 @@ export function ImageUpload({
       return;
     }
 
-    onChange(file);
+    if (enableCrop) {
+      setTempFile(file);
+      setIsEditorOpen(true);
+    } else {
+      onChange(file);
+    }
   };
 
   // Handle input change
@@ -110,6 +124,19 @@ export function ImageUpload({
     }
   };
 
+  // Handle crop save
+  const handleCropSave = (croppedFile: File) => {
+    onChange(croppedFile);
+    setTempFile(null);
+    setIsEditorOpen(false);
+  };
+
+  // Handle crop cancel
+  const handleCropCancel = () => {
+    setTempFile(null);
+    setIsEditorOpen(false);
+  };
+
   // Get file preview URL
   const previewUrl = value ? URL.createObjectURL(value) : null;
 
@@ -151,15 +178,31 @@ export function ImageUpload({
               className="max-h-48 w-full object-cover rounded-md"
               unoptimized
             />
-            <Button
-              type="button"
-              variant="destructive"
-              size="sm"
-              className="absolute top-2 right-2"
-              onClick={handleRemove}
-            >
-              Remove
-            </Button>
+            <div className="absolute top-2 right-2 flex gap-2">
+              {enableCrop && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => {
+                    if (value) {
+                      setTempFile(value);
+                      setIsEditorOpen(true);
+                    }
+                  }}
+                >
+                  {t("writeFormCoverImageEdit", "write")}
+                </Button>
+              )}
+              <Button
+                type="button"
+                variant="destructive"
+                size="sm"
+                onClick={handleRemove}
+              >
+                {t("writeFormCoverImageRemove", "write")}
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="space-y-2">
@@ -189,6 +232,15 @@ export function ImageUpload({
       {error && (
         <p className="text-sm text-destructive">{error}</p>
       )}
+
+      {/* Image Editor Dialog */}
+      <ImageCropDialog
+        isOpen={isEditorOpen}
+        onClose={handleCropCancel}
+        onSave={handleCropSave}
+        imageFile={tempFile}
+        aspectRatio={aspectRatio}
+      />
     </div>
   );
 }
