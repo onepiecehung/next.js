@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
  * Useful for providing context to screen reader users without visual clutter
  */
 interface VisuallyHiddenProps extends React.HTMLAttributes<HTMLElement> {
-  readonly as?: keyof JSX.IntrinsicElements;
+  readonly as?: keyof React.JSX.IntrinsicElements;
   readonly children: React.ReactNode;
 }
 
@@ -25,7 +25,7 @@ export function VisuallyHidden({
         "absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0 clip-[rect(0,0,0,0)]",
         className
       )}
-      {...props}
+      {...(props as Record<string, unknown>)}
     >
       {children}
     </Component>

@@ -47,7 +47,22 @@ export const MermaidExtension = Node.create({
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(MermaidRenderer);
+    return ReactNodeViewRenderer((props) => {
+      const { node, updateAttributes, selected } = props;
+      return (
+        <MermaidRenderer
+          node={{
+            ...node,
+            attrs: {
+              code: node.attrs.code || "",
+              language: node.attrs.language,
+            },
+          }}
+          updateAttributes={updateAttributes}
+          selected={selected}
+        />
+      );
+    });
   },
 });
 
@@ -132,6 +147,21 @@ export const MermaidCodeBlockExtension = Node.create({
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(MermaidRenderer);
+    return ReactNodeViewRenderer((props) => {
+      const { node, updateAttributes, selected } = props;
+      return (
+        <MermaidRenderer
+          node={{
+            ...node,
+            attrs: {
+              code: node.attrs.code || "",
+              language: node.attrs.language,
+            },
+          }}
+          updateAttributes={updateAttributes}
+          selected={selected}
+        />
+      );
+    });
   },
 });

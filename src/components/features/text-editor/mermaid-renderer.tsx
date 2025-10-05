@@ -11,7 +11,7 @@ interface MermaidRendererProps {
       language?: string;
     };
   };
-  readonly updateAttributes: (attrs: Record<string, any>) => void;
+  readonly updateAttributes: (attrs: Record<string, unknown>) => void;
   readonly selected: boolean;
 }
 
@@ -53,7 +53,7 @@ export function MermaidRenderer({
       journey: {
         useMaxWidth: true,
       },
-      gitgraph: {
+      gitGraph: {
         useMaxWidth: true,
       },
       mindmap: {

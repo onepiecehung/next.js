@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { LoginCard } from "@/app/(auth)/login/_components/LoginCard";
 import {
@@ -11,7 +11,7 @@ import { SocialButtons } from "@/app/(auth)/login/_components/SocialButtons";
 // Mock the i18n provider
 jest.mock("@/components/providers/i18n-provider", () => ({
   useI18n: () => ({
-    t: (key: string, namespace?: string) => {
+    t: (key: string) => {
       const translations: Record<string, string> = {
         loginTitle: "Welcome back",
         loginSubtitle: "Enter your credentials to access your account",

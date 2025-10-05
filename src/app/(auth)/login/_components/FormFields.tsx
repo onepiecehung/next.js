@@ -159,7 +159,7 @@ export const OTPField: React.FC<OTPFieldProps> = ({
   register,
   error,
   disabled = false,
-  value,
+  // value,
   onChange,
 }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -184,8 +184,9 @@ export const OTPField: React.FC<OTPFieldProps> = ({
         disabled={disabled}
         aria-invalid={!!error}
         aria-describedby={error ? "otp-error" : undefined}
-        onChange={handleInputChange}
-        {...register("code")}
+        {...register("code", {
+          onChange: handleInputChange,
+        })}
       />
       {error && (
         <p

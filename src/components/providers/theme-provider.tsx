@@ -7,7 +7,6 @@ import {
   useEffect,
   useState,
   useMemo,
-  useCallback,
 } from "react";
 
 // Theme types
@@ -113,24 +112,17 @@ export function ThemeProvider({
     localStorage.setItem("colorScheme", colorScheme);
   }, [theme, colorScheme, mounted]);
 
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-  };
-
-  const setColorScheme = (newColorScheme: ColorScheme) => {
-    setColorSchemeState(newColorScheme);
-  };
 
   const contextValue: ThemeContextType = useMemo(
     () => ({
       theme,
       colorScheme,
-      setTheme,
-      setColorScheme,
+      setTheme: (newTheme: Theme) => setThemeState(newTheme),
+      setColorScheme: (newColorScheme: ColorScheme) => setColorSchemeState(newColorScheme),
       themes,
       colorSchemes,
     }),
-    [theme, colorScheme, setTheme, setColorScheme],
+    [theme, colorScheme],
   );
 
   return (

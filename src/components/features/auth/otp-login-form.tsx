@@ -132,7 +132,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
         setIsLoading(false);
       }
     },
-    [email, requestId, onSuccess, t],
+    [email, requestId, onSuccess, t, setUser, setAccessToken],
   );
 
   // Auto-submit when OTP is complete

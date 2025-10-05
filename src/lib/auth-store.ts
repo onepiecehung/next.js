@@ -365,7 +365,7 @@ export async function requestOTPAction(
       email: email,
     };
 
-    const response = await http.post<ApiResponse<OTPRequestResponse>>(
+    const response = await http.post<OTPRequestResponse>(
       "/auth/otp/request",
       requestBody,
     );
@@ -376,8 +376,8 @@ export async function requestOTPAction(
     }
 
     return {
-      requestId: response.data.data?.requestId,
-      expiresIn: response.data.data?.expiresInSec,
+      requestId: response.data.data.requestId,
+      expiresIn: response.data.data.expiresInSec,
     };
   } catch (error) {
     console.error("OTP request error:", error);
@@ -398,7 +398,7 @@ export async function verifyOTPAction(
       requestId: requestId,
     };
 
-    const response = await http.post<ApiResponse<OTPVerifyResponse>>(
+    const response = await http.post<OTPVerifyResponse>(
       "/auth/otp/verify",
       requestBody,
     );
