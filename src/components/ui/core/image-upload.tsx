@@ -142,8 +142,9 @@ export function ImageUpload({
 
   return (
     <div className={cn("space-y-2", className)}>
-      <button
-        type="button"
+      <div
+        role="button"
+        tabIndex={0}
         className={cn(
           "relative border-2 border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer w-full",
           "hover:border-primary/50 hover:bg-primary/5",
@@ -156,7 +157,13 @@ export function ImageUpload({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={handleClick}
-        disabled={disabled}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleClick();
+          }
+        }}
+        aria-disabled={disabled}
         aria-label="Upload image file"
       >
         <input
@@ -185,6 +192,9 @@ export function ImageUpload({
                   variant="secondary"
                   size="sm"
                   onClick={() => {
+                    // Prevent parent container click from firing on mobile
+                    // which could blur or reopen input instead of dialog
+                    event?.stopPropagation?.();
                     if (value) {
                       setTempFile(value);
                       setIsEditorOpen(true);
@@ -227,7 +237,7 @@ export function ImageUpload({
             </p>
           </div>
         )}
-      </button>
+      </div>
 
       {error && (
         <p className="text-sm text-destructive">{error}</p>

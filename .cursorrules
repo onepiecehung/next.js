@@ -1,0 +1,245 @@
+# Cursor Rule — Next.js 15+ (Frontend-Only) + shadcn/ui + Yarn
+**Repo layout (must follow this)**
+- `src/app/**`                     → routes, layouts, RSC pages (no server actions, no app/api)
+- `src/components/ui/**`           → shadcn primitives (no business logic)
+- `src/components/features/**`     → domain UI (widgets/forms/modals)
+- `src/components/providers/**`    → app providers (auth/i18n/theme/loading/NoSSR)
+- `src/components/shared/**`       → presentational utilities (skeleton/HOCs)
+- `src/hooks/**`                   → hooks
+- `src/i18n/**`                    → config + `locales/{en,vi}/*.json`
+- `src/lib/api/**`                 → typed API wrappers via `src/lib/http.ts`
+- `src/lib/**`                     → stores, http, types, validators, utils
+- `src/styles/**`                  → styles (globals.css only)
+- `src/__tests__/**`               → Jest + RTL tests
+
+> **FE-only hard rules**
+> - ❌ No Server Actions (`"use server"`), no `app/api/*`, no DB/secret SDKs
+> - ✅ Only `NEXT_PUBLIC_*` envs; all network through `src/lib/http.ts`
+
+---
+
+## Environment & Tooling
+- Next.js 15+ (App Router), TypeScript strict
+- Yarn v3+/Berry (no npm/pnpm)
+- shadcn/ui + TailwindCSS
+- Jest + @testing-library/react
+- ESLint + Prettier
+- i18n via `src/i18n/config.ts`
+
+**Yarn scripts**
+```bash
+yarn dev  # dev
+yarn build
+yarn start
+yarn lint
+yarn format
+yarn test
+yarn dlx shadcn add button card input # add primitives
+````
+
+Always commit `yarn.lock`.
+
+---
+
+## Theming (Dark/Light) — Mobile-first by default
+
+**Providers & setup**
+
+* Use your `ThemeProvider` (`src/components/providers/theme-provider.tsx`) at `app/layout.tsx`.
+* Dark mode is **class-based**. The `<html>` element must get `class="dark"` when dark theme is active.
+* Respect system preference: default to `prefers-color-scheme` if no user setting.
+
+**Authoring rules**
+
+* **Never hardcode colors**; rely on shadcn tokens (CSS vars) + Tailwind utilities.
+* Add both states when relevant: `text-foreground dark:text-foreground` not required if using tokens; prefer theme-aware shadcn classes.
+* Background/foreground:
+
+  * Containers: `bg-background text-foreground`
+  * Subtle surfaces: `bg-card text-card-foreground`
+  * Borders: `border-border`
+  * Muted: `text-muted-foreground`
+  * Interactive states: `hover:bg-accent hover:text-accent-foreground`
+* Focus ring (WCAG): `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring`
+* Elevation: prefer subtle `shadow-sm` (mobile) → `shadow-md` (desktop)
+
+**Examples**
+
+```tsx
+<div className="bg-background text-foreground border border-border rounded-2xl p-4 md:p-6">
+  <h2 className="text-xl md:text-2xl font-semibold">{t('title')}</h2>
+  <p className="text-sm md:text-base text-muted-foreground">{t('subtitle')}</p>
+  <Button className="mt-4">{t('action')}</Button>
+</div>
+```
+
+---
+
+## Responsive System (Mobile-first, multi-platform)
+
+**Breakpoints (Tailwind default)**
+
+* Mobile base (no prefix) → Tablet `sm`/`md` → Desktop `lg`/`xl`/`2xl`
+
+  * `sm` ≥ 640px, `md` ≥ 768px, `lg` ≥ 1024px, `xl` ≥ 1280px, `2xl` ≥ 1536px
+
+**Authoring pattern**
+
+* Start simple at mobile: **one column, stacked**, larger tap targets.
+* Scale up progressively: **add columns / density** at `md` and `lg`.
+* Keep key layout rules in the container, not per-child.
+
+**Layout utilities**
+
+* Container/padding: `container mx-auto px-4 md:px-6`
+* Grid lists: `grid gap-4 sm:grid-cols-2 lg:grid-cols-3`
+* Action bars: `flex flex-col gap-3 sm:flex-row sm:items-center`
+* Tables: use Cards on mobile, Table on desktop (see shadcn Table)
+* Images: `next/image` with `sizes` responsive string
+
+**Examples**
+
+```tsx
+<section className="container mx-auto px-4 md:px-6 py-6 md:py-8">
+  <header className="mb-4 md:mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+    <h1 className="text-2xl md:text-3xl font-bold">{t('page.title')}</h1>
+    <div className="flex gap-2">
+      <Button variant="outline">{t('actions.filter')}</Button>
+      <Button>{t('actions.new')}</Button>
+    </div>
+  </header>
+
+  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {items.map((it) => (
+      <Card key={it.id} className="overflow-hidden">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-base md:text-lg">{it.name}</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">{it.desc}</CardDescription>
+        </CardHeader>
+        <CardContent className="text-sm md:text-base">{it.body}</CardContent>
+      </Card>
+    ))}
+  </div>
+</section>
+```
+
+**Navigation (mobile → desktop)**
+
+* Mobile: `Sheet`/`Dialog` for menu, sticky header, large touch targets
+* Desktop: `site-nav.tsx` horizontal nav + user dropdown
+* Ensure `tabindex`, `aria-expanded`, `aria-controls` are correct
+
+---
+
+## Data Fetching (FE-only)
+
+* No secrets in client code.
+* RSC for SSR/SSG only when the API is **public-safe & cacheable**:
+
+  * `fetch(url, { next: { revalidate: N, tags: ['tag'] } })`
+* Client fetch via hooks:
+
+  * Create `useX` hooks calling `src/lib/api/*.ts` → which calls `src/lib/http.ts`
+  * Show loading with `components/shared/skeletonize.tsx` or `with-auto-skeleton.tsx`
+* All base URLs from `process.env.NEXT_PUBLIC_API_BASE_URL`
+
+---
+
+## Forms & Validation
+
+* `react-hook-form + zod` with shadcn `Form` primitives (`components/ui/layout/form.tsx`)
+* Disable submit while pending; show `FormMessage` errors
+* Respect mobile ergonomics (spacing, label click area)
+
+---
+
+## i18n
+
+* **No hard-coded text**. Use `src/i18n/locales/{en,vi}/*.json`
+* Group keys by domain (already present): `auth`, `home`, `profile`, `toast`, `user`, `write`, `demo`, `common`
+* Provide keys for labels, placeholders, toasts
+
+---
+
+## Accessibility & Contrast
+
+* Minimum AA contrast in both themes (use tokens)
+* Keyboard nav for menus/dialogs/sheets
+* `aria-live="polite"` for toasts/async results (see `ui/utilities/sonner.tsx`)
+* `VisuallyHidden` for non-visual labels (`ui/utilities/visually-hidden.tsx`)
+
+---
+
+## Performance
+
+* `next/image` with `sizes`:
+
+  * e.g. `sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"`
+* Defer heavy client components: `dynamic(() => import(...), { ssr: false })`
+* Avoid unnecessary hydration; prefer RSC render when possible (public data)
+
+---
+
+## Testing (Jest + RTL)
+
+* Tests live in `src/__tests__`
+* Cover:
+
+  * Theme switching (toggle persists & updates DOM class)
+  * Responsive rendering (use container width mocks or conditional assertions)
+  * Key flows (login UI, editor interactions)
+* Mock network by stubbing `src/lib/http.ts` or using MSW
+
+---
+
+## Imports/Exports, Naming, Size
+
+* Always use `@/` alias; never deep relative
+* Pages/layouts: default export; libs/components: named export
+* Components `PascalCase`, hooks `camelCase`
+* Aim ≤ 200 lines/component, ≤ 300 lines/file
+
+---
+
+## Cursor Scaffolding Rules (Theme + Responsive baked in)
+
+When I say **“Create page `<slug>`”**, generate:
+
+1. `src/app/<slug>/page.tsx` — RSC page (no server actions) with:
+
+   * `container mx-auto px-4 md:px-6`
+   * Mobile-first layout; add `sm`/`md`/`lg` classes appropriately
+   * Theme-aware tokens (`bg-background`, `text-foreground`, `border-border`)
+2. `src/components/features/<slug>/*` — client widgets (forms/modals/lists)
+3. `src/lib/api/<slug>.ts` — API wrapper using `src/lib/http.ts`
+4. `src/hooks/use<Slug>.ts` — optional client data hook
+5. `src/i18n/locales/{en,vi}/<slug>.json` — i18n keys
+6. `src/__tests__/<slug>.spec.tsx` — render + theme + basic interactions
+
+When I say **“Create form `<name>`”**:
+
+* Build client form in `src/components/features/<domain>/<name>-form.tsx`
+* Use shadcn `Form` primitives; integrate `react-hook-form + zod`
+* Buttons have loading/disabled state; layout is mobile-first
+* Submit via `src/lib/api/<domain>.ts` and show toasts
+
+When I say **“Create modal `<name>`”**:
+
+* Use shadcn `Dialog`/`Sheet`
+* Trap focus, ESC to close, outside click safe
+* Respect theme tokens & responsive sizing (e.g., `sm:max-w-md lg:max-w-lg`)
+
+> Never generate `app/api/*` or `"use server"` blocks. Always use `src/lib/http.ts` for network.
+
+---
+
+## Definition of Done (DoD)
+
+* ✅ No TS/ESLint warnings
+* ✅ Theme works (dark/light) with tokens; contrast AA
+* ✅ Mobile-first responsive layout; scales at `sm/md/lg`
+* ✅ No Server Actions / no secrets / no `app/api/*`
+* ✅ Uses shadcn primitives with proper loading/disabled/error states
+* ✅ i18n keys present (EN & VI); no hard-coded text
+* ✅ Accessibility: labels, focus ring, keyboard nav, `aria-*`
+* ✅ Tests for critical flows + theme toggle
