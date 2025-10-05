@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { Button } from "./button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../layout/dialog";
 import { useI18n } from "@/components/providers/i18n-provider";
@@ -67,10 +68,13 @@ export function ImageCropDialog({
           {croppedImage ? (
             <div className="space-y-4">
               <div className="text-center">
-                <img
+                <Image
                   src={croppedImage}
                   alt="Cropped"
+                  width={1280}
+                  height={720}
                   className="max-w-full h-auto max-h-96 mx-auto rounded"
+                  unoptimized
                 />
               </div>
               <div className="flex justify-center gap-2">
@@ -91,8 +95,12 @@ export function ImageCropDialog({
             >
               <ImageCropContent className="max-w-2xl mx-auto" />
               <div className="flex items-center justify-center gap-2 mt-4">
-                <ImageCropApply />
-                <ImageCropReset />
+                <ImageCropApply asChild>
+                  <Button>{t("imageEditorCrop", "write")}</Button>
+                </ImageCropApply>
+                <ImageCropReset asChild>
+                  <Button variant="secondary">{t("imageEditorReset", "write")}</Button>
+                </ImageCropReset>
                 <Button variant="outline" onClick={onClose}>
                   {t("imageEditorCancel", "write")}
                 </Button>

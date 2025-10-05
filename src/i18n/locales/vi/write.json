@@ -17,5 +17,7 @@
   "imageEditorTitle": "Chỉnh Sửa Ảnh",
   "imageEditorInstructions": "Kéo để di chuyển vùng cắt • Sử dụng handle để thay đổi kích thước • Tỷ lệ cố định: {ratio}:1",
   "imageEditorCancel": "Hủy",
-  "imageEditorSave": "Lưu Ảnh Đã Cắt"
+  "imageEditorSave": "Lưu",
+  "imageEditorCrop": "Cắt",
+  "imageEditorReset": "Làm lại"
 }

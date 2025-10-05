@@ -14,6 +14,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -160,20 +161,20 @@ export const ImageCrop = ({
     [reactCropProps.aspect]
   );
 
-  const handleChange = (pixelCrop: PixelCrop, percentCrop: PercentCrop) => {
+  const handleChange = useCallback((pixelCrop: PixelCrop, percentCrop: PercentCrop) => {
     setCrop(percentCrop);
     onChange?.(pixelCrop, percentCrop);
-  };
+  }, [onChange]);
 
-  const handleComplete = async (
+  const handleComplete = useCallback(async (
     pixelCrop: PixelCrop,
     percentCrop: PercentCrop
   ) => {
     setCompletedCrop(pixelCrop);
     onComplete?.(pixelCrop, percentCrop);
-  };
+  }, [onComplete]);
 
-  const applyCrop = async () => {
+  const applyCrop = useCallback(async () => {
     if (!(imgRef.current && completedCrop)) {
       return;
     }
@@ -184,16 +185,16 @@ export const ImageCrop = ({
       maxImageSize
     );
     onCrop?.(croppedImage);
-  };
+  }, [completedCrop, imgRef, maxImageSize, onCrop]);
 
-  const resetCrop = () => {
+  const resetCrop = useCallback(() => {
     if (initialCrop) {
       setCrop(initialCrop);
       setCompletedCrop(null);
     }
-  };
+  }, [initialCrop]);
 
-  const contextValue: ImageCropContextType = {
+  const contextValue: ImageCropContextType = useMemo(() => ({
     file,
     maxImageSize,
     imgSrc,
@@ -207,7 +208,7 @@ export const ImageCrop = ({
     onImageLoad,
     applyCrop,
     resetCrop,
-  };
+  }), [file, maxImageSize, imgSrc, crop, completedCrop, imgRef, onCrop, reactCropProps, handleChange, handleComplete, onImageLoad, applyCrop, resetCrop]);
 
   return (
     <ImageCropContext.Provider value={contextValue}>
@@ -250,6 +251,7 @@ export const ImageCropContent = ({
       {...reactCropProps}
     >
       {imgSrc && (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           alt="crop"
           className="size-full"
