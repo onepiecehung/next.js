@@ -8,7 +8,17 @@ import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { useArticle } from "@/hooks/useArticle";
 import { toast } from "sonner";
-import { Calendar, Clock, User, Eye, Tag, FileText, Share2, Heart, Bookmark } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  User,
+  Eye,
+  Tag,
+  FileText,
+  Share2,
+  Heart,
+  Bookmark,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { ARTICLE_CONSTANTS } from "@/lib/types/article";
@@ -22,7 +32,7 @@ import { ARTICLE_CONSTANTS } from "@/lib/types/article";
 export default function ArticleViewPage() {
   const params = useParams();
   const { t } = useI18n();
-  
+
   const articleId = params.article_id as string;
 
   // Fetch article data
@@ -39,11 +49,11 @@ export default function ArticleViewPage() {
 
   // Format date helper
   const formatDate = (date: Date | string) => {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    return dateObj.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    const dateObj = typeof date === "string" ? new Date(date) : date;
+    return dateObj.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -89,17 +99,16 @@ export default function ArticleViewPage() {
                   {t("articleViewError", "article")}
                 </h1>
                 <p className="text-muted-foreground mb-6">
-                  {error.message || "Something went wrong while loading the article."}
+                  {error.message ||
+                    "Something went wrong while loading the article."}
                 </p>
                 <Link href="/">
-                  <Button>
-                    {t("articleViewBackToHome", "article")}
-                  </Button>
+                  <Button>{t("articleViewBackToHome", "article")}</Button>
                 </Link>
               </div>
             </div>
           )}
-          
+
           {!error && article && (
             <article className="max-w-4xl mx-auto">
               {/* Back Button */}
@@ -112,11 +121,11 @@ export default function ArticleViewPage() {
               </div>
 
               {/* Cover Image Hero Section */}
-              {article.coverImageUrl && (
+              {article.coverImage && (
                 <div className="mb-8">
                   <div className="relative w-full h-64 sm:h-80 md:h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-lg">
                     <Image
-                      src={article.coverImageUrl}
+                      src={article.coverImage.url}
                       alt={article.title}
                       fill
                       className="object-cover"
@@ -144,9 +153,13 @@ export default function ArticleViewPage() {
                       <User className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium text-foreground">User ID {article.userId}</p>
+                      <p className="font-medium text-foreground">
+                        User ID {article.userId}
+                      </p>
                       <p className="text-sm text-muted-foreground">
-                        {article.publishedAt ? formatDate(article.publishedAt) : formatDate(article.createdAt)}
+                        {article.publishedAt
+                          ? formatDate(article.publishedAt)
+                          : formatDate(article.createdAt)}
                       </p>
                     </div>
                   </div>
@@ -174,7 +187,10 @@ export default function ArticleViewPage() {
                   {article.readTimeMinutes && (
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4" />
-                      <span>{article.readTimeMinutes} {t("articleViewReadTime", "article")}</span>
+                      <span>
+                        {article.readTimeMinutes}{" "}
+                        {t("articleViewReadTime", "article")}
+                      </span>
                     </div>
                   )}
 
@@ -182,7 +198,10 @@ export default function ArticleViewPage() {
                   {article.wordCount && (
                     <div className="flex items-center gap-2">
                       <FileText className="h-4 w-4" />
-                      <span>{article.wordCount} {t("articleViewWordCount", "article")}</span>
+                      <span>
+                        {article.wordCount}{" "}
+                        {t("articleViewWordCount", "article")}
+                      </span>
                     </div>
                   )}
 
@@ -243,17 +262,20 @@ export default function ArticleViewPage() {
                       <User className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-foreground">User ID {article.userId}</h3>
+                      <h3 className="font-semibold text-foreground">
+                        User ID {article.userId}
+                      </h3>
                       <p className="text-sm text-muted-foreground">
                         {t("articleViewAuthor", "article")}
                       </p>
                     </div>
                   </div>
-                  
+
                   {/* Last Updated */}
                   <div className="text-sm text-muted-foreground">
                     <Calendar className="h-4 w-4 inline mr-2" />
-                    {t("articleViewLastUpdated", "article")}: {formatDate(article.updatedAt)}
+                    {t("articleViewLastUpdated", "article")}:{" "}
+                    {formatDate(article.updatedAt)}
                   </div>
                 </div>
 

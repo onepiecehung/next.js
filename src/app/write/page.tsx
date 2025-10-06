@@ -91,10 +91,9 @@ export default function WritePage() {
       let coverImageUrl: string | undefined = undefined;
       if (coverImage) {
         const uploaded = await MediaAPI.upload([coverImage]);
-        console.log(uploaded);
-        if (uploaded[0]) {
-          coverImageId = uploaded[0].id;
-          coverImageUrl = uploaded[0].url;
+        if (uploaded.data[0]) {
+          coverImageId = uploaded.data[0].id;
+          coverImageUrl = uploaded.data[0].url;
         }
       }
       await createDraft({
@@ -128,9 +127,9 @@ export default function WritePage() {
       let coverImageUrl: string | undefined = undefined;
       if (coverImage) {
         const uploaded = await MediaAPI.upload([coverImage]);
-        if (uploaded[0]) {
-          coverImageId = uploaded[0].id;
-          coverImageUrl = uploaded[0].url;
+        if (uploaded.data[0]) {
+          coverImageId = uploaded.data[0].id;
+          coverImageUrl = uploaded.data[0].url;
         }
       }
       await publishArticle({

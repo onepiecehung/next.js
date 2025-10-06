@@ -1,3 +1,4 @@
+import { UploadedMedia } from "../api/media";
 // Article API types and constants
 export const ARTICLE_CONSTANTS = {
   // Field lengths
@@ -10,23 +11,23 @@ export const ARTICLE_CONSTANTS = {
 
   // Status values
   STATUS: {
-    DRAFT: 'draft',
-    SCHEDULED: 'scheduled',
-    PUBLISHED: 'published',
-    ARCHIVED: 'archived',
+    DRAFT: "draft",
+    SCHEDULED: "scheduled",
+    PUBLISHED: "published",
+    ARCHIVED: "archived",
   },
 
   // Visibility levels
   VISIBILITY: {
-    PUBLIC: 'public',
-    UNLISTED: 'unlisted',
-    PRIVATE: 'private',
+    PUBLIC: "public",
+    UNLISTED: "unlisted",
+    PRIVATE: "private",
   },
 
   // Content formats
   CONTENT_FORMAT: {
-    MARKDOWN: 'markdown',
-    HTML: 'html',
+    MARKDOWN: "markdown",
+    HTML: "html",
   },
 } as const;
 
@@ -66,6 +67,7 @@ export interface Article {
   tags: string[];
   coverImageId?: string;
   coverImageUrl?: string;
+  coverImage?: UploadedMedia;
   wordCount?: number;
   readTimeMinutes?: number;
   userId: string;
