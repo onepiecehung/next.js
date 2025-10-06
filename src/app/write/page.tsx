@@ -12,11 +12,11 @@ import { toast } from "sonner";
 import { MediaAPI } from "@/lib/api/media";
 import { useAtom } from "jotai";
 import { currentUserAtom } from "@/lib/auth-store";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -31,7 +31,7 @@ export default function WritePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser] = useAtom(currentUserAtom);
   const router = useRouter();
-  
+
   // Use article form hook
   const {
     coverImage,
@@ -58,8 +58,11 @@ export default function WritePage() {
     isLoading: isSubmitting,
   } = useCreateArticle({
     onSuccess: (article) => {
-      toast.success(t("writeFormSuccess", "write") || "Article created successfully!");
+      toast.success(
+        t("writeFormSuccess", "write") || "Article created successfully!"
+      );
       resetForm();
+      router.prefetch(`/article/${article.id}/${article.slug}`);
       // Redirect to article view page
       router.push(`/article/${article.id}/${article.slug}`);
     },
@@ -88,6 +91,7 @@ export default function WritePage() {
       let coverImageUrl: string | undefined = undefined;
       if (coverImage) {
         const uploaded = await MediaAPI.upload([coverImage]);
+        console.log(uploaded);
         if (uploaded[0]) {
           coverImageId = uploaded[0].id;
           coverImageUrl = uploaded[0].url;
@@ -96,7 +100,7 @@ export default function WritePage() {
       await createDraft({
         title,
         content,
-        contentFormat: 'html',
+        contentFormat: "html",
         visibility,
         tags: tags.length > 0 ? tags : undefined,
         wordCount,
@@ -132,7 +136,7 @@ export default function WritePage() {
       await publishArticle({
         title,
         content,
-        contentFormat: 'html',
+        contentFormat: "html",
         visibility,
         tags: tags.length > 0 ? tags : undefined,
         wordCount,
@@ -179,9 +183,15 @@ export default function WritePage() {
                       onChange={setCoverImage}
                       placeholder={t("writeFormCoverImagePlaceholder", "write")}
                       maxSizeInMB={10}
-                      acceptedTypes={["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]}
+                      acceptedTypes={[
+                        "image/jpeg",
+                        "image/jpg",
+                        "image/png",
+                        "image/gif",
+                        "image/webp",
+                      ]}
                       enableCrop={true}
-                      aspectRatio={16/9}
+                      aspectRatio={16 / 9}
                     />
                   </div>
 
@@ -202,8 +212,6 @@ export default function WritePage() {
                       {title.length}/256 characters
                     </p>
                   </div>
-
-
 
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
@@ -228,9 +236,12 @@ export default function WritePage() {
                     </label>
                     <input
                       type="text"
-                      value={tags.join(', ')}
+                      value={tags.join(", ")}
                       onChange={(e) => {
-                        const tagList = e.target.value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+                        const tagList = e.target.value
+                          .split(",")
+                          .map((tag) => tag.trim())
+                          .filter((tag) => tag.length > 0);
                         setTags(tagList.slice(0, 20)); // Limit to 20 tags
                       }}
                       placeholder={t("writeFormTagsPlaceholder", "write")}
@@ -244,32 +255,43 @@ export default function WritePage() {
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-6 border-t border-border">
                     {/* Visibility Dropdown */}
                     <div className="flex items-center gap-2">
-                      <span className="text-sm text-muted-foreground">{t("writeFormVisibility", "write")}:</span>
+                      <span className="text-sm text-muted-foreground">
+                        {t("writeFormVisibility", "write")}:
+                      </span>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="outline" size="sm" className="gap-2">
-                            {visibility === 'public' && t("writeFormVisibilityPublic", "write")}
-                            {visibility === 'unlisted' && t("writeFormVisibilityUnlisted", "write")}
-                            {visibility === 'private' && t("writeFormVisibilityPrivate", "write")}
+                            {visibility === "public" &&
+                              t("writeFormVisibilityPublic", "write")}
+                            {visibility === "unlisted" &&
+                              t("writeFormVisibilityUnlisted", "write")}
+                            {visibility === "private" &&
+                              t("writeFormVisibilityPrivate", "write")}
                             <ChevronDown className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="start">
-                          <DropdownMenuItem 
-                            onClick={() => setVisibility('public')}
-                            className={visibility === 'public' ? 'bg-accent' : ''}
+                          <DropdownMenuItem
+                            onClick={() => setVisibility("public")}
+                            className={
+                              visibility === "public" ? "bg-accent" : ""
+                            }
                           >
                             {t("writeFormVisibilityPublic", "write")}
                           </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            onClick={() => setVisibility('unlisted')}
-                            className={visibility === 'unlisted' ? 'bg-accent' : ''}
+                          <DropdownMenuItem
+                            onClick={() => setVisibility("unlisted")}
+                            className={
+                              visibility === "unlisted" ? "bg-accent" : ""
+                            }
                           >
                             {t("writeFormVisibilityUnlisted", "write")}
                           </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            onClick={() => setVisibility('private')}
-                            className={visibility === 'private' ? 'bg-accent' : ''}
+                          <DropdownMenuItem
+                            onClick={() => setVisibility("private")}
+                            className={
+                              visibility === "private" ? "bg-accent" : ""
+                            }
                           >
                             {t("writeFormVisibilityPrivate", "write")}
                           </DropdownMenuItem>
@@ -286,15 +308,19 @@ export default function WritePage() {
                         onClick={handleSaveDraft}
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? "Saving..." : t("writeFormSaveDraft", "write")}
+                        {isSubmitting
+                          ? "Saving..."
+                          : t("writeFormSaveDraft", "write")}
                       </Button>
-                      <Button 
-                        size="lg" 
+                      <Button
+                        size="lg"
                         className="w-full sm:w-auto"
                         onClick={handlePublishArticle}
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? "Publishing..." : t("writeFormPublishArticle", "write")}
+                        {isSubmitting
+                          ? "Publishing..."
+                          : t("writeFormPublishArticle", "write")}
                       </Button>
                     </div>
                   </div>
