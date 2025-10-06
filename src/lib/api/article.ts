@@ -1,4 +1,5 @@
 import { http } from '../http';
+import { ApiResponse } from '../types/api';
 import type { CreateArticleDto, Article } from '../types/article';
 
 /**
@@ -12,31 +13,31 @@ export class ArticleAPI {
    * Create a new article
    */
   static async createArticle(data: CreateArticleDto): Promise<Article> {
-    const response = await http.post<Article>(this.BASE_URL, data);
-    return response.data;
+    const response = await http.post<ApiResponse<Article>>(this.BASE_URL, data);
+    return response.data.data;
   }
 
   /**
    * Get article by ID
    */
   static async getArticle(id: string): Promise<Article> {
-    const response = await http.get<Article>(`${this.BASE_URL}/${id}`);
-    return response.data;
+    const response = await http.get<ApiResponse<Article>>(`${this.BASE_URL}/${id}`);
+    return response.data.data;
   }
 
   /**
    * Update article by ID
    */
   static async updateArticle(id: string, data: Partial<CreateArticleDto>): Promise<Article> {
-    const response = await http.patch<Article>(`${this.BASE_URL}/${id}`, data);
-    return response.data;
+    const response = await http.patch<ApiResponse<Article>>(`${this.BASE_URL}/${id}`, data);
+    return response.data.data;
   }
 
   /**
    * Delete article by ID
    */
   static async deleteArticle(id: string): Promise<void> {
-    await http.delete(`${this.BASE_URL}/${id}`);
+    await http.delete<ApiResponse<void>>(`${this.BASE_URL}/${id}`);
   }
 
   /**

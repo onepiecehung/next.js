@@ -45,5 +45,8 @@
   "notFoundSuggestion3": "Đi đến trang chủ",
   "notFoundSuggestion3Desc": "Bắt đầu lại từ trang chủ của chúng tôi",
   "notFoundPopularLinks": "Trang phổ biến:",
-  "back": "Quay Lại"
+  "back": "Quay Lại",
+  "rateLimitTitle": "Quá nhiều yêu cầu",
+  "rateLimitDescription": "Bạn đã vượt quá giới hạn gọi API. Vui lòng chờ trước khi thử lại.",
+  "rateLimitRetryIn": "Thử lại sau"
 }

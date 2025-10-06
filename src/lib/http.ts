@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import { rateLimitBus, setRateLimitUntil, getRateLimitUntil } from "@/lib/rate-limit";
 
 // In-memory storage for access token (not persisted to localStorage for security)
 let ACCESS_TOKEN: string | null = null;
@@ -46,11 +47,21 @@ export const publicHttp = axios.create({
   withCredentials: false,
 });
 
-// Request interceptor: automatically attach Authorization header if access token exists
+// Request interceptor: attach token and block during rate-limit cooldown
 http.interceptors.request.use((config) => {
+  const now = Date.now();
+  const until = getRateLimitUntil();
+  if (until && until > now) {
+    // Emit event so global dialog shows (in case it was dismissed)
+    rateLimitBus.emit({ untilTimestampMs: until, retryAfterSeconds: Math.max(1, Math.ceil((until - now) / 1000)) });
+    const err = new Error("Rate limited - cooldown active") as Error & { response?: { status?: number } };
+    err.response = { status: 429 };
+    return Promise.reject(err);
+  }
+
   const accessToken = getAccessToken();
   if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
+    (config.headers as Record<string, string>).Authorization = `Bearer ${accessToken}`;
   }
   return config;
 });
@@ -116,20 +127,36 @@ async function refreshAccessToken() {
 
 http.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+  async (error: AxiosError) => {
+    const originalRequest = error.config as InternalAxiosRequestConfig | undefined;
     const status = error?.response?.status;
 
+    // Handle 429 Too Many Requests (rate limiting)
+    if (status === 429) {
+      const retryAfterHeader = (error.response?.headers?.["retry-after"] as unknown) as string | undefined;
+      const retryAfterSeconds = retryAfterHeader ? Math.max(1, parseInt(String(retryAfterHeader), 10)) : 60;
+      const until = Date.now() + retryAfterSeconds * 1000;
+      setRateLimitUntil(until);
+      rateLimitBus.emit({ untilTimestampMs: until, retryAfterSeconds });
+      return Promise.reject(error);
+    }
+
     // Handle 401 Unauthorized errors
-    if (status === 401 && !originalRequest._retry) {
+    // Narrow and extend to access a local _retry flag safely
+    type RetryableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
+    const req = originalRequest as RetryableConfig | undefined;
+    if (status === 401 && req && !req._retry) {
       if (isRefreshing) {
         // If already refreshing, wait for the current refresh to complete
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         })
           .then((token) => {
-            originalRequest.headers.Authorization = `Bearer ${token}`;
-            return http(originalRequest);
+            if (req) {
+              (req.headers as Record<string, string>).Authorization = `Bearer ${token}`;
+              return http(req);
+            }
+            return Promise.reject(new Error("Original request not available"));
           })
           .catch((err) => {
             return Promise.reject(err);
@@ -137,7 +164,7 @@ http.interceptors.response.use(
       }
 
       // Start refresh process
-      originalRequest._retry = true;
+      req._retry = true;
       isRefreshing = true;
 
       try {
@@ -145,16 +172,19 @@ http.interceptors.response.use(
         processQueue(null, newAccessToken);
 
         // Update the original request with new token
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return http(originalRequest);
+        if (req) {
+          (req.headers as Record<string, string>).Authorization = `Bearer ${newAccessToken}`;
+          return http(req);
+        }
+        return Promise.reject(new Error("Original request not available"));
       } catch (refreshError) {
         processQueue(refreshError, null);
-        return Promise.reject(refreshError);
+        return Promise.reject(refreshError instanceof Error ? refreshError : new Error("Token refresh failed"));
       } finally {
         isRefreshing = false;
       }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error instanceof Error ? error : new Error("Request failed"));
   },
 );

@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/layout/dropdown-menu";
 import { ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 /**
  * Internationalized Write Page Component
@@ -29,6 +30,7 @@ export default function WritePage() {
   const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser] = useAtom(currentUserAtom);
+  const router = useRouter();
   
   // Use article form hook
   const {
@@ -55,9 +57,11 @@ export default function WritePage() {
     publishArticle,
     isLoading: isSubmitting,
   } = useCreateArticle({
-    onSuccess: () => {
+    onSuccess: (article) => {
       toast.success(t("writeFormSuccess", "write") || "Article created successfully!");
       resetForm();
+      // Redirect to article view page
+      router.push(`/article/${article.id}/${article.slug}`);
     },
     onError: (error) => {
       toast.error(error.message || "Failed to create article");

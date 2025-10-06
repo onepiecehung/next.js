@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { NoSSR } from "@/components/providers/no-ssr";
 import { LoadingProvider } from "@/components/providers/loading-provider";
 import { I18nProvider } from "@/components/providers/i18n-provider";
+import RateLimitProvider from "@/components/providers/rate-limit-provider";
 import { SiteNav } from "@/components/features/navigation";
 
 const geistSans = Geist({
@@ -40,8 +41,10 @@ export default function RootLayout({
             <ThemeProvider>
               <AuthProvider>
                 <LoadingProvider>
-                  <SiteNav />
-                  {children}
+                  <RateLimitProvider>
+                    <SiteNav />
+                    {children}
+                  </RateLimitProvider>
                 </LoadingProvider>
               </AuthProvider>
             </ThemeProvider>
