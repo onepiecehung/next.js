@@ -1,5 +1,6 @@
 "use client";
 
+import hljs from "highlight.js";
 import mermaid from "mermaid";
 
 /**
@@ -117,17 +118,68 @@ async function processMermaidDiagrams(container: Element): Promise<void> {
  * @param container - The DOM container to process
  */
 async function processSyntaxHighlighting(container: Element): Promise<void> {
-  // This is a placeholder for syntax highlighting
-  // In a real implementation, you would use a library like highlight.js
-  // or prism.js to highlight code blocks
-
   const codeBlocks = container.querySelectorAll("pre code");
+  console.log("Found code blocks:", codeBlocks.length);
 
   for (const codeBlock of codeBlocks) {
-    // Add basic styling for code blocks
     const pre = codeBlock.parentElement;
-    if (pre) {
-      pre.classList.add("code-block");
+    if (!pre) continue;
+
+    console.log("Processing code block:", {
+      codeClasses: Array.from(codeBlock.classList),
+      preClasses: Array.from(pre.classList),
+      preDataLanguage: pre.getAttribute("data-language"),
+      textContent: codeBlock.textContent?.substring(0, 50) + "..."
+    });
+
+    // Add code-block class for styling
+    pre.classList.add("code-block");
+
+    // Check if this code block is already highlighted
+    if (pre.classList.contains("hljs")) continue;
+
+    try {
+      // Get the language from class or data attribute
+      let language = "";
+      const classList = Array.from(codeBlock.classList);
+      const langClass = classList.find(cls => cls.startsWith("language-"));
+      
+      if (langClass) {
+        language = langClass.replace("language-", "");
+      } else if (pre.getAttribute("data-language")) {
+        language = pre.getAttribute("data-language") || "";
+      } else if (pre.classList.contains("language-")) {
+        // Check if the pre element has a language class
+        const preClassList = Array.from(pre.classList);
+        const preLangClass = preClassList.find(cls => cls.startsWith("language-"));
+        if (preLangClass) {
+          language = preLangClass.replace("language-", "");
+        }
+      }
+
+      console.log("Detected language:", language);
+
+      // Highlight the code block
+      if (language && hljs.getLanguage(language)) {
+        // Use specific language highlighting
+        const highlighted = hljs.highlight(codeBlock.textContent || "", { language });
+        codeBlock.innerHTML = highlighted.value;
+        codeBlock.className = `hljs language-${language}`;
+        console.log("Applied specific language highlighting for:", language);
+      } else {
+        // Auto-detect language
+        const highlighted = hljs.highlightAuto(codeBlock.textContent || "");
+        codeBlock.innerHTML = highlighted.value;
+        codeBlock.className = `hljs language-${highlighted.language || "plaintext"}`;
+        console.log("Applied auto-detected language highlighting for:", highlighted.language);
+      }
+
+      // Mark as processed
+      pre.classList.add("hljs");
+    } catch (error) {
+      console.error("Failed to highlight code block:", error);
+      // Fallback: just add basic styling
+      codeBlock.className = "hljs";
     }
   }
 }

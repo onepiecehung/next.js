@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import "highlight.js/styles/github.css";
 import {
-  initializeMermaid,
-  processCodeBlocks,
+    initializeMermaid,
+    processCodeBlocks,
 } from "../lib/utils/content-processor";
 
 /**

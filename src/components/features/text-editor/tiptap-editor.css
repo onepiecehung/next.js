@@ -745,7 +745,7 @@
 }
 
 /* Preview content syntax highlighting */
-.preview-content .ProseMirror pre[data-language] {
+.preview-content .ProseMirror pre {
   background: #f8f9fa !important;
   border: 1px solid #e9ecef !important;
   border-radius: 0.5rem !important;
@@ -760,7 +760,31 @@
   position: relative !important;
 }
 
-.preview-content .ProseMirror pre[data-language] code {
+.preview-content .ProseMirror pre code {
+  background: none !important;
+  color: inherit !important;
+  font-size: inherit !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Highlight.js specific styling for preview content */
+.preview-content .ProseMirror pre.hljs {
+  background: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  border-radius: 0.5rem !important;
+  color: #212529 !important;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace !important;
+  font-size: 0.875rem !important;
+  line-height: 1.6 !important;
+  padding: 1.25rem !important;
+  margin: 1.5rem 0 !important;
+  overflow-x: auto !important;
+  white-space: pre !important;
+  position: relative !important;
+}
+
+.preview-content .ProseMirror pre.hljs code {
   background: none !important;
   color: inherit !important;
   font-size: inherit !important;
@@ -800,14 +824,26 @@
 }
 
 /* Dark mode preview content syntax highlighting */
-.dark .preview-content .ProseMirror pre[data-language] {
+.dark .preview-content .ProseMirror pre {
+  background: #343a40 !important;
+  border-color: #495057 !important;
+  color: #f8f9fa !important;
+}
+
+.dark .preview-content .ProseMirror pre.hljs {
   background: #343a40 !important;
   border-color: #495057 !important;
   color: #f8f9fa !important;
 }
 
 /* Dracula theme preview content syntax highlighting */
-[data-theme="dracula"] .preview-content .ProseMirror pre[data-language] {
+[data-theme="dracula"] .preview-content .ProseMirror pre {
+  background: #44475a !important;
+  border-color: #6272a4 !important;
+  color: #f8f8f2 !important;
+}
+
+[data-theme="dracula"] .preview-content .ProseMirror pre.hljs {
   background: #44475a !important;
   border-color: #6272a4 !important;
   color: #f8f8f2 !important;
