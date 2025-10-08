@@ -1,25 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
-import { Button, ImageUpload } from "@/components/ui";
-import { TipTapEditor } from "@/components/features/text-editor";
-import { Skeletonize } from "@/components/shared";
-import { useI18n } from "@/components/providers/i18n-provider";
 import { ProtectedRoute } from "@/components/features/auth";
-import { useCreateArticle } from "@/hooks/useCreateArticle";
-import { useArticleForm } from "@/hooks/useArticleForm";
-import { toast } from "sonner";
-import { MediaAPI } from "@/lib/api/media";
-import { useAtom } from "jotai";
-import { currentUserAtom } from "@/lib/auth-store";
+import { TipTapEditor } from "@/components/features/text-editor";
+import { useI18n } from "@/components/providers/i18n-provider";
+import { Skeletonize } from "@/components/shared";
+import { Button, ImageUpload } from "@/components/ui";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
+import { useArticleForm } from "@/hooks/useArticleForm";
+import { useCreateArticle } from "@/hooks/useCreateArticle";
+import { MediaAPI } from "@/lib/api/media";
+import { currentUserAtom } from "@/lib/auth-store";
+import { useAtom } from "jotai";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { toast } from "sonner";
 
 /**
  * Internationalized Write Page Component
@@ -62,7 +62,6 @@ export default function WritePage() {
         t("writeFormSuccess", "write") || "Article created successfully!"
       );
       resetForm();
-      router.prefetch(`/article/${article.id}/${article.slug}`);
       // Redirect to article view page
       router.push(`/article/${article.id}/${article.slug}`);
     },
