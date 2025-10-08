@@ -66,7 +66,7 @@ export const ImageUploadExtension = Extension.create<ImageUploadOptions>({
                   const { tr } = state;
                   
                   uploadedMedia.forEach((media) => {
-                    const imageNode = state.schema.nodes.image.create({
+                    const imageNode = state.schema.nodes.customImage.create({
                       src: media.url,
                       alt: media.filename,
                       title: media.filename,

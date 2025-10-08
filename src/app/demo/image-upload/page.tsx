@@ -1,9 +1,9 @@
 "use client";
 
 import { TipTapEditor } from "@/components/features/text-editor";
+import { useI18n } from "@/components/providers/i18n-provider";
 import { Button } from "@/components/ui/core/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/core/card";
-import { useTranslation } from "@/i18n/config";
 import { useState } from "react";
 
 /**
@@ -11,7 +11,7 @@ import { useState } from "react";
  * Users can paste images and see them automatically uploaded via API
  */
 export default function ImageUploadDemoPage() {
-  const { t } = useTranslation();
+  const { t } = useI18n();
   const [content, setContent] = useState(`
     <h2>Image Upload Demo</h2>
     <p>Try pasting images into this editor! They will be automatically uploaded via the media API.</p>
@@ -75,9 +75,10 @@ export default function ImageUploadDemoPage() {
           </CardHeader>
           <CardContent className="space-y-2">
             <ol className="list-decimal list-inside space-y-1 text-sm">
-              {t("demo.imageUpload.instructionsList", { returnObjects: true }).map((instruction: string, index: number) => (
-                <li key={index}>{instruction}</li>
-              ))}
+              <li>Copy an image from your clipboard</li>
+              <li>Paste it directly into the editor</li>
+              <li>Watch as it automatically uploads via the media API</li>
+              <li>Use the image button in the toolbar for manual uploads</li>
             </ol>
           </CardContent>
         </Card>

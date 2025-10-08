@@ -74,6 +74,9 @@ export async function processCodeBlocks(
     options;
 
   try {
+    // Process custom image nodes
+    processCustomImageNodes(container);
+
     // Process Mermaid diagrams
     if (enableMermaidDiagrams) {
       await processMermaidDiagrams(container);
@@ -85,6 +88,56 @@ export async function processCodeBlocks(
     }
   } catch (error) {
     console.error("Error processing code blocks:", error);
+  }
+}
+
+/**
+ * Process custom image nodes in the container
+ * @param container - The DOM container to process
+ */
+function processCustomImageNodes(container: Element): void {
+  const customImageNodes = container.querySelectorAll("custom-image");
+  
+  for (const node of customImageNodes) {
+    try {
+      const src = node.getAttribute("src");
+      const alt = node.getAttribute("alt") || "";
+      const title = node.getAttribute("title") || "";
+      const width = node.getAttribute("width") || "800";
+      const height = node.getAttribute("height") || "600";
+
+      if (!src) continue;
+
+      // Create a wrapper div for the custom image
+      const wrapper = document.createElement("div");
+      wrapper.className = "custom-image-wrapper";
+      wrapper.innerHTML = `
+        <div class="relative group my-4 inline-block max-w-full">
+          <div class="relative">
+            <img 
+              src="${src}" 
+              alt="${alt}" 
+              title="${title}"
+              width="${width}"
+              height="${height}"
+              class="rounded-lg max-w-full h-auto"
+              loading="lazy"
+            />
+          </div>
+          ${(alt || title) ? `
+            <div class="mt-2 text-xs text-muted-foreground text-center">
+              ${alt ? `<div>Alt: ${alt}</div>` : ""}
+              ${title ? `<div>Title: ${title}</div>` : ""}
+            </div>
+          ` : ""}
+        </div>
+      `;
+
+      // Replace the custom-image node with the wrapper
+      node.parentNode?.replaceChild(wrapper, node);
+    } catch (error) {
+      console.error("Failed to process custom image node:", error);
+    }
   }
 }
 

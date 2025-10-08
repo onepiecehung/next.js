@@ -2,7 +2,6 @@
 
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Highlight from "@tiptap/extension-highlight";
-import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import TaskItem from "@tiptap/extension-task-item";
@@ -58,6 +57,7 @@ import {
   Undo,
 } from "lucide-react";
 import { ColorHighlightPopover } from "./color-highlight-popover";
+import { CustomImageNode } from "./custom-image-node";
 import { ImageDialog } from "./image-dialog";
 import { ImageUploadExtension } from "./image-upload-extension";
 import { LinkDialog } from "./link-dialog";
@@ -100,7 +100,7 @@ export function TipTapEditor({
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   // Image upload hook
-  const { uploadImages, isUploading, error: uploadError } = useImageUpload({
+  const { uploadImages, error: uploadError } = useImageUpload({
     onSuccess: (uploadedMedia) => {
       console.log("Images uploaded successfully:", uploadedMedia);
       setIsUploadingImage(false);
@@ -139,13 +139,7 @@ export function TipTapEditor({
           class: "text-primary underline cursor-pointer",
         },
       }),
-      Image.configure({
-        HTMLAttributes: {
-          class: "max-w-full h-auto rounded-lg",
-        },
-        allowBase64: true,
-        inline: false,
-      }),
+      CustomImageNode,
       CodeBlockLowlight.configure({
         defaultLanguage: "javascript",
         languageClassPrefix: "language-",
@@ -209,7 +203,10 @@ export function TipTapEditor({
   const handleAddImage = useCallback(
     (url: string) => {
       if (editor) {
-        editor.chain().focus().setImage({ src: url }).run();
+        editor.chain().focus().insertContent({
+          type: "customImage",
+          attrs: { src: url },
+        }).run();
       }
     },
     [editor],

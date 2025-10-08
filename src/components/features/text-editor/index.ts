@@ -4,6 +4,7 @@
  */
 
 export { ColorHighlightPopover } from "./color-highlight-popover";
+export { CustomImageNode } from "./custom-image-node";
 export { ImageDialog } from "./image-dialog";
 export { ImageUploadExtension } from "./image-upload-extension";
 export { LinkDialog } from "./link-dialog";

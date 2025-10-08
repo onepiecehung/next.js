@@ -163,6 +163,95 @@
   border-radius: 0.5rem;
 }
 
+/* Custom Image Node Styles */
+.ProseMirror .custom-image-node {
+  margin: 1rem 0;
+  display: block;
+}
+
+/* NodeViewWrapper specific styles */
+.ProseMirror .custom-image-node .node-view-wrapper {
+  display: block;
+  margin: 1rem 0;
+}
+
+.ProseMirror .custom-image-node .image-container {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.ProseMirror .custom-image-node .image-controls {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+.ProseMirror .custom-image-node:hover .image-controls {
+  opacity: 1;
+}
+
+.ProseMirror .custom-image-node .image-info {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  text-align: center;
+}
+
+.ProseMirror .custom-image-node .image-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: hsl(var(--muted) / 0.5);
+  border-radius: 0.5rem;
+}
+
+.ProseMirror .custom-image-node .image-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 8rem;
+  background: hsl(var(--muted) / 0.5);
+  border: 2px dashed hsl(var(--muted-foreground) / 0.25);
+  border-radius: 0.5rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.ProseMirror .custom-image-node .image-error .retry-button {
+  margin-top: 0.5rem;
+}
+
+/* Custom Image Wrapper Styles for Content Renderer */
+.custom-image-wrapper {
+  margin: 1rem 0;
+  display: block;
+}
+
+.custom-image-wrapper .relative {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.custom-image-wrapper img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.custom-image-wrapper .text-xs {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  text-align: center;
+}
+
 /* Heading Styles */
 .ProseMirror h1,
 .ProseMirror h2,
