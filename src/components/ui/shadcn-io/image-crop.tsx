@@ -1,12 +1,12 @@
 'use client';
 
-import { Button } from '../core/button';
-import { CropIcon, RotateCcwIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Slot } from '@radix-ui/react-slot';
+import { CropIcon, RotateCcwIcon } from 'lucide-react';
 import {
   type ComponentProps,
-  type CSSProperties,
   createContext,
+  type CSSProperties,
   type MouseEvent,
   type ReactNode,
   type RefObject,
@@ -25,8 +25,8 @@ import ReactCrop, {
   type PixelCrop,
   type ReactCropProps,
 } from 'react-image-crop';
-import { cn } from '@/lib/utils';
 import 'react-image-crop/dist/ReactCrop.css';
+import { Button } from '../core/button';
 
 const centerAspectCrop = (
   mediaWidth: number,
@@ -60,11 +60,23 @@ const getCroppedPngImage = async (
   if (!ctx) {
     throw new Error('Context is null, this should never happen.');
   }
+  
+  // Tính toán scale từ ảnh gốc
   const scaleX = imageSrc.naturalWidth / imageSrc.width;
   const scaleY = imageSrc.naturalHeight / imageSrc.height;
-  ctx.imageSmoothingEnabled = false;
-  canvas.width = pixelCrop.width;
-  canvas.height = pixelCrop.height;
+  
+  // Tăng độ phân giải canvas để giữ chất lượng cao
+  const outputWidth = pixelCrop.width * scaleX * scaleFactor;
+  const outputHeight = pixelCrop.height * scaleY * scaleFactor;
+  
+  // Bật image smoothing để ảnh mịn hơn
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  
+  canvas.width = outputWidth;
+  canvas.height = outputHeight;
+  
+  // Vẽ ảnh với chất lượng cao
   ctx.drawImage(
     imageSrc,
     pixelCrop.x * scaleX,
@@ -73,13 +85,17 @@ const getCroppedPngImage = async (
     pixelCrop.height * scaleY,
     0,
     0,
-    canvas.width,
-    canvas.height
+    outputWidth,
+    outputHeight
   );
-  const croppedImageUrl = canvas.toDataURL('image/png');
+  
+  // Xuất với chất lượng cao nhất
+  const croppedImageUrl = canvas.toDataURL('image/png', 1.0);
   const response = await fetch(croppedImageUrl);
   const blob = await response.blob();
+  
   if (blob.size > maxImageSize) {
+    // Giảm scale factor nếu file quá lớn
     return await getCroppedPngImage(
       imageSrc,
       scaleFactor * 0.9,
@@ -87,6 +103,7 @@ const getCroppedPngImage = async (
       maxImageSize
     );
   }
+  
   return croppedImageUrl;
 };
 

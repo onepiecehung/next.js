@@ -1,27 +1,26 @@
 "use client";
 
-import React from "react";
-import { useParams, notFound } from "next/navigation";
-import { Button } from "@/components/ui";
-import { Skeletonize } from "@/components/shared";
-import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useI18n } from "@/components/providers/i18n-provider";
+import { Skeletonize } from "@/components/shared";
+import { Button } from "@/components/ui";
+import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useArticle } from "@/hooks/useArticle";
-import { toast } from "sonner";
+import { ARTICLE_CONSTANTS } from "@/lib/types/article";
 import {
+  Bookmark,
   Calendar,
   Clock,
-  User,
   Eye,
-  Tag,
   FileText,
-  Share2,
   Heart,
-  Bookmark,
+  Share2,
+  Tag,
+  User,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { ARTICLE_CONSTANTS } from "@/lib/types/article";
+import { notFound, useParams } from "next/navigation";
+import { toast } from "sonner";
 
 /**
  * Article View Page Component
