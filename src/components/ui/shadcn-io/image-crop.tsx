@@ -260,7 +260,12 @@ export const ImageCropContent = ({
 
   return (
     <ReactCrop
-      className={cn('max-h-[277px] max-w-full', className)}
+      className={cn(
+        'w-full max-w-full',
+        'aspect-[16/9] max-h-[50vh] md:max-h-[60vh] lg:max-h-[70vh]',
+        'rounded-lg border border-border',
+        className
+      )}
       crop={crop}
       onChange={handleChange}
       onComplete={handleComplete}
@@ -271,7 +276,7 @@ export const ImageCropContent = ({
         // eslint-disable-next-line @next/next/no-img-element
         <img
           alt="crop"
-          className="size-full"
+          className="block h-auto w-full max-w-full object-contain"
           onLoad={onImageLoad}
           ref={imgRef}
           src={imgSrc}
