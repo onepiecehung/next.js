@@ -11,9 +11,8 @@ import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useMemo } from "react";
 import "./tiptap-editor.css";
-// import { MermaidRenderer } from "./mermaid-renderer";
 
 import { NoSSR } from "@/components/providers/no-ssr";
 import { Button } from "@/components/ui/core/button";
@@ -24,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
 import { useImageUpload } from "@/hooks/useImageUpload";
-import { useSyntaxHighlighting } from "@/hooks/useSyntaxHighlighting";
+import { SyntaxHighlightedContent } from "@/hooks/useSyntaxHighlighting";
 import "highlight.js/styles/github.css";
 import { createLowlight } from "lowlight";
 import {
@@ -193,7 +192,15 @@ export function TipTapEditor({
 
   // Get HTML content for preview with syntax highlighting
   const previewContent = editor?.getHTML() || "";
-  const highlightedPreviewContent = useSyntaxHighlighting(previewContent);
+  
+  // Only apply syntax highlighting in preview/split modes to avoid performance issues
+  // Use useMemo to prevent unnecessary re-processing
+  const highlightedPreviewContent = useMemo(() => {
+    if (isPreviewMode || isSplitView) {
+      return <SyntaxHighlightedContent html={previewContent} />;
+    }
+    return <div dangerouslySetInnerHTML={{ __html: previewContent }} />;
+  }, [previewContent, isPreviewMode, isSplitView]);
 
   // Memoized handlers
   const addImage = useCallback(() => {

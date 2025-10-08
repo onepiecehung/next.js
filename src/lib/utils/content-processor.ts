@@ -209,18 +209,13 @@ async function processMermaidDiagrams(container: Element): Promise<void> {
  */
 async function processSyntaxHighlighting(container: Element): Promise<void> {
   const codeBlocks = container.querySelectorAll("pre code");
-  console.log("Found code blocks:", codeBlocks.length);
+  
+  // Skip processing if no code blocks found
+  if (codeBlocks.length === 0) return;
 
   for (const codeBlock of codeBlocks) {
     const pre = codeBlock.parentElement;
     if (!pre) continue;
-
-    console.log("Processing code block:", {
-      codeClasses: Array.from(codeBlock.classList),
-      preClasses: Array.from(pre.classList),
-      preDataLanguage: pre.getAttribute("data-language"),
-      textContent: codeBlock.textContent?.substring(0, 50) + "...",
-    });
 
     // Add code-block class for styling
     pre.classList.add("code-block");
@@ -249,8 +244,6 @@ async function processSyntaxHighlighting(container: Element): Promise<void> {
         }
       }
 
-      console.log("Detected language:", language);
-
       // Highlight the code block
       if (language && hljs.getLanguage(language)) {
         // Use specific language highlighting
@@ -259,16 +252,11 @@ async function processSyntaxHighlighting(container: Element): Promise<void> {
         });
         codeBlock.innerHTML = highlighted.value;
         codeBlock.className = `hljs language-${language}`;
-        console.log("Applied specific language highlighting for:", language);
       } else {
         // Auto-detect language
         const highlighted = hljs.highlightAuto(codeBlock.textContent || "");
         codeBlock.innerHTML = highlighted.value;
         codeBlock.className = `hljs language-${highlighted.language || "plaintext"}`;
-        console.log(
-          "Applied auto-detected language highlighting for:",
-          highlighted.language,
-        );
       }
 
       // Mark as processed

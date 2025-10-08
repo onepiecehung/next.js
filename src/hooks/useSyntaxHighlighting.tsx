@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import {
   initializeMermaid,
   processCodeBlocks,
@@ -46,5 +46,6 @@ export function SyntaxHighlightedContent({ html }: { readonly html: string }) {
  * @returns JSX element with highlighted content and rendered Mermaid diagrams
  */
 export function useSyntaxHighlighting(htmlContent: string): React.ReactElement {
-  return <SyntaxHighlightedContent html={htmlContent} />;
+  // Memoize the component to prevent unnecessary re-renders
+  return useMemo(() => <SyntaxHighlightedContent html={htmlContent} />, [htmlContent]);
 }
