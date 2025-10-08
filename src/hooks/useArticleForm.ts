@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useI18n } from '@/components/providers/i18n-provider';
-import { toast } from 'sonner';
-import type { Article } from '@/lib/types/article';
+import { useState } from "react";
+import { useI18n } from "@/components/providers/i18n-provider";
+import { toast } from "sonner";
+import type { Article } from "@/lib/types/article";
 
 interface UseArticleFormOptions {
   onSuccess?: (article: Article) => void;
@@ -13,31 +13,39 @@ interface UseArticleFormOptions {
 export function useArticleForm(options?: UseArticleFormOptions) {
   const { t } = useI18n();
   const [coverImage, setCoverImage] = useState<File | null>(null);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [summary, setSummary] = useState('');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [summary, setSummary] = useState("");
   const [tags, setTags] = useState<string[]>([]);
-  const [visibility, setVisibility] = useState<'public' | 'unlisted' | 'private'>('public');
+  const [visibility, setVisibility] = useState<
+    "public" | "unlisted" | "private"
+  >("public");
 
   // Validation
   const validateForm = () => {
     const errors: string[] = [];
 
     if (!title.trim()) {
-      errors.push(t('writeFormTitleRequired', 'write') || 'Title is required');
+      errors.push(t("writeFormTitleRequired", "write") || "Title is required");
     }
 
     if (title.length > 256) {
-      errors.push(t('writeFormTitleTooLong', 'write') || 'Title must be less than 256 characters');
+      errors.push(
+        t("writeFormTitleTooLong", "write") ||
+          "Title must be less than 256 characters",
+      );
     }
 
     if (!content.trim()) {
-      errors.push(t('writeFormContentRequired', 'write') || 'Content is required');
+      errors.push(
+        t("writeFormContentRequired", "write") || "Content is required",
+      );
     }
 
-
     if (tags.length > 20) {
-      errors.push(t('writeFormTagsTooMany', 'write') || 'Maximum 20 tags allowed');
+      errors.push(
+        t("writeFormTagsTooMany", "write") || "Maximum 20 tags allowed",
+      );
     }
 
     return errors;
@@ -45,7 +53,10 @@ export function useArticleForm(options?: UseArticleFormOptions) {
 
   // Calculate word count
   const getWordCount = (text: string) => {
-    return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+    return text
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length;
   };
 
   // Calculate read time (assuming 200 words per minute)
@@ -56,16 +67,16 @@ export function useArticleForm(options?: UseArticleFormOptions) {
   // Reset form
   const resetForm = () => {
     setCoverImage(null);
-    setTitle('');
-    setContent('');
-    setSummary('');
+    setTitle("");
+    setContent("");
+    setSummary("");
     setTags([]);
-    setVisibility('public');
+    setVisibility("public");
   };
 
   // Show validation errors
   const showValidationErrors = (errors: string[]) => {
-    errors.forEach(error => {
+    errors.forEach((error) => {
       toast.error(error);
     });
   };

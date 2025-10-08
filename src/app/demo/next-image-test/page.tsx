@@ -2,7 +2,13 @@
 
 import { TipTapEditor } from "@/components/features/text-editor/tiptap-editor";
 import { Button } from "@/components/ui/core/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/core/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/core/card";
 import { Separator } from "@/components/ui/layout/separator";
 import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useState } from "react";
@@ -25,21 +31,23 @@ export default function NextImageTestPage() {
   };
 
   const addUnsplashImage = () => {
-    const imageUrl = "https://images.unsplash.com/photo-1506905925346-14bda316dbe3?w=800&h=600&fit=crop&auto=format";
+    const imageUrl =
+      "https://images.unsplash.com/photo-1506905925346-14bda316dbe3?w=800&h=600&fit=crop&auto=format";
     const imageHTML = `<custom-image src="${imageUrl}" alt="Mountain Landscape" title="Beautiful Mountain View" width="800" height="600"></custom-image>`;
-    setContent(prev => prev + imageHTML);
+    setContent((prev) => prev + imageHTML);
   };
 
   const addPicsumImage = () => {
     const imageUrl = "https://picsum.photos/800/600?random=1";
     const imageHTML = `<custom-image src="${imageUrl}" alt="Random Image" title="Random Image from Picsum" width="800" height="600"></custom-image>`;
-    setContent(prev => prev + imageHTML);
+    setContent((prev) => prev + imageHTML);
   };
 
   const addPlaceholderImage = () => {
-    const imageUrl = "https://via.placeholder.com/800x600/0066cc/ffffff?text=Next.js+Image+Test";
+    const imageUrl =
+      "https://via.placeholder.com/800x600/0066cc/ffffff?text=Next.js+Image+Test";
     const imageHTML = `<custom-image src="${imageUrl}" alt="Placeholder Image" title="Placeholder Test Image" width="800" height="600"></custom-image>`;
-    setContent(prev => prev + imageHTML);
+    setContent((prev) => prev + imageHTML);
   };
 
   const clearContent = () => {
@@ -78,11 +86,7 @@ export default function NextImageTestPage() {
                   >
                     Add Unsplash
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={addPicsumImage}
-                  >
+                  <Button variant="outline" size="sm" onClick={addPicsumImage}>
                     Add Picsum
                   </Button>
                   <Button
@@ -102,7 +106,8 @@ export default function NextImageTestPage() {
                 </div>
               </CardTitle>
               <CardDescription>
-                Add images using the buttons above. Images will be loaded through Next.js optimization.
+                Add images using the buttons above. Images will be loaded
+                through Next.js optimization.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -120,7 +125,8 @@ export default function NextImageTestPage() {
             <CardHeader>
               <CardTitle>Content Renderer Preview</CardTitle>
               <CardDescription>
-                Images rendered through ContentRenderer with Next.js Image optimization
+                Images rendered through ContentRenderer with Next.js Image
+                optimization
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -142,36 +148,46 @@ export default function NextImageTestPage() {
           <CardHeader>
             <CardTitle>How to Verify Next.js Image Optimization</CardTitle>
             <CardDescription>
-              Follow these steps to confirm images are loaded through <code>_next/image</code>
+              Follow these steps to confirm images are loaded through{" "}
+              <code>_next/image</code>
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
-                <h3 className="font-semibold text-foreground mb-2">1. Open Developer Tools</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  1. Open Developer Tools
+                </h3>
                 <p className="text-sm text-muted-foreground">
                   Press F12 or right-click → Inspect to open Developer Tools
                 </p>
               </div>
-              
+
               <div>
-                <h3 className="font-semibold text-foreground mb-2">2. Go to Network Tab</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  2. Go to Network Tab
+                </h3>
                 <p className="text-sm text-muted-foreground">
                   Click on the &quot;Network&quot; tab in Developer Tools
                 </p>
               </div>
-              
+
               <div>
-                <h3 className="font-semibold text-foreground mb-2">3. Add Images</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  3. Add Images
+                </h3>
                 <p className="text-sm text-muted-foreground">
                   Click the buttons above to add test images
                 </p>
               </div>
-              
+
               <div>
-                <h3 className="font-semibold text-foreground mb-2">4. Check Network Requests</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  4. Check Network Requests
+                </h3>
                 <p className="text-sm text-muted-foreground">
-                  Look for requests to <code>_next/image</code> endpoint instead of direct image URLs
+                  Look for requests to <code>_next/image</code> endpoint instead
+                  of direct image URLs
                 </p>
                 <div className="mt-2 p-3 bg-muted rounded-lg">
                   <code className="text-xs">
@@ -179,9 +195,11 @@ export default function NextImageTestPage() {
                   </code>
                 </div>
               </div>
-              
+
               <div>
-                <h3 className="font-semibold text-foreground mb-2">5. Verify Optimization</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  5. Verify Optimization
+                </h3>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-4">
                   <li>• Images should be served as WebP/AVIF format</li>
                   <li>• Response headers should show Next.js optimization</li>
@@ -212,9 +230,11 @@ export default function NextImageTestPage() {
                   <li>• Blur placeholder while loading</li>
                 </ul>
               </div>
-              
+
               <div className="space-y-2">
-                <h3 className="font-semibold text-foreground">SEO & Accessibility</h3>
+                <h3 className="font-semibold text-foreground">
+                  SEO & Accessibility
+                </h3>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Better Core Web Vitals scores</li>
                   <li>• Proper alt text support</li>

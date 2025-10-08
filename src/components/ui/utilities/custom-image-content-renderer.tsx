@@ -1,7 +1,8 @@
 "use client";
 
+import { Skeletonize } from "@/components/shared/skeletonize";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface CustomImageContentRendererProps {
   src: string;
@@ -27,6 +28,12 @@ export function CustomImageContentRenderer({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
+  // Reset loading/error when image source changes
+  useEffect(() => {
+    setIsLoading(true);
+    setHasError(false);
+  }, [src]);
+
   const handleImageLoad = () => {
     setIsLoading(false);
     setHasError(false);
@@ -39,9 +46,13 @@ export function CustomImageContentRenderer({
 
   if (hasError) {
     return (
-      <div className={`flex items-center justify-center h-32 bg-muted/50 rounded-lg border-2 border-dashed border-muted-foreground/25 my-4 ${className}`}>
+      <div
+        className={`flex items-center justify-center h-32 bg-muted/50 rounded-lg border-2 border-dashed border-muted-foreground/25 my-4 ${className}`}
+      >
         <div className="text-center">
-          <div className="text-muted-foreground text-sm mb-2">Failed to load image</div>
+          <div className="text-muted-foreground text-sm mb-2">
+            Failed to load image
+          </div>
           <div className="text-xs text-muted-foreground/70">{src}</div>
         </div>
       </div>
@@ -50,13 +61,7 @@ export function CustomImageContentRenderer({
 
   return (
     <div className={`relative group my-4 inline-block max-w-full ${className}`}>
-      <div className="relative">
-        {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-muted/50 rounded-lg z-10">
-            <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
-          </div>
-        )}
-        
+      <Skeletonize loading={isLoading}>
         <Image
           src={src}
           alt={alt}
@@ -64,14 +69,14 @@ export function CustomImageContentRenderer({
           width={width}
           height={height}
           className="rounded-lg max-w-full h-auto"
-          onLoad={handleImageLoad}
+          onLoadingComplete={handleImageLoad}
           onError={handleImageError}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
           priority={false}
           placeholder="empty"
         />
-      </div>
-      
+      </Skeletonize>
+
       {/* Image info */}
       {(alt || title) && (
         <div className="mt-2 text-xs text-muted-foreground text-center">

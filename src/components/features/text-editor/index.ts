@@ -11,4 +11,3 @@ export { LinkDialog } from "./link-dialog";
 export { MermaidExtension } from "./mermaid-extension";
 export { MermaidRenderer } from "./mermaid-renderer";
 export { TipTapEditor } from "./tiptap-editor";
-

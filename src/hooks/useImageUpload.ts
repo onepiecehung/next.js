@@ -37,7 +37,7 @@ export function useImageUpload({
 
       try {
         const response = await MediaAPI.upload(files);
-        
+
         if (response.success && response.data) {
           onSuccess?.(response.data);
           return response.data;
@@ -56,7 +56,7 @@ export function useImageUpload({
         setIsUploading(false);
       }
     },
-    [onSuccess, onError]
+    [onSuccess, onError],
   );
 
   return {

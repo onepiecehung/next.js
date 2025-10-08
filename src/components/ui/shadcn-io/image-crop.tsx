@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { cn } from '@/lib/utils';
-import { Slot } from '@radix-ui/react-slot';
-import { CropIcon, RotateCcwIcon } from 'lucide-react';
+import { cn } from "@/lib/utils";
+import { Slot } from "@radix-ui/react-slot";
+import { CropIcon, RotateCcwIcon } from "lucide-react";
 import {
   type ComponentProps,
   createContext,
@@ -17,65 +17,65 @@ import {
   useMemo,
   useRef,
   useState,
-} from 'react';
+} from "react";
 import ReactCrop, {
   centerCrop,
   makeAspectCrop,
   type PercentCrop,
   type PixelCrop,
   type ReactCropProps,
-} from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
-import { Button } from '../core/button';
+} from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
+import { Button } from "../core/button";
 
 const centerAspectCrop = (
   mediaWidth: number,
   mediaHeight: number,
-  aspect: number | undefined
+  aspect: number | undefined,
 ): PercentCrop =>
   centerCrop(
     aspect
       ? makeAspectCrop(
           {
-            unit: '%',
+            unit: "%",
             width: 90,
           },
           aspect,
           mediaWidth,
-          mediaHeight
+          mediaHeight,
         )
-      : { x: 0, y: 0, width: 90, height: 90, unit: '%' },
+      : { x: 0, y: 0, width: 90, height: 90, unit: "%" },
     mediaWidth,
-    mediaHeight
+    mediaHeight,
   );
 
 const getCroppedPngImage = async (
   imageSrc: HTMLImageElement,
   scaleFactor: number,
   pixelCrop: PixelCrop,
-  maxImageSize: number
+  maxImageSize: number,
 ): Promise<string> => {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
   if (!ctx) {
-    throw new Error('Context is null, this should never happen.');
+    throw new Error("Context is null, this should never happen.");
   }
-  
+
   // Tính toán scale từ ảnh gốc
   const scaleX = imageSrc.naturalWidth / imageSrc.width;
   const scaleY = imageSrc.naturalHeight / imageSrc.height;
-  
+
   // Tăng độ phân giải canvas để giữ chất lượng cao
   const outputWidth = pixelCrop.width * scaleX * scaleFactor;
   const outputHeight = pixelCrop.height * scaleY * scaleFactor;
-  
+
   // Bật image smoothing để ảnh mịn hơn
   ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
-  
+  ctx.imageSmoothingQuality = "high";
+
   canvas.width = outputWidth;
   canvas.height = outputHeight;
-  
+
   // Vẽ ảnh với chất lượng cao
   ctx.drawImage(
     imageSrc,
@@ -86,24 +86,24 @@ const getCroppedPngImage = async (
     0,
     0,
     outputWidth,
-    outputHeight
+    outputHeight,
   );
-  
+
   // Xuất với chất lượng cao nhất
-  const croppedImageUrl = canvas.toDataURL('image/png', 1.0);
+  const croppedImageUrl = canvas.toDataURL("image/png", 1.0);
   const response = await fetch(croppedImageUrl);
   const blob = await response.blob();
-  
+
   if (blob.size > maxImageSize) {
     // Giảm scale factor nếu file quá lớn
     return await getCroppedPngImage(
       imageSrc,
       scaleFactor * 0.9,
       pixelCrop,
-      maxImageSize
+      maxImageSize,
     );
   }
-  
+
   return croppedImageUrl;
 };
 
@@ -115,11 +115,11 @@ type ImageCropContextType = {
   completedCrop: PixelCrop | null;
   imgRef: RefObject<HTMLImageElement | null>;
   onCrop?: (croppedImage: string) => void;
-  reactCropProps: Omit<ReactCropProps, 'onChange' | 'onComplete' | 'children'>;
+  reactCropProps: Omit<ReactCropProps, "onChange" | "onComplete" | "children">;
   handleChange: (pixelCrop: PixelCrop, percentCrop: PercentCrop) => void;
   handleComplete: (
     pixelCrop: PixelCrop,
-    percentCrop: PercentCrop
+    percentCrop: PercentCrop,
   ) => Promise<void>;
   onImageLoad: (e: SyntheticEvent<HTMLImageElement>) => void;
   applyCrop: () => Promise<void>;
@@ -131,7 +131,7 @@ const ImageCropContext = createContext<ImageCropContextType | null>(null);
 const useImageCrop = () => {
   const context = useContext(ImageCropContext);
   if (!context) {
-    throw new Error('ImageCrop components must be used within ImageCrop');
+    throw new Error("ImageCrop components must be used within ImageCrop");
   }
   return context;
 };
@@ -141,9 +141,9 @@ export type ImageCropProps = {
   maxImageSize?: number;
   onCrop?: (croppedImage: string) => void;
   children: ReactNode;
-  onChange?: ReactCropProps['onChange'];
-  onComplete?: ReactCropProps['onComplete'];
-} & Omit<ReactCropProps, 'onChange' | 'onComplete' | 'children'>;
+  onChange?: ReactCropProps["onChange"];
+  onComplete?: ReactCropProps["onComplete"];
+} & Omit<ReactCropProps, "onChange" | "onComplete" | "children">;
 
 export const ImageCrop = ({
   file,
@@ -155,15 +155,15 @@ export const ImageCrop = ({
   ...reactCropProps
 }: ImageCropProps) => {
   const imgRef = useRef<HTMLImageElement | null>(null);
-  const [imgSrc, setImgSrc] = useState<string>('');
+  const [imgSrc, setImgSrc] = useState<string>("");
   const [crop, setCrop] = useState<PercentCrop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
   const [initialCrop, setInitialCrop] = useState<PercentCrop>();
 
   useEffect(() => {
     const reader = new FileReader();
-    reader.addEventListener('load', () =>
-      setImgSrc(reader.result?.toString() || '')
+    reader.addEventListener("load", () =>
+      setImgSrc(reader.result?.toString() || ""),
     );
     reader.readAsDataURL(file);
   }, [file]);
@@ -175,21 +175,24 @@ export const ImageCrop = ({
       setCrop(newCrop);
       setInitialCrop(newCrop);
     },
-    [reactCropProps.aspect]
+    [reactCropProps.aspect],
   );
 
-  const handleChange = useCallback((pixelCrop: PixelCrop, percentCrop: PercentCrop) => {
-    setCrop(percentCrop);
-    onChange?.(pixelCrop, percentCrop);
-  }, [onChange]);
+  const handleChange = useCallback(
+    (pixelCrop: PixelCrop, percentCrop: PercentCrop) => {
+      setCrop(percentCrop);
+      onChange?.(pixelCrop, percentCrop);
+    },
+    [onChange],
+  );
 
-  const handleComplete = useCallback(async (
-    pixelCrop: PixelCrop,
-    percentCrop: PercentCrop
-  ) => {
-    setCompletedCrop(pixelCrop);
-    onComplete?.(pixelCrop, percentCrop);
-  }, [onComplete]);
+  const handleComplete = useCallback(
+    async (pixelCrop: PixelCrop, percentCrop: PercentCrop) => {
+      setCompletedCrop(pixelCrop);
+      onComplete?.(pixelCrop, percentCrop);
+    },
+    [onComplete],
+  );
 
   const applyCrop = useCallback(async () => {
     if (!(imgRef.current && completedCrop)) {
@@ -199,7 +202,7 @@ export const ImageCrop = ({
       imgRef.current,
       1,
       completedCrop,
-      maxImageSize
+      maxImageSize,
     );
     onCrop?.(croppedImage);
   }, [completedCrop, imgRef, maxImageSize, onCrop]);
@@ -211,21 +214,38 @@ export const ImageCrop = ({
     }
   }, [initialCrop]);
 
-  const contextValue: ImageCropContextType = useMemo(() => ({
-    file,
-    maxImageSize,
-    imgSrc,
-    crop,
-    completedCrop,
-    imgRef,
-    onCrop,
-    reactCropProps,
-    handleChange,
-    handleComplete,
-    onImageLoad,
-    applyCrop,
-    resetCrop,
-  }), [file, maxImageSize, imgSrc, crop, completedCrop, imgRef, onCrop, reactCropProps, handleChange, handleComplete, onImageLoad, applyCrop, resetCrop]);
+  const contextValue: ImageCropContextType = useMemo(
+    () => ({
+      file,
+      maxImageSize,
+      imgSrc,
+      crop,
+      completedCrop,
+      imgRef,
+      onCrop,
+      reactCropProps,
+      handleChange,
+      handleComplete,
+      onImageLoad,
+      applyCrop,
+      resetCrop,
+    }),
+    [
+      file,
+      maxImageSize,
+      imgSrc,
+      crop,
+      completedCrop,
+      imgRef,
+      onCrop,
+      reactCropProps,
+      handleChange,
+      handleComplete,
+      onImageLoad,
+      applyCrop,
+      resetCrop,
+    ],
+  );
 
   return (
     <ImageCropContext.Provider value={contextValue}>
@@ -254,17 +274,17 @@ export const ImageCropContent = ({
   } = useImageCrop();
 
   const shadcnStyle = {
-    '--rc-border-color': 'var(--color-border)',
-    '--rc-focus-color': 'var(--color-primary)',
+    "--rc-border-color": "var(--color-border)",
+    "--rc-focus-color": "var(--color-primary)",
   } as CSSProperties;
 
   return (
     <ReactCrop
       className={cn(
-        'w-full max-w-full',
-        'aspect-[16/9] max-h-[50vh] md:max-h-[60vh] lg:max-h-[70vh]',
-        'rounded-lg border border-border',
-        className
+        "w-full max-w-full",
+        "aspect-[16/9] max-h-[50vh] md:max-h-[60vh] lg:max-h-[70vh]",
+        "rounded-lg border border-border",
+        className,
       )}
       crop={crop}
       onChange={handleChange}
@@ -286,7 +306,7 @@ export const ImageCropContent = ({
   );
 };
 
-export type ImageCropApplyProps = ComponentProps<'button'> & {
+export type ImageCropApplyProps = ComponentProps<"button"> & {
   asChild?: boolean;
 };
 
@@ -317,7 +337,7 @@ export const ImageCropApply = ({
   );
 };
 
-export type ImageCropResetProps = ComponentProps<'button'> & {
+export type ImageCropResetProps = ComponentProps<"button"> & {
   asChild?: boolean;
 };
 
@@ -349,11 +369,11 @@ export const ImageCropReset = ({
 };
 
 // Keep the original Cropper component for backward compatibility
-export type CropperProps = Omit<ReactCropProps, 'onChange'> & {
+export type CropperProps = Omit<ReactCropProps, "onChange"> & {
   file: File;
   maxImageSize?: number;
   onCrop?: (croppedImage: string) => void;
-  onChange?: ReactCropProps['onChange'];
+  onChange?: ReactCropProps["onChange"];
 };
 
 export const Cropper = ({

@@ -2,7 +2,13 @@
 
 import { TipTapEditor } from "@/components/features/text-editor/tiptap-editor";
 import { Button } from "@/components/ui/core/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/core/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/core/card";
 import { Separator } from "@/components/ui/layout/separator";
 import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useState } from "react";
@@ -37,9 +43,10 @@ export default function CustomImageDemoPage() {
   };
 
   const addTestImage = () => {
-    const testImageUrl = "https://images.unsplash.com/photo-1506905925346-14bda316dbe3?w=800&h=600&fit=crop&auto=format";
+    const testImageUrl =
+      "https://images.unsplash.com/photo-1506905925346-14bda316dbe3?w=800&h=600&fit=crop&auto=format";
     const imageHTML = `<custom-image src="${testImageUrl}" alt="Test Mountain Image" title="Beautiful Mountain Landscape" width="800" height="600"></custom-image>`;
-    setContent(prev => prev + imageHTML);
+    setContent((prev) => prev + imageHTML);
   };
 
   return (
@@ -61,11 +68,7 @@ export default function CustomImageDemoPage() {
               <CardTitle className="flex items-center justify-between">
                 <span>Editor</span>
                 <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={addTestImage}
-                  >
+                  <Button variant="outline" size="sm" onClick={addTestImage}>
                     Add Test Image
                   </Button>
                   <Button
@@ -78,7 +81,8 @@ export default function CustomImageDemoPage() {
                 </div>
               </CardTitle>
               <CardDescription>
-                Write content and add images using the toolbar. Images will use Next.js Image component for optimization.
+                Write content and add images using the toolbar. Images will use
+                Next.js Image component for optimization.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -96,7 +100,8 @@ export default function CustomImageDemoPage() {
             <CardHeader>
               <CardTitle>Content Renderer Preview</CardTitle>
               <CardDescription>
-                How your content will look when rendered with the ContentRenderer component.
+                How your content will look when rendered with the
+                ContentRenderer component.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -132,9 +137,11 @@ export default function CustomImageDemoPage() {
                   <li>• Lazy loading by default</li>
                 </ul>
               </div>
-              
+
               <div className="space-y-2">
-                <h3 className="font-semibold text-foreground">User Experience</h3>
+                <h3 className="font-semibold text-foreground">
+                  User Experience
+                </h3>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Blur placeholder while loading</li>
                   <li>• Error handling with retry</li>
@@ -142,9 +149,11 @@ export default function CustomImageDemoPage() {
                   <li>• Alt text and title support</li>
                 </ul>
               </div>
-              
+
               <div className="space-y-2">
-                <h3 className="font-semibold text-foreground">Developer Experience</h3>
+                <h3 className="font-semibold text-foreground">
+                  Developer Experience
+                </h3>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• TypeScript support</li>
                   <li>• Consistent with Next.js patterns</li>
@@ -167,30 +176,42 @@ export default function CustomImageDemoPage() {
           <CardContent>
             <div className="space-y-4">
               <div>
-                <h4 className="font-semibold text-foreground mb-2">1. Custom TipTap Node</h4>
+                <h4 className="font-semibold text-foreground mb-2">
+                  1. Custom TipTap Node
+                </h4>
                 <p className="text-sm text-muted-foreground">
-                  Created a custom TipTap node that renders React components instead of plain HTML elements.
+                  Created a custom TipTap node that renders React components
+                  instead of plain HTML elements.
                 </p>
               </div>
-              
+
               <div>
-                <h4 className="font-semibold text-foreground mb-2">2. Next.js Image Integration</h4>
+                <h4 className="font-semibold text-foreground mb-2">
+                  2. Next.js Image Integration
+                </h4>
                 <p className="text-sm text-muted-foreground">
-                  The custom node uses Next.js Image component with proper sizing, lazy loading, and optimization.
+                  The custom node uses Next.js Image component with proper
+                  sizing, lazy loading, and optimization.
                 </p>
               </div>
-              
+
               <div>
-                <h4 className="font-semibold text-foreground mb-2">3. Content Renderer Support</h4>
+                <h4 className="font-semibold text-foreground mb-2">
+                  3. Content Renderer Support
+                </h4>
                 <p className="text-sm text-muted-foreground">
-                  Content renderer processes custom-image tags and converts them to optimized img elements for display.
+                  Content renderer processes custom-image tags and converts them
+                  to optimized img elements for display.
                 </p>
               </div>
-              
+
               <div>
-                <h4 className="font-semibold text-foreground mb-2">4. Responsive Design</h4>
+                <h4 className="font-semibold text-foreground mb-2">
+                  4. Responsive Design
+                </h4>
                 <p className="text-sm text-muted-foreground">
-                  Images automatically adapt to different screen sizes using Next.js responsive image features.
+                  Images automatically adapt to different screen sizes using
+                  Next.js responsive image features.
                 </p>
               </div>
             </div>

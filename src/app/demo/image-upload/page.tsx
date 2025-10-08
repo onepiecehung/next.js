@@ -3,7 +3,13 @@
 import { TipTapEditor } from "@/components/features/text-editor";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button } from "@/components/ui/core/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/core/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/core/card";
 import { useState } from "react";
 
 /**
@@ -34,7 +40,9 @@ export default function ImageUploadDemoPage() {
     <div className="container mx-auto px-4 md:px-6 py-6 md:py-8">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="text-3xl md:text-4xl font-bold">{t("demo.imageUpload.title")}</h1>
+          <h1 className="text-3xl md:text-4xl font-bold">
+            {t("demo.imageUpload.title")}
+          </h1>
           <p className="text-muted-foreground text-lg">
             {t("demo.imageUpload.description")}
           </p>
@@ -54,12 +62,12 @@ export default function ImageUploadDemoPage() {
               placeholder="Start writing and paste some images..."
               className="min-h-[500px]"
             />
-            
+
             <div className="flex gap-2">
               <Button onClick={handleReset} variant="outline">
                 {t("demo.imageUpload.resetContent")}
               </Button>
-              <Button 
+              <Button
                 onClick={() => navigator.clipboard.writeText(content)}
                 variant="outline"
               >

@@ -1,12 +1,17 @@
 "use client";
 
+import { Skeletonize } from "@/components/shared/skeletonize";
 import { Button } from "@/components/ui/core/button";
 import { Card } from "@/components/ui/core/card";
 import { Node, mergeAttributes } from "@tiptap/core";
-import { NodeViewWrapper, ReactNodeViewRenderer, type ReactNodeViewProps } from "@tiptap/react";
-import { Download, Edit3, X } from "lucide-react";
+import {
+  NodeViewWrapper,
+  ReactNodeViewRenderer,
+  type ReactNodeViewProps,
+} from "@tiptap/react";
+import { Download, X } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Custom Image Node Component using Next.js Image
@@ -24,6 +29,12 @@ const CustomImageComponent = ({ node, deleteNode }: ReactNodeViewProps) => {
     height?: number;
   };
 
+  // Reset loading/error when image source changes
+  useEffect(() => {
+    setIsLoading(true);
+    setHasError(false);
+  }, [src]);
+
   const handleImageLoad = () => {
     setIsLoading(false);
     setHasError(false);
@@ -32,11 +43,6 @@ const CustomImageComponent = ({ node, deleteNode }: ReactNodeViewProps) => {
   const handleImageError = () => {
     setIsLoading(false);
     setHasError(true);
-  };
-
-  const handleEdit = () => {
-    // You can implement image editing functionality here
-    console.log("Edit image:", src);
   };
 
   const handleDelete = () => {
@@ -57,16 +63,12 @@ const CustomImageComponent = ({ node, deleteNode }: ReactNodeViewProps) => {
       <div className="relative group my-4 inline-block max-w-full">
         <Card className="p-2 border border-border/50 bg-card/50">
           <div className="relative">
-            {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-muted/50 rounded-lg">
-                <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
-              </div>
-            )}
-            
             {hasError ? (
               <div className="flex items-center justify-center h-32 bg-muted/50 rounded-lg border-2 border-dashed border-muted-foreground/25">
                 <div className="text-center">
-                  <div className="text-muted-foreground text-sm mb-2">Failed to load image</div>
+                  <div className="text-muted-foreground text-sm mb-2">
+                    Failed to load image
+                  </div>
                   <Button
                     variant="outline"
                     size="sm"
@@ -81,35 +83,28 @@ const CustomImageComponent = ({ node, deleteNode }: ReactNodeViewProps) => {
               </div>
             ) : (
               <div className="relative">
-              <Image
-                src={src}
-                alt={alt || ""}
-                title={title || ""}
-                width={width || 800}
-                height={height || 600}
-                className="rounded-lg max-w-full h-auto"
-                onLoad={handleImageLoad}
-                onError={handleImageError}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                priority={false}
-              />
-                
+                <Skeletonize loading={isLoading}>
+                  <Image
+                    src={src}
+                    alt={alt || ""}
+                    title={title || ""}
+                    width={width || 800}
+                    height={height || 600}
+                    className="rounded-lg max-w-full h-auto"
+                    onLoadingComplete={handleImageLoad}
+                    onError={handleImageError}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                    priority={false}
+                  />
+                </Skeletonize>
+
                 {/* Image controls overlay */}
                 <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   <div className="flex gap-1">
                     <Button
                       variant="secondary"
                       size="sm"
-                      className="h-8 w-8 p-0 bg-background/80 hover:bg-background"
-                      onClick={handleEdit}
-                      title="Edit image"
-                    >
-                      <Edit3 className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      className="h-8 w-8 p-0 bg-background/80 hover:bg-background"
+                      className="h-8 w-8 p-0"
                       onClick={handleDownload}
                       title="Download image"
                     >
@@ -118,7 +113,7 @@ const CustomImageComponent = ({ node, deleteNode }: ReactNodeViewProps) => {
                     <Button
                       variant="destructive"
                       size="sm"
-                      className="h-8 w-8 p-0 bg-background/80 hover:bg-background"
+                      className="h-8 w-8 p-0"
                       onClick={handleDelete}
                       title="Delete image"
                     >
@@ -129,7 +124,7 @@ const CustomImageComponent = ({ node, deleteNode }: ReactNodeViewProps) => {
               </div>
             )}
           </div>
-          
+
           {/* Image info */}
           {(alt || title) && (
             <div className="mt-2 text-xs text-muted-foreground">
@@ -232,5 +227,4 @@ export const CustomImageNode = Node.create({
   addNodeView() {
     return ReactNodeViewRenderer(CustomImageComponent);
   },
-
 });

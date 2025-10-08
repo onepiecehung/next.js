@@ -39,9 +39,13 @@ export function CustomImageRenderer({
 
   if (hasError) {
     return (
-      <div className={`flex items-center justify-center h-32 bg-muted/50 rounded-lg border-2 border-dashed border-muted-foreground/25 my-4 ${className}`}>
+      <div
+        className={`flex items-center justify-center h-32 bg-muted/50 rounded-lg border-2 border-dashed border-muted-foreground/25 my-4 ${className}`}
+      >
         <div className="text-center">
-          <div className="text-muted-foreground text-sm mb-2">Failed to load image</div>
+          <div className="text-muted-foreground text-sm mb-2">
+            Failed to load image
+          </div>
           <div className="text-xs text-muted-foreground/70">{src}</div>
         </div>
       </div>
@@ -56,7 +60,7 @@ export function CustomImageRenderer({
             <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
           </div>
         )}
-        
+
         <Image
           src={src}
           alt={alt}
@@ -72,7 +76,7 @@ export function CustomImageRenderer({
           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
         />
       </div>
-      
+
       {/* Image info */}
       {(alt || title) && (
         <div className="mt-2 text-xs text-muted-foreground text-center">

@@ -6,10 +6,10 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
 import { Button, ImageUpload } from "@/components/ui";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
 import { useArticleForm } from "@/hooks/useArticleForm";
 import { useCreateArticle } from "@/hooks/useCreateArticle";
@@ -59,11 +59,13 @@ export default function WritePage() {
   } = useCreateArticle({
     onSuccess: (article) => {
       toast.success(
-        t("writeFormSuccess", "write") || "Article created successfully!"
+        t("writeFormSuccess", "write") || "Article created successfully!",
       );
       resetForm();
-      // Redirect to article view page
-      router.push(`/article/${article.id}/${article.slug}`);
+      // Redirect to article view page with a small delay to ensure cleanup
+      setTimeout(() => {
+        router.push(`/article/${article.id}/${article.slug}`);
+      }, 100);
     },
     onError: (error) => {
       toast.error(error.message || "Failed to create article");

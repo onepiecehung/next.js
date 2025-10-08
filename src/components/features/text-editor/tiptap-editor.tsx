@@ -203,10 +203,14 @@ export function TipTapEditor({
   const handleAddImage = useCallback(
     (url: string) => {
       if (editor) {
-        editor.chain().focus().insertContent({
-          type: "customImage",
-          attrs: { src: url },
-        }).run();
+        editor
+          .chain()
+          .focus()
+          .insertContent({
+            type: "customImage",
+            attrs: { src: url },
+          })
+          .run();
       }
     },
     [editor],

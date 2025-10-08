@@ -76,7 +76,7 @@ export async function processCodeBlocks(
   try {
     // Process custom image nodes
     processCustomImageNodes(container);
-    
+
     // Process regular img tags from backend
     processImgTags(container);
 
@@ -100,7 +100,7 @@ export async function processCodeBlocks(
  */
 function processCustomImageNodes(container: Element): void {
   const customImageNodes = container.querySelectorAll("custom-image");
-  
+
   for (const node of customImageNodes) {
     try {
       const src = node.getAttribute("src");
@@ -119,7 +119,7 @@ function processCustomImageNodes(container: Element): void {
       wrapper.setAttribute("data-custom-image-title", title);
       wrapper.setAttribute("data-custom-image-width", width.toString());
       wrapper.setAttribute("data-custom-image-height", height.toString());
-      
+
       // Add loading placeholder - will be replaced by React component
       wrapper.innerHTML = `
         <div class="animate-pulse bg-muted rounded-lg" style="width: ${width}px; height: ${height}px; max-width: 100%;"></div>
@@ -139,16 +139,20 @@ function processCustomImageNodes(container: Element): void {
  */
 function processImgTags(container: Element): void {
   const imgTags = container.querySelectorAll("img[src]");
-  
+
   for (const img of imgTags) {
     try {
       const src = img.getAttribute("src");
       const alt = img.getAttribute("alt") || "";
       const title = img.getAttribute("title") || "";
-      
+
       // Get dimensions from img element or use defaults
-      const width = img.getAttribute("width") ? parseInt(img.getAttribute("width")!) : 800;
-      const height = img.getAttribute("height") ? parseInt(img.getAttribute("height")!) : 600;
+      const width = img.getAttribute("width")
+        ? parseInt(img.getAttribute("width")!)
+        : 800;
+      const height = img.getAttribute("height")
+        ? parseInt(img.getAttribute("height")!)
+        : 600;
 
       if (!src) continue;
 
@@ -160,7 +164,7 @@ function processImgTags(container: Element): void {
       wrapper.setAttribute("data-custom-image-title", title);
       wrapper.setAttribute("data-custom-image-width", width.toString());
       wrapper.setAttribute("data-custom-image-height", height.toString());
-      
+
       // Add loading placeholder - will be replaced by React component
       wrapper.innerHTML = `
         <div class="animate-pulse bg-muted rounded-lg" style="width: ${width}px; height: ${height}px; max-width: 100%;"></div>
@@ -215,7 +219,7 @@ async function processSyntaxHighlighting(container: Element): Promise<void> {
       codeClasses: Array.from(codeBlock.classList),
       preClasses: Array.from(pre.classList),
       preDataLanguage: pre.getAttribute("data-language"),
-      textContent: codeBlock.textContent?.substring(0, 50) + "..."
+      textContent: codeBlock.textContent?.substring(0, 50) + "...",
     });
 
     // Add code-block class for styling
@@ -228,8 +232,8 @@ async function processSyntaxHighlighting(container: Element): Promise<void> {
       // Get the language from class or data attribute
       let language = "";
       const classList = Array.from(codeBlock.classList);
-      const langClass = classList.find(cls => cls.startsWith("language-"));
-      
+      const langClass = classList.find((cls) => cls.startsWith("language-"));
+
       if (langClass) {
         language = langClass.replace("language-", "");
       } else if (pre.getAttribute("data-language")) {
@@ -237,7 +241,9 @@ async function processSyntaxHighlighting(container: Element): Promise<void> {
       } else if (pre.classList.contains("language-")) {
         // Check if the pre element has a language class
         const preClassList = Array.from(pre.classList);
-        const preLangClass = preClassList.find(cls => cls.startsWith("language-"));
+        const preLangClass = preClassList.find((cls) =>
+          cls.startsWith("language-"),
+        );
         if (preLangClass) {
           language = preLangClass.replace("language-", "");
         }
@@ -248,7 +254,9 @@ async function processSyntaxHighlighting(container: Element): Promise<void> {
       // Highlight the code block
       if (language && hljs.getLanguage(language)) {
         // Use specific language highlighting
-        const highlighted = hljs.highlight(codeBlock.textContent || "", { language });
+        const highlighted = hljs.highlight(codeBlock.textContent || "", {
+          language,
+        });
         codeBlock.innerHTML = highlighted.value;
         codeBlock.className = `hljs language-${language}`;
         console.log("Applied specific language highlighting for:", language);
@@ -257,7 +265,10 @@ async function processSyntaxHighlighting(container: Element): Promise<void> {
         const highlighted = hljs.highlightAuto(codeBlock.textContent || "");
         codeBlock.innerHTML = highlighted.value;
         codeBlock.className = `hljs language-${highlighted.language || "plaintext"}`;
-        console.log("Applied auto-detected language highlighting for:", highlighted.language);
+        console.log(
+          "Applied auto-detected language highlighting for:",
+          highlighted.language,
+        );
       }
 
       // Mark as processed

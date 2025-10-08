@@ -26,7 +26,8 @@ export const ImageUploadExtension = Extension.create<ImageUploadOptions>({
   },
 
   addProseMirrorPlugins() {
-    const { onUpload, onUploadStart, onUploadEnd, onUploadError } = this.options;
+    const { onUpload, onUploadStart, onUploadEnd, onUploadError } =
+      this.options;
 
     return [
       new Plugin({
@@ -37,7 +38,7 @@ export const ImageUploadExtension = Extension.create<ImageUploadOptions>({
             if (!items) return false;
 
             const imageFiles: File[] = [];
-            
+
             // Extract image files from clipboard
             for (let i = 0; i < items.length; i++) {
               const item = items[i];
@@ -64,7 +65,7 @@ export const ImageUploadExtension = Extension.create<ImageUploadOptions>({
                   // Insert uploaded images into editor
                   const { state, dispatch } = view;
                   const { tr } = state;
-                  
+
                   uploadedMedia.forEach((media) => {
                     const imageNode = state.schema.nodes.customImage.create({
                       src: media.url,
@@ -79,7 +80,8 @@ export const ImageUploadExtension = Extension.create<ImageUploadOptions>({
                 onUploadEnd?.();
               })
               .catch((error) => {
-                const errorMessage = error instanceof Error ? error.message : "Upload failed";
+                const errorMessage =
+                  error instanceof Error ? error.message : "Upload failed";
                 onUploadError?.(errorMessage);
                 onUploadEnd?.();
               });
