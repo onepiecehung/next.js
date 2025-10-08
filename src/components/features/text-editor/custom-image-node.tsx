@@ -1,6 +1,5 @@
 "use client";
 
-import { Skeletonize } from "@/components/shared/skeletonize";
 import { Button } from "@/components/ui/core/button";
 import { Card } from "@/components/ui/core/card";
 import { Node, mergeAttributes } from "@tiptap/core";
@@ -11,14 +10,13 @@ import {
 } from "@tiptap/react";
 import { Download, X } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 /**
  * Custom Image Node Component using Next.js Image
  * Provides better performance and optimization compared to regular img tags
  */
 const CustomImageComponent = ({ node, deleteNode }: ReactNodeViewProps) => {
-  const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
   const { src, alt, title, width, height } = node.attrs as {
@@ -29,19 +27,7 @@ const CustomImageComponent = ({ node, deleteNode }: ReactNodeViewProps) => {
     height?: number;
   };
 
-  // Reset loading/error when image source changes
-  useEffect(() => {
-    setIsLoading(true);
-    setHasError(false);
-  }, [src]);
-
-  const handleImageLoad = () => {
-    setIsLoading(false);
-    setHasError(false);
-  };
-
   const handleImageError = () => {
-    setIsLoading(false);
     setHasError(true);
   };
 
@@ -74,7 +60,6 @@ const CustomImageComponent = ({ node, deleteNode }: ReactNodeViewProps) => {
                     size="sm"
                     onClick={() => {
                       setHasError(false);
-                      setIsLoading(true);
                     }}
                   >
                     Retry
@@ -83,20 +68,18 @@ const CustomImageComponent = ({ node, deleteNode }: ReactNodeViewProps) => {
               </div>
             ) : (
               <div className="relative">
-                <Skeletonize loading={isLoading}>
-                  <Image
-                    src={src}
-                    alt={alt || ""}
-                    title={title || ""}
-                    width={width || 800}
-                    height={height || 600}
-                    className="rounded-lg max-w-full h-auto"
-                    onLoadingComplete={handleImageLoad}
-                    onError={handleImageError}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                    priority={false}
-                  />
-                </Skeletonize>
+                <Image
+                  src={src}
+                  alt={alt || ""}
+                  title={title || ""}
+                  width={width || 800}
+                  height={height || 600}
+                  className="rounded-lg max-w-full h-auto"
+                  onError={handleImageError}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                  loading="eager"
+                  priority={true}
+                />
 
                 {/* Image controls overlay */}
                 <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
