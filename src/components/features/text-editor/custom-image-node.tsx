@@ -81,20 +81,18 @@ const CustomImageComponent = ({ node, deleteNode }: ReactNodeViewProps) => {
               </div>
             ) : (
               <div className="relative">
-                <Image
-                  src={src}
-                  alt={alt || ""}
-                  title={title || ""}
-                  width={width || 800}
-                  height={height || 600}
-                  className="rounded-lg max-w-full h-auto"
-                  onLoad={handleImageLoad}
-                  onError={handleImageError}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                  priority={false}
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-                />
+              <Image
+                src={src}
+                alt={alt || ""}
+                title={title || ""}
+                width={width || 800}
+                height={height || 600}
+                className="rounded-lg max-w-full h-auto"
+                onLoad={handleImageLoad}
+                onError={handleImageError}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                priority={false}
+              />
                 
                 {/* Image controls overlay */}
                 <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">

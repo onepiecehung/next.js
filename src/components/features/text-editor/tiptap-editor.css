@@ -243,6 +243,15 @@
   max-width: 100%;
   height: auto;
   border-radius: 0.5rem;
+  transition: opacity 0.3s ease;
+}
+
+.custom-image-wrapper img:not(.image-loaded) {
+  opacity: 0.7;
+}
+
+.custom-image-wrapper .image-loaded {
+  opacity: 1;
 }
 
 .custom-image-wrapper .text-xs {
@@ -250,6 +259,41 @@
   font-size: 0.75rem;
   color: hsl(var(--muted-foreground));
   text-align: center;
+}
+
+/* Enhanced styles for Next.js Image-like behavior */
+.custom-image-next-wrapper {
+  margin: 1rem 0;
+  display: block;
+}
+
+.custom-image-next-wrapper img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  transition: opacity 0.3s ease;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+.custom-image-next-wrapper img:not(.image-loaded) {
+  opacity: 0.7;
+}
+
+.custom-image-next-wrapper .image-loaded {
+  opacity: 1;
+  animation: none;
+  background: none;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* Heading Styles */

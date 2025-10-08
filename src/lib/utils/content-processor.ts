@@ -76,6 +76,9 @@ export async function processCodeBlocks(
   try {
     // Process custom image nodes
     processCustomImageNodes(container);
+    
+    // Process regular img tags from backend
+    processImgTags(container);
 
     // Process Mermaid diagrams
     if (enableMermaidDiagrams) {
@@ -103,40 +106,70 @@ function processCustomImageNodes(container: Element): void {
       const src = node.getAttribute("src");
       const alt = node.getAttribute("alt") || "";
       const title = node.getAttribute("title") || "";
-      const width = node.getAttribute("width") || "800";
-      const height = node.getAttribute("height") || "600";
+      const width = parseInt(node.getAttribute("width") || "800");
+      const height = parseInt(node.getAttribute("height") || "600");
 
       if (!src) continue;
 
       // Create a wrapper div for the custom image
       const wrapper = document.createElement("div");
-      wrapper.className = "custom-image-wrapper";
+      wrapper.className = "custom-image-next-wrapper";
+      wrapper.setAttribute("data-custom-image-src", src);
+      wrapper.setAttribute("data-custom-image-alt", alt);
+      wrapper.setAttribute("data-custom-image-title", title);
+      wrapper.setAttribute("data-custom-image-width", width.toString());
+      wrapper.setAttribute("data-custom-image-height", height.toString());
+      
+      // Add loading placeholder - will be replaced by React component
       wrapper.innerHTML = `
-        <div class="relative group my-4 inline-block max-w-full">
-          <div class="relative">
-            <img 
-              src="${src}" 
-              alt="${alt}" 
-              title="${title}"
-              width="${width}"
-              height="${height}"
-              class="rounded-lg max-w-full h-auto"
-              loading="lazy"
-            />
-          </div>
-          ${(alt || title) ? `
-            <div class="mt-2 text-xs text-muted-foreground text-center">
-              ${alt ? `<div>Alt: ${alt}</div>` : ""}
-              ${title ? `<div>Title: ${title}</div>` : ""}
-            </div>
-          ` : ""}
-        </div>
+        <div class="animate-pulse bg-muted rounded-lg" style="width: ${width}px; height: ${height}px; max-width: 100%;"></div>
       `;
 
       // Replace the custom-image node with the wrapper
       node.parentNode?.replaceChild(wrapper, node);
     } catch (error) {
       console.error("Failed to process custom image node:", error);
+    }
+  }
+}
+
+/**
+ * Process regular img tags from backend and convert them to custom image wrappers
+ * @param container - The DOM container to process
+ */
+function processImgTags(container: Element): void {
+  const imgTags = container.querySelectorAll("img[src]");
+  
+  for (const img of imgTags) {
+    try {
+      const src = img.getAttribute("src");
+      const alt = img.getAttribute("alt") || "";
+      const title = img.getAttribute("title") || "";
+      
+      // Get dimensions from img element or use defaults
+      const width = img.getAttribute("width") ? parseInt(img.getAttribute("width")!) : 800;
+      const height = img.getAttribute("height") ? parseInt(img.getAttribute("height")!) : 600;
+
+      if (!src) continue;
+
+      // Create a wrapper div for the custom image
+      const wrapper = document.createElement("div");
+      wrapper.className = "custom-image-next-wrapper";
+      wrapper.setAttribute("data-custom-image-src", src);
+      wrapper.setAttribute("data-custom-image-alt", alt);
+      wrapper.setAttribute("data-custom-image-title", title);
+      wrapper.setAttribute("data-custom-image-width", width.toString());
+      wrapper.setAttribute("data-custom-image-height", height.toString());
+      
+      // Add loading placeholder - will be replaced by React component
+      wrapper.innerHTML = `
+        <div class="animate-pulse bg-muted rounded-lg" style="width: ${width}px; height: ${height}px; max-width: 100%;"></div>
+      `;
+
+      // Replace the img tag with the wrapper
+      img.parentNode?.replaceChild(wrapper, img);
+    } catch (error) {
+      console.error("Failed to process img tag:", error);
     }
   }
 }
