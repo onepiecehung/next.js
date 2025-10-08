@@ -1,7 +1,8 @@
 "use client";
 
+import { Skeletonize } from "@/components/shared/skeletonize";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface CustomImageContentRendererProps {
   src: string;
@@ -15,7 +16,6 @@ interface CustomImageContentRendererProps {
 /**
  * Custom Image Content Renderer Component
  * Uses Next.js Image component with proper optimization through _next/image
- * Disables Next.js internal fade-in to prevent blur during client-side navigation
  */
 export function CustomImageContentRenderer({
   src,
@@ -25,9 +25,22 @@ export function CustomImageContentRenderer({
   height = 600,
   className = "",
 }: CustomImageContentRendererProps) {
+  const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
+  // Reset loading/error when image source changes
+  useEffect(() => {
+    setIsLoading(true);
+    setHasError(false);
+  }, [src]);
+
+  const handleImageLoad = () => {
+    setIsLoading(false);
+    setHasError(false);
+  };
+
   const handleImageError = () => {
+    setIsLoading(false);
     setHasError(true);
   };
 
@@ -48,24 +61,21 @@ export function CustomImageContentRenderer({
 
   return (
     <div className={`relative group my-4 inline-block max-w-full ${className}`}>
-      <Image
-        src={src}
-        alt={alt}
-        title={title}
-        width={width}
-        height={height}
-        // Add inline styles to force disable any Next.js internal animations
-        style={{ 
-          opacity: 1,
-          transition: 'none',
-          animation: 'none',
-        }}
-        className="rounded-lg max-w-full h-auto"
-        onError={handleImageError}
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-        loading="eager"
-        priority={true}
-      />
+      <Skeletonize loading={isLoading}>
+        <Image
+          src={src}
+          alt={alt}
+          title={title}
+          width={width}
+          height={height}
+          className="rounded-lg max-w-full h-auto"
+          onLoadingComplete={handleImageLoad}
+          onError={handleImageError}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+          priority={false}
+          placeholder="empty"
+        />
+      </Skeletonize>
 
       {/* Image info */}
       {(alt || title) && (

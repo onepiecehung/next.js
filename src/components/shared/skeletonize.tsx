@@ -17,7 +17,9 @@ export function Skeletonize({
   loading: boolean;
   children: React.ReactNode;
 }) {
-  // Always wrap in a div, but only add the class when loading
-  // This prevents DOM structure changes that can cause re-renders
-  return <div className={loading ? "skeletonize" : ""}>{children}</div>;
+  if (!loading) {
+    return <>{children}</>;
+  }
+
+  return <div className="skeletonize">{children}</div>;
 }
