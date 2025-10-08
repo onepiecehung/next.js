@@ -3,5 +3,22 @@
   "demoDescription": "Demo này cho thấy việc tải skeleton tự động ở cấp trang giữ nguyên bố cục DOM hiện có. Cùng một nội dung được sử dụng cho cả trạng thái tải và đã tải, đảm bảo không có hiện tượng nhảy layout.",
   "demoLoading": "Đang tải demo...",
   "themingTitle": "Giao Diện",
-  "editorTitle": "Trình Soạn Thảo"
+  "editorTitle": "Trình Soạn Thảo",
+  "imageUpload": {
+    "title": "Demo Upload Hình Ảnh",
+    "description": "Test tính năng upload hình ảnh tự động khi paste vào editor",
+    "editorTitle": "TipTap Editor với Upload Hình Ảnh",
+    "editorDescription": "Paste hình ảnh từ clipboard hoặc sử dụng nút hình ảnh trong toolbar. Hình ảnh sẽ được tự động upload qua media API và thay thế bằng URL đã upload.",
+    "instructions": "Hướng Dẫn",
+    "instructionsList": [
+      "Copy một hình ảnh từ bất kỳ đâu (trình duyệt, file explorer, v.v.)",
+      "Paste vào editor bằng Ctrl+V (hoặc Cmd+V trên Mac)",
+      "Xem loading indicator xuất hiện trong toolbar",
+      "Hình ảnh sẽ được tự động upload và thay thế bằng URL từ API",
+      "Bạn cũng có thể sử dụng nút hình ảnh trong toolbar để thêm hình ảnh thủ công"
+    ],
+    "resetContent": "Reset Nội Dung",
+    "copyHtml": "Copy HTML vào Clipboard",
+    "currentContent": "Nội Dung Hiện Tại (HTML)"
+  }
 }

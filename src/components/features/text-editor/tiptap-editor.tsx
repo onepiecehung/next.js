@@ -24,6 +24,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
+import { useImageUpload } from "@/hooks/useImageUpload";
 import { useSyntaxHighlighting } from "@/hooks/useSyntaxHighlighting";
 import "highlight.js/styles/github.css";
 import { createLowlight } from "lowlight";
@@ -58,6 +59,7 @@ import {
 } from "lucide-react";
 import { ColorHighlightPopover } from "./color-highlight-popover";
 import { ImageDialog } from "./image-dialog";
+import { ImageUploadExtension } from "./image-upload-extension";
 import { LinkDialog } from "./link-dialog";
 
 import bash from "highlight.js/lib/languages/bash";
@@ -95,6 +97,19 @@ export function TipTapEditor({
   const [isCodeMode, setIsCodeMode] = useState(false);
   const [isLinkDialogOpen, setIsLinkDialogOpen] = useState(false);
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+
+  // Image upload hook
+  const { uploadImages, isUploading, error: uploadError } = useImageUpload({
+    onSuccess: (uploadedMedia) => {
+      console.log("Images uploaded successfully:", uploadedMedia);
+      setIsUploadingImage(false);
+    },
+    onError: (error) => {
+      console.error("Image upload failed:", error);
+      setIsUploadingImage(false);
+    },
+  });
 
   const editor = useEditor({
     extensions: [
@@ -156,6 +171,15 @@ export function TipTapEditor({
       TaskList,
       TaskItem.configure({
         nested: true,
+      }),
+      ImageUploadExtension.configure({
+        onUpload: uploadImages,
+        onUploadStart: () => setIsUploadingImage(true),
+        onUploadEnd: () => setIsUploadingImage(false),
+        onUploadError: (error) => {
+          console.error("Image upload error:", error);
+          setIsUploadingImage(false);
+        },
       }),
     ],
     content,
@@ -631,7 +655,21 @@ export function TipTapEditor({
 
           <div className="flex-1" />
 
-          {/* Group 8: View Modes */}
+          {/* Group 8: Upload Status */}
+          {isUploadingImage && (
+            <div className="flex items-center gap-2 px-2 py-1 bg-blue-500/10 text-blue-600 rounded-md border border-blue-500/20 flex-shrink-0">
+              <div className="animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full" />
+              <span className="text-xs">Uploading images...</span>
+            </div>
+          )}
+
+          {uploadError && (
+            <div className="flex items-center gap-2 px-2 py-1 bg-red-500/10 text-red-600 rounded-md border border-red-500/20 flex-shrink-0">
+              <span className="text-xs">Upload failed: {uploadError}</span>
+            </div>
+          )}
+
+          {/* Group 9: View Modes */}
           <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50 flex-shrink-0">
             <Button
               variant="ghost"

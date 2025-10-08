@@ -5,7 +5,9 @@
 
 export { ColorHighlightPopover } from "./color-highlight-popover";
 export { ImageDialog } from "./image-dialog";
+export { ImageUploadExtension } from "./image-upload-extension";
 export { LinkDialog } from "./link-dialog";
 export { MermaidExtension } from "./mermaid-extension";
 export { MermaidRenderer } from "./mermaid-renderer";
 export { TipTapEditor } from "./tiptap-editor";
+

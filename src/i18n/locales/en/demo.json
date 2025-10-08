@@ -3,5 +3,22 @@
   "demoDescription": "This demo shows automatic page-level skeleton loading that preserves the existing DOM layout. The same content is used for both loading and loaded states, ensuring no reflow jumps.",
   "demoLoading": "Loading demo...",
   "themingTitle": "Theming",
-  "editorTitle": "Editor"
+  "editorTitle": "Editor",
+  "imageUpload": {
+    "title": "Image Upload Demo",
+    "description": "Test automatic image upload when pasting images into the editor",
+    "editorTitle": "TipTap Editor with Image Upload",
+    "editorDescription": "Paste images from your clipboard or use the image button in the toolbar. Images will be automatically uploaded via the media API and replaced with the uploaded URLs.",
+    "instructions": "Instructions",
+    "instructionsList": [
+      "Copy an image from anywhere (browser, file explorer, etc.)",
+      "Paste it into the editor using Ctrl+V (or Cmd+V on Mac)",
+      "Watch the loading indicator appear in the toolbar",
+      "The image will be automatically uploaded and replaced with the API URL",
+      "You can also use the image button in the toolbar to add images manually"
+    ],
+    "resetContent": "Reset Content",
+    "copyHtml": "Copy HTML to Clipboard",
+    "currentContent": "Current Content (HTML)"
+  }
 }
