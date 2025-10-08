@@ -20,6 +20,7 @@ export function useArticleForm(options?: UseArticleFormOptions) {
   const [visibility, setVisibility] = useState<
     "public" | "unlisted" | "private"
   >("public");
+  const [scheduledPublish, setScheduledPublish] = useState<Date | null>(null);
 
   // Validation
   const validateForm = () => {
@@ -48,6 +49,17 @@ export function useArticleForm(options?: UseArticleFormOptions) {
       );
     }
 
+    // Validate scheduled publish date
+    if (scheduledPublish) {
+      const now = new Date();
+      if (scheduledPublish <= now) {
+        errors.push(
+          t("writeFormScheduledDateInvalid", "write") ||
+            "Scheduled publish date must be in the future",
+        );
+      }
+    }
+
     return errors;
   };
 
@@ -72,6 +84,7 @@ export function useArticleForm(options?: UseArticleFormOptions) {
     setSummary("");
     setTags([]);
     setVisibility("public");
+    setScheduledPublish(null);
   };
 
   // Show validation errors
@@ -95,6 +108,8 @@ export function useArticleForm(options?: UseArticleFormOptions) {
     setTags,
     visibility,
     setVisibility,
+    scheduledPublish,
+    setScheduledPublish,
 
     // Form actions
     validateForm,

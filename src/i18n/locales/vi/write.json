@@ -31,5 +31,15 @@
   "writeFormContentRequired": "Nội dung là bắt buộc",
   "writeFormSummaryTooLong": "Tóm tắt phải ít hơn 1000 ký tự",
   "writeFormTagsTooMany": "Tối đa 20 thẻ",
-  "writeFormSuccess": "Tạo bài viết thành công!"
+  "writeFormSuccess": "Tạo bài viết thành công!",
+  "writeFormScheduledDateInvalid": "Ngày hẹn giờ phải trong tương lai",
+  "writeFormPublishNow": "Xuất bản ngay",
+  "writeFormSchedulePublish": "Hẹn giờ xuất bản",
+  "writeFormScheduledPublish": "Hẹn giờ xuất bản",
+  "writeFormScheduledPublishDescription": "Hẹn giờ bài viết của bạn sẽ được xuất bản vào thời gian cụ thể",
+  "writeFormScheduledPublishPlaceholder": "Chọn ngày và giờ",
+  "writeFormScheduledPublishLabel": "Ngày & Giờ xuất bản",
+  "writeFormScheduledPublishSuccess": "Bài viết đã được hẹn giờ xuất bản!",
+  "writeFormScheduledPublishError": "Không thể hẹn giờ bài viết",
+  "writeFormScheduling": "Đang hẹn giờ..."
 }

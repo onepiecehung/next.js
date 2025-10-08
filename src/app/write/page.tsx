@@ -1,25 +1,32 @@
 "use client";
 
+import { useAtom } from "jotai";
+import {
+  ChevronDown,
+  CircleChevronDown,
+  CircleChevronUp,
+  Clock,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { toast } from "sonner";
+
 import { ProtectedRoute } from "@/components/features/auth";
 import { TipTapEditor } from "@/components/features/text-editor";
+import { ScheduledPublishDialog } from "@/components/features/write";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
-import { Button, ImageUpload } from "@/components/ui";
+import { Button, ButtonGroup, ImageUpload } from "@/components/ui";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
 import { useArticleForm } from "@/hooks/useArticleForm";
 import { useCreateArticle } from "@/hooks/useCreateArticle";
 import { MediaAPI } from "@/lib/api/media";
 import { currentUserAtom } from "@/lib/auth-store";
-import { useAtom } from "jotai";
-import { ChevronDown } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { toast } from "sonner";
 
 /**
  * Internationalized Write Page Component
@@ -29,6 +36,7 @@ import { toast } from "sonner";
 export default function WritePage() {
   const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(true);
+  const [isScheduleDialogOpen, setIsScheduleDialogOpen] = useState(false);
   const [currentUser] = useAtom(currentUserAtom);
   const router = useRouter();
 
@@ -44,6 +52,8 @@ export default function WritePage() {
     setTags,
     visibility,
     setVisibility,
+    scheduledPublish,
+    setScheduledPublish,
     validateForm,
     resetForm,
     showValidationErrors,
@@ -133,6 +143,7 @@ export default function WritePage() {
           coverImageUrl = uploaded.data[0].url;
         }
       }
+
       await publishArticle({
         title,
         content,
@@ -144,6 +155,7 @@ export default function WritePage() {
         coverImageId,
         coverImageUrl,
         userId: currentUser?.id,
+        scheduledAt: scheduledPublish ?? undefined,
       });
     } catch {
       // Error handled by hook
@@ -312,16 +324,59 @@ export default function WritePage() {
                           ? "Saving..."
                           : t("writeFormSaveDraft", "write")}
                       </Button>
-                      <Button
-                        size="lg"
-                        className="w-full sm:w-auto"
-                        onClick={handlePublishArticle}
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting
-                          ? "Publishing..."
-                          : t("writeFormPublishArticle", "write")}
-                      </Button>
+
+                      <ButtonGroup>
+                        {/* Publish Button */}
+                        <Button
+                          variant={
+                            visibility === "public" ? "default" : "outline"
+                          }
+                          size="lg"
+                          onClick={handlePublishArticle}
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting
+                            ? "Publishing..."
+                            : t("writeFormPublishArticle", "write")}
+                        </Button>
+
+                        {/* Schedule Publish Dropdown */}
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="secondary"
+                              size="lg"
+                              className="gap-2"
+                              disabled={isSubmitting}
+                            >
+                              {isScheduleDialogOpen ? (
+                                <CircleChevronUp className="h-4 w-4" />
+                              ) : (
+                                <CircleChevronDown className="h-4 w-4" />
+                              )}
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-56">
+                            <DropdownMenuItem
+                              onClick={() => setIsScheduleDialogOpen(true)}
+                              className="gap-2"
+                            >
+                              <Clock className="h-4 w-4" />
+                              {t("writeFormSchedulePublish", "write")}
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </ButtonGroup>
+
+                      {/* Schedule Publish Dialog */}
+                      <ScheduledPublishDialog
+                        scheduledPublish={scheduledPublish}
+                        setScheduledPublish={setScheduledPublish}
+                        onSchedule={handlePublishArticle}
+                        isSubmitting={isSubmitting}
+                        open={isScheduleDialogOpen}
+                        onOpenChange={setIsScheduleDialogOpen}
+                      />
                     </div>
                   </div>
                 </div>

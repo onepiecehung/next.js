@@ -1,0 +1,79 @@
+"use client";
+
+import * as React from "react";
+import { Clock } from "lucide-react";
+import { useI18n } from "@/components/providers/i18n-provider";
+import { Button, DateTimePicker } from "@/components/ui";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/layout/dialog";
+
+interface ScheduledPublishDialogProps {
+  readonly scheduledPublish: Date | null;
+  readonly setScheduledPublish: (date: Date | null) => void;
+  readonly onSchedule: () => void;
+  readonly isSubmitting: boolean;
+  readonly open?: boolean;
+  readonly onOpenChange?: (open: boolean) => void;
+}
+
+/**
+ * Scheduled Publish Dialog Component
+ * Handles scheduling articles for future publication
+ */
+export function ScheduledPublishDialog({
+  scheduledPublish,
+  setScheduledPublish,
+  onSchedule,
+  isSubmitting,
+  open,
+  onOpenChange,
+}: ScheduledPublishDialogProps) {
+  const { t } = useI18n();
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Clock className="h-5 w-5" />
+            {t("writeFormScheduledPublish", "write")}
+          </DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            {t("writeFormScheduledPublishDescription", "write")}
+          </p>
+          <DateTimePicker
+            value={scheduledPublish}
+            onChange={setScheduledPublish}
+            placeholder={t("writeFormScheduledPublishPlaceholder", "write")}
+            label={t("writeFormScheduledPublishLabel", "write")}
+          />
+          <div className="flex justify-end gap-2 pt-4">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setScheduledPublish(null);
+              }}
+              disabled={isSubmitting}
+            >
+              {t("common.cancel", "common") || "Cancel"}
+            </Button>
+            <Button
+              onClick={onSchedule}
+              disabled={isSubmitting || !scheduledPublish}
+            >
+              {isSubmitting
+                ? t("writeFormScheduling", "write") || "Scheduling..."
+                : t("writeFormSchedulePublish", "write")}
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

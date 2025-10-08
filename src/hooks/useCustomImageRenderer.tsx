@@ -84,7 +84,7 @@ export function useCustomImageRenderer(
           try {
             root.unmount();
           } catch (error) {
-            console.warn('Failed to unmount root:', error);
+            console.warn("Failed to unmount root:", error);
           }
         });
         roots.clear();

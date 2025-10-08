@@ -209,7 +209,7 @@ async function processMermaidDiagrams(container: Element): Promise<void> {
  */
 async function processSyntaxHighlighting(container: Element): Promise<void> {
   const codeBlocks = container.querySelectorAll("pre code");
-  
+
   // Skip processing if no code blocks found
   if (codeBlocks.length === 0) return;
 

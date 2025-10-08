@@ -54,6 +54,7 @@ export interface CreateArticleDto {
   userId?: string;
   slug?: string;
   publishedAt?: Date;
+  scheduledAt?: Date;
 }
 
 export interface Article {
@@ -73,6 +74,7 @@ export interface Article {
   userId: string;
   slug: string;
   publishedAt?: Date;
+  scheduledAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }

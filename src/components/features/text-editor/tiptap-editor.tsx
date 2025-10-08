@@ -192,7 +192,7 @@ export function TipTapEditor({
 
   // Get HTML content for preview with syntax highlighting
   const previewContent = editor?.getHTML() || "";
-  
+
   // Only apply syntax highlighting in preview/split modes to avoid performance issues
   // Use useMemo to prevent unnecessary re-processing
   const highlightedPreviewContent = useMemo(() => {

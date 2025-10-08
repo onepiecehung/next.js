@@ -6,6 +6,8 @@
 export { Avatar, AvatarImage, AvatarFallback } from "./avatar";
 export { Badge, badgeVariants } from "./badge";
 export { Button, buttonVariants } from "./button";
+export { ButtonGroup } from "./button-group";
+export { DateTimePicker } from "./date-time-picker";
 export { ImageCropDialog } from "./image-crop-dialog";
 export { ImageUpload } from "./image-upload";
 export { Input } from "./input";

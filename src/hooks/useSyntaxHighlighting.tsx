@@ -47,5 +47,8 @@ export function SyntaxHighlightedContent({ html }: { readonly html: string }) {
  */
 export function useSyntaxHighlighting(htmlContent: string): React.ReactElement {
   // Memoize the component to prevent unnecessary re-renders
-  return useMemo(() => <SyntaxHighlightedContent html={htmlContent} />, [htmlContent]);
+  return useMemo(
+    () => <SyntaxHighlightedContent html={htmlContent} />,
+    [htmlContent],
+  );
 }

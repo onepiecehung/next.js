@@ -31,5 +31,15 @@
   "writeFormContentRequired": "Content is required",
   "writeFormSummaryTooLong": "Summary must be less than 1000 characters",
   "writeFormTagsTooMany": "Maximum 20 tags allowed",
-  "writeFormSuccess": "Article created successfully!"
+  "writeFormSuccess": "Article created successfully!",
+  "writeFormScheduledDateInvalid": "Scheduled publish date must be in the future",
+  "writeFormPublishNow": "Publish Now",
+  "writeFormSchedulePublish": "Schedule Publish",
+  "writeFormScheduledPublish": "Scheduled Publish",
+  "writeFormScheduledPublishDescription": "Schedule your article to be published at a specific date and time",
+  "writeFormScheduledPublishPlaceholder": "Select date and time",
+  "writeFormScheduledPublishLabel": "Publish Date & Time",
+  "writeFormScheduledPublishSuccess": "Article scheduled for publication!",
+  "writeFormScheduledPublishError": "Failed to schedule article",
+  "writeFormScheduling": "Scheduling..."
 }

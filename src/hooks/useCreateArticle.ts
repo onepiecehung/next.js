@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { ArticleAPI } from "@/lib/api/article";
-import type {
-  CreateArticleDto,
-  ArticleStatus,
-  Article,
-} from "@/lib/types/article";
 
+import { ArticleAPI } from "@/lib/api/article";
+import { ARTICLE_CONSTANTS } from "@/lib/types/article";
+
+import type { Article, CreateArticleDto } from "@/lib/types/article";
 interface UseCreateArticleOptions {
   onSuccess?: (article: Article) => void;
   onError?: (error: Error) => void;
@@ -40,17 +38,19 @@ export function useCreateArticle(options?: UseCreateArticleOptions) {
   const createDraft = async (data: Omit<CreateArticleDto, "status">) => {
     return createArticle({
       ...data,
-      status: "draft" as ArticleStatus,
+      status: ARTICLE_CONSTANTS.STATUS.DRAFT,
+      visibility: ARTICLE_CONSTANTS.VISIBILITY.PRIVATE,
+      scheduledAt: undefined,
     });
   };
 
   const publishArticle = async (
-    data: Omit<CreateArticleDto, "status" | "publishedAt">,
+    data: Omit<CreateArticleDto, "status" | "scheduledAt">,
   ) => {
     return createArticle({
       ...data,
-      status: "published" as ArticleStatus,
-      publishedAt: new Date(),
+      status: ARTICLE_CONSTANTS.STATUS.PUBLISHED,
+      scheduledAt: undefined,
     });
   };
 
