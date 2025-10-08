@@ -1,5 +1,9 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-import { rateLimitBus, setRateLimitUntil, getRateLimitUntil } from "@/lib/rate-limit";
+import {
+  rateLimitBus,
+  setRateLimitUntil,
+  getRateLimitUntil,
+} from "@/lib/rate-limit";
 
 // In-memory storage for access token (not persisted to localStorage for security)
 let ACCESS_TOKEN: string | null = null;
@@ -53,15 +57,21 @@ http.interceptors.request.use((config) => {
   const until = getRateLimitUntil();
   if (until && until > now) {
     // Emit event so global dialog shows (in case it was dismissed)
-    rateLimitBus.emit({ untilTimestampMs: until, retryAfterSeconds: Math.max(1, Math.ceil((until - now) / 1000)) });
-    const err = new Error("Rate limited - cooldown active") as Error & { response?: { status?: number } };
+    rateLimitBus.emit({
+      untilTimestampMs: until,
+      retryAfterSeconds: Math.max(1, Math.ceil((until - now) / 1000)),
+    });
+    const err = new Error("Rate limited - cooldown active") as Error & {
+      response?: { status?: number };
+    };
     err.response = { status: 429 };
     return Promise.reject(err);
   }
 
   const accessToken = getAccessToken();
   if (accessToken) {
-    (config.headers as Record<string, string>).Authorization = `Bearer ${accessToken}`;
+    (config.headers as Record<string, string>).Authorization =
+      `Bearer ${accessToken}`;
   }
   return config;
 });
@@ -128,13 +138,19 @@ async function refreshAccessToken() {
 http.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig | undefined;
+    const originalRequest = error.config as
+      | InternalAxiosRequestConfig
+      | undefined;
     const status = error?.response?.status;
 
     // Handle 429 Too Many Requests (rate limiting)
     if (status === 429) {
-      const retryAfterHeader = (error.response?.headers?.["retry-after"] as unknown) as string | undefined;
-      const retryAfterSeconds = retryAfterHeader ? Math.max(1, parseInt(String(retryAfterHeader), 10)) : 60;
+      const retryAfterHeader = error.response?.headers?.[
+        "retry-after"
+      ] as unknown as string | undefined;
+      const retryAfterSeconds = retryAfterHeader
+        ? Math.max(1, parseInt(String(retryAfterHeader), 10))
+        : 60;
       const until = Date.now() + retryAfterSeconds * 1000;
       setRateLimitUntil(until);
       rateLimitBus.emit({ untilTimestampMs: until, retryAfterSeconds });
@@ -153,7 +169,8 @@ http.interceptors.response.use(
         })
           .then((token) => {
             if (req) {
-              (req.headers as Record<string, string>).Authorization = `Bearer ${token}`;
+              (req.headers as Record<string, string>).Authorization =
+                `Bearer ${token}`;
               return http(req);
             }
             return Promise.reject(new Error("Original request not available"));
@@ -173,18 +190,25 @@ http.interceptors.response.use(
 
         // Update the original request with new token
         if (req) {
-          (req.headers as Record<string, string>).Authorization = `Bearer ${newAccessToken}`;
+          (req.headers as Record<string, string>).Authorization =
+            `Bearer ${newAccessToken}`;
           return http(req);
         }
         return Promise.reject(new Error("Original request not available"));
       } catch (refreshError) {
         processQueue(refreshError, null);
-        return Promise.reject(refreshError instanceof Error ? refreshError : new Error("Token refresh failed"));
+        return Promise.reject(
+          refreshError instanceof Error
+            ? refreshError
+            : new Error("Token refresh failed"),
+        );
       } finally {
         isRefreshing = false;
       }
     }
 
-    return Promise.reject(error instanceof Error ? error : new Error("Request failed"));
+    return Promise.reject(
+      error instanceof Error ? error : new Error("Request failed"),
+    );
   },
 );

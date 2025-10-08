@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import { TipTapEditor } from "@/components/features/text-editor";
-import { Card } from "@/components/ui/core/card";
-import { Button } from "@/components/ui/core/button";
 import { Badge } from "@/components/ui/core";
+import { Button } from "@/components/ui/core/button";
+import { Card } from "@/components/ui/core/card";
 import { Separator } from "@/components/ui/layout";
+import { useState } from "react";
 
 export default function EditorDemoPage() {
   const [content, setContent] = useState(`
@@ -46,7 +46,7 @@ export default function EditorDemoPage() {
     </blockquote>
 
     <h3>Code Block Example</h3>
-    <pre><code>function hello() {
+    <pre><code class="language-javascript">function hello() {
   console.log("Hello, Clean TipTap Editor!");
   return "Welcome to the modern editor!";
 }
@@ -55,6 +55,49 @@ const editor = new TipTapEditor({
   extensions: [StarterKit, CodeBlock, Blockquote],
   content: "Start writing...",
 });</code></pre>
+
+    <h3>More Code Examples</h3>
+    <pre><code class="language-typescript">interface EditorProps {
+  content?: string;
+  onChange?: (content: string) => void;
+  placeholder?: string;
+}
+
+const TipTapEditor: React.FC<EditorProps> = ({
+  content = "",
+  onChange,
+  placeholder = "Start writing..."
+}) => {
+  const editor = useEditor({
+    extensions: [StarterKit, CodeBlock, Blockquote],
+    content,
+    onUpdate: ({ editor }) => {
+      onChange?.(editor.getHTML());
+    },
+  });
+
+  return <EditorContent editor={editor} />;
+};</code></pre>
+
+    <pre><code class="language-css">.tiptap-editor {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  background: white;
+}
+
+.tiptap-editor .ProseMirror {
+  padding: 1rem;
+  min-height: 200px;
+  outline: none;
+}
+
+.tiptap-editor .ProseMirror pre {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}</code></pre>
 
     <p>Try editing this content and explore all the grouped features in the toolbar above!</p>
   `);

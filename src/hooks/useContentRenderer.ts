@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useState } from "react";
 import "highlight.js/styles/github.css";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  ContentProcessorOptions,
   initializeMermaid,
   processCodeBlocks,
-  ContentProcessorOptions,
 } from "../lib/utils/content-processor";
+import { useCustomImageRenderer } from "./useCustomImageRenderer";
 
 interface UseContentRendererOptions extends ContentProcessorOptions {
   /**
@@ -56,6 +57,9 @@ export function useContentRenderer(
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [mermaidInitialized, setMermaidInitialized] = useState(false);
+
+  // Use custom image renderer hook
+  useCustomImageRenderer(containerRef);
 
   // Initialize Mermaid
   useEffect(() => {

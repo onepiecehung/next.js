@@ -29,7 +29,7 @@ export class MediaAPI {
     }
     if (files.length > this.MAX_FILES_PER_UPLOAD) {
       throw new Error(
-        `You can upload at most ${this.MAX_FILES_PER_UPLOAD} files per request.`
+        `You can upload at most ${this.MAX_FILES_PER_UPLOAD} files per request.`,
       );
     }
 
@@ -43,7 +43,7 @@ export class MediaAPI {
       form,
       {
         headers: { "Content-Type": "multipart/form-data" },
-      }
+      },
     );
     return response.data;
   }

@@ -1,74 +1,76 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Placeholder from "@tiptap/extension-placeholder";
-import Typography from "@tiptap/extension-typography";
-import Link from "@tiptap/extension-link";
-import Image from "@tiptap/extension-image";
-import Underline from "@tiptap/extension-underline";
-import Highlight from "@tiptap/extension-highlight";
-import TextAlign from "@tiptap/extension-text-align";
-import TaskList from "@tiptap/extension-task-list";
-import TaskItem from "@tiptap/extension-task-item";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import Highlight from "@tiptap/extension-highlight";
+import Link from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
+import TaskItem from "@tiptap/extension-task-item";
+import TaskList from "@tiptap/extension-task-list";
+import TextAlign from "@tiptap/extension-text-align";
+import Typography from "@tiptap/extension-typography";
+import Underline from "@tiptap/extension-underline";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { useCallback, useState } from "react";
 import "./tiptap-editor.css";
 // import { MermaidRenderer } from "./mermaid-renderer";
 
-import { Button } from "@/components/ui/core/button";
 import { NoSSR } from "@/components/providers/no-ssr";
-import { LinkDialog } from "./link-dialog";
-import { ImageDialog } from "./image-dialog";
-import { ColorHighlightPopover } from "./color-highlight-popover";
+import { Button } from "@/components/ui/core/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
+import { useImageUpload } from "@/hooks/useImageUpload";
+import { useSyntaxHighlighting } from "@/hooks/useSyntaxHighlighting";
+import "highlight.js/styles/github.css";
+import { createLowlight } from "lowlight";
 import {
+  AlignCenter,
+  AlignJustify,
+  AlignLeft,
+  AlignRight,
   Bold,
-  Italic,
-  Underline as UnderlineIcon,
-  Strikethrough,
-  List,
-  ListOrdered,
-  Quote,
+  CheckSquare,
+  ChevronDown,
   Code,
+  Edit3,
+  Eye,
+  FileCode,
   Heading1,
   Heading2,
   Heading3,
   Heading4,
   Heading5,
-  Link as LinkIcon,
   Image as ImageIcon,
-  Eye,
-  Edit3,
-  SplitSquareHorizontalIcon as Split,
-  FileCode,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  AlignJustify,
-  ChevronDown,
-  Undo,
+  Italic,
+  Link as LinkIcon,
+  List,
+  ListOrdered,
+  Quote,
   Redo,
-  CheckSquare,
+  SplitSquareHorizontalIcon as Split,
+  Strikethrough,
+  Underline as UnderlineIcon,
+  Undo,
 } from "lucide-react";
-import { createLowlight } from "lowlight";
-import "highlight.js/styles/github.css";
-import { useSyntaxHighlighting } from "@/hooks/useSyntaxHighlighting";
+import { ColorHighlightPopover } from "./color-highlight-popover";
+import { CustomImageNode } from "./custom-image-node";
+import { ImageDialog } from "./image-dialog";
+import { ImageUploadExtension } from "./image-upload-extension";
+import { LinkDialog } from "./link-dialog";
 
-import javascript from "highlight.js/lib/languages/javascript";
-import typescript from "highlight.js/lib/languages/typescript";
-import css from "highlight.js/lib/languages/css";
-import xml from "highlight.js/lib/languages/xml";
-import json from "highlight.js/lib/languages/json";
 import bash from "highlight.js/lib/languages/bash";
-import python from "highlight.js/lib/languages/python";
+import css from "highlight.js/lib/languages/css";
 import java from "highlight.js/lib/languages/java";
+import javascript from "highlight.js/lib/languages/javascript";
+import json from "highlight.js/lib/languages/json";
+import python from "highlight.js/lib/languages/python";
 import sql from "highlight.js/lib/languages/sql";
+import typescript from "highlight.js/lib/languages/typescript";
+import xml from "highlight.js/lib/languages/xml";
 
 interface TipTapEditorProps {
   readonly content?: string;
@@ -95,6 +97,19 @@ export function TipTapEditor({
   const [isCodeMode, setIsCodeMode] = useState(false);
   const [isLinkDialogOpen, setIsLinkDialogOpen] = useState(false);
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+
+  // Image upload hook
+  const { uploadImages, error: uploadError } = useImageUpload({
+    onSuccess: (uploadedMedia) => {
+      console.log("Images uploaded successfully:", uploadedMedia);
+      setIsUploadingImage(false);
+    },
+    onError: (error) => {
+      console.error("Image upload failed:", error);
+      setIsUploadingImage(false);
+    },
+  });
 
   const editor = useEditor({
     extensions: [
@@ -124,13 +139,7 @@ export function TipTapEditor({
           class: "text-primary underline cursor-pointer",
         },
       }),
-      Image.configure({
-        HTMLAttributes: {
-          class: "max-w-full h-auto rounded-lg",
-        },
-        allowBase64: true,
-        inline: false,
-      }),
+      CustomImageNode,
       CodeBlockLowlight.configure({
         defaultLanguage: "javascript",
         languageClassPrefix: "language-",
@@ -157,6 +166,15 @@ export function TipTapEditor({
       TaskItem.configure({
         nested: true,
       }),
+      ImageUploadExtension.configure({
+        onUpload: uploadImages,
+        onUploadStart: () => setIsUploadingImage(true),
+        onUploadEnd: () => setIsUploadingImage(false),
+        onUploadError: (error) => {
+          console.error("Image upload error:", error);
+          setIsUploadingImage(false);
+        },
+      }),
     ],
     content,
     editable,
@@ -173,8 +191,9 @@ export function TipTapEditor({
     immediatelyRender: false,
   });
 
-  // Get highlighted HTML content for preview
-  const highlightedContent = useSyntaxHighlighting(editor?.getHTML() || "");
+  // Get HTML content for preview with syntax highlighting
+  const previewContent = editor?.getHTML() || "";
+  const highlightedPreviewContent = useSyntaxHighlighting(previewContent);
 
   // Memoized handlers
   const addImage = useCallback(() => {
@@ -184,7 +203,14 @@ export function TipTapEditor({
   const handleAddImage = useCallback(
     (url: string) => {
       if (editor) {
-        editor.chain().focus().setImage({ src: url }).run();
+        editor
+          .chain()
+          .focus()
+          .insertContent({
+            type: "customImage",
+            attrs: { src: url },
+          })
+          .run();
       }
     },
     [editor],
@@ -630,7 +656,21 @@ export function TipTapEditor({
 
           <div className="flex-1" />
 
-          {/* Group 8: View Modes */}
+          {/* Group 8: Upload Status */}
+          {isUploadingImage && (
+            <div className="flex items-center gap-2 px-2 py-1 bg-blue-500/10 text-blue-600 rounded-md border border-blue-500/20 flex-shrink-0">
+              <div className="animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full" />
+              <span className="text-xs">Uploading images...</span>
+            </div>
+          )}
+
+          {uploadError && (
+            <div className="flex items-center gap-2 px-2 py-1 bg-red-500/10 text-red-600 rounded-md border border-red-500/20 flex-shrink-0">
+              <span className="text-xs">Upload failed: {uploadError}</span>
+            </div>
+          )}
+
+          {/* Group 9: View Modes */}
           <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50 flex-shrink-0">
             <Button
               variant="ghost"
@@ -711,7 +751,9 @@ export function TipTapEditor({
                   <div className="p-2 text-xs text-muted-foreground bg-muted/30 border-b border-border/50 mb-4">
                     Preview
                   </div>
-                  <div className="preview-content">{highlightedContent}</div>
+                  <div className="preview-content">
+                    {highlightedPreviewContent}
+                  </div>
                 </div>
               </div>
             );
@@ -724,7 +766,9 @@ export function TipTapEditor({
                   Preview Mode
                 </div>
                 <div className="p-4">
-                  <div className="preview-content">{highlightedContent}</div>
+                  <div className="preview-content">
+                    {highlightedPreviewContent}
+                  </div>
                 </div>
               </div>
             );

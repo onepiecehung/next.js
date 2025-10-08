@@ -1,5 +1,6 @@
 "use client";
 
+import hljs from "highlight.js";
 import mermaid from "mermaid";
 
 /**
@@ -73,6 +74,12 @@ export async function processCodeBlocks(
     options;
 
   try {
+    // Process custom image nodes
+    processCustomImageNodes(container);
+
+    // Process regular img tags from backend
+    processImgTags(container);
+
     // Process Mermaid diagrams
     if (enableMermaidDiagrams) {
       await processMermaidDiagrams(container);
@@ -84,6 +91,90 @@ export async function processCodeBlocks(
     }
   } catch (error) {
     console.error("Error processing code blocks:", error);
+  }
+}
+
+/**
+ * Process custom image nodes in the container
+ * @param container - The DOM container to process
+ */
+function processCustomImageNodes(container: Element): void {
+  const customImageNodes = container.querySelectorAll("custom-image");
+
+  for (const node of customImageNodes) {
+    try {
+      const src = node.getAttribute("src");
+      const alt = node.getAttribute("alt") || "";
+      const title = node.getAttribute("title") || "";
+      const width = parseInt(node.getAttribute("width") || "800");
+      const height = parseInt(node.getAttribute("height") || "600");
+
+      if (!src) continue;
+
+      // Create a wrapper div for the custom image
+      const wrapper = document.createElement("div");
+      wrapper.className = "custom-image-next-wrapper";
+      wrapper.setAttribute("data-custom-image-src", src);
+      wrapper.setAttribute("data-custom-image-alt", alt);
+      wrapper.setAttribute("data-custom-image-title", title);
+      wrapper.setAttribute("data-custom-image-width", width.toString());
+      wrapper.setAttribute("data-custom-image-height", height.toString());
+
+      // Add loading placeholder - will be replaced by React component
+      wrapper.innerHTML = `
+        <div class="animate-pulse bg-muted rounded-lg" style="width: ${width}px; height: ${height}px; max-width: 100%;"></div>
+      `;
+
+      // Replace the custom-image node with the wrapper
+      node.parentNode?.replaceChild(wrapper, node);
+    } catch (error) {
+      console.error("Failed to process custom image node:", error);
+    }
+  }
+}
+
+/**
+ * Process regular img tags from backend and convert them to custom image wrappers
+ * @param container - The DOM container to process
+ */
+function processImgTags(container: Element): void {
+  const imgTags = container.querySelectorAll("img[src]");
+
+  for (const img of imgTags) {
+    try {
+      const src = img.getAttribute("src");
+      const alt = img.getAttribute("alt") || "";
+      const title = img.getAttribute("title") || "";
+
+      // Get dimensions from img element or use defaults
+      const width = img.getAttribute("width")
+        ? parseInt(img.getAttribute("width")!)
+        : 800;
+      const height = img.getAttribute("height")
+        ? parseInt(img.getAttribute("height")!)
+        : 600;
+
+      if (!src) continue;
+
+      // Create a wrapper div for the custom image
+      const wrapper = document.createElement("div");
+      wrapper.className = "custom-image-next-wrapper";
+      wrapper.setAttribute("data-custom-image-src", src);
+      wrapper.setAttribute("data-custom-image-alt", alt);
+      wrapper.setAttribute("data-custom-image-title", title);
+      wrapper.setAttribute("data-custom-image-width", width.toString());
+      wrapper.setAttribute("data-custom-image-height", height.toString());
+
+      // Add loading placeholder - will be replaced by React component
+      wrapper.innerHTML = `
+        <div class="animate-pulse bg-muted rounded-lg" style="width: ${width}px; height: ${height}px; max-width: 100%;"></div>
+      `;
+
+      // Replace the img tag with the wrapper
+      img.parentNode?.replaceChild(wrapper, img);
+    } catch (error) {
+      console.error("Failed to process img tag:", error);
+    }
   }
 }
 
@@ -117,17 +208,75 @@ async function processMermaidDiagrams(container: Element): Promise<void> {
  * @param container - The DOM container to process
  */
 async function processSyntaxHighlighting(container: Element): Promise<void> {
-  // This is a placeholder for syntax highlighting
-  // In a real implementation, you would use a library like highlight.js
-  // or prism.js to highlight code blocks
-
   const codeBlocks = container.querySelectorAll("pre code");
+  console.log("Found code blocks:", codeBlocks.length);
 
   for (const codeBlock of codeBlocks) {
-    // Add basic styling for code blocks
     const pre = codeBlock.parentElement;
-    if (pre) {
-      pre.classList.add("code-block");
+    if (!pre) continue;
+
+    console.log("Processing code block:", {
+      codeClasses: Array.from(codeBlock.classList),
+      preClasses: Array.from(pre.classList),
+      preDataLanguage: pre.getAttribute("data-language"),
+      textContent: codeBlock.textContent?.substring(0, 50) + "...",
+    });
+
+    // Add code-block class for styling
+    pre.classList.add("code-block");
+
+    // Check if this code block is already highlighted
+    if (pre.classList.contains("hljs")) continue;
+
+    try {
+      // Get the language from class or data attribute
+      let language = "";
+      const classList = Array.from(codeBlock.classList);
+      const langClass = classList.find((cls) => cls.startsWith("language-"));
+
+      if (langClass) {
+        language = langClass.replace("language-", "");
+      } else if (pre.getAttribute("data-language")) {
+        language = pre.getAttribute("data-language") || "";
+      } else if (pre.classList.contains("language-")) {
+        // Check if the pre element has a language class
+        const preClassList = Array.from(pre.classList);
+        const preLangClass = preClassList.find((cls) =>
+          cls.startsWith("language-"),
+        );
+        if (preLangClass) {
+          language = preLangClass.replace("language-", "");
+        }
+      }
+
+      console.log("Detected language:", language);
+
+      // Highlight the code block
+      if (language && hljs.getLanguage(language)) {
+        // Use specific language highlighting
+        const highlighted = hljs.highlight(codeBlock.textContent || "", {
+          language,
+        });
+        codeBlock.innerHTML = highlighted.value;
+        codeBlock.className = `hljs language-${language}`;
+        console.log("Applied specific language highlighting for:", language);
+      } else {
+        // Auto-detect language
+        const highlighted = hljs.highlightAuto(codeBlock.textContent || "");
+        codeBlock.innerHTML = highlighted.value;
+        codeBlock.className = `hljs language-${highlighted.language || "plaintext"}`;
+        console.log(
+          "Applied auto-detected language highlighting for:",
+          highlighted.language,
+        );
+      }
+
+      // Mark as processed
+      pre.classList.add("hljs");
+    } catch (error) {
+      console.error("Failed to highlight code block:", error);
+      // Fallback: just add basic styling
+      codeBlock.className = "hljs";
     }
   }
 }

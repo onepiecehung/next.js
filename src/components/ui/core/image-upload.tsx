@@ -31,7 +31,13 @@ export function ImageUpload({
   placeholder = "Click to upload or drag and drop",
   disabled = false,
   maxSizeInMB = 10,
-  acceptedTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"],
+  acceptedTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/gif",
+    "image/webp",
+  ],
   enableCrop = false,
   aspectRatio = 16 / 9,
 }: ImageUploadProps) {
@@ -46,7 +52,7 @@ export function ImageUpload({
   const validateFile = (file: File): string | null => {
     // Check file type
     if (!acceptedTypes.includes(file.type)) {
-      return `Only ${acceptedTypes.map(type => type.split('/')[1].toUpperCase()).join(', ')} files are allowed`;
+      return `Only ${acceptedTypes.map((type) => type.split("/")[1].toUpperCase()).join(", ")} files are allowed`;
     }
 
     // Check file size (convert MB to bytes)
@@ -61,7 +67,7 @@ export function ImageUpload({
   // Handle file selection
   const handleFileSelect = (file: File) => {
     setError(null);
-    
+
     const validationError = validateFile(file);
     if (validationError) {
       setError(validationError);
@@ -100,7 +106,7 @@ export function ImageUpload({
   const handleDrop = (event: React.DragEvent) => {
     event.preventDefault();
     setIsDragOver(false);
-    
+
     if (disabled) return;
 
     const files = Array.from(event.dataTransfer.files).slice(0, 3);
@@ -154,7 +160,7 @@ export function ImageUpload({
           isDragOver && "border-primary bg-primary/10",
           error && "border-destructive bg-destructive/5",
           disabled && "opacity-50 cursor-not-allowed",
-          className
+          className,
         )}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -243,15 +249,16 @@ export function ImageUpload({
             </div>
             <p className="text-sm text-muted-foreground">{placeholder}</p>
             <p className="text-xs text-muted-foreground">
-              {acceptedTypes.map(type => type.split('/')[1].toUpperCase()).join(', ')} up to {maxSizeInMB}MB
+              {acceptedTypes
+                .map((type) => type.split("/")[1].toUpperCase())
+                .join(", ")}{" "}
+              up to {maxSizeInMB}MB
             </p>
           </div>
         )}
       </div>
 
-      {error && (
-        <p className="text-sm text-destructive">{error}</p>
-      )}
+      {error && <p className="text-sm text-destructive">{error}</p>}
 
       {/* Image Editor Dialog */}
       <ImageCropDialog

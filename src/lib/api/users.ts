@@ -25,18 +25,22 @@ export interface User {
  * Handles all user-related API calls
  */
 export class UserAPI {
-  private static readonly BASE_URL = '/users';
+  private static readonly BASE_URL = "/users";
 
   /**
    * Fetch user profile by user ID
    */
   static async getUserProfile(userId: string): Promise<User> {
     try {
-      const response = await http.get<ApiResponse<User>>(`${this.BASE_URL}/${userId}`);
+      const response = await http.get<ApiResponse<User>>(
+        `${this.BASE_URL}/${userId}`,
+      );
 
       // Check if API response is successful
       if (!response.data.success) {
-        throw new Error(response.data.message || "Failed to fetch user profile");
+        throw new Error(
+          response.data.message || "Failed to fetch user profile",
+        );
       }
 
       return response.data.data;
@@ -55,7 +59,9 @@ export class UserAPI {
 
       // Check if API response is successful
       if (!response.data.success) {
-        throw new Error(response.data.message || "Failed to fetch current user");
+        throw new Error(
+          response.data.message || "Failed to fetch current user",
+        );
       }
 
       return response.data.data;
@@ -80,7 +86,9 @@ export class UserAPI {
 
       // Check if API response is successful
       if (!response.data.success) {
-        throw new Error(response.data.message || "Failed to update user profile");
+        throw new Error(
+          response.data.message || "Failed to update user profile",
+        );
       }
 
       return response.data.data;

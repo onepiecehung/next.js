@@ -4,6 +4,8 @@
  */
 
 export { ClientOnly, useClientOnly } from "./client-only";
-export { Toaster } from "./sonner";
 export { ContentRenderer } from "./content-renderer";
+export { CustomImageContentRenderer } from "./custom-image-content-renderer";
+export { CustomImageRenderer } from "./custom-image-renderer";
+export { Toaster } from "./sonner";
 export { VisuallyHidden } from "./visually-hidden";

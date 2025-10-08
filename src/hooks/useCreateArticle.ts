@@ -1,6 +1,10 @@
-import { useState } from 'react';
-import { ArticleAPI } from '@/lib/api/article';
-import type { CreateArticleDto, ArticleStatus, Article } from '@/lib/types/article';
+import { useState } from "react";
+import { ArticleAPI } from "@/lib/api/article";
+import type {
+  CreateArticleDto,
+  ArticleStatus,
+  Article,
+} from "@/lib/types/article";
 
 interface UseCreateArticleOptions {
   onSuccess?: (article: Article) => void;
@@ -23,7 +27,8 @@ export function useCreateArticle(options?: UseCreateArticleOptions) {
       options?.onSuccess?.(article);
       return article;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to create article';
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to create article";
       setError(errorMessage);
       options?.onError?.(err as Error);
       throw err;
@@ -32,17 +37,19 @@ export function useCreateArticle(options?: UseCreateArticleOptions) {
     }
   };
 
-  const createDraft = async (data: Omit<CreateArticleDto, 'status'>) => {
+  const createDraft = async (data: Omit<CreateArticleDto, "status">) => {
     return createArticle({
       ...data,
-      status: 'draft' as ArticleStatus,
+      status: "draft" as ArticleStatus,
     });
   };
 
-  const publishArticle = async (data: Omit<CreateArticleDto, 'status' | 'publishedAt'>) => {
+  const publishArticle = async (
+    data: Omit<CreateArticleDto, "status" | "publishedAt">,
+  ) => {
     return createArticle({
       ...data,
-      status: 'published' as ArticleStatus,
+      status: "published" as ArticleStatus,
       publishedAt: new Date(),
     });
   };

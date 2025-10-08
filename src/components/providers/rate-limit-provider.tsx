@@ -1,9 +1,18 @@
 "use client";
 
 import * as React from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/layout/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/layout/dialog";
 import { Button } from "@/components/ui/core/button";
-import { rateLimitBus, getRateLimitRemainingSeconds, type RateLimitEventDetail } from "@/lib/rate-limit";
+import {
+  rateLimitBus,
+  getRateLimitRemainingSeconds,
+  type RateLimitEventDetail,
+} from "@/lib/rate-limit";
 import { useI18n } from "@/components/providers/i18n-provider";
 
 type RateLimitProviderProps = {
@@ -48,7 +57,9 @@ export function RateLimitProvider({ children }: RateLimitProviderProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>{t("common.rateLimitTitle", "Too Many Requests")}</DialogTitle>
+            <DialogTitle>
+              {t("common.rateLimitTitle", "Too Many Requests")}
+            </DialogTitle>
           </DialogHeader>
           <div className="space-y-3 text-sm text-muted-foreground">
             <p>
@@ -73,5 +84,3 @@ export function RateLimitProvider({ children }: RateLimitProviderProps) {
 }
 
 export default RateLimitProvider;
-
-

@@ -52,8 +52,9 @@ export function getRateLimitUntil(): number | null {
   return rateLimitUntilTimestampMs;
 }
 
-export function getRateLimitRemainingSeconds(nowMs: number = Date.now()): number {
+export function getRateLimitRemainingSeconds(
+  nowMs: number = Date.now(),
+): number {
   if (!rateLimitUntilTimestampMs) return 0;
   return Math.max(0, Math.ceil((rateLimitUntilTimestampMs - nowMs) / 1000));
 }
-
