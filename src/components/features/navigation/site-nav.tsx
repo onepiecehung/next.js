@@ -6,6 +6,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { LoginDialog } from "@/components/features/auth";
+import { useI18n } from "@/components/providers/i18n-provider";
 import { ThemeToggle, UserDropdown } from "@/components/ui";
 import { LanguageSwitcher } from "@/components/ui/navigation";
 import {
@@ -14,7 +15,6 @@ import {
   currentUserAtom,
   logoutAction,
 } from "@/lib/auth-store";
-import { useI18n } from "@/components/providers/i18n-provider";
 
 /**
  * Internationalized Site Navigation Component
@@ -46,7 +46,7 @@ export default function SiteNav() {
   };
 
   return (
-    <header className="border-b bg-background">
+    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
       <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
         <Link href="/" className="font-semibold text-xl text-foreground">
           {t("navBrand", "common")}
