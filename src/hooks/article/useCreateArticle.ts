@@ -10,18 +10,35 @@ interface UseCreateArticleOptions {
 }
 
 /**
- * Hook for creating articles
+ * Hook for creating articles with simplified API
+ * Uses a single saveArticle function that accepts status directly from constants
  */
 export function useCreateArticle(options?: UseCreateArticleOptions) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const createArticle = async (data: CreateArticleDto) => {
+  /**
+   * Save an article with specified status
+   * @param data - Article data including status constant
+   * - DRAFT: automatically sets visibility to PRIVATE
+   * - SCHEDULED: requires scheduledAt
+   * - PUBLISHED: default published article
+   */
+  const saveArticle = async (data: CreateArticleDto) => {
     setIsLoading(true);
     setError(null);
 
+    // Auto-set visibility to PRIVATE for drafts
+    const finalData = {
+      ...data,
+      visibility:
+        data.status === ARTICLE_CONSTANTS.STATUS.DRAFT
+          ? ARTICLE_CONSTANTS.VISIBILITY.PRIVATE
+          : data.visibility,
+    };
+
     try {
-      const article = await ArticleAPI.createArticle(data);
+      const article = await ArticleAPI.createArticle(finalData);
       options?.onSuccess?.(article);
       return article;
     } catch (err) {
@@ -35,29 +52,8 @@ export function useCreateArticle(options?: UseCreateArticleOptions) {
     }
   };
 
-  const createDraft = async (data: Omit<CreateArticleDto, "status">) => {
-    return createArticle({
-      ...data,
-      status: ARTICLE_CONSTANTS.STATUS.DRAFT,
-      visibility: ARTICLE_CONSTANTS.VISIBILITY.PRIVATE,
-      scheduledAt: undefined,
-    });
-  };
-
-  const publishArticle = async (
-    data: Omit<CreateArticleDto, "status" | "scheduledAt">,
-  ) => {
-    return createArticle({
-      ...data,
-      status: ARTICLE_CONSTANTS.STATUS.PUBLISHED,
-      scheduledAt: undefined,
-    });
-  };
-
   return {
-    createArticle,
-    createDraft,
-    publishArticle,
+    saveArticle,
     isLoading,
     error,
     clearError: () => setError(null),

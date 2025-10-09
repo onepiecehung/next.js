@@ -1,12 +1,12 @@
 "use client";
 
-import "highlight.js/styles/github.css";
-import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ContentProcessorOptions,
   initializeMermaid,
   processCodeBlocks,
-} from "../lib/utils/content-processor";
+} from "@/lib/utils/content-processor";
+import "highlight.js/styles/github.css";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useCustomImageRenderer } from "./useCustomImageRenderer";
 
 interface UseContentRendererOptions extends ContentProcessorOptions {

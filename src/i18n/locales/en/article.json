@@ -19,5 +19,9 @@
   "articleViewStatusScheduled": "Scheduled",
   "articleViewStatusArchived": "Archived",
   "articleViewAuthor": "Author",
-  "articleViewLastUpdated": "Last updated"
+  "articleViewLastUpdated": "Last updated",
+  "articleViewScheduledPublishSuccess": "Article scheduled for publication!",
+  "articleViewScheduledPublishSuccessDescription": "Article scheduled for publication at {date}",
+  "articleViewScheduledPublishError": "Failed to schedule article",
+  "articleViewScheduledPublishErrorDescription": "Failed to schedule article"
 }

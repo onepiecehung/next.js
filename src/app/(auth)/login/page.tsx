@@ -1,21 +1,20 @@
 "use client";
 
-import React from "react";
-import { useAtom } from "jotai";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { LoginCard } from "./_components/LoginCard";
+import { useI18n } from "@/components/providers/i18n-provider";
+import { useAuthRedirect } from "@/hooks/auth";
 import {
-  currentUserAtom,
   accessTokenAtom,
   authLoadingAtom,
+  currentUserAtom,
   loginAction,
-  loginWithGoogleAction,
   loginWithGithubAction,
+  loginWithGoogleAction,
 } from "@/lib/auth-store";
-import { useAuthRedirect } from "@/hooks/useAuthRedirect";
-import { useI18n } from "@/components/providers/i18n-provider";
+import { useAtom } from "jotai";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { LoginCard } from "./_components/LoginCard";
 
 /**
  * Login page component

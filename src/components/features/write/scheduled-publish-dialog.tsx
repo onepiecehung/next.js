@@ -1,7 +1,5 @@
 "use client";
 
-import * as React from "react";
-import { Clock } from "lucide-react";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button, DateTimePicker } from "@/components/ui";
 import {
@@ -10,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/layout/dialog";
+import { Clock } from "lucide-react";
 
 interface ScheduledPublishDialogProps {
   readonly scheduledPublish: Date | null;
@@ -58,13 +57,17 @@ export function ScheduledPublishDialog({
               variant="outline"
               onClick={() => {
                 setScheduledPublish(null);
+                onOpenChange?.(false);
               }}
               disabled={isSubmitting}
             >
-              {t("common.cancel", "common") || "Cancel"}
+              {t("cancel", "common") || "Cancel"}
             </Button>
             <Button
-              onClick={onSchedule}
+              onClick={() => {
+                onSchedule();
+                onOpenChange?.(false);
+              }}
               disabled={isSubmitting || !scheduledPublish}
             >
               {isSubmitting

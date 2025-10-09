@@ -1,6 +1,6 @@
 "use client";
 
-import { useContentRenderer } from "@/hooks/useContentRenderer";
+import { useContentRenderer } from "@/hooks/content";
 
 interface ContentRendererProps {
   /**

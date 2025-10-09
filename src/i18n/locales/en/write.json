@@ -41,5 +41,9 @@
   "writeFormScheduledPublishLabel": "Publish Date & Time",
   "writeFormScheduledPublishSuccess": "Article scheduled for publication!",
   "writeFormScheduledPublishError": "Failed to schedule article",
-  "writeFormScheduling": "Scheduling..."
+  "writeFormScheduling": "Scheduling...",
+  "writeFormDraftSuccess": "Draft created successfully!",
+  "writeFormScheduledPublishSuccessDescription": "Article scheduled for publication at {date}",
+  "writeLoading": "Loading...",
+  "writeFormError": "Failed to create article"
 }

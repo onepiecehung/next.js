@@ -1,6 +1,6 @@
 "use client";
 
-import { useRequireAuth } from "@/hooks/useAuthRedirect";
+import { useRequireAuth } from "@/hooks/auth";
 
 interface ProtectedRouteProps {
   readonly children: React.ReactNode;

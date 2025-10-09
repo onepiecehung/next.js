@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { useI18n } from "@/components/providers/i18n-provider";
-import { toast } from "sonner";
 import type { Article } from "@/lib/types/article";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface UseArticleFormOptions {
   onSuccess?: (article: Article) => void;
@@ -10,7 +10,7 @@ interface UseArticleFormOptions {
 /**
  * Hook for managing article form state and validation
  */
-export function useArticleForm(options?: UseArticleFormOptions) {
+export function useArticleForm(_options?: UseArticleFormOptions) {
   const { t } = useI18n();
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [title, setTitle] = useState("");

@@ -48,5 +48,6 @@
   "back": "Quay Lại",
   "rateLimitTitle": "Quá nhiều yêu cầu",
   "rateLimitDescription": "Bạn đã vượt quá giới hạn gọi API. Vui lòng chờ trước khi thử lại.",
-  "rateLimitRetryIn": "Thử lại sau"
+  "rateLimitRetryIn": "Thử lại sau",
+  "cancel": "Hủy"
 }

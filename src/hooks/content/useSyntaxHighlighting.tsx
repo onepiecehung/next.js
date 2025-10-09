@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useMemo } from "react";
 import {
   initializeMermaid,
   processCodeBlocks,
-} from "../lib/utils/content-processor";
+} from "@/lib/utils/content-processor";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 /**
  * Component to highlight HTML content with syntax highlighting and Mermaid diagrams

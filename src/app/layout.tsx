@@ -1,14 +1,14 @@
+import { SiteNav } from "@/components/features/navigation";
+import AuthProvider from "@/components/providers/auth-provider";
+import { I18nProvider } from "@/components/providers/i18n-provider";
+import { LoadingProvider } from "@/components/providers/loading-provider";
+import { NoSSR } from "@/components/providers/no-ssr";
+import RateLimitProvider from "@/components/providers/rate-limit-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Toaster } from "@/components/ui";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui";
-import AuthProvider from "@/components/providers/auth-provider";
-import { ThemeProvider } from "@/components/providers/theme-provider";
-import { NoSSR } from "@/components/providers/no-ssr";
-import { LoadingProvider } from "@/components/providers/loading-provider";
-import { I18nProvider } from "@/components/providers/i18n-provider";
-import RateLimitProvider from "@/components/providers/rate-limit-provider";
-import { SiteNav } from "@/components/features/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,13 +44,13 @@ export default function RootLayout({
                   <RateLimitProvider>
                     <SiteNav />
                     {children}
+                    <Toaster richColors position="top-center" expand={true} />
                   </RateLimitProvider>
                 </LoadingProvider>
               </AuthProvider>
             </ThemeProvider>
           </I18nProvider>
         </NoSSR>
-        <Toaster richColors position="top-center" />
       </body>
     </html>
   );

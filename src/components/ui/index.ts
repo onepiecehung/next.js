@@ -32,7 +32,7 @@ export * from "./navigation";
 // Text Editor Components - moved to features/text-editor
 
 // Input OTP Component
-export * from "./input-otp";
+export * from "./shadcn-io/input-otp";
 
 // Re-export commonly used components for convenience
 export { Button, buttonVariants } from "./core";
@@ -55,4 +55,4 @@ export {
   InputOTPGroup,
   InputOTPSlot,
   InputOTPSeparator,
-} from "./input-otp";
+} from "./shadcn-io/input-otp";

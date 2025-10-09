@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import { Editor } from "@tiptap/react";
 import { Button } from "@/components/ui/core/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/ui/shadcn-io/popover";
+import { Editor } from "@tiptap/react";
 import { Highlighter, Palette } from "lucide-react";
+import { useCallback, useState } from "react";
 
 interface ColorHighlightPopoverProps {
   readonly editor: Editor | null;
