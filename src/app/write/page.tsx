@@ -386,7 +386,7 @@ export default function WritePage() {
                               )}
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-56">
+                          <DropdownMenuContent align="end" className="w-41">
                             <DropdownMenuItem
                               onClick={() => setIsScheduleDialogOpen(true)}
                               className="gap-2"

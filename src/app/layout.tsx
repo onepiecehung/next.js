@@ -44,13 +44,13 @@ export default function RootLayout({
                   <RateLimitProvider>
                     <SiteNav />
                     {children}
-                    <Toaster richColors position="top-center" expand={true} />
                   </RateLimitProvider>
                 </LoadingProvider>
               </AuthProvider>
             </ThemeProvider>
           </I18nProvider>
         </NoSSR>
+        <Toaster richColors position="top-center" expand={true} />
       </body>
     </html>
   );
