@@ -23,5 +23,11 @@
   "articleViewScheduledPublishSuccess": "Article scheduled for publication!",
   "articleViewScheduledPublishSuccessDescription": "Article scheduled for publication at {date}",
   "articleViewScheduledPublishError": "Failed to schedule article",
-  "articleViewScheduledPublishErrorDescription": "Failed to schedule article"
+  "articleViewScheduledPublishErrorDescription": "Failed to schedule article",
+  "articleRedirectLoading": "Loading article...",
+  "articleRedirectLoadingDesc": "Redirecting to the article page...",
+  "articleRedirectProcessing": "Processing redirect...",
+  "articleRedirectProcessingDesc": "Please wait while we redirect you to the article.",
+  "articleNotFound": "Article Not Found",
+  "articleNotFoundDesc": "The article you're looking for doesn't exist or has been removed."
 }

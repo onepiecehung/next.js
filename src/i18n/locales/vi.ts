@@ -6,6 +6,7 @@ import write from "./vi/write.json";
 import demo from "./vi/demo.json";
 import user from "./vi/user.json";
 import home from "./vi/home.json";
+import article from "./vi/article.json";
 
 const viMessages = {
   common,
@@ -16,6 +17,7 @@ const viMessages = {
   demo,
   user,
   home,
+  article,
 };
 
 export default viMessages;

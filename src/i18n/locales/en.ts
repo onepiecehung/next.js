@@ -6,6 +6,7 @@ import write from "./en/write.json";
 import demo from "./en/demo.json";
 import user from "./en/user.json";
 import home from "./en/home.json";
+import article from "./en/article.json";
 
 const enMessages = {
   common,
@@ -16,6 +17,7 @@ const enMessages = {
   demo,
   user,
   home,
+  article,
 };
 
 export default enMessages;

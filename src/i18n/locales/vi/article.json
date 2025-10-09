@@ -23,5 +23,11 @@
   "articleViewScheduledPublishSuccess": "Bài viết đã được hẹn giờ xuất bản!",
   "articleViewScheduledPublishSuccessDescription": "Bài viết đã được hẹn giờ xuất bản vào {date}",
   "articleViewScheduledPublishError": "Không thể hẹn giờ bài viết",
-  "articleViewScheduledPublishErrorDescription": "Không thể hẹn giờ bài viết"
+  "articleViewScheduledPublishErrorDescription": "Không thể hẹn giờ bài viết",
+  "articleRedirectLoading": "Đang tải bài viết...",
+  "articleRedirectLoadingDesc": "Đang chuyển hướng đến trang bài viết...",
+  "articleRedirectProcessing": "Đang xử lý chuyển hướng...",
+  "articleRedirectProcessingDesc": "Vui lòng đợi trong khi chúng tôi chuyển hướng bạn đến bài viết.",
+  "articleNotFound": "Không Tìm Thấy Bài Viết",
+  "articleNotFoundDesc": "Bài viết bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."
 }
