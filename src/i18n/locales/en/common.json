@@ -48,5 +48,6 @@
   "back": "Back",
   "rateLimitTitle": "Too Many Requests",
   "rateLimitDescription": "You have hit the request limit. Please wait before trying again.",
-  "rateLimitRetryIn": "Retry in"
+  "rateLimitRetryIn": "Retry in",
+  "cancel": "Cancel"
 }

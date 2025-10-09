@@ -19,5 +19,9 @@
   "articleViewStatusScheduled": "Đã lên lịch",
   "articleViewStatusArchived": "Đã lưu trữ",
   "articleViewAuthor": "Tác giả",
-  "articleViewLastUpdated": "Cập nhật lần cuối"
+  "articleViewLastUpdated": "Cập nhật lần cuối",
+  "articleViewScheduledPublishSuccess": "Bài viết đã được hẹn giờ xuất bản!",
+  "articleViewScheduledPublishSuccessDescription": "Bài viết đã được hẹn giờ xuất bản vào {date}",
+  "articleViewScheduledPublishError": "Không thể hẹn giờ bài viết",
+  "articleViewScheduledPublishErrorDescription": "Không thể hẹn giờ bài viết"
 }

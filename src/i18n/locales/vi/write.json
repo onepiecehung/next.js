@@ -41,5 +41,7 @@
   "writeFormScheduledPublishLabel": "Ngày & Giờ xuất bản",
   "writeFormScheduledPublishSuccess": "Bài viết đã được hẹn giờ xuất bản!",
   "writeFormScheduledPublishError": "Không thể hẹn giờ bài viết",
-  "writeFormScheduling": "Đang hẹn giờ..."
+  "writeFormScheduling": "Đang hẹn giờ...",
+  "writeFormDraftSuccess": "Bản nháp đã được tạo thành công!",
+  "writeFormScheduledPublishSuccessDescription": "Bài viết đã được hẹn giờ xuất bản vào {date}"
 }

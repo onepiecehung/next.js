@@ -1,12 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { locales, defaultLocale, type Locale } from "@/i18n/config";
+import { defaultLocale, locales, type Locale } from "@/i18n/config";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface I18nContextType {
   locale: Locale;
   setLocale: (locale: string) => void;
-  t: (key: string, namespace?: string) => string;
+  t: (key: string, namespace?: string, variables?: Record<string, unknown>) => string;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
@@ -66,7 +66,11 @@ export function I18nProvider({ children }: I18nProviderProps) {
     }
   }, []);
 
-  const t = (key: string, namespace: string = "common") => {
+  const t = (
+    key: string,
+    namespace: string = "common",
+    variables?: Record<string, unknown>
+  ) => {
     if (!messages) return key;
 
     const keys = key.split(".");
@@ -81,7 +85,20 @@ export function I18nProvider({ children }: I18nProviderProps) {
       }
     }
 
-    return typeof value === "string" ? value : key;
+    // If value is not a string, return the key as fallback
+    if (typeof value !== "string") return key;
+
+    // Replace placeholders with actual values
+    // Supports both {variable} and {{variable}} syntax
+    if (variables) {
+      return value.replace(/\{\{?(\w+)\}?\}/g, (match, varName) => {
+        return variables[varName] !== undefined
+          ? String(variables[varName])
+          : match;
+      });
+    }
+
+    return value;
   };
 
   const value: I18nContextType = {

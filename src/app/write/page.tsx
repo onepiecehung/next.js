@@ -27,6 +27,7 @@ import { useArticleForm } from "@/hooks/useArticleForm";
 import { useCreateArticle } from "@/hooks/useCreateArticle";
 import { MediaAPI } from "@/lib/api/media";
 import { currentUserAtom } from "@/lib/auth-store";
+import { ARTICLE_CONSTANTS } from "@/lib/types/article";
 
 /**
  * Internationalized Write Page Component
@@ -62,20 +63,36 @@ export default function WritePage() {
   } = useArticleForm();
 
   // Use create article hook
-  const {
-    createDraft,
-    publishArticle,
-    isLoading: isSubmitting,
-  } = useCreateArticle({
+  const { saveArticle, isLoading: isSubmitting } = useCreateArticle({
     onSuccess: (article) => {
-      toast.success(
-        t("writeFormSuccess", "write") || "Article created successfully!",
-      );
+      switch (article.status) {
+        case ARTICLE_CONSTANTS.STATUS.DRAFT:
+          toast.info(
+            t("writeFormDraftSuccess", "write") || "Article created successfully!",
+          {
+            description: t("writeFormDraftSuccess", "write") || "Article created successfully!",
+          });
+          break;
+        case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
+          toast.success(
+            t("writeFormScheduledPublishSuccess", "write") || "Article scheduled for publication!",
+            {
+              description: t("writeFormScheduledPublishSuccessDescription", "write",{
+                date: article.scheduledAt?.toLocaleString(),
+              }),
+            }
+          );
+          break;
+      
+        default:
+          toast.success(
+            t("writeFormSuccess", "write") || "Article created successfully!",
+          );
+          break;
+      }
       resetForm();
       // Redirect to article view page with a small delay to ensure cleanup
-      setTimeout(() => {
-        router.push(`/article/${article.id}/${article.slug}`);
-      }, 100);
+      router.push(`/article/${article.id}/${article.slug}`);
     },
     onError: (error) => {
       toast.error(error.message || "Failed to create article");
@@ -88,6 +105,34 @@ export default function WritePage() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Helper function to prepare article data with cover image upload
+  const prepareArticleData = async () => {
+    let coverImageId: string | undefined = undefined;
+    let coverImageUrl: string | undefined = undefined;
+
+    // Upload cover image first if exists
+    if (coverImage) {
+      const uploaded = await MediaAPI.upload([coverImage]);
+      if (uploaded.data[0]) {
+        coverImageId = uploaded.data[0].id;
+        coverImageUrl = uploaded.data[0].url;
+      }
+    }
+
+    return {
+      title,
+      content,
+      contentFormat: "html" as const,
+      visibility,
+      tags: tags.length > 0 ? tags : undefined,
+      wordCount,
+      readTimeMinutes,
+      coverImageId,
+      coverImageUrl,
+      userId: currentUser?.id,
+    };
+  };
+
   // Handle save draft
   const handleSaveDraft = async () => {
     const errors = validateForm();
@@ -97,34 +142,17 @@ export default function WritePage() {
     }
 
     try {
-      // Upload cover image first if exists
-      let coverImageId: string | undefined = undefined;
-      let coverImageUrl: string | undefined = undefined;
-      if (coverImage) {
-        const uploaded = await MediaAPI.upload([coverImage]);
-        if (uploaded.data[0]) {
-          coverImageId = uploaded.data[0].id;
-          coverImageUrl = uploaded.data[0].url;
-        }
-      }
-      await createDraft({
-        title,
-        content,
-        contentFormat: "html",
-        visibility,
-        tags: tags.length > 0 ? tags : undefined,
-        wordCount,
-        readTimeMinutes,
-        coverImageId,
-        coverImageUrl,
-        userId: currentUser?.id,
+      const articleData = await prepareArticleData();
+      await saveArticle({
+        ...articleData,
+        status: ARTICLE_CONSTANTS.STATUS.DRAFT,
       });
     } catch {
       // Error handled by hook
     }
   };
 
-  // Handle publish article
+  // Handle publish article (immediate or scheduled)
   const handlePublishArticle = async () => {
     const errors = validateForm();
     if (errors.length > 0) {
@@ -133,29 +161,16 @@ export default function WritePage() {
     }
 
     try {
-      // Upload cover image first if exists
-      let coverImageId: string | undefined = undefined;
-      let coverImageUrl: string | undefined = undefined;
-      if (coverImage) {
-        const uploaded = await MediaAPI.upload([coverImage]);
-        if (uploaded.data[0]) {
-          coverImageId = uploaded.data[0].id;
-          coverImageUrl = uploaded.data[0].url;
-        }
-      }
-
-      await publishArticle({
-        title,
-        content,
-        contentFormat: "html",
-        visibility,
-        tags: tags.length > 0 ? tags : undefined,
-        wordCount,
-        readTimeMinutes,
-        coverImageId,
-        coverImageUrl,
-        userId: currentUser?.id,
+      const articleData = await prepareArticleData();
+      await saveArticle({
+        ...articleData,
+        status: scheduledPublish
+          ? ARTICLE_CONSTANTS.STATUS.SCHEDULED
+          : ARTICLE_CONSTANTS.STATUS.PUBLISHED,
         scheduledAt: scheduledPublish ?? undefined,
+        visibility: scheduledPublish
+          ? ARTICLE_CONSTANTS.VISIBILITY.PRIVATE
+          : visibility,
       });
     } catch {
       // Error handled by hook
