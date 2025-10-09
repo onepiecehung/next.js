@@ -5,9 +5,14 @@ import { Skeletonize } from "@/components/shared";
 import { Button } from "@/components/ui";
 import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useArticle } from "@/hooks/article";
+import { useArticleLike } from "@/hooks/reactions";
 import { ARTICLE_CONSTANTS } from "@/lib/types/article";
 import {
-  Bookmark,
+  CompactLikeButton,
+  LargeLikeButton,
+} from "@/components/features/reactions";
+import { cn } from "@/lib/utils";
+import {
   Calendar,
   Clock,
   Eye,
@@ -21,6 +26,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { toast } from "sonner";
+import { useEffect } from "react";
 
 /**
  * Article View Page Component
@@ -40,6 +46,18 @@ export default function ArticleViewPage() {
       toast.error(error.message || t("articleViewError", "article"));
     },
   });
+
+  // Initialize reactions (likes only)
+  const { isLiked, likeCount, fetchLikeCount, checkLikeStatus } =
+    useArticleLike(articleId);
+
+  // Initialize reactions when article is loaded
+  useEffect(() => {
+    if (article && !isLoading && !error) {
+      checkLikeStatus();
+      fetchLikeCount();
+    }
+  }, [article, isLoading, error, checkLikeStatus, fetchLikeCount]);
 
   // Show 404 if article not found
   if (!isLoading && !error && !article) {
@@ -116,9 +134,9 @@ export default function ArticleViewPage() {
               {/* Back Button - Mobile optimized */}
               <div className="mb-4 sm:mb-6">
                 <Link href="/">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
+                  <Button
+                    variant="outline"
+                    size="sm"
                     className="gap-2 w-full sm:w-auto justify-center sm:justify-start"
                   >
                     ← {t("articleViewBackToHome", "article")}
@@ -172,49 +190,79 @@ export default function ArticleViewPage() {
 
                   {/* Action Buttons - Mobile stacked, tablet+ horizontal */}
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                    <Button variant="outline" size="sm" className="gap-2 justify-center">
-                      <Heart className="h-4 w-4" />
-                      <span className="hidden sm:inline">Like</span>
-                    </Button>
-                    <Button variant="outline" size="sm" className="gap-2 justify-center">
-                      <Bookmark className="h-4 w-4" />
-                      <span className="hidden sm:inline">Save</span>
-                    </Button>
-                    <Button variant="outline" size="sm" className="gap-2 justify-center">
+                    <CompactLikeButton articleId={articleId} />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="gap-2 justify-center"
+                    >
                       <Share2 className="h-4 w-4" />
                       <span className="hidden sm:inline">Share</span>
                     </Button>
                   </div>
                 </div>
 
-                {/* Article Stats - Responsive grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-border">
-                  {/* Read Time */}
-                  {article.readTimeMinutes && (
+                {/* Article Engagement Stats */}
+                <div className="flex items-center justify-center gap-6 sm:gap-8 mb-6 sm:mb-8 py-4 sm:py-6 border-y border-border">
+                  {/* Like Count - Prominent Display */}
+                  <div className="flex flex-col items-center gap-2">
                     <div className="flex items-center gap-2">
-                      <Clock className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                      <span>
-                        {article.readTimeMinutes}{" "}
+                      <Heart
+                        className={cn(
+                          "h-5 w-5 sm:h-6 sm:w-6 transition-colors",
+                          isLiked && "text-red-500 fill-current",
+                        )}
+                      />
+                      <span className="text-lg sm:text-xl font-semibold text-foreground">
+                        {likeCount}
+                      </span>
+                    </div>
+                    <span className="text-xs sm:text-sm text-muted-foreground">
+                      {likeCount === 1
+                        ? t("reactionLike", "article")
+                        : t("reactionLikes", "article")}
+                    </span>
+                  </div>
+
+                  {/* Read Time - Secondary */}
+                  {article.readTimeMinutes && (
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
+                        <span className="text-lg sm:text-xl font-semibold text-foreground">
+                          {article.readTimeMinutes}
+                        </span>
+                      </div>
+                      <span className="text-xs sm:text-sm text-muted-foreground">
                         {t("articleViewReadTime", "article")}
                       </span>
                     </div>
                   )}
 
-                  {/* Word Count */}
+                  {/* Word Count - Secondary */}
                   {article.wordCount && (
-                    <div className="flex items-center gap-2">
-                      <FileText className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                      <span>
-                        {article.wordCount}{" "}
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="flex items-center gap-2">
+                        <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
+                        <span className="text-lg sm:text-xl font-semibold text-foreground">
+                          {article.wordCount}
+                        </span>
+                      </div>
+                      <span className="text-xs sm:text-sm text-muted-foreground">
                         {t("articleViewWordCount", "article")}
                       </span>
                     </div>
                   )}
+                </div>
 
+                {/* Article Metadata - Compact */}
+                <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6">
                   {/* Visibility */}
                   <div className="flex items-center gap-2">
                     <Eye className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span className="truncate">{getVisibilityText(article.visibility)}</span>
+                    <span className="truncate">
+                      {getVisibilityText(article.visibility)}
+                    </span>
                   </div>
 
                   {/* Status Badge */}
@@ -288,17 +336,16 @@ export default function ArticleViewPage() {
                 {/* Bottom Action Buttons - Mobile stacked, tablet+ horizontal */}
                 <div className="flex flex-col sm:flex-row justify-center mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-border">
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
-                    <Button variant="outline" size="lg" className="gap-2 justify-center">
-                      <Heart className="h-4 w-4 sm:h-5 sm:w-5" />
-                      <span className="text-sm sm:text-base">Like this article</span>
-                    </Button>
-                    <Button variant="outline" size="lg" className="gap-2 justify-center">
-                      <Bookmark className="h-4 w-4 sm:h-5 sm:w-5" />
-                      <span className="text-sm sm:text-base">Save for later</span>
-                    </Button>
-                    <Button variant="outline" size="lg" className="gap-2 justify-center">
+                    <LargeLikeButton articleId={articleId} />
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="gap-2 justify-center"
+                    >
                       <Share2 className="h-4 w-4 sm:h-5 sm:w-5" />
-                      <span className="text-sm sm:text-base">Share article</span>
+                      <span className="text-sm sm:text-base">
+                        Share article
+                      </span>
                     </Button>
                   </div>
                 </div>

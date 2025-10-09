@@ -29,5 +29,9 @@
   "articleRedirectProcessing": "Processing redirect...",
   "articleRedirectProcessingDesc": "Please wait while we redirect you to the article.",
   "articleNotFound": "Article Not Found",
-  "articleNotFoundDesc": "The article you're looking for doesn't exist or has been removed."
+  "articleNotFoundDesc": "The article you're looking for doesn't exist or has been removed.",
+  "reactionLike": "Like",
+  "reactionLiked": "Liked",
+  "reactionLikes": "likes",
+  "reactionLikeError": "Failed to update like"
 }

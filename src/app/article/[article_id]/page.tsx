@@ -33,7 +33,7 @@ export default function ArticleRedirectPage() {
     if (article && !isLoading && !error) {
       // Construct the proper URL with slug
       const redirectUrl = `/article/${articleId}/${article.slug}`;
-      
+
       // Use replace to avoid adding to browser history
       router.replace(redirectUrl);
     }
@@ -50,7 +50,8 @@ export default function ArticleRedirectPage() {
               {t("articleRedirectLoading", "article") || "Loading article..."}
             </h2>
             <p className="text-sm text-muted-foreground">
-              {t("articleRedirectLoadingDesc", "article") || "Redirecting to the article page..."}
+              {t("articleRedirectLoadingDesc", "article") ||
+                "Redirecting to the article page..."}
             </p>
           </div>
         </div>
@@ -69,8 +70,8 @@ export default function ArticleRedirectPage() {
               {t("articleNotFound", "article") || "Article Not Found"}
             </h1>
             <p className="text-muted-foreground mb-6">
-              {error?.message || 
-                t("articleNotFoundDesc", "article") || 
+              {error?.message ||
+                t("articleNotFoundDesc", "article") ||
                 "The article you're looking for doesn't exist or has been removed."}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -79,8 +80,8 @@ export default function ArticleRedirectPage() {
                   {t("articleViewBackToHome", "article") || "Back to Home"}
                 </Button>
               </Link>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => window.location.reload()}
                 className="w-full sm:w-auto"
               >
@@ -101,10 +102,12 @@ export default function ArticleRedirectPage() {
         <div className="max-w-md mx-auto text-center py-12">
           <Loader2 className="h-8 w-8 text-primary mx-auto mb-4 animate-spin" />
           <h2 className="text-lg font-semibold text-foreground mb-2">
-            {t("articleRedirectProcessing", "article") || "Processing redirect..."}
+            {t("articleRedirectProcessing", "article") ||
+              "Processing redirect..."}
           </h2>
           <p className="text-sm text-muted-foreground">
-            {t("articleRedirectProcessingDesc", "article") || "Please wait while we redirect you to the article."}
+            {t("articleRedirectProcessingDesc", "article") ||
+              "Please wait while we redirect you to the article."}
           </p>
         </div>
       </div>

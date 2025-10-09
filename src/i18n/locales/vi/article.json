@@ -29,5 +29,9 @@
   "articleRedirectProcessing": "Đang xử lý chuyển hướng...",
   "articleRedirectProcessingDesc": "Vui lòng đợi trong khi chúng tôi chuyển hướng bạn đến bài viết.",
   "articleNotFound": "Không Tìm Thấy Bài Viết",
-  "articleNotFoundDesc": "Bài viết bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."
+  "articleNotFoundDesc": "Bài viết bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.",
+  "reactionLike": "Thích",
+  "reactionLiked": "Đã Thích",
+  "reactionLikes": "lượt thích",
+  "reactionLikeError": "Không thể cập nhật lượt thích"
 }
