@@ -11,49 +11,49 @@ import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useCallback, useState, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import "./tiptap-editor.css";
 
 import { NoSSR } from "@/components/providers/no-ssr";
 import { Button } from "@/components/ui/core/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import { SyntaxHighlightedContent } from "@/hooks/useSyntaxHighlighting";
 import "highlight.js/styles/github.css";
 import { createLowlight } from "lowlight";
 import {
-  AlignCenter,
-  AlignJustify,
-  AlignLeft,
-  AlignRight,
-  Bold,
-  CheckSquare,
-  ChevronDown,
-  Code,
-  Edit3,
-  Eye,
-  FileCode,
-  Heading1,
-  Heading2,
-  Heading3,
-  Heading4,
-  Heading5,
-  Image as ImageIcon,
-  Italic,
-  Link as LinkIcon,
-  List,
-  ListOrdered,
-  Quote,
-  Redo,
-  SplitSquareHorizontalIcon as Split,
-  Strikethrough,
-  Underline as UnderlineIcon,
-  Undo,
+    AlignCenter,
+    AlignJustify,
+    AlignLeft,
+    AlignRight,
+    Bold,
+    CheckSquare,
+    ChevronDown,
+    Code,
+    Edit3,
+    Eye,
+    FileCode,
+    Heading1,
+    Heading2,
+    Heading3,
+    Heading4,
+    Heading5,
+    Image as ImageIcon,
+    Italic,
+    Link as LinkIcon,
+    List,
+    ListOrdered,
+    Quote,
+    Redo,
+    SplitSquareHorizontalIcon as Split,
+    Strikethrough,
+    Underline as UnderlineIcon,
+    Undo,
 } from "lucide-react";
 import { ColorHighlightPopover } from "./color-highlight-popover";
 import { CustomImageNode } from "./custom-image-node";
@@ -349,8 +349,8 @@ export function TipTapEditor({
   return (
     <NoSSR>
       <div className="border border-border rounded-lg bg-card text-foreground focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20">
-        {/* Toolbar */}
-        <div className="flex flex-wrap items-center gap-1 p-2 border-b border-border bg-muted/50 overflow-x-auto">
+        {/* Toolbar - Sticky below navigation when scrolling */}
+        <div className="sticky top-[61px] z-40 flex flex-wrap items-center gap-1 p-2 border-b border-border bg-muted/95 backdrop-blur supports-[backdrop-filter]:bg-muted/90 overflow-x-auto shadow-sm">
           {/* Group 1: History & Undo/Redo */}
           <div className="flex items-center gap-1 px-2 py-1 bg-background/50 rounded-md border border-border/50 flex-shrink-0">
             <Button
