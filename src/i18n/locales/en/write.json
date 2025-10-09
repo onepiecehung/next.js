@@ -43,5 +43,7 @@
   "writeFormScheduledPublishError": "Failed to schedule article",
   "writeFormScheduling": "Scheduling...",
   "writeFormDraftSuccess": "Draft created successfully!",
-  "writeFormScheduledPublishSuccessDescription": "Article scheduled for publication at {date}"
+  "writeFormScheduledPublishSuccessDescription": "Article scheduled for publication at {date}",
+  "writeLoading": "Loading...",
+  "writeFormError": "Failed to create article"
 }

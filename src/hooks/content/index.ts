@@ -6,6 +6,6 @@
 export { useContentRenderer } from "./useContentRenderer";
 export { useCustomImageRenderer } from "./useCustomImageRenderer";
 export {
-    SyntaxHighlightedContent, useSyntaxHighlighting
+  SyntaxHighlightedContent,
+  useSyntaxHighlighting,
 } from "./useSyntaxHighlighting";
-

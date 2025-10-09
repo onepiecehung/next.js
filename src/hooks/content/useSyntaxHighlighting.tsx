@@ -1,8 +1,8 @@
 "use client";
 
 import {
-    initializeMermaid,
-    processCodeBlocks,
+  initializeMermaid,
+  processCodeBlocks,
 } from "@/lib/utils/content-processor";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 

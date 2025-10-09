@@ -43,5 +43,7 @@
   "writeFormScheduledPublishError": "Không thể hẹn giờ bài viết",
   "writeFormScheduling": "Đang hẹn giờ...",
   "writeFormDraftSuccess": "Bản nháp đã được tạo thành công!",
-  "writeFormScheduledPublishSuccessDescription": "Bài viết đã được hẹn giờ xuất bản vào {date}"
+  "writeFormScheduledPublishSuccessDescription": "Bài viết đã được hẹn giờ xuất bản vào {date}",
+  "writeLoading": "Đang tải...",
+  "writeFormError": "Không thể tạo bài viết"
 }

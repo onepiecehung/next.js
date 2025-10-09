@@ -67,22 +67,31 @@ export default function WritePage() {
       switch (article.status) {
         case ARTICLE_CONSTANTS.STATUS.DRAFT:
           toast.info(
-            t("writeFormDraftSuccess", "write") || "Article created successfully!",
-          {
-            description: t("writeFormDraftSuccess", "write") || "Article created successfully!",
-          });
+            t("writeFormDraftSuccess", "write") ||
+              "Article created successfully!",
+            {
+              description:
+                t("writeFormDraftSuccess", "write") ||
+                "Article created successfully!",
+            },
+          );
           break;
         case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
           toast.success(
-            t("writeFormScheduledPublishSuccess", "write") || "Article scheduled for publication!",
+            t("writeFormScheduledPublishSuccess", "write") ||
+              "Article scheduled for publication!",
             {
-              description: t("writeFormScheduledPublishSuccessDescription", "write",{
-                date: article.scheduledAt?.toLocaleString(),
-              }),
-            }
+              description: t(
+                "writeFormScheduledPublishSuccessDescription",
+                "write",
+                {
+                  date: article.scheduledAt?.toLocaleString(),
+                },
+              ),
+            },
           );
           break;
-      
+
         default:
           toast.success(
             t("writeFormSuccess", "write") || "Article created successfully!",
@@ -90,8 +99,9 @@ export default function WritePage() {
           break;
       }
       resetForm();
+
       // Redirect to article view page with a small delay to ensure cleanup
-      router.push(`/article/${article.id}/${article.slug}`);
+      return router.push(`/article/${article.id}/${article.slug}`);
     },
     onError: (error) => {
       toast.error(error.message || "Failed to create article");
@@ -289,7 +299,11 @@ export default function WritePage() {
                       </span>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="outline" size="sm" className="gap-2 h-9">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="gap-2 h-9"
+                          >
                             {visibility === "public" &&
                               t("writeFormVisibilityPublic", "write")}
                             {visibility === "unlisted" &&
@@ -402,7 +416,11 @@ export default function WritePage() {
                 </span>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="gap-2 h-8 text-xs">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="gap-2 h-8 text-xs"
+                    >
                       {visibility === "public" &&
                         t("writeFormVisibilityPublic", "write")}
                       {visibility === "unlisted" &&
@@ -444,7 +462,9 @@ export default function WritePage() {
                   onClick={handleSaveDraft}
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Saving..." : t("writeFormSaveDraft", "write")}
+                  {isSubmitting
+                    ? "Saving..."
+                    : t("writeFormSaveDraft", "write")}
                 </Button>
 
                 <Button

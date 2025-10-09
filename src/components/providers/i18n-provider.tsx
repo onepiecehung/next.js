@@ -6,7 +6,11 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 interface I18nContextType {
   locale: Locale;
   setLocale: (locale: string) => void;
-  t: (key: string, namespace?: string, variables?: Record<string, unknown>) => string;
+  t: (
+    key: string,
+    namespace?: string,
+    variables?: Record<string, unknown>,
+  ) => string;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
@@ -69,7 +73,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
   const t = (
     key: string,
     namespace: string = "common",
-    variables?: Record<string, unknown>
+    variables?: Record<string, unknown>,
   ) => {
     if (!messages) return key;
 

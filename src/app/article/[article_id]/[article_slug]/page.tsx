@@ -7,15 +7,15 @@ import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useArticle } from "@/hooks/article";
 import { ARTICLE_CONSTANTS } from "@/lib/types/article";
 import {
-    Bookmark,
-    Calendar,
-    Clock,
-    Eye,
-    FileText,
-    Heart,
-    Share2,
-    Tag,
-    User,
+  Bookmark,
+  Calendar,
+  Clock,
+  Eye,
+  FileText,
+  Heart,
+  Share2,
+  Tag,
+  User,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

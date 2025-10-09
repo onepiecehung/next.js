@@ -693,9 +693,9 @@ export function TipTapEditor({
             {/* Headings */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
+                <Button
+                  variant="ghost"
+                  size="sm"
                   className="h-8 px-2 text-xs flex-shrink-0"
                   title="Headings"
                 >
@@ -703,57 +703,57 @@ export function TipTapEditor({
                   <ChevronDown className="h-3 w-3 ml-1" />
                 </Button>
               </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-48">
-                  <DropdownMenuItem
-                    onClick={handleH1}
-                    className="flex items-center gap-2"
-                  >
-                    <Heading1 className="h-4 w-4" />
-                    <span>Heading 1</span>
-                    {editor.isActive("heading", { level: 1 }) && (
-                      <span className="ml-auto text-xs text-primary">✓</span>
-                    )}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={handleH2}
-                    className="flex items-center gap-2"
-                  >
-                    <Heading2 className="h-4 w-4" />
-                    <span>Heading 2</span>
-                    {editor.isActive("heading", { level: 2 }) && (
-                      <span className="ml-auto text-xs text-primary">✓</span>
-                    )}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={handleH3}
-                    className="flex items-center gap-2"
-                  >
-                    <Heading3 className="h-4 w-4" />
-                    <span>Heading 3</span>
-                    {editor.isActive("heading", { level: 3 }) && (
-                      <span className="ml-auto text-xs text-primary">✓</span>
-                    )}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={handleH4}
-                    className="flex items-center gap-2"
-                  >
-                    <Heading4 className="h-4 w-4" />
-                    <span>Heading 4</span>
-                    {editor.isActive("heading", { level: 4 }) && (
-                      <span className="ml-auto text-xs text-primary">✓</span>
-                    )}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={handleH5}
-                    className="flex items-center gap-2"
-                  >
-                    <Heading5 className="h-4 w-4" />
-                    <span>Heading 5</span>
-                    {editor.isActive("heading", { level: 5 }) && (
-                      <span className="ml-auto text-xs text-primary">✓</span>
-                    )}
-                  </DropdownMenuItem>
+              <DropdownMenuContent align="start" className="w-48">
+                <DropdownMenuItem
+                  onClick={handleH1}
+                  className="flex items-center gap-2"
+                >
+                  <Heading1 className="h-4 w-4" />
+                  <span>Heading 1</span>
+                  {editor.isActive("heading", { level: 1 }) && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={handleH2}
+                  className="flex items-center gap-2"
+                >
+                  <Heading2 className="h-4 w-4" />
+                  <span>Heading 2</span>
+                  {editor.isActive("heading", { level: 2 }) && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={handleH3}
+                  className="flex items-center gap-2"
+                >
+                  <Heading3 className="h-4 w-4" />
+                  <span>Heading 3</span>
+                  {editor.isActive("heading", { level: 3 }) && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={handleH4}
+                  className="flex items-center gap-2"
+                >
+                  <Heading4 className="h-4 w-4" />
+                  <span>Heading 4</span>
+                  {editor.isActive("heading", { level: 4 }) && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={handleH5}
+                  className="flex items-center gap-2"
+                >
+                  <Heading5 className="h-4 w-4" />
+                  <span>Heading 5</span>
+                  {editor.isActive("heading", { level: 5 }) && (
+                    <span className="ml-auto text-xs text-primary">✓</span>
+                  )}
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -827,7 +827,7 @@ export function TipTapEditor({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuItem
-              onClick={handleStrike}
+                  onClick={handleStrike}
                   className="flex items-center gap-2"
                 >
                   <Strikethrough className="h-4 w-4" />
@@ -1289,15 +1289,9 @@ export function TipTapEditor({
                 setIsCodeMode(false);
               }}
               className={`h-8 w-8 p-0 flex-shrink-0 ${
-                isPreviewMode
-                  ? "bg-green-500/15 text-green-600"
-                  : ""
+                isPreviewMode ? "bg-green-500/15 text-green-600" : ""
               }`}
-              title={
-                isPreviewMode
-                  ? "Edit Mode"
-                  : "Preview"
-              }
+              title={isPreviewMode ? "Edit Mode" : "Preview"}
             >
               {isPreviewMode ? (
                 <Edit3 className="h-3.5 w-3.5" />
@@ -1314,9 +1308,7 @@ export function TipTapEditor({
                 setIsCodeMode(false);
               }}
               className={`h-8 w-8 p-0 flex-shrink-0 ${
-                isSplitView
-                  ? "bg-purple-500/15 text-purple-600"
-                  : ""
+                isSplitView ? "bg-purple-500/15 text-purple-600" : ""
               }`}
               title="Split View"
             >
@@ -1331,9 +1323,7 @@ export function TipTapEditor({
                 setIsSplitView(false);
               }}
               className={`h-8 w-8 p-0 flex-shrink-0 ${
-                isCodeMode
-                  ? "bg-orange-500/15 text-orange-600"
-                  : ""
+                isCodeMode ? "bg-orange-500/15 text-orange-600" : ""
               }`}
               title="Code View"
             >

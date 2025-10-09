@@ -3,18 +3,18 @@
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button, Input, Label } from "@/components/ui";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/core";
 import { useAuthRedirect } from "@/hooks/auth";
 import {
-    accessTokenAtom,
-    currentUserAtom,
-    fetchMeAction,
-    signupAction,
+  accessTokenAtom,
+  currentUserAtom,
+  fetchMeAction,
+  signupAction,
 } from "@/lib/auth-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";

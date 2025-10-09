@@ -3,12 +3,12 @@
 import { useI18n } from "@/components/providers/i18n-provider";
 import { useAuthRedirect } from "@/hooks/auth";
 import {
-    accessTokenAtom,
-    authLoadingAtom,
-    currentUserAtom,
-    loginAction,
-    loginWithGithubAction,
-    loginWithGoogleAction,
+  accessTokenAtom,
+  authLoadingAtom,
+  currentUserAtom,
+  loginAction,
+  loginWithGithubAction,
+  loginWithGoogleAction,
 } from "@/lib/auth-store";
 import { useAtom } from "jotai";
 import { ArrowLeft } from "lucide-react";

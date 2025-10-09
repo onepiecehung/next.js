@@ -1,9 +1,9 @@
 "use client";
 
 import {
-    ContentProcessorOptions,
-    initializeMermaid,
-    processCodeBlocks,
+  ContentProcessorOptions,
+  initializeMermaid,
+  processCodeBlocks,
 } from "@/lib/utils/content-processor";
 import "highlight.js/styles/github.css";
 import { useCallback, useEffect, useRef, useState } from "react";
