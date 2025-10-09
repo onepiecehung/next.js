@@ -1,29 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import { useAtom } from "jotai";
-import {
-  currentUserAtom,
-  accessTokenAtom,
-  signupAction,
-  fetchMeAction,
-} from "@/lib/auth-store";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { useI18n } from "@/components/providers/i18n-provider";
 import { Button, Input, Label } from "@/components/ui";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/core";
-import { useI18n } from "@/components/providers/i18n-provider";
-import { useAuthRedirect } from "@/hooks/useAuthRedirect";
+import { useAuthRedirect } from "@/hooks/auth";
+import {
+    accessTokenAtom,
+    currentUserAtom,
+    fetchMeAction,
+    signupAction,
+} from "@/lib/auth-store";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAtom } from "jotai";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 // Form validation schema for signup
 const signupSchema = z

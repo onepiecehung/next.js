@@ -23,8 +23,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
-import { useArticleForm } from "@/hooks/useArticleForm";
-import { useCreateArticle } from "@/hooks/useCreateArticle";
+import { useArticleForm, useCreateArticle } from "@/hooks/article";
 import { MediaAPI } from "@/lib/api/media";
 import { currentUserAtom } from "@/lib/auth-store";
 import { ARTICLE_CONSTANTS } from "@/lib/types/article";

@@ -1,8 +1,8 @@
 "use client";
 
+import { CustomImageContentRenderer } from "@/components/ui/utilities/custom-image-content-renderer";
 import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
-import { CustomImageContentRenderer } from "../components/ui/utilities/custom-image-content-renderer";
 
 /**
  * Hook to process custom-image tags in content renderer

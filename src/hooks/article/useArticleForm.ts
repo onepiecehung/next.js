@@ -10,7 +10,7 @@ interface UseArticleFormOptions {
 /**
  * Hook for managing article form state and validation
  */
-export function useArticleForm(options?: UseArticleFormOptions) {
+export function useArticleForm(_options?: UseArticleFormOptions) {
   const { t } = useI18n();
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [title, setTitle] = useState("");

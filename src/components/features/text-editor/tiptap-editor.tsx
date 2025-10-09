@@ -22,8 +22,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
-import { useImageUpload } from "@/hooks/useImageUpload";
-import { SyntaxHighlightedContent } from "@/hooks/useSyntaxHighlighting";
+import { SyntaxHighlightedContent } from "@/hooks/content";
+import { useImageUpload } from "@/hooks/media";
 import "highlight.js/styles/github.css";
 import { createLowlight } from "lowlight";
 import {

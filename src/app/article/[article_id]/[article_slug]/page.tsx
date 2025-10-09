@@ -4,18 +4,18 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
 import { Button } from "@/components/ui";
 import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
-import { useArticle } from "@/hooks/useArticle";
+import { useArticle } from "@/hooks/article";
 import { ARTICLE_CONSTANTS } from "@/lib/types/article";
 import {
-  Bookmark,
-  Calendar,
-  Clock,
-  Eye,
-  FileText,
-  Heart,
-  Share2,
-  Tag,
-  User,
+    Bookmark,
+    Calendar,
+    Clock,
+    Eye,
+    FileText,
+    Heart,
+    Share2,
+    Tag,
+    User,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

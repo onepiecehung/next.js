@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
 import { Skeletonize } from "@/components/shared";
-import { useLoadingDelay } from "@/hooks/useLoadingDelay";
+import { useLoadingDelay } from "@/hooks/ui";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 /**
  * Demo component that simulates data fetching and shows skeleton loading

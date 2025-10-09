@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, ArrowLeft, Mail, Lock } from "lucide-react";
-import { Button, Input } from "@/components/ui";
-import { GoogleIcon, GitHubIcon, XIcon } from "@/components/ui/icons";
-import { useLogin } from "@/hooks/useLogin";
 import { useI18n } from "@/components/providers/i18n-provider";
+import { Button, Input } from "@/components/ui";
+import { GitHubIcon, GoogleIcon, XIcon } from "@/components/ui/icons";
+import { useLogin } from "@/hooks/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 // Form validation schema - will be created inside component to access i18n
 type LoginFormValues = {
