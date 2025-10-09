@@ -88,21 +88,24 @@ export default function ArticleViewPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-8">
+      {/* Mobile-first container with responsive padding */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         <Skeletonize loading={isLoading}>
           {error && (
-            <div className="text-center py-12">
-              <div className="max-w-md mx-auto">
-                <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h1 className="text-xl font-semibold text-foreground mb-2">
+            <div className="text-center py-8 sm:py-12">
+              <div className="max-w-md mx-auto px-4">
+                <FileText className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground mx-auto mb-4" />
+                <h1 className="text-lg sm:text-xl font-semibold text-foreground mb-2">
                   {t("articleViewError", "article")}
                 </h1>
-                <p className="text-muted-foreground mb-6">
+                <p className="text-sm sm:text-base text-muted-foreground mb-6">
                   {error.message ||
                     "Something went wrong while loading the article."}
                 </p>
                 <Link href="/">
-                  <Button>{t("articleViewBackToHome", "article")}</Button>
+                  <Button className="w-full sm:w-auto">
+                    {t("articleViewBackToHome", "article")}
+                  </Button>
                 </Link>
               </div>
             </div>
@@ -110,25 +113,29 @@ export default function ArticleViewPage() {
 
           {!error && article && (
             <article className="max-w-4xl mx-auto">
-              {/* Back Button */}
-              <div className="mb-6">
+              {/* Back Button - Mobile optimized */}
+              <div className="mb-4 sm:mb-6">
                 <Link href="/">
-                  <Button variant="outline" size="sm" className="gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="gap-2 w-full sm:w-auto justify-center sm:justify-start"
+                  >
                     ← {t("articleViewBackToHome", "article")}
                   </Button>
                 </Link>
               </div>
 
-              {/* Cover Image Hero Section */}
+              {/* Cover Image Hero Section - Responsive heights */}
               {article.coverImage && (
-                <div className="mb-8">
-                  <div className="relative w-full h-64 sm:h-80 md:h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-lg">
+                <div className="mb-6 sm:mb-8">
+                  <div className="relative w-full h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px] rounded-xl sm:rounded-2xl overflow-hidden shadow-sm sm:shadow-lg">
                     <Image
                       src={article.coverImage.url}
                       alt={article.title}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 80vw, 70vw"
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1280px) 80vw, 70vw"
                       priority
                     />
                     {/* Gradient overlay for better text readability */}
@@ -138,24 +145,24 @@ export default function ArticleViewPage() {
               )}
 
               {/* Article Header */}
-              <header className="mb-8">
-                {/* Title */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight tracking-tight">
+              <header className="mb-6 sm:mb-8">
+                {/* Title - Responsive typography */}
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-tight tracking-tight">
                   {article.title}
                 </h1>
 
-                {/* Author and Metadata Row */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                {/* Author and Metadata Row - Mobile stacked, tablet+ horizontal */}
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6">
                   {/* Author Info */}
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <User className="h-5 w-5 text-primary" />
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <User className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium text-foreground">
+                      <p className="font-medium text-foreground text-sm sm:text-base">
                         User ID {article.userId}
                       </p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-xs sm:text-sm text-muted-foreground">
                         {article.publishedAt
                           ? formatDate(article.publishedAt)
                           : formatDate(article.createdAt)}
@@ -163,29 +170,29 @@ export default function ArticleViewPage() {
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="gap-2">
+                  {/* Action Buttons - Mobile stacked, tablet+ horizontal */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                    <Button variant="outline" size="sm" className="gap-2 justify-center">
                       <Heart className="h-4 w-4" />
-                      Like
+                      <span className="hidden sm:inline">Like</span>
                     </Button>
-                    <Button variant="outline" size="sm" className="gap-2">
+                    <Button variant="outline" size="sm" className="gap-2 justify-center">
                       <Bookmark className="h-4 w-4" />
-                      Save
+                      <span className="hidden sm:inline">Save</span>
                     </Button>
-                    <Button variant="outline" size="sm" className="gap-2">
+                    <Button variant="outline" size="sm" className="gap-2 justify-center">
                       <Share2 className="h-4 w-4" />
-                      Share
+                      <span className="hidden sm:inline">Share</span>
                     </Button>
                   </div>
                 </div>
 
-                {/* Article Stats */}
-                <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-muted-foreground mb-6 pb-6 border-b border-border">
+                {/* Article Stats - Responsive grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-border">
                   {/* Read Time */}
                   {article.readTimeMinutes && (
                     <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4" />
+                      <Clock className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                       <span>
                         {article.readTimeMinutes}{" "}
                         {t("articleViewReadTime", "article")}
@@ -196,7 +203,7 @@ export default function ArticleViewPage() {
                   {/* Word Count */}
                   {article.wordCount && (
                     <div className="flex items-center gap-2">
-                      <FileText className="h-4 w-4" />
+                      <FileText className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                       <span>
                         {article.wordCount}{" "}
                         {t("articleViewWordCount", "article")}
@@ -206,24 +213,24 @@ export default function ArticleViewPage() {
 
                   {/* Visibility */}
                   <div className="flex items-center gap-2">
-                    <Eye className="h-4 w-4" />
-                    <span>{getVisibilityText(article.visibility)}</span>
+                    <Eye className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="truncate">{getVisibilityText(article.visibility)}</span>
                   </div>
 
                   {/* Status Badge */}
                   <div className="flex items-center gap-2">
-                    <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 font-medium">
+                    <span className="text-xs px-2 sm:px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 font-medium">
                       {getStatusText(article.status)}
                     </span>
                   </div>
                 </div>
 
-                {/* Tags */}
+                {/* Tags - Mobile optimized */}
                 {article.tags && article.tags.length > 0 && (
-                  <div className="mb-8">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Tag className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm font-medium text-muted-foreground">
+                  <div className="mb-6 sm:mb-8">
+                    <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                      <Tag className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                      <span className="text-xs sm:text-sm font-medium text-muted-foreground">
                         {t("articleViewTags", "article")}
                       </span>
                     </div>
@@ -231,7 +238,7 @@ export default function ArticleViewPage() {
                       {article.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="text-sm px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors cursor-pointer"
+                          className="text-xs sm:text-sm px-3 sm:px-4 py-1 sm:py-2 rounded-full bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors cursor-pointer"
                         >
                           #{tag}
                         </span>
@@ -241,8 +248,8 @@ export default function ArticleViewPage() {
                 )}
               </header>
 
-              {/* Article Content */}
-              <div className="prose prose-lg prose-slate max-w-none dark:prose-invert">
+              {/* Article Content - Responsive prose */}
+              <div className="prose prose-sm sm:prose-base lg:prose-lg prose-slate max-w-none dark:prose-invert prose-headings:scroll-mt-20">
                 <ContentRenderer
                   content={article.content}
                   className="article-content"
@@ -252,46 +259,46 @@ export default function ArticleViewPage() {
                 />
               </div>
 
-              {/* Article Footer */}
-              <footer className="mt-16 pt-8 border-t border-border">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+              {/* Article Footer - Mobile optimized */}
+              <footer className="mt-12 sm:mt-16 pt-6 sm:pt-8 border-t border-border">
+                <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
                   {/* Author Info */}
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <User className="h-6 w-6 text-primary" />
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                      <User className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-foreground">
+                      <h3 className="font-semibold text-foreground text-sm sm:text-base">
                         User ID {article.userId}
                       </h3>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-xs sm:text-sm text-muted-foreground">
                         {t("articleViewAuthor", "article")}
                       </p>
                     </div>
                   </div>
 
                   {/* Last Updated */}
-                  <div className="text-sm text-muted-foreground">
-                    <Calendar className="h-4 w-4 inline mr-2" />
+                  <div className="text-xs sm:text-sm text-muted-foreground">
+                    <Calendar className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1 sm:mr-2" />
                     {t("articleViewLastUpdated", "article")}:{" "}
                     {formatDate(article.updatedAt)}
                   </div>
                 </div>
 
-                {/* Bottom Action Buttons */}
-                <div className="flex justify-center mt-8 pt-6 border-t border-border">
-                  <div className="flex items-center gap-4">
-                    <Button variant="outline" size="lg" className="gap-2">
-                      <Heart className="h-5 w-5" />
-                      Like this article
+                {/* Bottom Action Buttons - Mobile stacked, tablet+ horizontal */}
+                <div className="flex flex-col sm:flex-row justify-center mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-border">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                    <Button variant="outline" size="lg" className="gap-2 justify-center">
+                      <Heart className="h-4 w-4 sm:h-5 sm:w-5" />
+                      <span className="text-sm sm:text-base">Like this article</span>
                     </Button>
-                    <Button variant="outline" size="lg" className="gap-2">
-                      <Bookmark className="h-5 w-5" />
-                      Save for later
+                    <Button variant="outline" size="lg" className="gap-2 justify-center">
+                      <Bookmark className="h-4 w-4 sm:h-5 sm:w-5" />
+                      <span className="text-sm sm:text-base">Save for later</span>
                     </Button>
-                    <Button variant="outline" size="lg" className="gap-2">
-                      <Share2 className="h-5 w-5" />
-                      Share article
+                    <Button variant="outline" size="lg" className="gap-2 justify-center">
+                      <Share2 className="h-4 w-4 sm:h-5 sm:w-5" />
+                      <span className="text-sm sm:text-base">Share article</span>
                     </Button>
                   </div>
                 </div>
