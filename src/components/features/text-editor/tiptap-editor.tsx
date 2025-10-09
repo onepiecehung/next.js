@@ -66,6 +66,7 @@ import css from "highlight.js/lib/languages/css";
 import java from "highlight.js/lib/languages/java";
 import javascript from "highlight.js/lib/languages/javascript";
 import json from "highlight.js/lib/languages/json";
+import markdown from "highlight.js/lib/languages/markdown";
 import python from "highlight.js/lib/languages/python";
 import sql from "highlight.js/lib/languages/sql";
 import typescript from "highlight.js/lib/languages/typescript";
@@ -148,6 +149,7 @@ export function TipTapEditor({
           css,
           xml,
           json,
+          markdown,
           bash,
           python,
           java,
