@@ -1184,6 +1184,16 @@
   background: #282a36;
 }
 
+/* Hide scrollbar for toolbar overflow */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .ProseMirror {
