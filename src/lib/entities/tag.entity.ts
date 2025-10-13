@@ -11,7 +11,7 @@ import { BaseEntityCustom } from "./base.entity";
  * - Color coding for visual organization
  * - Soft delete support
  * - Search optimization with indexes
- * 
+ *
  * Use Cases:
  * - Article categorization
  * - Content discovery and filtering
@@ -101,4 +101,3 @@ export interface Tag extends BaseEntityCustom {
    */
   articles?: Article[];
 }
-

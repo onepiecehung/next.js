@@ -6,7 +6,7 @@ import { User } from "./user.entity";
  *
  * Stores user reactions/interactions with various objects like articles, comments, users, etc.
  * Examples: like article, bookmark comment, upvote user, etc.
- * 
+ *
  * Features:
  * - Universal reaction system for any content type
  * - Support for different reaction types (like, dislike, bookmark, etc.)

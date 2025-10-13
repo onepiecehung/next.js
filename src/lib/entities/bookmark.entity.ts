@@ -1,4 +1,3 @@
-
 import { BaseEntityCustom } from "./base.entity";
 import { BookmarkFolder } from "./bookmark-folder.entity";
 import { User } from "./user.entity";
@@ -8,7 +7,7 @@ import { User } from "./user.entity";
  *
  * Represents a saved bookmark for various content types
  * Similar to browser bookmarks or social media saves
- * 
+ *
  * Features:
  * - Bookmark any content type (articles, comments, users, media)
  * - Organize bookmarks into folders

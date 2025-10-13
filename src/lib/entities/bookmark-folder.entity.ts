@@ -1,4 +1,3 @@
-
 import { BaseEntityCustom } from "./base.entity";
 import { User } from "./user.entity";
 
@@ -7,7 +6,7 @@ import { User } from "./user.entity";
  *
  * Represents a folder to organize bookmarks
  * Similar to browser bookmarks or social media collections
- * 
+ *
  * Features:
  * - User-owned folder organization
  * - Multiple folder types (default, custom, favorites, etc.)
@@ -90,5 +89,3 @@ export interface BookmarkFolder extends BaseEntityCustom {
    */
   bookmarks?: unknown[];
 }
-
-

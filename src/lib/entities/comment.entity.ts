@@ -7,7 +7,7 @@ import { User } from "./user.entity";
  *
  * Stores user comments on various objects like articles, posts, other comments, etc.
  * Similar to Discord messages with support for content, attachments, and mentions.
- * 
+ *
  * Features:
  * - Nested comment system (replies to comments)
  * - Rich content support with media attachments
@@ -19,7 +19,7 @@ import { User } from "./user.entity";
 export interface Comment extends BaseEntityCustom {
   /**
    * ID of the user who created the comment
-   * Links to users table   
+   * Links to users table
    */
   userId: string;
 
