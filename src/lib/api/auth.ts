@@ -1,3 +1,4 @@
+import { User } from "@/lib/interface";
 import {
   signInWithGithub,
   signInWithGoogle,
@@ -7,14 +8,27 @@ import {
 import { http } from "../http";
 import type {
   ApiResponse,
+  ChangePasswordRequest,
+  ChangePasswordResponse,
   FirebaseLoginRequest,
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
+  LoginRequest,
   LoginResponse,
+  LogoutResponse,
   OTPRequestRequest,
-  OTPRequestResponse,
+  OTPRequestResponseData,
   OTPVerifyRequest,
-  OTPVerifyResponse,
+  OTPVerifyResponseData,
+  RefreshTokenRequest,
+  RefreshTokenResponse,
+  ResendVerificationEmailRequest,
+  ResendVerificationEmailResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
+  VerifyEmailRequest,
+  VerifyEmailResponse,
 } from "../types";
-import { User } from "@/lib/interface";
 
 /**
  * Authentication API wrapper
@@ -27,10 +41,10 @@ export class AuthAPI {
   /**
    * Login with email and password
    */
-  static async login(email: string, password: string): Promise<LoginResponse> {
+  static async login(data: LoginRequest): Promise<LoginResponse> {
     const response = await http.post<ApiResponse<LoginResponse>>(
       `${this.BASE_URL}/login`,
-      { email, password },
+      data,
     );
 
     if (!response.data.success) {
@@ -43,7 +57,7 @@ export class AuthAPI {
   /**
    * Signup with user data
    */
-  static async signup(signupData: {
+  static async signup(data: {
     username: string;
     email: string;
     password: string;
@@ -53,7 +67,7 @@ export class AuthAPI {
   }): Promise<LoginResponse> {
     const response = await http.post<ApiResponse<LoginResponse>>(
       `${this.BASE_URL}/signup`,
-      signupData,
+      data,
     );
 
     if (!response.data.success) {
@@ -66,12 +80,10 @@ export class AuthAPI {
   /**
    * Firebase login (Google, GitHub, X)
    */
-  static async firebaseLogin(idToken: string): Promise<LoginResponse> {
-    const requestBody: FirebaseLoginRequest = { idToken };
-
+  static async firebaseLogin(data: FirebaseLoginRequest): Promise<LoginResponse> {
     const response = await http.post<ApiResponse<LoginResponse>>(
       `${this.BASE_URL}/firebase/login`,
-      requestBody,
+      data,
     );
 
     if (!response.data.success) {
@@ -86,53 +98,144 @@ export class AuthAPI {
   /**
    * Request OTP via email
    */
-  static async requestOTP(email: string): Promise<OTPRequestResponse> {
-    const requestBody: OTPRequestRequest = { email };
-
-    const response = await http.post<OTPRequestResponse>(
+  static async requestOTP(data: OTPRequestRequest): Promise<OTPRequestResponseData> {
+    const response = await http.post<ApiResponse<OTPRequestResponseData>>(
       `${this.BASE_URL}/otp/request`,
-      requestBody,
+      data,
     );
 
     if (!response.data.success) {
       throw new Error(response.data.message || "Failed to send OTP");
     }
 
-    return response.data;
+    return response.data.data;
   }
 
   /**
    * Verify OTP code
    */
-  static async verifyOTP(
-    email: string,
-    code: string,
-    requestId: string,
-  ): Promise<OTPVerifyResponse> {
-    const requestBody: OTPVerifyRequest = { email, code, requestId };
-
-    const response = await http.post<OTPVerifyResponse>(
+  static async verifyOTP(data: OTPVerifyRequest): Promise<OTPVerifyResponseData> {
+    const response = await http.post<ApiResponse<OTPVerifyResponseData>>(
       `${this.BASE_URL}/otp/verify`,
-      requestBody,
+      data,
     );
 
     if (!response.data.success) {
       throw new Error(response.data.message || "OTP verification failed");
     }
 
-    return response.data;
+    return response.data.data;
   }
 
   /**
-   * Logout (best effort)
+   * Refresh access token
    */
-  static async logout(): Promise<void> {
-    try {
-      await http.post(`${this.BASE_URL}/logout`);
-    } catch {
-      // Ignore logout errors - still clear local state
-      console.warn("Logout endpoint failed, but clearing local state");
+  static async refreshToken(data: RefreshTokenRequest): Promise<RefreshTokenResponse> {
+    const response = await http.post<ApiResponse<RefreshTokenResponse>>(
+      `${this.BASE_URL}/refresh`,
+      data,
+    );
+
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Token refresh failed");
     }
+
+    return response.data.data;
+  }
+
+  /**
+   * Logout
+   */
+  static async logout(): Promise<LogoutResponse> {
+    const response = await http.post<ApiResponse<LogoutResponse>>(
+      `${this.BASE_URL}/logout`,
+    );
+
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Logout failed");
+    }
+
+    return response.data.data;
+  }
+
+  /**
+   * Change password
+   */
+  static async changePassword(data: ChangePasswordRequest): Promise<ChangePasswordResponse> {
+    const response = await http.post<ApiResponse<ChangePasswordResponse>>(
+      `${this.BASE_URL}/change-password`,
+      data,
+    );
+
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Password change failed");
+    }
+
+    return response.data.data;
+  }
+
+  /**
+   * Forgot password
+   */
+  static async forgotPassword(data: ForgotPasswordRequest): Promise<ForgotPasswordResponse> {
+    const response = await http.post<ApiResponse<ForgotPasswordResponse>>(
+      `${this.BASE_URL}/forgot-password`,
+      data,
+    );
+
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Password reset request failed");
+    }
+
+    return response.data.data;
+  }
+
+  /**
+   * Reset password
+   */
+  static async resetPassword(data: ResetPasswordRequest): Promise<ResetPasswordResponse> {
+    const response = await http.post<ApiResponse<ResetPasswordResponse>>(
+      `${this.BASE_URL}/reset-password`,
+      data,
+    );
+
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Password reset failed");
+    }
+
+    return response.data.data;
+  }
+
+  /**
+   * Verify email
+   */
+  static async verifyEmail(data: VerifyEmailRequest): Promise<VerifyEmailResponse> {
+    const response = await http.post<ApiResponse<VerifyEmailResponse>>(
+      `${this.BASE_URL}/verify-email`,
+      data,
+    );
+
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Email verification failed");
+    }
+
+    return response.data.data;
+  }
+
+  /**
+   * Resend verification email
+   */
+  static async resendVerificationEmail(data: ResendVerificationEmailRequest): Promise<ResendVerificationEmailResponse> {
+    const response = await http.post<ApiResponse<ResendVerificationEmailResponse>>(
+      `${this.BASE_URL}/resend-verification`,
+      data,
+    );
+
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Failed to resend verification email");
+    }
+
+    return response.data.data;
   }
 
   /**
@@ -161,7 +264,7 @@ export class FirebaseAuthAPI {
     try {
       const firebaseUser = await signInWithGoogle();
       const idToken = await firebaseUser.getIdToken();
-      const { user, token } = await AuthAPI.firebaseLogin(idToken);
+      const { user, token } = await AuthAPI.firebaseLogin({ idToken });
 
       if (!token.accessToken) {
         throw new Error("No access token returned from server");
@@ -181,7 +284,7 @@ export class FirebaseAuthAPI {
     try {
       const firebaseUser = await signInWithGithub();
       const idToken = await firebaseUser.getIdToken();
-      const { user, token } = await AuthAPI.firebaseLogin(idToken);
+      const { user, token } = await AuthAPI.firebaseLogin({ idToken });
 
       if (!token.accessToken) {
         throw new Error("No access token returned from server");
@@ -201,7 +304,7 @@ export class FirebaseAuthAPI {
     try {
       const firebaseUser = await signInWithX();
       const idToken = await firebaseUser.getIdToken();
-      const { user, token } = await AuthAPI.firebaseLogin(idToken);
+      const { user, token } = await AuthAPI.firebaseLogin({ idToken });
 
       if (!token.accessToken) {
         throw new Error("No access token returned from server");
@@ -235,10 +338,10 @@ export class OTPAuthAPI {
     expiresIn: number;
   }> {
     try {
-      const response = await AuthAPI.requestOTP(email);
+      const response = await AuthAPI.requestOTP({ email });
       return {
-        requestId: response.data.requestId,
-        expiresIn: response.data.expiresInSec,
+        requestId: response.requestId,
+        expiresIn: response.expiresInSec,
       };
     } catch (error) {
       console.error("OTP request error:", error);
@@ -255,8 +358,8 @@ export class OTPAuthAPI {
     requestId: string,
   ): Promise<User> {
     try {
-      const response = await AuthAPI.verifyOTP(email, code, requestId);
-      const { user, token } = response.data;
+      const response = await AuthAPI.verifyOTP({ email, code, requestId });
+      const { user, token } = response;
 
       if (!token.accessToken) {
         throw new Error("No access token returned from server");

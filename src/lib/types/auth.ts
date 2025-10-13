@@ -54,13 +54,9 @@ export interface OTPRequestRequest {
  * OTP request response structure
  * Contains request ID and expiration time
  */
-export interface OTPRequestResponse {
-  success: boolean;
-  message: string;
-  data: {
-    requestId: string;
-    expiresInSec: number; // seconds
-  };
+export interface OTPRequestResponseData {
+  requestId: string;
+  expiresInSec: number; // seconds
 }
 
 /**
@@ -77,15 +73,11 @@ export interface OTPVerifyRequest {
  * OTP verification response structure
  * Contains user data and authentication tokens upon successful verification
  */
-export interface OTPVerifyResponse {
-  success: boolean;
-  message: string;
-  data: {
-    user: User;
-    token: {
-      accessToken: string;
-      refreshToken: string;
-    };
+export interface OTPVerifyResponseData {
+  user: User;
+  token: {
+    accessToken: string;
+    refreshToken: string;
   };
 }
 
