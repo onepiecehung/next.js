@@ -1,7 +1,7 @@
 import { BaseEntityCustom } from "./base.entity";
-import { MediaEntity } from "./media.entity";
+import { Media } from "./media.entity";
 
-export interface UserEntity extends BaseEntityCustom {
+export interface User extends BaseEntityCustom {
   name?: string;
   username?: string;
   status?: string;
@@ -18,5 +18,5 @@ export interface UserEntity extends BaseEntityCustom {
   isEmailVerified?: boolean;
   isPhoneVerified?: boolean;
   avatarId?: string;
-  avatar: MediaEntity; // Avatar media
+  avatar?: Media; // Avatar media
 }

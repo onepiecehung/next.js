@@ -1,11 +1,11 @@
 import { BaseEntityCustom } from "./base.entity";
-import { MediaEntity } from "./media.entity";
-import { UserEntity } from "./user.entity";
+import { Media } from "./media.entity";
+import { User } from "./user.entity";
 
-export interface ArticleEntity extends BaseEntityCustom {
+export interface Article extends BaseEntityCustom {
   userId: string;
 
-  user: UserEntity;
+  user: User;
 
   title: string;
 
@@ -23,7 +23,7 @@ export interface ArticleEntity extends BaseEntityCustom {
 
   coverImageId?: string;
 
-  coverImage: MediaEntity;
+  coverImage: Media;
 
   coverImageUrl?: string;
 

@@ -1,5 +1,5 @@
 import { BaseEntityCustom } from "./base.entity";
-import { UserEntity } from "./user.entity";
+import { User } from "./user.entity";
 
 /**
  * Reaction Entity
@@ -15,7 +15,7 @@ import { UserEntity } from "./user.entity";
  * - Integration with user system
  * - Flexible subject type support
  */
-export interface ReactionEntity extends BaseEntityCustom {
+export interface Reaction extends BaseEntityCustom {
   /**
    * ID of the user who performed the reaction
    * Links to users table
@@ -26,7 +26,7 @@ export interface ReactionEntity extends BaseEntityCustom {
    * User information who performed the reaction
    * Many-to-One relationship with User entity
    */
-  user: UserEntity;
+  user: User;
 
   /**
    * Type of object being reacted to

@@ -1,6 +1,6 @@
 import { BaseEntityCustom } from "./base.entity";
-import { MediaEntity } from "./media.entity";
-import { UserEntity } from "./user.entity";
+import { Media } from "./media.entity";
+import { User } from "./user.entity";
 
 /**
  * Comment Entity
@@ -16,10 +16,10 @@ import { UserEntity } from "./user.entity";
  * - Comment threading and organization
  * - Metadata support for rich formatting
  */
-export interface CommentEntity extends BaseEntityCustom {
+export interface Comment extends BaseEntityCustom {
   /**
    * ID of the user who created the comment
-   * Links to users table
+   * Links to users table   
    */
   userId: string;
 
@@ -27,7 +27,7 @@ export interface CommentEntity extends BaseEntityCustom {
    * User information who created the comment
    * Many-to-One relationship with User entity
    */
-  user: UserEntity;
+  user: User;
 
   /**
    * Type of object being commented on
@@ -52,13 +52,13 @@ export interface CommentEntity extends BaseEntityCustom {
    * Parent comment information for nested comments
    * Self-referencing relationship
    */
-  parent?: CommentEntity;
+  parent?: Comment;
 
   /**
    * Child comments (replies)
    * One-to-Many relationship with self
    */
-  replies?: CommentEntity[];
+  replies?: Comment[];
 
   /**
    * Comment content/text
@@ -96,13 +96,13 @@ export interface CommentEntity extends BaseEntityCustom {
    * One-to-Many relationship with CommentMedia entity
    * Supports different media types including stickers
    */
-  media?: MediaEntity[];
+  media?: Media[];
 
   /**
    * User mentions in the comment
    * One-to-Many relationship with CommentMention
    */
-  mentions?: UserEntity[];
+  mentions?: User[];
 
   /**
    * Additional metadata for rich content

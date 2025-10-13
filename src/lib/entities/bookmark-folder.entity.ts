@@ -1,6 +1,6 @@
 
 import { BaseEntityCustom } from "./base.entity";
-import { UserEntity } from "./user.entity";
+import { User } from "./user.entity";
 
 /**
  * Bookmark Folder Entity
@@ -16,7 +16,7 @@ import { UserEntity } from "./user.entity";
  * - Metadata support for extensibility
  * - Relationship with bookmarks and users
  */
-export interface BookmarkFolderEntity extends BaseEntityCustom {
+export interface BookmarkFolder extends BaseEntityCustom {
   /**
    * ID of the user who owns this folder
    * Links to users table
@@ -27,7 +27,7 @@ export interface BookmarkFolderEntity extends BaseEntityCustom {
    * User who owns this folder
    * Many-to-One relationship with User entity
    */
-  user: UserEntity;
+  user: User;
 
   /**
    * Name of the folder

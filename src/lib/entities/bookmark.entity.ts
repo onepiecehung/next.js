@@ -1,7 +1,7 @@
 
 import { BaseEntityCustom } from "./base.entity";
-import { BookmarkFolderEntity } from "./bookmark-folder.entity";
-import { UserEntity } from "./user.entity";
+import { BookmarkFolder } from "./bookmark-folder.entity";
+import { User } from "./user.entity";
 
 /**
  * Bookmark Entity
@@ -16,7 +16,7 @@ import { UserEntity } from "./user.entity";
  * - Track bookmark status and activity
  * - Support for different bookmarkable content types
  */
-export interface BookmarkEntity extends BaseEntityCustom {
+export interface Bookmark extends BaseEntityCustom {
   /**
    * ID of the user who created this bookmark
    * Links to users table
@@ -27,7 +27,7 @@ export interface BookmarkEntity extends BaseEntityCustom {
    * User who created this bookmark
    * Many-to-One relationship with User entity
    */
-  user: UserEntity;
+  user: User;
 
   /**
    * Type of content being bookmarked
@@ -51,7 +51,7 @@ export interface BookmarkEntity extends BaseEntityCustom {
    * Folder this bookmark belongs to
    * Many-to-One relationship with BookmarkFolder entity
    */
-  folder?: BookmarkFolderEntity;
+  folder?: BookmarkFolder;
 
   /**
    * Status of the bookmark

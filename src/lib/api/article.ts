@@ -3,8 +3,8 @@ import type {
   ApiResponse,
   ApiResponseCursor,
   ApiResponseOffset,
-  Article,
-  CreateArticleDto,
+  ArticleEntity,
+  CreateArticleEntity,
 } from "../types";
 
 /**
@@ -17,16 +17,16 @@ export class ArticleAPI {
   /**
    * Create a new article
    */
-  static async createArticle(data: CreateArticleDto): Promise<Article> {
-    const response = await http.post<ApiResponse<Article>>(this.BASE_URL, data);
+  static async createArticle(data: CreateArticleEntity): Promise<ArticleEntity> {
+    const response = await http.post<ApiResponse<ArticleEntity>>(this.BASE_URL, data);
     return response.data.data;
   }
 
   /**
    * Get article by ID
    */
-  static async getArticle(id: string): Promise<Article> {
-    const response = await http.get<ApiResponse<Article>>(
+  static async getArticle(id: string): Promise<ArticleEntity> {
+    const response = await http.get<ApiResponse<ArticleEntity>>(
       `${this.BASE_URL}/${id}`,
     );
     return response.data.data;
@@ -37,9 +37,9 @@ export class ArticleAPI {
    */
   static async updateArticle(
     id: string,
-    data: Partial<CreateArticleDto>,
-  ): Promise<Article> {
-    const response = await http.patch<ApiResponse<Article>>(
+    data: Partial<CreateArticleEntity>,
+  ): Promise<ArticleEntity> {
+    const response = await http.patch<ApiResponse<ArticleEntity>>(
       `${this.BASE_URL}/${id}`,
       data,
     );
@@ -62,8 +62,8 @@ export class ArticleAPI {
     status?: string;
     visibility?: string;
     userId?: string;
-  }): Promise<ApiResponseOffset<Article>> {
-    const response = await http.get<ApiResponseOffset<Article>>(
+  }): Promise<ApiResponseOffset<ArticleEntity>> {
+    const response = await http.get<ApiResponseOffset<ArticleEntity>>(
       `${this.BASE_URL}/offset`,
       { params },
     );
@@ -81,8 +81,8 @@ export class ArticleAPI {
     status?: string;
     visibility?: string;
     userId?: string;
-  }): Promise<ApiResponseCursor<Article>> {
-    const response = await http.get<ApiResponseCursor<Article>>(
+  }): Promise<ApiResponseCursor<ArticleEntity>> {
+    const response = await http.get<ApiResponseCursor<ArticleEntity>>(
       `${this.BASE_URL}/cursor`,
       { params },
     );
@@ -100,13 +100,13 @@ export class ArticleAPI {
     visibility?: string;
     userId?: string;
   }): Promise<{
-    articles: Article[];
+    articles: ArticleEntity[];
     total: number;
     page: number;
     limit: number;
   }> {
     const response = await http.get<{
-      articles: Article[];
+      articles: ArticleEntity[];
       total: number;
       page: number;
       limit: number;

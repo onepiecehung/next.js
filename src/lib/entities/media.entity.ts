@@ -1,7 +1,7 @@
 import { BaseEntityCustom } from "./base.entity";
-import { UserEntity } from "./user.entity";
+import { User } from "./user.entity";
 
-export interface MediaEntity extends BaseEntityCustom {
+export interface Media extends BaseEntityCustom {
   status?: string;
   name?: string;
   title?: string;
@@ -18,7 +18,7 @@ export interface MediaEntity extends BaseEntityCustom {
   thumbnailUrl: string;
   previewUrl: string;
   userId?: string;
-  user?: UserEntity;
+  user?: User;
   metadata: string; // JSON string for additional media metadata
   storageProvider?: string;
   width?: number;
