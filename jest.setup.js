@@ -22,13 +22,15 @@ jest.mock('next/navigation', () => ({
 
 // Mock next/link
 jest.mock('next/link', () => {
-  return ({ children, href, ...props }) => {
+  const MockLink = ({ children, href, ...props }) => {
     return (
       <a href={href} {...props}>
         {children}
       </a>
     )
   }
+  MockLink.displayName = 'MockNextLink'
+  return MockLink
 })
 
 // Mock jotai
@@ -64,16 +66,20 @@ jest.mock('sonner', () => ({
 }))
 
 // Mock lucide-react
-jest.mock('lucide-react', () => ({
-  Eye: () => <div data-testid="eye-icon" />,
-  EyeOff: () => <div data-testid="eye-off-icon" />,
-  ArrowLeft: () => <div data-testid="arrow-left-icon" />,
-}))
+jest.mock('lucide-react', () => {
+  const Eye = () => <div data-testid="eye-icon" />
+  Eye.displayName = 'EyeIcon'
+  const EyeOff = () => <div data-testid="eye-off-icon" />
+  EyeOff.displayName = 'EyeOffIcon'
+  const ArrowLeft = () => <div data-testid="arrow-left-icon" />
+  ArrowLeft.displayName = 'ArrowLeftIcon'
+  return { Eye, EyeOff, ArrowLeft }
+})
 
 // Mock i18n provider
 jest.mock('@/components/providers/i18n-provider', () => ({
   useI18n: () => ({
-    t: (key, namespace) => key,
+    t: (key) => key,
   }),
 }))
 
