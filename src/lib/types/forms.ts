@@ -1,83 +1,79 @@
-import { z } from "zod";
+/**
+ * Form Type Definitions
+ * Pure TypeScript type definitions for form data
+ * Note: Validation schemas have been moved to @/lib/validators/forms and @/lib/validators/auth
+ * Note: Login form types are in @/lib/validators/auth to avoid duplication
+ */
 
-// Login form validation schema
-export const loginFormSchema = z.object({
-  email: z
-    .string()
-    .min(1, "Email is required")
-    .email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+// ============================================================================
+// Registration Form Types
+// ============================================================================
 
-export type LoginFormData = z.infer<typeof loginFormSchema>;
+/**
+ * Registration form data structure
+ * Used for user registration
+ */
+export interface RegisterFormData {
+  name?: string;
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  dob?: string;
+  phoneNumber?: string;
+}
 
-// Registration form validation schema
-export const registerFormSchema = z
-  .object({
-    name: z.string().min(2, "Name must be at least 2 characters").optional(),
-    username: z.string().min(3, "Username must be at least 3 characters"),
-    email: z.string().email("Please enter a valid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string(),
-    dob: z.string().optional(),
-    phoneNumber: z.string().optional(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
+// ============================================================================
+// Profile Update Form Types
+// ============================================================================
 
-export type RegisterFormData = z.infer<typeof registerFormSchema>;
+/**
+ * Profile update form data structure
+ * Used for updating user profile information
+ */
+export interface ProfileFormData {
+  name?: string;
+  username?: string;
+  dob?: string;
+  phoneNumber?: string;
+}
 
-// Profile update form validation schema
-export const profileFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").optional(),
-  username: z
-    .string()
-    .min(3, "Username must be at least 3 characters")
-    .optional(),
-  dob: z.string().optional(),
-  phoneNumber: z.string().optional(),
-});
+// ============================================================================
+// Change Password Form Types
+// ============================================================================
 
-export type ProfileFormData = z.infer<typeof profileFormSchema>;
+/**
+ * Change password form data structure
+ * Used for changing user password
+ */
+export interface ChangePasswordFormData {
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
 
-// Change password form validation schema
-export const changePasswordSchema = z
-  .object({
-    currentPassword: z.string().min(1, "Current password is required"),
-    newPassword: z
-      .string()
-      .min(8, "New password must be at least 8 characters"),
-    confirmNewPassword: z.string(),
-  })
-  .refine((data) => data.newPassword === data.confirmNewPassword, {
-    message: "New passwords don't match",
-    path: ["confirmNewPassword"],
-  });
+// ============================================================================
+// Forgot Password Form Types
+// ============================================================================
 
-export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
+/**
+ * Forgot password form data structure
+ * Used for requesting password reset
+ */
+export interface ForgotPasswordFormData {
+  email: string;
+}
 
-// Forgot password form validation schema
-export const forgotPasswordSchema = z.object({
-  email: z
-    .string()
-    .min(1, "Email is required")
-    .email("Please enter a valid email address"),
-});
+// ============================================================================
+// Reset Password Form Types
+// ============================================================================
 
-export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
-
-// Reset password form validation schema
-export const resetPasswordSchema = z
-  .object({
-    token: z.string().min(1, "Reset token is required"),
-    newPassword: z.string().min(8, "Password must be at least 8 characters"),
-    confirmNewPassword: z.string(),
-  })
-  .refine((data) => data.newPassword === data.confirmNewPassword, {
-    message: "Passwords don't match",
-    path: ["confirmNewPassword"],
-  });
-
-export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
+/**
+ * Reset password form data structure
+ * Used for resetting password with token
+ */
+export interface ResetPasswordFormData {
+  token: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}

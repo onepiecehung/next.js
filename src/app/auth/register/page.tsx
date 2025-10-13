@@ -23,28 +23,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
-
-// Form validation schema for signup
-const signupSchema = z
-  .object({
-    username: z.string().min(3, "Username must be at least 3 characters"),
-    email: z
-      .string()
-      .min(1, "Email is required")
-      .email({ message: "Please enter a valid email address" }),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string().min(6, "Please confirm your password"),
-    name: z.string().optional(),
-    dob: z.string().optional(),
-    phoneNumber: z.string().optional(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
-
-type SignupFormValues = z.infer<typeof signupSchema>;
+import {
+  registerFormSchema,
+  type RegisterFormData,
+} from "@/lib/validators/forms";
 
 // Helper function to extract error message from various error types
 function extractErrorMessage(error: unknown, defaultMessage: string): string {
@@ -92,11 +74,11 @@ export default function RegisterPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<SignupFormValues>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerFormSchema),
   });
 
-  const onSubmit = async (values: SignupFormValues) => {
+  const onSubmit = async (values: RegisterFormData) => {
     setIsLoading(true);
     try {
       // Attempt to signup with provided credentials
