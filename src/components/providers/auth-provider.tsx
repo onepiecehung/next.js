@@ -1,13 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
-import { useAtom } from "jotai";
-import {
-  currentUserAtom,
-  authLoadingAtom,
-  fetchMeAction,
-} from "@/lib/auth-store";
 import { ClientOnly } from "@/components/ui";
+import { authLoadingAtom, currentUserAtom, fetchMeAction } from "@/lib/auth";
+import { useAtom } from "jotai";
+import { useEffect } from "react";
 
 export default function AuthProvider({
   children,

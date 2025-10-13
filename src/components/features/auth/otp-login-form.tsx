@@ -1,28 +1,28 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useAtom } from "jotai";
-import {
-  currentUserAtom,
-  accessTokenAtom,
-  requestOTPAction,
-  verifyOTPAction,
-} from "@/lib/auth-store";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { ArrowLeft, Mail, RefreshCw } from "lucide-react";
+import { useI18n } from "@/components/providers/i18n-provider";
 import {
   Button,
   Input,
-  Label,
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
+  Label,
 } from "@/components/ui";
-import { useI18n } from "@/components/providers/i18n-provider";
+import {
+  accessTokenAtom,
+  currentUserAtom,
+  requestOTPAction,
+  verifyOTPAction,
+} from "@/lib/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAtom } from "jotai";
+import { ArrowLeft, Mail, RefreshCw } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 // Form validation schemas
 const emailSchema = z.object({

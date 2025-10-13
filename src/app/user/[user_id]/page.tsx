@@ -23,8 +23,8 @@ import {
   GitHubIcon,
   XIcon,
 } from "@/components/ui";
-import { UserAPI, User } from "@/lib/api/users";
-import { currentUserAtom } from "@/lib/auth-store";
+import { User, UserAPI } from "@/lib/api/users";
+import { currentUserAtom } from "@/lib/auth";
 
 /**
  * Internationalized Profile Page Component

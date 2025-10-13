@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { authLoadingAtom, currentUserAtom } from "@/lib/auth";
 import { useAtom } from "jotai";
-import { currentUserAtom, authLoadingAtom } from "@/lib/auth-store";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect } from "react";
 
 /**
  * Custom hook for handling authentication redirects

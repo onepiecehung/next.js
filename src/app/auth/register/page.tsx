@@ -15,7 +15,7 @@ import {
   currentUserAtom,
   fetchMeAction,
   signupAction,
-} from "@/lib/auth-store";
+} from "@/lib/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";

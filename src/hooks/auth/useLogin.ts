@@ -1,18 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { useAtom } from "jotai";
-import {
-  currentUserAtom,
-  accessTokenAtom,
-  loginAction,
-  fetchMeAction,
-  loginWithGoogleAction,
-  loginWithGithubAction,
-  loginWithXAction,
-} from "@/lib/auth-store";
-import { toast } from "sonner";
 import { useI18n } from "@/components/providers/i18n-provider";
+import {
+  accessTokenAtom,
+  currentUserAtom,
+  fetchMeAction,
+  loginAction,
+  loginWithGithubAction,
+  loginWithGoogleAction,
+  loginWithXAction,
+} from "@/lib/auth";
+import { useAtom } from "jotai";
+import { useState } from "react";
+import { toast } from "sonner";
 
 // Helper function to extract error message from various error types
 function extractErrorMessage(error: unknown, defaultMessage: string): string {

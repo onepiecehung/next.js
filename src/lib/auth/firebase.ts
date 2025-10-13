@@ -1,11 +1,11 @@
 import { initializeApp, setLogLevel } from "firebase/app";
 import {
+  User as FirebaseUser,
   getAuth,
-  GoogleAuthProvider,
   GithubAuthProvider,
+  GoogleAuthProvider,
   signInWithPopup,
   signOut,
-  User as FirebaseUser,
   TwitterAuthProvider,
 } from "firebase/auth";
 setLogLevel("debug");

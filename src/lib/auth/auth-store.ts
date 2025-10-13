@@ -1,29 +1,29 @@
 "use client";
 
-import { atom, useAtom } from "jotai";
 import {
+  clearRefreshTokenFallback,
+  clearTokens,
   http,
   setAccessToken,
-  clearTokens,
   setRefreshTokenFallback,
-  clearRefreshTokenFallback,
 } from "@/lib/http";
 import type {
-  User,
   ApiResponse,
-  LoginResponse,
   FirebaseLoginRequest,
+  LoginResponse,
   OTPRequestRequest,
   OTPRequestResponse,
   OTPVerifyRequest,
   OTPVerifyResponse,
+  User,
 } from "@/lib/types";
+import { atom, useAtom } from "jotai";
 import {
-  signInWithGoogle,
   signInWithGithub,
+  signInWithGoogle,
   signInWithX,
   signOutFirebase,
-} from "@/lib/firebase";
+} from "./firebase";
 
 // Jotai atoms for state management
 export const accessTokenAtom = atom<string | null>(null);

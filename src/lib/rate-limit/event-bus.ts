@@ -1,5 +1,8 @@
-// Simple event bus for rate limit notifications shared across the app
-// Uses DOM EventTarget under the hood so it works across isolated modules
+/**
+ * Rate Limit Event Bus
+ * Simple event bus for rate limit notifications shared across the app
+ * Uses DOM EventTarget under the hood so it works across isolated modules
+ */
 
 type RateLimitEventDetail = {
   untilTimestampMs: number; // epoch ms when cooldown ends

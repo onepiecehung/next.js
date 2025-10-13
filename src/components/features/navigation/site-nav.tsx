@@ -14,7 +14,7 @@ import {
   clearUserState,
   currentUserAtom,
   logoutAction,
-} from "@/lib/auth-store";
+} from "@/lib/auth";
 
 /**
  * Internationalized Site Navigation Component

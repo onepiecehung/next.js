@@ -9,7 +9,7 @@ import {
   loginAction,
   loginWithGithubAction,
   loginWithGoogleAction,
-} from "@/lib/auth-store";
+} from "@/lib/auth";
 import { useAtom } from "jotai";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
