@@ -1,32 +1,32 @@
 "use client";
 
+import {
+    CompactLikeButton,
+    LargeLikeButton,
+} from "@/components/features/reactions";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
 import { Button } from "@/components/ui";
 import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useArticle } from "@/hooks/article";
 import { useArticleLike } from "@/hooks/reactions";
-import { ARTICLE_CONSTANTS } from "@/lib/types/article";
-import {
-  CompactLikeButton,
-  LargeLikeButton,
-} from "@/components/features/reactions";
+import { ARTICLE_CONSTANTS } from "@/lib/constants/article";
 import { cn } from "@/lib/utils";
 import {
-  Calendar,
-  Clock,
-  Eye,
-  FileText,
-  Heart,
-  Share2,
-  Tag,
-  User,
+    Calendar,
+    Clock,
+    Eye,
+    FileText,
+    Heart,
+    Share2,
+    Tag,
+    User,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
-import { toast } from "sonner";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 /**
  * Article View Page Component

@@ -1,73 +1,9 @@
-/**
- * API Response Types
- * Core API response structures and authentication-related types
- * Note: Article types have been moved to @/lib/types/article for better organization
- */
-
-// ============================================================================
-// Base API Response Structure
-// ============================================================================
+import type { User } from "./user";
 
 /**
- * Base API Response structure used across all endpoints
- * All API responses follow this consistent format
+ * Authentication Type Definitions
+ * Contains authentication, OTP, token management, and password-related types
  */
-export interface ApiResponse<T = unknown> {
-  success: boolean;
-  data: T;
-  message: string;
-  metadata: {
-    messageKey: string;
-    messageArgs: Record<string, unknown>;
-  };
-}
-
-// ============================================================================
-// User Types
-// ============================================================================
-
-/**
- * User entity structure
- * Core user information returned by the API
- */
-export interface User {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-  version: number;
-  name: string | null;
-  username: string;
-  status: string;
-  role: string;
-  email: string;
-  dob: string | null;
-  phoneNumber: string | null;
-  oauthProvider: string | null;
-  oauthId: string | null;
-  authMethod: string;
-  isEmailVerified: boolean;
-  isPhoneVerified: boolean;
-  avatar: {
-    url: string;
-    key: string;
-  };
-}
-
-/**
- * Public User interface for profile pages
- * Extends User with additional public profile fields
- */
-export interface PublicUser extends User {
-  bio?: string;
-  website?: string;
-  location?: string;
-  socialLinks?: {
-    github?: string;
-    twitter?: string;
-    linkedin?: string;
-  };
-}
 
 // ============================================================================
 // Authentication Types
@@ -182,29 +118,6 @@ export interface LogoutResponse {
 }
 
 // ============================================================================
-// User Profile Management Types
-// ============================================================================
-
-/**
- * Update profile request payload
- * Used for updating user profile information
- */
-export interface UpdateProfileRequest {
-  name?: string;
-  username?: string;
-  dob?: string;
-  phoneNumber?: string;
-}
-
-/**
- * Update profile response structure
- * Contains updated user data
- */
-export interface UpdateProfileResponse {
-  user: User;
-}
-
-// ============================================================================
 // Password Management Types
 // ============================================================================
 
@@ -294,64 +207,3 @@ export interface ResendVerificationEmailResponse {
   message: string;
 }
 
-// ============================================================================
-// Error Response Types
-// ============================================================================
-
-/**
- * Generic error response structure
- * Used for all API error responses
- */
-export interface ApiErrorResponse {
-  success: false;
-  message: string;
-  error?: {
-    code: string;
-    details?: Record<string, unknown>;
-  };
-  metadata: {
-    messageKey: string;
-    messageArgs: Record<string, unknown>;
-  };
-}
-
-// ============================================================================
-// Pagination Types
-// ============================================================================
-
-/**
- * Pagination metadata structure
- * Used in list responses for pagination information
- */
-export interface PaginationMeta {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-}
-
-/**
- * Paginated response structure
- * Generic wrapper for paginated list responses
- */
-export interface PaginatedResponse<T> {
-  items: T[];
-  pagination: PaginationMeta;
-}
-
-// ============================================================================
-// Common Response Types
-// ============================================================================
-
-/**
- * Common success response structure
- * Used for simple success responses without data payload
- */
-export interface SuccessResponse {
-  success: true;
-  message: string;
-  metadata: {
-    messageKey: string;
-    messageArgs: Record<string, unknown>;
-  };
-}

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { ArticleAPI } from "@/lib/api/article";
-import { ARTICLE_CONSTANTS } from "@/lib/types/article";
+import { ARTICLE_CONSTANTS } from "@/lib/constants/article";
 
 import type { Article, CreateArticleDto } from "@/lib/types/article";
 interface UseCreateArticleOptions {

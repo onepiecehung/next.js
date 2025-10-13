@@ -1,5 +1,5 @@
 import { http } from "../http";
-import { ApiResponse } from "../types/api";
+import type { ApiResponse } from "../types";
 
 export type UploadedMedia = {
   id: string;

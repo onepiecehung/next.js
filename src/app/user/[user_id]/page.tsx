@@ -2,12 +2,12 @@
 
 import { useAtom } from "jotai";
 import {
-  BookOpen,
-  Eye,
-  Heart,
-  MessageSquare,
-  PenTool,
-  Rss,
+    BookOpen,
+    Eye,
+    Heart,
+    MessageSquare,
+    PenTool,
+    Rss,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -16,14 +16,14 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { useIsMounted } from "@/components/providers/no-ssr";
 import { Skeletonize } from "@/components/shared";
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  Button,
-  GitHubIcon,
-  XIcon,
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+    Button,
+    GitHubIcon,
+    XIcon,
 } from "@/components/ui";
-import { User, UserAPI } from "@/lib/api/users";
+import { UserAPI, type UserProfile } from "@/lib/api/users";
 import { currentUserAtom } from "@/lib/auth";
 
 /**
@@ -37,7 +37,7 @@ export default function ProfilePage() {
   const userId = params.user_id as string;
 
   const [currentUser] = useAtom(currentUserAtom);
-  const [profileData, setProfileData] = useState<User | null>(null);
+  const [profileData, setProfileData] = useState<UserProfile | null>(null);
   const [activeTab, setActiveTab] = useState<
     "articles" | "scraps" | "comments"
   >("articles");

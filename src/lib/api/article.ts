@@ -1,6 +1,5 @@
 import { http } from "../http";
-import { ApiResponse } from "../types/api";
-import type { CreateArticleDto, Article } from "../types/article";
+import type { ApiResponse, Article, CreateArticleDto } from "../types";
 
 /**
  * Article API wrapper
