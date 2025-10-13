@@ -5,10 +5,10 @@ import {
   initializeMermaid,
   processCodeBlocks,
 } from "@/lib/utils/content-processor";
+import DOMPurify from "dompurify";
 import "highlight.js/styles/github.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useCustomImageRenderer } from "./useCustomImageRenderer";
-import DOMPurify from "dompurify";
 
 interface UseContentRendererOptions extends ContentProcessorOptions {
   /**

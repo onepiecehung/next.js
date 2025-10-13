@@ -4,8 +4,8 @@ import {
   initializeMermaid,
   processCodeBlocks,
 } from "@/lib/utils/content-processor";
-import React, { useEffect, useMemo, useRef, useState } from "react";
 import DOMPurify from "dompurify";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 /**
  * Component to highlight HTML content with syntax highlighting and Mermaid diagrams

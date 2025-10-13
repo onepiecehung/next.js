@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import mermaid from "mermaid";
 import { NodeViewWrapper } from "@tiptap/react";
 import DOMPurify from "dompurify";
+import mermaid from "mermaid";
+import React, { useEffect, useRef, useState } from "react";
 
 interface MermaidRendererProps {
   readonly node: {
