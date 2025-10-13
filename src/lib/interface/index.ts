@@ -6,4 +6,3 @@ export * from "./media.interface";
 export * from "./reaction.interface";
 export * from "./tag.interface";
 export * from "./user.interface";
-
