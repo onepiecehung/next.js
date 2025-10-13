@@ -25,10 +25,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
           
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
         
       - name: Build application
         run: yarn build
@@ -58,10 +57,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
           
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
         
       - name: Build application
         run: yarn build
@@ -124,10 +122,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
           
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
         
       - name: Build application
         run: yarn build
@@ -168,8 +165,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
           
+      - name: Install dependencies
+        run: yarn install
+        
       - name: Build application
         run: yarn build
         
