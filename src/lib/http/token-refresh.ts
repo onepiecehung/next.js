@@ -15,8 +15,8 @@ let isRefreshing = false;
 
 // Queue of requests waiting for token refresh
 let failedQueue: Array<{
-  resolve: (value?: string | null) => void;
-  reject: (error?: unknown) => void;
+  resolve: (value: string | null) => void;
+  reject: (error: unknown) => void;
 }> = [];
 
 /**
@@ -44,7 +44,7 @@ export function processQueue(
  * @returns Promise that resolves when token is refreshed
  */
 export function addToQueue(): Promise<string | null> {
-  return new Promise((resolve, reject) => {
+  return new Promise<string | null>((resolve, reject) => {
     failedQueue.push({ resolve, reject });
   });
 }

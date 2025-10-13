@@ -9,6 +9,7 @@ interface UseArticleFormOptions {
 
 /**
  * Hook for managing article form state and validation
+ * @param _options - Optional configuration for the article form (reserved for future use)
  */
 export function useArticleForm(_options?: UseArticleFormOptions) {
   const { t } = useI18n();

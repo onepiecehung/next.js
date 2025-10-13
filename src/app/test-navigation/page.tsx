@@ -9,7 +9,8 @@ import { useState } from "react";
  * Test page for navigation issues
  */
 export default function TestNavigationPage() {
-  const [content, setContent] = useState(`
+  // Test content with embedded image for navigation testing
+  const [content] = useState(`
     <h1>Test Navigation</h1>
     <p>This page tests image loading during navigation.</p>
     

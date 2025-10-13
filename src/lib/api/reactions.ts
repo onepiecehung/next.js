@@ -63,7 +63,8 @@ export class ReactionsApi {
   static async createOrSetReaction(
     reactionData: ReactionDto,
   ): Promise<ReactionResponse> {
-    return http.post<ReactionResponse>("/reactions", reactionData);
+    const response = await http.post<ReactionResponse>("/reactions", reactionData);
+    return response.data;
   }
 
   /**
@@ -74,7 +75,8 @@ export class ReactionsApi {
   static async removeReaction(
     reactionData: ReactionDto,
   ): Promise<ReactionResponse> {
-    return http.delete<ReactionResponse>("/reactions", { data: reactionData });
+    const response = await http.delete<ReactionResponse>("/reactions", { data: reactionData });
+    return response.data;
   }
 
   /**
@@ -89,9 +91,10 @@ export class ReactionsApi {
     subjectId: string,
     kind: string,
   ): Promise<HasReactedResponse> {
-    return http.get<HasReactedResponse>("/reactions/has", {
+    const response = await http.get<HasReactedResponse>("/reactions/has", {
       params: { subjectType, subjectId, kind },
     });
+    return response.data;
   }
 
   /**
@@ -106,12 +109,13 @@ export class ReactionsApi {
     subjectId: string,
     kinds?: string[],
   ): Promise<ReactionCountsResponse> {
-    const params: any = { subjectType, subjectId };
+    const params: Record<string, string> = { subjectType, subjectId };
     if (kinds && kinds.length > 0) {
       params.kinds = kinds.join(",");
     }
 
-    return http.get<ReactionCountsResponse>("/reactions/counts", { params });
+    const response = await http.get<ReactionCountsResponse>("/reactions/counts", { params });
+    return response.data;
   }
 
   /**
@@ -122,7 +126,8 @@ export class ReactionsApi {
   static async getCountsBatch(
     batchData: BatchCountsDto,
   ): Promise<ReactionCountsResponse> {
-    return http.post<ReactionCountsResponse>("/reactions/counts", batchData);
+    const response = await http.post<ReactionCountsResponse>("/reactions/counts", batchData);
+    return response.data;
   }
 
   /**

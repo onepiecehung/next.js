@@ -37,6 +37,7 @@ export default function TestSkeletonPage() {
           </button>
 
           <WithAutoSkeleton loading={isLoading}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://cdn.calumma.cc/media/91437909999226880_1759909296577_490065573.jpeg"
               alt="Test Image"
