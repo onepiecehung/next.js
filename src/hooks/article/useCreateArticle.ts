@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 import { ArticleAPI } from "@/lib/api/article";
-import { ARTICLE_CONSTANTS } from "@/lib/constants/article";
+import { ARTICLE_CONSTANTS } from "@/lib/constants";
 
-import type { Article, CreateArticleDto } from "@/lib/types/article";
+import type { Article } from "@/lib/interface";
 interface UseCreateArticleOptions {
   onSuccess?: (article: Article) => void;
   onError?: (error: Error) => void;
@@ -24,7 +24,7 @@ export function useCreateArticle(options?: UseCreateArticleOptions) {
    * - SCHEDULED: requires scheduledAt
    * - PUBLISHED: default published article
    */
-  const saveArticle = async (data: CreateArticleDto) => {
+  const saveArticle = async (data: Article) => {
     setIsLoading(true);
     setError(null);
 

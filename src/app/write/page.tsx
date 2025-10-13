@@ -26,7 +26,7 @@ import {
 import { useArticleForm, useCreateArticle } from "@/hooks/article";
 import { MediaAPI } from "@/lib/api/media";
 import { currentUserAtom } from "@/lib/auth";
-import { ARTICLE_CONSTANTS } from "@/lib/constants/article";
+import { ARTICLE_CONSTANTS } from "@/lib/constants";
 
 /**
  * Internationalized Write Page Component

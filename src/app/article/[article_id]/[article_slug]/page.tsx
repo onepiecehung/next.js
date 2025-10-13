@@ -10,7 +10,7 @@ import { Button } from "@/components/ui";
 import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useArticle } from "@/hooks/article";
 import { useArticleLike } from "@/hooks/reactions";
-import { ARTICLE_CONSTANTS } from "@/lib/constants/article";
+import { ARTICLE_CONSTANTS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import {
   Calendar,
@@ -283,7 +283,7 @@ export default function ArticleViewPage() {
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {article.tags.map((tag) => (
+                      {article.tags.map((tag: string) => (
                         <span
                           key={tag}
                           className="text-xs sm:text-sm px-3 sm:px-4 py-1 sm:py-2 rounded-full bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors cursor-pointer"
