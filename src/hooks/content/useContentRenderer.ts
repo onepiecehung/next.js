@@ -5,6 +5,7 @@ import {
   initializeMermaid,
   processCodeBlocks,
 } from "@/lib/utils/content-processor";
+import DOMPurify from "dompurify";
 import "highlight.js/styles/github.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useCustomImageRenderer } from "./useCustomImageRenderer";
@@ -87,9 +88,87 @@ export function useContentRenderer(
   const getContentProps = () => {
     if (!content) return null;
 
+    // Sanitize HTML content to prevent XSS attacks
+    const sanitizedContent = DOMPurify.sanitize(content, {
+      ALLOWED_TAGS: [
+        "p",
+        "br",
+        "strong",
+        "em",
+        "u",
+        "s",
+        "code",
+        "pre",
+        "blockquote",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "ul",
+        "ol",
+        "li",
+        "a",
+        "img",
+        "div",
+        "span",
+        "table",
+        "thead",
+        "tbody",
+        "tr",
+        "th",
+        "td",
+        "svg",
+        "g",
+        "path",
+        "rect",
+        "circle",
+        "ellipse",
+        "line",
+        "polyline",
+        "polygon",
+        "text",
+        "tspan",
+      ],
+      ALLOWED_ATTR: [
+        "href",
+        "target",
+        "rel",
+        "src",
+        "alt",
+        "width",
+        "height",
+        "class",
+        "id",
+        "viewBox",
+        "x",
+        "y",
+        "cx",
+        "cy",
+        "r",
+        "rx",
+        "ry",
+        "d",
+        "fill",
+        "stroke",
+        "stroke-width",
+        "stroke-dasharray",
+        "stroke-linecap",
+        "stroke-linejoin",
+        "transform",
+        "opacity",
+        "font-family",
+        "font-size",
+        "font-weight",
+        "text-anchor",
+        "dominant-baseline",
+      ],
+    });
+
     return {
       className: "ProseMirror content-renderer",
-      dangerouslySetInnerHTML: { __html: content },
+      dangerouslySetInnerHTML: { __html: sanitizedContent },
     };
   };
 

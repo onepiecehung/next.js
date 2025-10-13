@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import mermaid from "mermaid";
 import { NodeViewWrapper } from "@tiptap/react";
+import DOMPurify from "dompurify";
+import mermaid from "mermaid";
+import React, { useEffect, useRef, useState } from "react";
 
 interface MermaidRendererProps {
   readonly node: {
@@ -87,7 +88,68 @@ export function MermaidRenderer({
         const { svg } = await mermaid.render(id, node.attrs.code);
 
         if (containerRef.current) {
-          containerRef.current.innerHTML = svg;
+          // Sanitize SVG content to prevent XSS attacks
+          const sanitizedSvg = DOMPurify.sanitize(svg, {
+            ADD_TAGS: [
+              "svg",
+              "g",
+              "path",
+              "rect",
+              "circle",
+              "ellipse",
+              "line",
+              "polyline",
+              "polygon",
+              "text",
+              "tspan",
+              "defs",
+              "clipPath",
+              "mask",
+              "pattern",
+              "marker",
+              "linearGradient",
+              "radialGradient",
+              "stop",
+            ],
+            ADD_ATTR: [
+              "viewBox",
+              "width",
+              "height",
+              "x",
+              "y",
+              "cx",
+              "cy",
+              "r",
+              "rx",
+              "ry",
+              "d",
+              "fill",
+              "stroke",
+              "stroke-width",
+              "stroke-dasharray",
+              "stroke-linecap",
+              "stroke-linejoin",
+              "transform",
+              "opacity",
+              "font-family",
+              "font-size",
+              "font-weight",
+              "text-anchor",
+              "dominant-baseline",
+              "clip-path",
+              "mask",
+              "pattern",
+              "marker-start",
+              "marker-end",
+              "marker-mid",
+              "gradientUnits",
+              "gradientTransform",
+              "stop-color",
+              "stop-opacity",
+              "offset",
+            ],
+          });
+          containerRef.current.innerHTML = sanitizedSvg;
         }
 
         setIsLoading(false);
