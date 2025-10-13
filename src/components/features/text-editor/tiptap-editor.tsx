@@ -180,7 +180,7 @@ export function TipTapEditor({
       Markdown.configure({
         html: true,
         breaks: true,
-        transformPastedText: true,  // Allow to paste markdown text in the editor
+        transformPastedText: true, // Allow to paste markdown text in the editor
         transformCopiedText: true,
       }),
     ],
