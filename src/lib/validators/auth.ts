@@ -102,33 +102,27 @@ export const mapServerError = (error: unknown): string => {
 };
 
 /**
- * Authentication error messages
- * Centralized error messages for consistency
+ * Note: Authentication error messages have been moved to i18n
+ * 
+ * Usage in components:
+ * import { useI18n } from '@/components/providers/i18n-provider';
+ * 
+ * const { t } = useI18n();
+ * const errorMessage = t('errors.invalidCredentials', 'auth');
+ * 
+ * Available error keys in 'auth' namespace:
+ * - auth.errors.invalidCredentials
+ * - auth.errors.accountLocked
+ * - auth.errors.emailNotVerified
+ * - auth.errors.tooManyAttempts
+ * - auth.errors.networkError
+ * - auth.errors.serverError
+ * - auth.errors.unknownError
+ * 
+ * Available validation error keys:
+ * - auth.validation.emailRequired
+ * - auth.validation.emailInvalid
+ * - auth.validation.passwordRequired
+ * - auth.validation.passwordsMismatch
+ * - ... and more in src/i18n/locales/en/auth.json
  */
-export const AUTH_ERRORS = {
-  INVALID_CREDENTIALS: "Email or password is incorrect",
-  ACCOUNT_LOCKED: "Account has been locked. Please contact support",
-  EMAIL_NOT_VERIFIED: "Please verify your email before logging in",
-  TOO_MANY_ATTEMPTS: "Too many failed attempts. Please try again later",
-  NETWORK_ERROR: "Network error. Please check your connection",
-  SERVER_ERROR: "Server error. Please try again later",
-  UNKNOWN_ERROR: "An unexpected error occurred. Please try again",
-} as const;
-
-/**
- * Validation error messages
- * Centralized validation error messages
- */
-export const VALIDATION_ERRORS = {
-  EMAIL_REQUIRED: "Email is required",
-  EMAIL_INVALID: "Please enter a valid email address",
-  EMAIL_TOO_LONG: "Email must be less than 255 characters",
-  PASSWORD_REQUIRED: "Password is required",
-  PASSWORD_TOO_SHORT: "Password must be at least 6 characters",
-  PASSWORD_TOO_LONG: "Password must be less than 128 characters",
-  OTP_REQUIRED: "OTP code is required",
-  OTP_INVALID: "OTP code must be 6 digits",
-  OTP_NUMBERS_ONLY: "OTP code must contain only numbers",
-  PASSWORDS_MISMATCH: "Passwords do not match",
-  CONFIRM_PASSWORD_REQUIRED: "Please confirm your password",
-} as const;
