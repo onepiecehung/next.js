@@ -46,8 +46,8 @@ export interface PublicUser extends User {
   };
 }
 
-// Article interface for user profile pages
-export interface Article {
+// Basic Article interface for user profile pages (deprecated - use Article from article.ts)
+export interface ProfileArticle {
   id: string;
   title: string;
   content: string;

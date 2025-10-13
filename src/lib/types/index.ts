@@ -1,17 +1,16 @@
-// Export all API types for easy importing
+/**
+ * Types Module
+ * Centralized type definitions for the application
+ */
+
+// Export all API types
 export * from "./api";
+
+// Export article types
+export * from "./article";
 
 // Export form validation types
 export * from "./forms";
 
 // Export UI component types
 export * from "./ui";
-
-// Export specific UI components to avoid conflicts
-export { ClientOnly, useClientOnly } from "../../components/ui";
-
-// Export NoSSR utilities
-export * from "../../components/providers/no-ssr";
-
-// You can also export other type categories here in the future
-// export * from "./validation"

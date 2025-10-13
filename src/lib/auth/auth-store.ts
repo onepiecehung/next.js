@@ -1,12 +1,6 @@
 "use client";
 
 import {
-  signInWithGithub,
-  signInWithGoogle,
-  signInWithX,
-  signOutFirebase,
-} from "@/lib/auth";
-import {
   clearRefreshTokenFallback,
   clearTokens,
   http,
@@ -24,6 +18,12 @@ import type {
   User,
 } from "@/lib/types";
 import { atom, useAtom } from "jotai";
+import {
+  signInWithGithub,
+  signInWithGoogle,
+  signInWithX,
+  signOutFirebase,
+} from "./firebase";
 
 // Jotai atoms for state management
 export const accessTokenAtom = atom<string | null>(null);
