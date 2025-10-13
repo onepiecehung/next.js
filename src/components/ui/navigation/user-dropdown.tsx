@@ -37,7 +37,8 @@ export function UserDropdown({
 }: Readonly<UserDropdownProps>) {
   const { t } = useI18n();
   const isMounted = useIsMounted();
-  const displayName = user.name || user.username || user.email?.split("@")[0] || "User";
+  const displayName =
+    user.name || user.username || user.email?.split("@")[0] || "User";
   const initials = displayName.slice(0, 2).toUpperCase();
   const hasAvatar = user.avatar?.url;
 

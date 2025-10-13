@@ -240,10 +240,7 @@ export async function verifyOTPAction(
 
   // Get token for storage from the API response
   const response = await AuthAPI.verifyOTP({ email, code, requestId });
-  storeTokens(
-    response.token.accessToken,
-    response.token.refreshToken,
-  );
+  storeTokens(response.token.accessToken, response.token.refreshToken);
 
   return user;
 }
