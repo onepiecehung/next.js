@@ -1,10 +1,12 @@
-import { http } from "../http";
+import { http } from "@/lib/http";
+import { Article } from "@/lib/interface";
 import type {
+  AdvancedQueryParams,
   ApiResponse,
   ApiResponseCursor,
   ApiResponseOffset,
-} from "../types";
-import { Article } from "@/lib/interface";
+  QueryParamsWithCursor,
+} from "@/lib/types";
 
 /**
  * Article API wrapper
@@ -55,15 +57,11 @@ export class ArticleAPI {
   /**
    * Get articles list with offset pagination
    */
-  static async getArticlesOffset(params?: {
-    page?: number;
-    limit?: number;
-    status?: string;
-    visibility?: string;
-    userId?: string;
-  }): Promise<ApiResponseOffset<Article>> {
+  static async getArticlesOffset(
+    params?: AdvancedQueryParams,
+  ): Promise<ApiResponseOffset<Article>> {
     const response = await http.get<ApiResponseOffset<Article>>(
-      `${this.BASE_URL}/offset`,
+      `${this.BASE_URL}`,
       { params },
     );
     return response.data;
@@ -72,44 +70,13 @@ export class ArticleAPI {
   /**
    * Get articles list with cursor pagination
    */
-  static async getArticlesCursor(params?: {
-    cursor?: string | null;
-    limit?: number;
-    sortBy?: string;
-    order?: "ASC" | "DESC";
-    status?: string;
-    visibility?: string;
-    userId?: string;
-  }): Promise<ApiResponseCursor<Article>> {
+  static async getArticlesCursor(
+    params?: QueryParamsWithCursor,
+  ): Promise<ApiResponseCursor<Article>> {
     const response = await http.get<ApiResponseCursor<Article>>(
       `${this.BASE_URL}/cursor`,
       { params },
     );
-    return response.data;
-  }
-
-  /**
-   * Legacy method - Get articles list (deprecated)
-   * @deprecated Use getArticlesOffset or getArticlesCursor instead
-   */
-  static async getArticles(params?: {
-    page?: number;
-    limit?: number;
-    status?: string;
-    visibility?: string;
-    userId?: string;
-  }): Promise<{
-    articles: Article[];
-    total: number;
-    page: number;
-    limit: number;
-  }> {
-    const response = await http.get<{
-      articles: Article[];
-      total: number;
-      page: number;
-      limit: number;
-    }>(this.BASE_URL, { params });
     return response.data;
   }
 }
