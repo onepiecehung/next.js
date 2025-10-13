@@ -22,7 +22,12 @@
 
 /**
  * Generic API response structures, error handling, and pagination
- * Includes: ApiResponse, ApiErrorResponse, PaginationMeta, PaginatedResponse, SuccessResponse
+ * Includes: ApiResponse, ApiResponseOffset, ApiResponseCursor, ApiResponsePaginated
+ *           ApiErrorResponse, SuccessResponse
+ *           PaginationOffset, PaginationCursor (new pagination types)
+ *           PaginationOffsetMeta, PaginationCursorMeta
+ * 
+ * Legacy types (deprecated): PaginationMeta, PaginatedResponse
  */
 export * from "./response";
 

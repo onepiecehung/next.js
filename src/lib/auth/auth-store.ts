@@ -1,43 +1,39 @@
 "use client";
 
+import { AuthAPI, FirebaseAuthAPI, OTPAuthAPI } from "@/lib/api/auth";
 import {
   clearRefreshTokenFallback,
   clearTokens,
-  http,
   setAccessToken,
   setRefreshTokenFallback,
 } from "@/lib/http";
-import type {
-  ApiResponse,
-  FirebaseLoginRequest,
-  LoginResponse,
-  OTPRequestRequest,
-  OTPRequestResponse,
-  OTPVerifyRequest,
-  OTPVerifyResponse,
-  User,
-} from "@/lib/types";
+import type { User } from "@/lib/types";
 import { atom, useAtom } from "jotai";
-import {
-  signInWithGithub,
-  signInWithGoogle,
-  signInWithX,
-  signOutFirebase,
-} from "./firebase";
 
-// Jotai atoms for state management
+// ============================================================================
+// Jotai Atoms for State Management
+// ============================================================================
+
 export const accessTokenAtom = atom<string | null>(null);
 export const currentUserAtom = atom<User | null>(null);
 export const authLoadingAtom = atom<boolean>(false);
 export const userProfileLoadingAtom = atom<boolean>(false);
 
-// Function to set user profile loading state
+// ============================================================================
+// State Management Hooks
+// ============================================================================
+
+/**
+ * Function to set user profile loading state
+ * This will be used by components to control the global loading state
+ */
 export function setUserProfileLoading(loading: boolean) {
-  // This will be used by components to control the global loading state
   return loading;
 }
 
-// Hook for managing user profile loading state
+/**
+ * Hook for managing user profile loading state
+ */
 export function useUserProfileLoading() {
   const [loading, setLoading] = useAtom(userProfileLoadingAtom);
 
@@ -51,34 +47,19 @@ export function useUserProfileLoading() {
   };
 }
 
-// Login action: handles both cookie-based and fallback refresh token scenarios
-export async function loginAction(
-  email: string,
-  password: string,
-): Promise<User> {
-  const response = await http.post<ApiResponse<LoginResponse>>("/auth/login", {
-    email,
-    password,
-  });
+// ============================================================================
+// Token Management Utilities
+// ============================================================================
 
-  // Check if API response is successful
-  if (!response.data.success) {
-    throw new Error(response.data.message || "Login failed");
-  }
-
-  const { user, token } = response.data.data;
-  const { accessToken, refreshToken } = token;
-
-  if (!accessToken) {
-    throw new Error("No access token returned from server");
-  }
-
+/**
+ * Store authentication tokens securely
+ */
+function storeTokens(accessToken: string, refreshToken?: string) {
   // Store access token in memory (secure, not persisted)
   setAccessToken(accessToken);
 
   // Also set a cookie for middleware to check
   if (typeof document !== "undefined") {
-    // Set cookie with longer expiration and proper attributes
     document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; SameSite=Strict; Secure`;
   }
 
@@ -90,11 +71,46 @@ export async function loginAction(
       "⚠️ Using fallback refresh token storage - not secure for production",
     );
   }
+}
 
+/**
+ * Clear all user state and tokens
+ */
+export function clearUserState() {
+  clearTokens();
+  clearRefreshTokenFallback();
+
+  // Clear the access token cookie
+  if (typeof document !== "undefined") {
+    document.cookie = "accessToken=; path=/; max-age=0; SameSite=Strict";
+  }
+}
+
+// ============================================================================
+// Authentication Actions (using AuthAPI)
+// ============================================================================
+
+/**
+ * Login action: handles both cookie-based and fallback refresh token scenarios
+ */
+export async function loginAction(
+  email: string,
+  password: string,
+): Promise<User> {
+  const { user, token } = await AuthAPI.login(email, password);
+  const { accessToken, refreshToken } = token;
+
+  if (!accessToken) {
+    throw new Error("No access token returned from server");
+  }
+
+  storeTokens(accessToken, refreshToken);
   return user;
 }
 
-// Signup action: handles user registration
+/**
+ * Signup action: handles user registration
+ */
 export async function signupAction(
   username: string,
   email: string,
@@ -112,68 +128,27 @@ export async function signupAction(
     ...(phoneNumber && { phoneNumber }),
   };
 
-  const response = await http.post<ApiResponse<LoginResponse>>(
-    "/auth/signup",
-    signupData,
-  );
-
-  // Check if API response is successful
-  if (!response.data.success) {
-    throw new Error(response.data.message || "Signup failed");
-  }
-
-  const { user, token } = response.data.data;
+  const { user, token } = await AuthAPI.signup(signupData);
   const { accessToken, refreshToken } = token;
 
   if (!accessToken) {
     throw new Error("No access token returned from server");
   }
 
-  // Store access token in memory (secure, not persisted)
-  setAccessToken(accessToken);
-
-  // Also set a cookie for middleware to check
-  if (typeof document !== "undefined") {
-    // Set cookie with longer expiration and proper attributes
-    document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; SameSite=Strict; Secure`;
-  }
-
-  // Store refresh token in localStorage only if backend doesn't set HttpOnly cookies
-  // This is a fallback mechanism and should be avoided in production
-  if (refreshToken) {
-    setRefreshTokenFallback(refreshToken);
-    console.warn(
-      "⚠️ Using fallback refresh token storage - not secure for production",
-    );
-  }
-
+  storeTokens(accessToken, refreshToken);
   return user;
 }
 
-// Fetch current user information
+/**
+ * Fetch current user information
+ */
 export async function fetchMeAction(): Promise<User> {
-  const response = await http.get<ApiResponse<User>>("/users/me");
-
-  // Check if API response is successful
-  if (!response.data.success) {
-    throw new Error(response.data.message || "Failed to fetch user data");
-  }
-
-  return response.data.data;
+  return AuthAPI.fetchMe();
 }
 
-// Clear all user state and tokens
-export function clearUserState() {
-  clearTokens();
-  clearRefreshTokenFallback();
-
-  // Clear the access token cookie
-  if (typeof document !== "undefined") {
-    document.cookie = "accessToken=; path=/; max-age=0; SameSite=Strict";
-  }
-}
-
-// Check if access token is valid and refresh if needed
+/**
+ * Check if access token is valid and refresh if needed
+ */
 export async function checkAndRefreshToken(): Promise<boolean> {
   try {
     console.log("checkAndRefreshToken: Starting token check...");
@@ -191,261 +166,95 @@ export async function checkAndRefreshToken(): Promise<boolean> {
   }
 }
 
-// Firebase Google login action
+// ============================================================================
+// Firebase Authentication Actions
+// ============================================================================
+
+/**
+ * Firebase Google login action
+ */
 export async function loginWithGoogleAction(): Promise<User> {
-  try {
-    // Step 1: Sign in with Google using Firebase
-    const firebaseUser = await signInWithGoogle();
-
-    // Step 2: Get Firebase ID token
-    const idToken = await firebaseUser.getIdToken();
-
-    // Step 3: Send ID token to backend for authentication
-    const requestBody: FirebaseLoginRequest = {
-      idToken: idToken,
-    };
-    const response = await http.post<ApiResponse<LoginResponse>>(
-      "/auth/firebase/login",
-      requestBody,
-    );
-
-    // Check if API response is successful
-    if (!response.data.success) {
-      throw new Error(
-        response.data.message || "Firebase authentication failed",
-      );
-    }
-
-    const { user, token } = response.data.data;
-    const { accessToken, refreshToken } = token;
-
-    if (!accessToken) {
-      throw new Error("No access token returned from server");
-    }
-
-    // Step 4: Store access token in memory (secure, not persisted)
-    setAccessToken(accessToken);
-
-    // Step 5: Set cookie for middleware to check
-    if (typeof document !== "undefined") {
-      document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; SameSite=Strict; Secure`;
-    }
-
-    // Step 6: Store refresh token in localStorage only if backend doesn't set HttpOnly cookies
-    if (refreshToken) {
-      setRefreshTokenFallback(refreshToken);
-      console.warn(
-        "⚠️ Using fallback refresh token storage - not secure for production",
-      );
-    }
-
-    return user;
-  } catch (error) {
-    console.error("Firebase Google login error:", error);
-    throw error;
-  }
+  const user = await FirebaseAuthAPI.loginWithGoogle();
+  
+  // Get token for storage
+  const firebaseUser = await (await import("./firebase")).signInWithGoogle();
+  const idToken = await firebaseUser.getIdToken();
+  const { token } = await AuthAPI.firebaseLogin(idToken);
+  
+  storeTokens(token.accessToken, token.refreshToken);
+  return user;
 }
 
-// Firebase GitHub login action
+/**
+ * Firebase GitHub login action
+ */
 export async function loginWithGithubAction(): Promise<User> {
-  try {
-    // Step 1: Sign in with GitHub using Firebase
-    const firebaseUser = await signInWithGithub();
-
-    // Step 2: Get Firebase ID token
-    const idToken = await firebaseUser.getIdToken();
-
-    // Step 3: Send ID token to backend for authentication
-    const requestBody: FirebaseLoginRequest = {
-      idToken: idToken,
-    };
-    const response = await http.post<ApiResponse<LoginResponse>>(
-      "/auth/firebase/login",
-      requestBody,
-    );
-
-    // Check if API response is successful
-    if (!response.data.success) {
-      throw new Error(
-        response.data.message || "Firebase authentication failed",
-      );
-    }
-
-    const { user, token } = response.data.data;
-    const { accessToken, refreshToken } = token;
-
-    if (!accessToken) {
-      throw new Error("No access token returned from server");
-    }
-
-    // Step 4: Store access token in memory (secure, not persisted)
-    setAccessToken(accessToken);
-
-    // Step 5: Set cookie for middleware to check
-    if (typeof document !== "undefined") {
-      document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; SameSite=Strict; Secure`;
-    }
-
-    // Step 6: Store refresh token in localStorage only if backend doesn't set HttpOnly cookies
-    if (refreshToken) {
-      setRefreshTokenFallback(refreshToken);
-      console.warn(
-        "⚠️ Using fallback refresh token storage - not secure for production",
-      );
-    }
-
-    return user;
-  } catch (error) {
-    console.error("Firebase GitHub login error:", error);
-    throw error;
-  }
+  const user = await FirebaseAuthAPI.loginWithGithub();
+  
+  // Get token for storage
+  const firebaseUser = await (await import("./firebase")).signInWithGithub();
+  const idToken = await firebaseUser.getIdToken();
+  const { token } = await AuthAPI.firebaseLogin(idToken);
+  
+  storeTokens(token.accessToken, token.refreshToken);
+  return user;
 }
 
-// Firebase X (Twitter) login action
+/**
+ * Firebase X (Twitter) login action
+ */
 export async function loginWithXAction(): Promise<User> {
-  try {
-    // Step 1: Sign in with X using Firebase
-    const firebaseUser = await signInWithX();
-
-    // Step 2: Get Firebase ID token
-    const idToken = await firebaseUser.getIdToken();
-
-    // Step 3: Send ID token to backend for authentication
-    const requestBody: FirebaseLoginRequest = {
-      idToken: idToken,
-    };
-    const response = await http.post<ApiResponse<LoginResponse>>(
-      "/auth/firebase/login",
-      requestBody,
-    );
-
-    // Check if API response is successful
-    if (!response.data.success) {
-      throw new Error(
-        response.data.message || "Firebase authentication failed",
-      );
-    }
-
-    const { user, token } = response.data.data;
-    const { accessToken, refreshToken } = token;
-
-    if (!accessToken) {
-      throw new Error("No access token returned from server");
-    }
-
-    // Step 4: Store access token in memory (secure, not persisted)
-    setAccessToken(accessToken);
-
-    // Step 5: Set cookie for middleware to check
-    if (typeof document !== "undefined") {
-      document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; SameSite=Strict; Secure`;
-    }
-
-    // Step 6: Store refresh token in localStorage only if backend doesn't set HttpOnly cookies
-    if (refreshToken) {
-      setRefreshTokenFallback(refreshToken);
-      console.warn(
-        "⚠️ Using fallback refresh token storage - not secure for production",
-      );
-    }
-
-    return user;
-  } catch (error) {
-    console.error("Firebase X login error:", error);
-    throw error;
-  }
+  const user = await FirebaseAuthAPI.loginWithX();
+  
+  // Get token for storage
+  const firebaseUser = await (await import("./firebase")).signInWithX();
+  const idToken = await firebaseUser.getIdToken();
+  const { token } = await AuthAPI.firebaseLogin(idToken);
+  
+  storeTokens(token.accessToken, token.refreshToken);
+  return user;
 }
 
-// OTP Request action: sends OTP to email
+// ============================================================================
+// OTP Authentication Actions
+// ============================================================================
+
+/**
+ * OTP Request action: sends OTP to email
+ */
 export async function requestOTPAction(
   email: string,
 ): Promise<{ requestId: string; expiresIn: number }> {
-  try {
-    const requestBody: OTPRequestRequest = {
-      email: email,
-    };
-
-    const response = await http.post<OTPRequestResponse>(
-      "/auth/otp/request",
-      requestBody,
-    );
-
-    // Check if API response is successful
-    if (!response.data.success) {
-      throw new Error(response.data.message || "Failed to send OTP");
-    }
-
-    return {
-      requestId: response.data.data.requestId,
-      expiresIn: response.data.data.expiresInSec,
-    };
-  } catch (error) {
-    console.error("OTP request error:", error);
-    throw error;
-  }
+  return OTPAuthAPI.requestOTP(email);
 }
 
-// OTP Verify action: verifies OTP code
+/**
+ * OTP Verify action: verifies OTP code
+ */
 export async function verifyOTPAction(
   email: string,
   code: string,
   requestId: string,
 ): Promise<User> {
-  try {
-    const requestBody: OTPVerifyRequest = {
-      email: email,
-      code: code,
-      requestId: requestId,
-    };
-
-    const response = await http.post<OTPVerifyResponse>(
-      "/auth/otp/verify",
-      requestBody,
-    );
-
-    // Check if API response is successful
-    if (!response.data.success) {
-      throw new Error(response.data.message || "OTP verification failed");
-    }
-
-    const { user, token } = response.data.data;
-    const { accessToken, refreshToken } = token;
-
-    if (!accessToken) {
-      throw new Error("No access token returned from server");
-    }
-
-    // Store access token in memory (secure, not persisted)
-    setAccessToken(accessToken);
-
-    // Set cookie for middleware to check
-    if (typeof document !== "undefined") {
-      document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; SameSite=Strict; Secure`;
-    }
-
-    // Store refresh token in localStorage only if backend doesn't set HttpOnly cookies
-    if (refreshToken) {
-      setRefreshTokenFallback(refreshToken);
-      console.warn(
-        "⚠️ Using fallback refresh token storage - not secure for production",
-      );
-    }
-
-    return user;
-  } catch (error) {
-    console.error("OTP verification error:", error);
-    throw error;
-  }
+  const user = await OTPAuthAPI.verifyOTP(email, code, requestId);
+  
+  // Get token for storage from the API response
+  const response = await AuthAPI.verifyOTP(email, code, requestId);
+  storeTokens(response.data.token.accessToken, response.data.token.refreshToken);
+  
+  return user;
 }
 
-// Logout action: clears all tokens and user state
+/**
+ * Logout action: clears all tokens and user state
+ */
 export async function logoutAction() {
   try {
     // Sign out from Firebase if user was logged in via Firebase
-    await signOutFirebase();
+    await FirebaseAuthAPI.signOut();
 
     // Attempt to call logout endpoint (best effort)
-    await http.post("/auth/logout");
+    await AuthAPI.logout();
   } catch {
     // Ignore logout errors - still clear local state
     console.warn("Logout endpoint failed, but clearing local state");

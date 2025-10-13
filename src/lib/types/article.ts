@@ -33,15 +33,34 @@ export type ArticleContentFormat =
   (typeof ARTICLE_CONSTANTS.CONTENT_FORMAT)[keyof typeof ARTICLE_CONSTANTS.CONTENT_FORMAT];
 
 // ============================================================================
-// Article DTOs (Data Transfer Objects)
+// Base Article Fields (shared across DTOs)
 // ============================================================================
 
 /**
- * Create Article DTO
- * Used for creating new articles via API
- * All fields except title and content are optional
+ * Base article fields shared across all article-related interfaces
+ * Contains common fields that appear in Create, Update, and Entity
  */
-export interface CreateArticleDto {
+export interface BaseArticleFields {
+  title: string;
+  content: string;
+  summary?: string;
+  contentFormat: ArticleContentFormat;
+  visibility: ArticleVisibility;
+  status: ArticleStatus;
+  tags: string[];
+  coverImageId?: string;
+  coverImageUrl?: string;
+  wordCount?: number;
+  readTimeMinutes?: number;
+  slug: string;
+  publishedAt?: Date;
+  scheduledAt?: Date;
+}
+
+/**
+ * Base article fields for creation (all optional except title/content)
+ */
+export interface BaseArticleCreateFields {
   title: string;
   content: string;
   summary?: string;
@@ -53,18 +72,15 @@ export interface CreateArticleDto {
   coverImageUrl?: string;
   wordCount?: number;
   readTimeMinutes?: number;
-  userId?: string;
   slug?: string;
   publishedAt?: Date;
   scheduledAt?: Date;
 }
 
 /**
- * Update Article DTO
- * Used for updating existing articles via API
- * All fields are optional
+ * Base article fields for updates (all optional)
  */
-export interface UpdateArticleDto {
+export interface BaseArticleUpdateFields {
   title?: string;
   content?: string;
   summary?: string;
@@ -82,32 +98,38 @@ export interface UpdateArticleDto {
 }
 
 // ============================================================================
+// Article DTOs (Data Transfer Objects)
+// ============================================================================
+
+/**
+ * Create Article DTO
+ * Used for creating new articles via API
+ * Extends base create fields with additional creation-specific fields
+ */
+export interface CreateArticleDto extends BaseArticleCreateFields {
+  userId?: string;
+}
+
+/**
+ * Update Article DTO
+ * Used for updating existing articles via API
+ * All fields are optional for partial updates
+ */
+export type UpdateArticleDto = BaseArticleUpdateFields;
+
+// ============================================================================
 // Article Entity
 // ============================================================================
 
 /**
  * Article entity
  * Complete article structure as returned by the API
- * This is the single source of truth for article data structure
+ * Extends base fields with entity-specific fields (id, timestamps)
  */
-export interface Article {
+export interface Article extends BaseArticleFields {
   id: string;
-  title: string;
-  content: string;
-  summary?: string;
-  contentFormat: ArticleContentFormat;
-  visibility: ArticleVisibility;
-  status: ArticleStatus;
-  tags: string[];
-  coverImageId?: string;
-  coverImageUrl?: string;
-  coverImage?: UploadedMedia;
-  wordCount?: number;
-  readTimeMinutes?: number;
   userId: string;
-  slug: string;
-  publishedAt?: Date;
-  scheduledAt?: Date;
+  coverImage?: UploadedMedia;
   createdAt: Date;
   updatedAt: Date;
 }

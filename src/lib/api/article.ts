@@ -1,5 +1,11 @@
 import { http } from "../http";
-import type { ApiResponse, Article, CreateArticleDto } from "../types";
+import type {
+  ApiResponse,
+  ApiResponseCursor,
+  ApiResponseOffset,
+  Article,
+  CreateArticleDto
+} from "../types";
 
 /**
  * Article API wrapper
@@ -48,7 +54,44 @@ export class ArticleAPI {
   }
 
   /**
-   * Get articles list
+   * Get articles list with offset pagination
+   */
+  static async getArticlesOffset(params?: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    visibility?: string;
+    userId?: string;
+  }): Promise<ApiResponseOffset<Article>> {
+    const response = await http.get<ApiResponseOffset<Article>>(
+      `${this.BASE_URL}/offset`,
+      { params }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get articles list with cursor pagination
+   */
+  static async getArticlesCursor(params?: {
+    cursor?: string | null;
+    limit?: number;
+    sortBy?: string;
+    order?: 'ASC' | 'DESC';
+    status?: string;
+    visibility?: string;
+    userId?: string;
+  }): Promise<ApiResponseCursor<Article>> {
+    const response = await http.get<ApiResponseCursor<Article>>(
+      `${this.BASE_URL}/cursor`,
+      { params }
+    );
+    return response.data;
+  }
+
+  /**
+   * Legacy method - Get articles list (deprecated)
+   * @deprecated Use getArticlesOffset or getArticlesCursor instead
    */
   static async getArticles(params?: {
     page?: number;
