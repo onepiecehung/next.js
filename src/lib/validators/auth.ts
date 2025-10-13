@@ -103,13 +103,13 @@ export const mapServerError = (error: unknown): string => {
 
 /**
  * Note: Authentication error messages have been moved to i18n
- * 
+ *
  * Usage in components:
  * import { useI18n } from '@/components/providers/i18n-provider';
- * 
+ *
  * const { t } = useI18n();
  * const errorMessage = t('errors.invalidCredentials', 'auth');
- * 
+ *
  * Available error keys in 'auth' namespace:
  * - auth.errors.invalidCredentials
  * - auth.errors.accountLocked
@@ -118,7 +118,7 @@ export const mapServerError = (error: unknown): string => {
  * - auth.errors.networkError
  * - auth.errors.serverError
  * - auth.errors.unknownError
- * 
+ *
  * Available validation error keys:
  * - auth.validation.emailRequired
  * - auth.validation.emailInvalid

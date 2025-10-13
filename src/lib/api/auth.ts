@@ -1,19 +1,19 @@
 import {
-    signInWithGithub,
-    signInWithGoogle,
-    signInWithX,
-    signOutFirebase,
+  signInWithGithub,
+  signInWithGoogle,
+  signInWithX,
+  signOutFirebase,
 } from "../auth/firebase";
 import { http } from "../http";
 import type {
-    ApiResponse,
-    FirebaseLoginRequest,
-    LoginResponse,
-    OTPRequestRequest,
-    OTPRequestResponse,
-    OTPVerifyRequest,
-    OTPVerifyResponse,
-    User,
+  ApiResponse,
+  FirebaseLoginRequest,
+  LoginResponse,
+  OTPRequestRequest,
+  OTPRequestResponse,
+  OTPVerifyRequest,
+  OTPVerifyResponse,
+  User,
 } from "../types";
 
 /**
@@ -30,7 +30,7 @@ export class AuthAPI {
   static async login(email: string, password: string): Promise<LoginResponse> {
     const response = await http.post<ApiResponse<LoginResponse>>(
       `${this.BASE_URL}/login`,
-      { email, password }
+      { email, password },
     );
 
     if (!response.data.success) {
@@ -53,7 +53,7 @@ export class AuthAPI {
   }): Promise<LoginResponse> {
     const response = await http.post<ApiResponse<LoginResponse>>(
       `${this.BASE_URL}/signup`,
-      signupData
+      signupData,
     );
 
     if (!response.data.success) {
@@ -71,11 +71,13 @@ export class AuthAPI {
 
     const response = await http.post<ApiResponse<LoginResponse>>(
       `${this.BASE_URL}/firebase/login`,
-      requestBody
+      requestBody,
     );
 
     if (!response.data.success) {
-      throw new Error(response.data.message || "Firebase authentication failed");
+      throw new Error(
+        response.data.message || "Firebase authentication failed",
+      );
     }
 
     return response.data.data;
@@ -89,7 +91,7 @@ export class AuthAPI {
 
     const response = await http.post<OTPRequestResponse>(
       `${this.BASE_URL}/otp/request`,
-      requestBody
+      requestBody,
     );
 
     if (!response.data.success) {
@@ -105,13 +107,13 @@ export class AuthAPI {
   static async verifyOTP(
     email: string,
     code: string,
-    requestId: string
+    requestId: string,
   ): Promise<OTPVerifyResponse> {
     const requestBody: OTPVerifyRequest = { email, code, requestId };
 
     const response = await http.post<OTPVerifyResponse>(
       `${this.BASE_URL}/otp/verify`,
-      requestBody
+      requestBody,
     );
 
     if (!response.data.success) {
@@ -250,7 +252,7 @@ export class OTPAuthAPI {
   static async verifyOTP(
     email: string,
     code: string,
-    requestId: string
+    requestId: string,
   ): Promise<User> {
     try {
       const response = await AuthAPI.verifyOTP(email, code, requestId);
@@ -267,4 +269,3 @@ export class OTPAuthAPI {
     }
   }
 }
-

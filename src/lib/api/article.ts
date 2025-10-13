@@ -4,7 +4,7 @@ import type {
   ApiResponseCursor,
   ApiResponseOffset,
   Article,
-  CreateArticleDto
+  CreateArticleDto,
 } from "../types";
 
 /**
@@ -65,7 +65,7 @@ export class ArticleAPI {
   }): Promise<ApiResponseOffset<Article>> {
     const response = await http.get<ApiResponseOffset<Article>>(
       `${this.BASE_URL}/offset`,
-      { params }
+      { params },
     );
     return response.data;
   }
@@ -77,14 +77,14 @@ export class ArticleAPI {
     cursor?: string | null;
     limit?: number;
     sortBy?: string;
-    order?: 'ASC' | 'DESC';
+    order?: "ASC" | "DESC";
     status?: string;
     visibility?: string;
     userId?: string;
   }): Promise<ApiResponseCursor<Article>> {
     const response = await http.get<ApiResponseCursor<Article>>(
       `${this.BASE_URL}/cursor`,
-      { params }
+      { params },
     );
     return response.data;
   }

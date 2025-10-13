@@ -175,12 +175,12 @@ export async function checkAndRefreshToken(): Promise<boolean> {
  */
 export async function loginWithGoogleAction(): Promise<User> {
   const user = await FirebaseAuthAPI.loginWithGoogle();
-  
+
   // Get token for storage
   const firebaseUser = await (await import("./firebase")).signInWithGoogle();
   const idToken = await firebaseUser.getIdToken();
   const { token } = await AuthAPI.firebaseLogin(idToken);
-  
+
   storeTokens(token.accessToken, token.refreshToken);
   return user;
 }
@@ -190,12 +190,12 @@ export async function loginWithGoogleAction(): Promise<User> {
  */
 export async function loginWithGithubAction(): Promise<User> {
   const user = await FirebaseAuthAPI.loginWithGithub();
-  
+
   // Get token for storage
   const firebaseUser = await (await import("./firebase")).signInWithGithub();
   const idToken = await firebaseUser.getIdToken();
   const { token } = await AuthAPI.firebaseLogin(idToken);
-  
+
   storeTokens(token.accessToken, token.refreshToken);
   return user;
 }
@@ -205,12 +205,12 @@ export async function loginWithGithubAction(): Promise<User> {
  */
 export async function loginWithXAction(): Promise<User> {
   const user = await FirebaseAuthAPI.loginWithX();
-  
+
   // Get token for storage
   const firebaseUser = await (await import("./firebase")).signInWithX();
   const idToken = await firebaseUser.getIdToken();
   const { token } = await AuthAPI.firebaseLogin(idToken);
-  
+
   storeTokens(token.accessToken, token.refreshToken);
   return user;
 }
@@ -237,11 +237,14 @@ export async function verifyOTPAction(
   requestId: string,
 ): Promise<User> {
   const user = await OTPAuthAPI.verifyOTP(email, code, requestId);
-  
+
   // Get token for storage from the API response
   const response = await AuthAPI.verifyOTP(email, code, requestId);
-  storeTokens(response.data.token.accessToken, response.data.token.refreshToken);
-  
+  storeTokens(
+    response.data.token.accessToken,
+    response.data.token.refreshToken,
+  );
+
   return user;
 }
 

@@ -3,15 +3,12 @@
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button } from "@/components/ui/core/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/layout/dialog";
-import {
-    getRateLimitRemainingSeconds,
-    rateLimitBus
-} from "@/lib/rate-limit";
+import { getRateLimitRemainingSeconds, rateLimitBus } from "@/lib/rate-limit";
 import * as React from "react";
 
 type RateLimitProviderProps = {

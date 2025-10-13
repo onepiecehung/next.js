@@ -1,15 +1,15 @@
 /**
  * Types Module - Central Type Definitions Export
- * 
+ *
  * This module serves as the main entry point for all TypeScript type definitions.
  * It contains ONLY pure type definitions and interfaces - no runtime code.
- * 
+ *
  * Structure:
  * - user.ts          → User entities and profile management
  * - auth.ts          → Authentication, OTP, tokens, passwords, email verification
  * - article.ts       → Article entities, DTOs, and constants
  * - response.ts      → API responses, errors, pagination
- * 
+ *
  * Important:
  * - Runtime validation schemas (Zod) are kept in @/lib/validators
  * - React components and providers are kept in @/components
@@ -26,7 +26,7 @@
  *           ApiErrorResponse, SuccessResponse
  *           PaginationOffset, PaginationCursor (new pagination types)
  *           PaginationOffsetMeta, PaginationCursorMeta
- * 
+ *
  * Legacy types (deprecated): PaginationMeta, PaginatedResponse
  */
 export * from "./response";
@@ -54,18 +54,3 @@ export * from "./user";
  *           VerifyEmailRequest, ResendVerificationEmailRequest
  */
 export * from "./auth";
-
-// ============================================================================
-// Article Types
-// ============================================================================
-
-/**
- * Article-related types
- * Single source of truth for article data structures
- * Includes: Article, ArticleSummary, ArticleWithAuthor
- *           CreateArticleDto, UpdateArticleDto
- *           ArticleStatus, ArticleVisibility, ArticleContentFormat
- * 
- * Note: ARTICLE_CONSTANTS have been moved to @/lib/constants/article (runtime constants)
- */
-export * from "./article";

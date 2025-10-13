@@ -72,4 +72,3 @@ export interface UpdateProfileRequest {
 export interface UpdateProfileResponse {
   user: User;
 }
-

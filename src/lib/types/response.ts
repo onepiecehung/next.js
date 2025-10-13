@@ -54,8 +54,8 @@ export interface ApiResponseCursor<T = unknown> extends BaseApiResponse {
  * Generic API Response that can handle both pagination types
  * Use this when you need to support both offset and cursor pagination
  */
-export type ApiResponsePaginated<T = unknown> = 
-  | ApiResponseOffset<T> 
+export type ApiResponsePaginated<T = unknown> =
+  | ApiResponseOffset<T>
   | ApiResponseCursor<T>;
 
 // ============================================================================
@@ -116,7 +116,7 @@ export interface PaginationCursorMeta {
   prevCursor?: string | null;
   take: number;
   sortBy: string;
-  order: 'ASC' | 'DESC';
+  order: "ASC" | "DESC";
 }
 
 /**
@@ -160,4 +160,3 @@ export interface PaginatedResponse<T> {
 export interface SuccessResponse extends BaseApiResponse {
   success: true;
 }
-

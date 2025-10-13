@@ -23,9 +23,7 @@ export const registerFormSchemaSimple = z.object({
   phoneNumber: z.string().optional(),
 });
 
-export type RegisterFormDataSimple = z.infer<
-  typeof registerFormSchemaSimple
->;
+export type RegisterFormDataSimple = z.infer<typeof registerFormSchemaSimple>;
 
 /**
  * Registration form validation schema (with password confirmation)
@@ -37,9 +35,7 @@ export const registerFormSchema = z
     username: z.string().min(3, "Username must be at least 3 characters"),
     email: z.string().email("Please enter a valid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z
-      .string()
-      .min(6, "Please confirm your password"),
+    confirmPassword: z.string().min(6, "Please confirm your password"),
     dob: z.string().optional(),
     phoneNumber: z.string().optional(),
   })
@@ -130,4 +126,3 @@ export const resetPasswordSchema = z
   });
 
 export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
-

@@ -1,4 +1,9 @@
-import type { PaginationCursor, PaginationCursorMeta, PaginationOffset, PaginationOffsetMeta } from "../types/response";
+import type {
+  PaginationCursor,
+  PaginationCursorMeta,
+  PaginationOffset,
+  PaginationOffsetMeta,
+} from "../types/response";
 
 /**
  * Pagination Formatter Utility
@@ -21,7 +26,7 @@ export class PaginationFormatter {
   ): PaginationOffset<T> {
     const totalPages = Math.ceil(total / limit);
     const hasNextPage = page < totalPages;
-    
+
     return {
       result: data,
       metaData: {
@@ -50,13 +55,14 @@ export class PaginationFormatter {
     limit: number,
     cursorKey: keyof T,
     sortBy: string,
-    order: 'ASC' | 'DESC' = 'DESC',
+    order: "ASC" | "DESC" = "DESC",
     prevCursor?: string | null,
   ): PaginationCursor<T> {
     const hasNextPage = data.length === limit;
-    const nextCursor = hasNextPage && data.length > 0 
-      ? String(data[data.length - 1][cursorKey]) 
-      : null;
+    const nextCursor =
+      hasNextPage && data.length > 0
+        ? String(data[data.length - 1][cursorKey])
+        : null;
 
     return {
       result: data,
@@ -101,7 +107,7 @@ export class PaginationFormatter {
   static emptyCursor<T>(
     limit: number,
     sortBy: string,
-    order: 'ASC' | 'DESC' = 'DESC',
+    order: "ASC" | "DESC" = "DESC",
     prevCursor?: string | null,
   ): PaginationCursor<T> {
     return {
@@ -127,7 +133,7 @@ export class PaginationFormatter {
   static offsetToCursorMeta(
     offsetMeta: PaginationOffsetMeta,
     sortBy: string,
-    order: 'ASC' | 'DESC' = 'DESC',
+    order: "ASC" | "DESC" = "DESC",
   ): PaginationCursorMeta {
     return {
       nextCursor: offsetMeta.nextCursor,
@@ -151,22 +157,22 @@ export class PaginationFormatter {
     maxLimit: number = 100,
   ): { page: number; limit: number; isValid: boolean; errors: string[] } {
     const errors: string[] = [];
-    
+
     // Normalize page (1-based)
     const normalizedPage = Math.max(1, page || 1);
-    
+
     // Normalize limit
     const normalizedLimit = Math.min(Math.max(1, limit || 10), maxLimit);
-    
+
     // Validation
     if (page !== undefined && page < 1) {
-      errors.push('Page must be greater than 0');
+      errors.push("Page must be greater than 0");
     }
-    
+
     if (limit !== undefined && limit < 1) {
-      errors.push('Limit must be greater than 0');
+      errors.push("Limit must be greater than 0");
     }
-    
+
     if (limit !== undefined && limit > maxLimit) {
       errors.push(`Limit cannot exceed ${maxLimit}`);
     }
@@ -190,15 +196,15 @@ export class PaginationFormatter {
     maxLimit: number = 100,
   ): { limit: number; isValid: boolean; errors: string[] } {
     const errors: string[] = [];
-    
+
     // Normalize limit
     const normalizedLimit = Math.min(Math.max(1, limit || 10), maxLimit);
-    
+
     // Validation
     if (limit !== undefined && limit < 1) {
-      errors.push('Limit must be greater than 0');
+      errors.push("Limit must be greater than 0");
     }
-    
+
     if (limit !== undefined && limit > maxLimit) {
       errors.push(`Limit cannot exceed ${maxLimit}`);
     }
@@ -210,4 +216,3 @@ export class PaginationFormatter {
     };
   }
 }
-

@@ -63,7 +63,10 @@ export class ReactionsApi {
   static async createOrSetReaction(
     reactionData: ReactionDto,
   ): Promise<ReactionResponse> {
-    const response = await http.post<ReactionResponse>("/reactions", reactionData);
+    const response = await http.post<ReactionResponse>(
+      "/reactions",
+      reactionData,
+    );
     return response.data;
   }
 
@@ -75,7 +78,9 @@ export class ReactionsApi {
   static async removeReaction(
     reactionData: ReactionDto,
   ): Promise<ReactionResponse> {
-    const response = await http.delete<ReactionResponse>("/reactions", { data: reactionData });
+    const response = await http.delete<ReactionResponse>("/reactions", {
+      data: reactionData,
+    });
     return response.data;
   }
 
@@ -114,7 +119,10 @@ export class ReactionsApi {
       params.kinds = kinds.join(",");
     }
 
-    const response = await http.get<ReactionCountsResponse>("/reactions/counts", { params });
+    const response = await http.get<ReactionCountsResponse>(
+      "/reactions/counts",
+      { params },
+    );
     return response.data;
   }
 
@@ -126,7 +134,10 @@ export class ReactionsApi {
   static async getCountsBatch(
     batchData: BatchCountsDto,
   ): Promise<ReactionCountsResponse> {
-    const response = await http.post<ReactionCountsResponse>("/reactions/counts", batchData);
+    const response = await http.post<ReactionCountsResponse>(
+      "/reactions/counts",
+      batchData,
+    );
     return response.data;
   }
 

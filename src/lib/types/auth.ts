@@ -206,4 +206,3 @@ export interface ResendVerificationEmailRequest {
 export interface ResendVerificationEmailResponse {
   message: string;
 }
-
