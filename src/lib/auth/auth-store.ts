@@ -7,7 +7,7 @@ import {
   setAccessToken,
   setRefreshTokenFallback,
 } from "@/lib/http";
-import type { User } from "@/lib/types";
+import type { User } from "@/lib/interface";
 import { atom, useAtom } from "jotai";
 
 // ============================================================================

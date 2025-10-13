@@ -13,8 +13,8 @@ import type {
   OTPRequestResponse,
   OTPVerifyRequest,
   OTPVerifyResponse,
-  User,
 } from "../types";
+import { User } from "@/lib/interface";
 
 /**
  * Authentication API wrapper

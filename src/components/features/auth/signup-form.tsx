@@ -15,16 +15,16 @@ import {
   fetchMeAction,
   signupAction,
 } from "@/lib/auth";
+import {
+  registerFormSchemaSimple,
+  type RegisterFormDataSimple,
+} from "@/lib/validators/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import {
-  registerFormSchemaSimple,
-  type RegisterFormDataSimple,
-} from "@/lib/validators/forms";
 
 // Helper function to extract error message from various error types
 function extractErrorMessage(error: unknown, defaultMessage: string): string {
