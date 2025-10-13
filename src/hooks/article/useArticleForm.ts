@@ -1,5 +1,5 @@
 import { useI18n } from "@/components/providers/i18n-provider";
-import type { Article } from "@/lib/types/article";
+import type { Article } from "@/lib/interface";
 import { useState } from "react";
 import { toast } from "sonner";
 

@@ -183,7 +183,7 @@ export default function ArticleViewPage() {
                       <p className="text-xs sm:text-sm text-muted-foreground">
                         {article.publishedAt
                           ? formatDate(article.publishedAt)
-                          : formatDate(article.createdAt)}
+                          : formatDate(article.createdAt ?? new Date())}
                       </p>
                     </div>
                   </div>

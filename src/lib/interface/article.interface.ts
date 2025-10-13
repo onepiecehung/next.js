@@ -9,6 +9,16 @@ export interface Article extends BaseEntityCustom {
 
   title: string;
 
+  /**
+   * Raw article content
+   */
+  content: string;
+
+  /**
+   * Content format indicator (e.g., html, markdown)
+   */
+  contentFormat: string;
+
   slug: string;
 
   summary?: string;

@@ -1,10 +1,14 @@
 "use client";
 
-import * as React from "react";
-import { User, LogOut, Settings, PenTool } from "lucide-react";
+import { LogOut, PenTool, Settings, User as UserIcon } from "lucide-react";
 import Link from "next/link";
 
+import { useI18n } from "@/components/providers/i18n-provider";
+import { useIsMounted } from "@/components/providers/no-ssr";
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   Button,
   DropdownMenu,
   DropdownMenuContent,
@@ -12,24 +16,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
 } from "@/components/ui";
-import { useIsMounted } from "@/components/providers/no-ssr";
-import { useI18n } from "@/components/providers/i18n-provider";
+import type { User } from "@/lib/interface";
 
 interface UserDropdownProps {
-  user: {
-    id: string;
-    name?: string | null;
-    username?: string | null;
-    email: string;
-    avatar?: {
-      url: string;
-      key: string;
-    } | null;
-  };
+  user: User & { id: string }; // Ensure id is required
   onLogout: () => void;
   isLoggingOut: boolean;
 }
@@ -46,7 +37,7 @@ export function UserDropdown({
 }: Readonly<UserDropdownProps>) {
   const { t } = useI18n();
   const isMounted = useIsMounted();
-  const displayName = user.name || user.username || user.email.split("@")[0];
+  const displayName = user.name || user.username || user.email?.split("@")[0] || "User";
   const initials = displayName.slice(0, 2).toUpperCase();
   const hasAvatar = user.avatar?.url;
 
@@ -112,7 +103,7 @@ export function UserDropdown({
 
         <DropdownMenuItem asChild>
           <Link href={`/users/${user.id}`} className="cursor-pointer">
-            <User className="mr-2 h-4 w-4" />
+            <UserIcon className="mr-2 h-4 w-4" />
             <span>{t("userDropdownProfile", "user")}</span>
           </Link>
         </DropdownMenuItem>

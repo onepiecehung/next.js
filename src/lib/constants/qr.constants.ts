@@ -288,7 +288,7 @@ export interface QrTicket {
   /** Optional web session identifier to bind the ticket to a specific browser session */
   webSessionId?: string;
   /** Additional data specific to the action type */
-  payload?: Record<string, any>;
+  payload?: Record<string, unknown>;
   /** User ID who created the ticket (if applicable) */
   createdBy?: string;
   /** User ID who scanned the QR code */
@@ -348,7 +348,7 @@ export interface QrTicketPreview {
   /** Type of action this ticket represents */
   type: QrActionType;
   /** Safe preview of payload data (sanitized) */
-  payloadPreview?: Record<string, any>;
+  payloadPreview?: Record<string, unknown>;
   /** Current status of the ticket */
   status: QrTicketStatus;
   /** Whether the ticket is expired */

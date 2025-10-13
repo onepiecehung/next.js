@@ -97,7 +97,7 @@ export async function loginAction(
   email: string,
   password: string,
 ): Promise<User> {
-  const { user, token } = await AuthAPI.login(email, password);
+  const { user, token } = await AuthAPI.login({ email, password });
   const { accessToken, refreshToken } = token;
 
   if (!accessToken) {
@@ -179,7 +179,7 @@ export async function loginWithGoogleAction(): Promise<User> {
   // Get token for storage
   const firebaseUser = await (await import("./firebase")).signInWithGoogle();
   const idToken = await firebaseUser.getIdToken();
-  const { token } = await AuthAPI.firebaseLogin(idToken);
+  const { token } = await AuthAPI.firebaseLogin({ idToken });
 
   storeTokens(token.accessToken, token.refreshToken);
   return user;
@@ -194,7 +194,7 @@ export async function loginWithGithubAction(): Promise<User> {
   // Get token for storage
   const firebaseUser = await (await import("./firebase")).signInWithGithub();
   const idToken = await firebaseUser.getIdToken();
-  const { token } = await AuthAPI.firebaseLogin(idToken);
+  const { token } = await AuthAPI.firebaseLogin({ idToken });
 
   storeTokens(token.accessToken, token.refreshToken);
   return user;
@@ -209,7 +209,7 @@ export async function loginWithXAction(): Promise<User> {
   // Get token for storage
   const firebaseUser = await (await import("./firebase")).signInWithX();
   const idToken = await firebaseUser.getIdToken();
-  const { token } = await AuthAPI.firebaseLogin(idToken);
+  const { token } = await AuthAPI.firebaseLogin({ idToken });
 
   storeTokens(token.accessToken, token.refreshToken);
   return user;
@@ -239,10 +239,10 @@ export async function verifyOTPAction(
   const user = await OTPAuthAPI.verifyOTP(email, code, requestId);
 
   // Get token for storage from the API response
-  const response = await AuthAPI.verifyOTP(email, code, requestId);
+  const response = await AuthAPI.verifyOTP({ email, code, requestId });
   storeTokens(
-    response.data.token.accessToken,
-    response.data.token.refreshToken,
+    response.token.accessToken,
+    response.token.refreshToken,
   );
 
   return user;

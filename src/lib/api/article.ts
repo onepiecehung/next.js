@@ -5,7 +5,9 @@ import type {
   ApiResponse,
   ApiResponseCursor,
   ApiResponseOffset,
+  CreateArticleRequest,
   QueryParamsWithCursor,
+  UpdateArticleRequest,
 } from "@/lib/types";
 
 /**
@@ -18,7 +20,7 @@ export class ArticleAPI {
   /**
    * Create a new article
    */
-  static async createArticle(data: Article): Promise<Article> {
+  static async createArticle(data: CreateArticleRequest): Promise<Article> {
     const response = await http.post<ApiResponse<Article>>(this.BASE_URL, data);
     return response.data.data;
   }
@@ -38,7 +40,7 @@ export class ArticleAPI {
    */
   static async updateArticle(
     id: string,
-    data: Partial<Article>,
+    data: UpdateArticleRequest,
   ): Promise<Article> {
     const response = await http.patch<ApiResponse<Article>>(
       `${this.BASE_URL}/${id}`,
