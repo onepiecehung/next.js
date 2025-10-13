@@ -1,12 +1,12 @@
 import { MediaAPI, UploadedMedia } from "@/lib/api/media";
 import { useCallback, useState } from "react";
 
-interface UseImageUploadOptions {
+export interface UseImageUploadOptions {
   onSuccess?: (uploadedMedia: UploadedMedia[]) => void;
   onError?: (error: string) => void;
 }
 
-interface UseImageUploadReturn {
+export interface UseImageUploadReturn {
   uploadImages: (files: File[]) => Promise<UploadedMedia[]>;
   isUploading: boolean;
   error: string | null;

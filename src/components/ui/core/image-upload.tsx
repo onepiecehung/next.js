@@ -1,13 +1,14 @@
-import * as React from "react";
-import Image from "next/image";
+import { useI18n } from "@/components/providers/i18n-provider";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
+import * as React from "react";
 import { Button } from "./button";
 import { ImageCropDialog } from "./image-crop-dialog";
-import { useI18n } from "@/components/providers/i18n-provider";
 
 interface ImageUploadProps {
   readonly value?: File | null;
   readonly onChange: (file: File | null) => void;
+  // Optional callback for batch upload - can be used for future multi-file upload feature
   readonly onUploadBatch?: (uploaded: { id: string; url: string }[]) => void;
   readonly className?: string;
   readonly placeholder?: string;
@@ -26,7 +27,7 @@ interface ImageUploadProps {
 export function ImageUpload({
   value,
   onChange,
-  onUploadBatch,
+  onUploadBatch: _onUploadBatch, // Prefix with underscore to indicate intentionally unused
   className,
   placeholder = "Click to upload or drag and drop",
   disabled = false,
@@ -79,14 +80,6 @@ export function ImageUpload({
       setIsEditorOpen(true);
     } else {
       onChange(file);
-    }
-  };
-
-  // Handle input change
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      handleFileSelect(file);
     }
   };
 

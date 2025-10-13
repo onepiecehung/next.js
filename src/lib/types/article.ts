@@ -1,80 +1,25 @@
-import { UploadedMedia } from "../api/media";
-// Article API types and constants
-export const ARTICLE_CONSTANTS = {
-  // Field lengths
-  TITLE_MAX_LENGTH: 256,
-  SLUG_MAX_LENGTH: 256,
-  COVER_IMAGE_URL_MAX_LENGTH: 512,
-  SUMMARY_MAX_LENGTH: 1000,
-  TAGS_MAX_COUNT: 20,
-  TAG_MAX_LENGTH: 50,
+import type { Article } from "@/lib/interface";
 
-  // Status values
-  STATUS: {
-    DRAFT: "draft",
-    SCHEDULED: "scheduled",
-    PUBLISHED: "published",
-    ARCHIVED: "archived",
-  },
+/**
+ * Article Type Definitions
+ * Contains article-related request and response types
+ */
 
-  // Visibility levels
-  VISIBILITY: {
-    PUBLIC: "public",
-    UNLISTED: "unlisted",
-    PRIVATE: "private",
-  },
-
-  // Content formats
-  CONTENT_FORMAT: {
-    MARKDOWN: "markdown",
-    HTML: "html",
-  },
-} as const;
-
-// Type definitions for better TypeScript support
-export type ArticleStatus =
-  (typeof ARTICLE_CONSTANTS.STATUS)[keyof typeof ARTICLE_CONSTANTS.STATUS];
-export type ArticleVisibility =
-  (typeof ARTICLE_CONSTANTS.VISIBILITY)[keyof typeof ARTICLE_CONSTANTS.VISIBILITY];
-export type ArticleContentFormat =
-  (typeof ARTICLE_CONSTANTS.CONTENT_FORMAT)[keyof typeof ARTICLE_CONSTANTS.CONTENT_FORMAT];
-
-export interface CreateArticleDto {
+/**
+ * Create article request payload
+ * Extends Article interface but makes certain fields optional for creation
+ */
+export interface CreateArticleRequest extends Partial<Article> {
   title: string;
   content: string;
-  summary?: string;
-  contentFormat?: ArticleContentFormat;
-  visibility?: ArticleVisibility;
-  status?: ArticleStatus;
-  tags?: string[];
-  coverImageId?: string;
-  coverImageUrl?: string;
-  wordCount?: number;
-  readTimeMinutes?: number;
+  contentFormat: "html" | "markdown";
+  visibility: "public" | "unlisted" | "private";
+  status: "draft" | "published" | "scheduled";
   userId?: string;
-  slug?: string;
-  publishedAt?: Date;
-  scheduledAt?: Date;
 }
 
-export interface Article {
-  id: string;
-  title: string;
-  content: string;
-  summary?: string;
-  contentFormat: ArticleContentFormat;
-  visibility: ArticleVisibility;
-  status: ArticleStatus;
-  tags: string[];
-  coverImageId?: string;
-  coverImageUrl?: string;
-  coverImage?: UploadedMedia;
-  wordCount?: number;
-  readTimeMinutes?: number;
-  userId: string;
-  slug: string;
-  publishedAt?: Date;
-  scheduledAt?: Date;
-  createdAt: Date;
-  updatedAt: Date;
-}
+/**
+ * Update article request payload
+ * All fields optional for partial updates
+ */
+export type UpdateArticleRequest = Partial<Article>;

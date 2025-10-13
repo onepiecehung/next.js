@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback, useRef } from "react";
 import { ArticleAPI } from "@/lib/api/article";
-import type { Article } from "@/lib/types/article";
+import type { Article } from "@/lib/interface";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface UseArticleOptions {
   onSuccess?: (article: Article) => void;

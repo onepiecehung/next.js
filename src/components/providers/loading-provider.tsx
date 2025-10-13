@@ -1,8 +1,8 @@
 "use client";
 
-import { createContext, useContext, ReactNode, useMemo } from "react";
+import { userProfileLoadingAtom } from "@/lib/auth";
 import { useAtom } from "jotai";
-import { userProfileLoadingAtom } from "@/lib/auth-store";
+import { createContext, ReactNode, useContext, useMemo } from "react";
 
 /**
  * Loading Context Interface

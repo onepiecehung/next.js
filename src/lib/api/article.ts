@@ -1,6 +1,14 @@
-import { http } from "../http";
-import { ApiResponse } from "../types/api";
-import type { CreateArticleDto, Article } from "../types/article";
+import { http } from "@/lib/http";
+import { Article } from "@/lib/interface";
+import type {
+  AdvancedQueryParams,
+  ApiResponse,
+  ApiResponseCursor,
+  ApiResponseOffset,
+  CreateArticleRequest,
+  QueryParamsWithCursor,
+  UpdateArticleRequest,
+} from "@/lib/types";
 
 /**
  * Article API wrapper
@@ -12,7 +20,7 @@ export class ArticleAPI {
   /**
    * Create a new article
    */
-  static async createArticle(data: CreateArticleDto): Promise<Article> {
+  static async createArticle(data: CreateArticleRequest): Promise<Article> {
     const response = await http.post<ApiResponse<Article>>(this.BASE_URL, data);
     return response.data.data;
   }
@@ -32,7 +40,7 @@ export class ArticleAPI {
    */
   static async updateArticle(
     id: string,
-    data: Partial<CreateArticleDto>,
+    data: UpdateArticleRequest,
   ): Promise<Article> {
     const response = await http.patch<ApiResponse<Article>>(
       `${this.BASE_URL}/${id}`,
@@ -49,26 +57,28 @@ export class ArticleAPI {
   }
 
   /**
-   * Get articles list
+   * Get articles list with offset pagination
    */
-  static async getArticles(params?: {
-    page?: number;
-    limit?: number;
-    status?: string;
-    visibility?: string;
-    userId?: string;
-  }): Promise<{
-    articles: Article[];
-    total: number;
-    page: number;
-    limit: number;
-  }> {
-    const response = await http.get<{
-      articles: Article[];
-      total: number;
-      page: number;
-      limit: number;
-    }>(this.BASE_URL, { params });
+  static async getArticlesOffset(
+    params?: AdvancedQueryParams,
+  ): Promise<ApiResponseOffset<Article>> {
+    const response = await http.get<ApiResponseOffset<Article>>(
+      `${this.BASE_URL}`,
+      { params },
+    );
+    return response.data;
+  }
+
+  /**
+   * Get articles list with cursor pagination
+   */
+  static async getArticlesCursor(
+    params?: QueryParamsWithCursor,
+  ): Promise<ApiResponseCursor<Article>> {
+    const response = await http.get<ApiResponseCursor<Article>>(
+      `${this.BASE_URL}/cursor`,
+      { params },
+    );
     return response.data;
   }
 }

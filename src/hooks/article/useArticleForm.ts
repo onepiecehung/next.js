@@ -1,5 +1,5 @@
 import { useI18n } from "@/components/providers/i18n-provider";
-import type { Article } from "@/lib/types/article";
+import type { Article } from "@/lib/interface";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -9,6 +9,7 @@ interface UseArticleFormOptions {
 
 /**
  * Hook for managing article form state and validation
+ * @param _options - Optional configuration for the article form (reserved for future use)
  */
 export function useArticleForm(_options?: UseArticleFormOptions) {
   const { t } = useI18n();

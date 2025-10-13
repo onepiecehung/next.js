@@ -25,8 +25,8 @@ import {
 } from "@/components/ui/layout/dropdown-menu";
 import { useArticleForm, useCreateArticle } from "@/hooks/article";
 import { MediaAPI } from "@/lib/api/media";
-import { currentUserAtom } from "@/lib/auth-store";
-import { ARTICLE_CONSTANTS } from "@/lib/types/article";
+import { currentUserAtom } from "@/lib/auth";
+import { ARTICLE_CONSTANTS } from "@/lib/constants";
 
 /**
  * Internationalized Write Page Component

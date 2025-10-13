@@ -1,18 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { useAtom } from "jotai";
-import {
-  currentUserAtom,
-  accessTokenAtom,
-  signupAction,
-  fetchMeAction,
-} from "@/lib/auth-store";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { useI18n } from "@/components/providers/i18n-provider";
 import { Button, Input, Label } from "@/components/ui";
 import {
   Card,
@@ -21,19 +9,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/core";
-import { useI18n } from "@/components/providers/i18n-provider";
-
-// Form validation schema for signup
-const signupSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  name: z.string().optional(),
-  dob: z.string().optional(),
-  phoneNumber: z.string().optional(),
-});
-
-type SignupFormValues = z.infer<typeof signupSchema>;
+import {
+  accessTokenAtom,
+  currentUserAtom,
+  fetchMeAction,
+  signupAction,
+} from "@/lib/auth";
+import {
+  registerFormSchemaSimple,
+  type RegisterFormDataSimple,
+} from "@/lib/validators/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAtom } from "jotai";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 // Helper function to extract error message from various error types
 function extractErrorMessage(error: unknown, defaultMessage: string): string {
@@ -81,11 +72,11 @@ export default function SignupForm({
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<SignupFormValues>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<RegisterFormDataSimple>({
+    resolver: zodResolver(registerFormSchemaSimple),
   });
 
-  const onSubmit = async (values: SignupFormValues) => {
+  const onSubmit = async (values: RegisterFormDataSimple) => {
     try {
       // Attempt to signup with provided credentials
       const user = await signupAction(

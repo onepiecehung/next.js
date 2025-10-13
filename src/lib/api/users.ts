@@ -1,7 +1,11 @@
 import { http } from "@/lib/http";
 import type { ApiResponse } from "@/lib/types";
 
-export interface User {
+/**
+ * Public user profile structure
+ * Used in user profile pages with engagement metrics
+ */
+export interface UserProfile {
   id: string;
   name?: string;
   username?: string;
@@ -30,9 +34,9 @@ export class UserAPI {
   /**
    * Fetch user profile by user ID
    */
-  static async getUserProfile(userId: string): Promise<User> {
+  static async getUserProfile(userId: string): Promise<UserProfile> {
     try {
-      const response = await http.get<ApiResponse<User>>(
+      const response = await http.get<ApiResponse<UserProfile>>(
         `${this.BASE_URL}/${userId}`,
       );
 
@@ -53,9 +57,11 @@ export class UserAPI {
   /**
    * Fetch current user profile
    */
-  static async getCurrentUser(): Promise<User> {
+  static async getCurrentUser(): Promise<UserProfile> {
     try {
-      const response = await http.get<ApiResponse<User>>(`${this.BASE_URL}/me`);
+      const response = await http.get<ApiResponse<UserProfile>>(
+        `${this.BASE_URL}/me`,
+      );
 
       // Check if API response is successful
       if (!response.data.success) {
@@ -76,10 +82,10 @@ export class UserAPI {
    */
   static async updateUserProfile(
     userId: string,
-    userData: Partial<User>,
-  ): Promise<User> {
+    userData: Partial<UserProfile>,
+  ): Promise<UserProfile> {
     try {
-      const response = await http.put<ApiResponse<User>>(
+      const response = await http.put<ApiResponse<UserProfile>>(
         `${this.BASE_URL}/${userId}`,
         userData,
       );

@@ -2,8 +2,13 @@ import { z } from "zod";
 
 /**
  * Authentication form validation schemas
- * Centralized validation logic for login, signup, and OTP forms
+ * Centralized validation logic for all authentication-related forms
+ * Includes: login, signup, OTP, password management, and profile forms
  */
+
+// ============================================================================
+// Base Validation Schemas
+// ============================================================================
 
 // Base email validation
 const emailSchema = z
@@ -18,12 +23,39 @@ const passwordSchema = z
   .min(6, "Password must be at least 6 characters")
   .max(128, "Password must be less than 128 characters");
 
+// Strong password validation (for password changes)
+const strongPasswordSchema = z
+  .string()
+  .min(8, "Password must be at least 8 characters")
+  .max(128, "Password must be less than 128 characters");
+
 // OTP code validation
 const otpCodeSchema = z
   .string()
   .min(6, "OTP code must be 6 digits")
   .max(6, "OTP code must be 6 digits")
   .regex(/^\d{6}$/, "OTP code must contain only numbers");
+
+// Username validation
+const usernameSchema = z
+  .string()
+  .min(3, "Username must be at least 3 characters")
+  .max(50, "Username must be less than 50 characters")
+  .regex(
+    /^[a-zA-Z0-9_]+$/,
+    "Username can only contain letters, numbers, and underscores",
+  );
+
+// Name validation
+const nameSchema = z
+  .string()
+  .min(2, "Name must be at least 2 characters")
+  .max(100, "Name must be less than 100 characters")
+  .optional();
+
+// ============================================================================
+// Authentication Forms
+// ============================================================================
 
 /**
  * Login form validation schema
@@ -66,11 +98,117 @@ export const signupSchema = z
     path: ["confirmPassword"],
   });
 
-// Type exports for TypeScript
+// ============================================================================
+// Registration Forms
+// ============================================================================
+
+/**
+ * Registration form validation schema (simple version without confirm password)
+ * Used for signup component when confirmPassword is not needed
+ */
+export const registerFormSchemaSimple = z.object({
+  name: nameSchema,
+  username: usernameSchema,
+  email: emailSchema,
+  password: passwordSchema,
+  dob: z.string().optional(),
+  phoneNumber: z.string().optional(),
+});
+
+/**
+ * Registration form validation schema (with password confirmation)
+ * Used for register pages where password confirmation is required
+ */
+export const registerFormSchema = z
+  .object({
+    name: nameSchema,
+    username: usernameSchema,
+    email: emailSchema,
+    password: passwordSchema,
+    confirmPassword: z.string().min(6, "Please confirm your password"),
+    dob: z.string().optional(),
+    phoneNumber: z.string().optional(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+// ============================================================================
+// Profile Management Forms
+// ============================================================================
+
+/**
+ * Profile update form validation schema
+ * Validates user profile update form
+ */
+export const profileFormSchema = z.object({
+  name: nameSchema,
+  username: usernameSchema.optional(),
+  dob: z.string().optional(),
+  phoneNumber: z.string().optional(),
+});
+
+// ============================================================================
+// Password Management Forms
+// ============================================================================
+
+/**
+ * Change password form validation schema
+ * Validates password change form with confirmation
+ */
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, "Current password is required"),
+    newPassword: strongPasswordSchema,
+    confirmNewPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    message: "New passwords don't match",
+    path: ["confirmNewPassword"],
+  });
+
+/**
+ * Forgot password form validation schema
+ * Validates forgot password request form
+ */
+export const forgotPasswordSchema = z.object({
+  email: emailSchema,
+});
+
+/**
+ * Reset password form validation schema
+ * Validates password reset form with confirmation
+ */
+export const resetPasswordSchema = z
+  .object({
+    token: z.string().min(1, "Reset token is required"),
+    newPassword: strongPasswordSchema,
+    confirmNewPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    message: "Passwords don't match",
+    path: ["confirmNewPassword"],
+  });
+
+// ============================================================================
+// Type Exports
+// ============================================================================
+
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type OTPRequestFormData = z.infer<typeof otpRequestSchema>;
 export type OTPVerifyFormData = z.infer<typeof otpVerifySchema>;
 export type SignupFormData = z.infer<typeof signupSchema>;
+export type RegisterFormDataSimple = z.infer<typeof registerFormSchemaSimple>;
+export type RegisterFormData = z.infer<typeof registerFormSchema>;
+export type ProfileFormData = z.infer<typeof profileFormSchema>;
+export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
+export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
+
+// ============================================================================
+// Utility Functions
+// ============================================================================
 
 /**
  * Server error mapping
@@ -102,33 +240,27 @@ export const mapServerError = (error: unknown): string => {
 };
 
 /**
- * Authentication error messages
- * Centralized error messages for consistency
+ * Note: Authentication error messages have been moved to i18n
+ *
+ * Usage in components:
+ * import { useI18n } from '@/components/providers/i18n-provider';
+ *
+ * const { t } = useI18n();
+ * const errorMessage = t('errors.invalidCredentials', 'auth');
+ *
+ * Available error keys in 'auth' namespace:
+ * - auth.errors.invalidCredentials
+ * - auth.errors.accountLocked
+ * - auth.errors.emailNotVerified
+ * - auth.errors.tooManyAttempts
+ * - auth.errors.networkError
+ * - auth.errors.serverError
+ * - auth.errors.unknownError
+ *
+ * Available validation error keys:
+ * - auth.validation.emailRequired
+ * - auth.validation.emailInvalid
+ * - auth.validation.passwordRequired
+ * - auth.validation.passwordsMismatch
+ * - ... and more in src/i18n/locales/en/auth.json
  */
-export const AUTH_ERRORS = {
-  INVALID_CREDENTIALS: "Email or password is incorrect",
-  ACCOUNT_LOCKED: "Account has been locked. Please contact support",
-  EMAIL_NOT_VERIFIED: "Please verify your email before logging in",
-  TOO_MANY_ATTEMPTS: "Too many failed attempts. Please try again later",
-  NETWORK_ERROR: "Network error. Please check your connection",
-  SERVER_ERROR: "Server error. Please try again later",
-  UNKNOWN_ERROR: "An unexpected error occurred. Please try again",
-} as const;
-
-/**
- * Validation error messages
- * Centralized validation error messages
- */
-export const VALIDATION_ERRORS = {
-  EMAIL_REQUIRED: "Email is required",
-  EMAIL_INVALID: "Please enter a valid email address",
-  EMAIL_TOO_LONG: "Email must be less than 255 characters",
-  PASSWORD_REQUIRED: "Password is required",
-  PASSWORD_TOO_SHORT: "Password must be at least 6 characters",
-  PASSWORD_TOO_LONG: "Password must be less than 128 characters",
-  OTP_REQUIRED: "OTP code is required",
-  OTP_INVALID: "OTP code must be 6 digits",
-  OTP_NUMBERS_ONLY: "OTP code must contain only numbers",
-  PASSWORDS_MISMATCH: "Passwords do not match",
-  CONFIRM_PASSWORD_REQUIRED: "Please confirm your password",
-} as const;

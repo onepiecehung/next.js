@@ -1,19 +1,15 @@
 "use client";
 
-import * as React from "react";
+import { useI18n } from "@/components/providers/i18n-provider";
+import { Button } from "@/components/ui/core/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/layout/dialog";
-import { Button } from "@/components/ui/core/button";
-import {
-  rateLimitBus,
-  getRateLimitRemainingSeconds,
-  type RateLimitEventDetail,
-} from "@/lib/rate-limit";
-import { useI18n } from "@/components/providers/i18n-provider";
+import { getRateLimitRemainingSeconds, rateLimitBus } from "@/lib/rate-limit";
+import * as React from "react";
 
 type RateLimitProviderProps = {
   children: React.ReactNode;
@@ -39,7 +35,7 @@ export function RateLimitProvider({ children }: RateLimitProviderProps) {
 
   // Listen to bus events
   React.useEffect(() => {
-    return rateLimitBus.on((_detail: RateLimitEventDetail) => {
+    return rateLimitBus.on(() => {
       const secs = getRateLimitRemainingSeconds();
       setRemaining(secs);
       setOpen(secs > 0);

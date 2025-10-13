@@ -1,5 +1,6 @@
 "use client";
 
+import type { User } from "@/lib/interface";
 import { useAtom } from "jotai";
 import Link from "next/link";
 import { useState } from "react";
@@ -14,7 +15,7 @@ import {
   clearUserState,
   currentUserAtom,
   logoutAction,
-} from "@/lib/auth-store";
+} from "@/lib/auth";
 
 /**
  * Internationalized Site Navigation Component
@@ -60,10 +61,10 @@ export default function SiteNav() {
               return (
                 <div className="h-8 w-20 animate-pulse bg-muted rounded" />
               );
-            if (user)
+            if (user && user.id)
               return (
                 <UserDropdown
-                  user={user}
+                  user={user as User & { id: string }}
                   onLogout={handleLogout}
                   isLoggingOut={isLoggingOut}
                 />

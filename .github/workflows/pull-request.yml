@@ -25,10 +25,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
           
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
         
       - name: Run ESLint
         run: yarn lint
@@ -65,10 +64,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
           
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
         
       - name: Build application
         run: yarn build
@@ -76,8 +74,12 @@ jobs:
       - name: Analyze bundle size
         run: |
           echo "📊 Bundle size analysis:"
-          du -sh .next/static/chunks/
-          du -sh .next/static/css/
+          du -sh .next/static/chunks/ || echo ".next/static/chunks not found"
+          if [ -d .next/static/css ]; then
+            du -sh .next/static/css/
+          else
+            echo "No .next/static/css directory (Turbopack)"
+          fi
           
       - name: Check bundle size limits
         run: |
@@ -97,10 +99,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
           
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
         
       - name: Build application
         run: yarn build

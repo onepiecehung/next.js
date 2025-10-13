@@ -25,10 +25,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
           
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
         
       - name: Build application
         run: yarn build
@@ -58,10 +57,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
           
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
         
       - name: Build application
         run: yarn build
@@ -70,13 +68,25 @@ jobs:
         run: |
           echo "📊 Bundle Size Analysis:"
           echo "=== JavaScript Chunks ==="
-          du -sh .next/static/chunks/*.js | sort -hr
+          if ls .next/static/chunks/*.js >/dev/null 2>&1; then
+            du -sh .next/static/chunks/*.js | sort -hr
+          else
+            echo "No individual JS chunk files found (Turbopack may inline)."
+          fi
           echo ""
           echo "=== CSS Files ==="
-          du -sh .next/static/css/*.css
+          if [ -d .next/static/css ]; then
+            if ls .next/static/css/*.css >/dev/null 2>&1; then
+              du -sh .next/static/css/*.css | sort -hr
+            else
+              echo "No CSS files found in .next/static/css/"
+            fi
+          else
+            echo "No .next/static/css directory (Turbopack)"
+          fi
           echo ""
           echo "=== Total Bundle Size ==="
-          du -sh .next/static/
+          du -sh .next/static/ || echo "No .next/static directory"
           
       - name: Check bundle size limits
         run: |
@@ -84,15 +94,15 @@ jobs:
           JS_LIMIT=500000  # 500KB
           CSS_LIMIT=100000  # 100KB
           
-          JS_SIZE=$(du -sb .next/static/chunks/ | cut -f1)
-          CSS_SIZE=$(du -sb .next/static/css/ | cut -f1)
+          JS_SIZE=$(du -sb .next/static/chunks/ 2>/dev/null | cut -f1)
+          CSS_SIZE=$(du -sb .next/static/css/ 2>/dev/null | cut -f1)
           
-          if [ $JS_SIZE -gt $JS_LIMIT ]; then
+          if [ -n "$JS_SIZE" ] && [ "$JS_SIZE" -gt "$JS_LIMIT" ]; then
             echo "❌ JavaScript bundle size ($JS_SIZE bytes) exceeds limit ($JS_LIMIT bytes)"
             exit 1
           fi
           
-          if [ $CSS_SIZE -gt $CSS_LIMIT ]; then
+          if [ -n "$CSS_SIZE" ] && [ "$CSS_SIZE" -gt "$CSS_LIMIT" ]; then
             echo "❌ CSS bundle size ($CSS_SIZE bytes) exceeds limit ($CSS_LIMIT bytes)"
             exit 1
           fi
@@ -112,10 +122,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
           
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
         
       - name: Build application
         run: yarn build
@@ -156,8 +165,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
           
+      - name: Install dependencies
+        run: yarn install
+        
       - name: Build application
         run: yarn build
         

@@ -1,16 +1,16 @@
 "use client";
 
+import {
+  CompactLikeButton,
+  LargeLikeButton,
+} from "@/components/features/reactions";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
 import { Button } from "@/components/ui";
 import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useArticle } from "@/hooks/article";
 import { useArticleLike } from "@/hooks/reactions";
-import { ARTICLE_CONSTANTS } from "@/lib/types/article";
-import {
-  CompactLikeButton,
-  LargeLikeButton,
-} from "@/components/features/reactions";
+import { ARTICLE_CONSTANTS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import {
   Calendar,
@@ -25,8 +25,8 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
-import { toast } from "sonner";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 /**
  * Article View Page Component
@@ -183,7 +183,7 @@ export default function ArticleViewPage() {
                       <p className="text-xs sm:text-sm text-muted-foreground">
                         {article.publishedAt
                           ? formatDate(article.publishedAt)
-                          : formatDate(article.createdAt)}
+                          : formatDate(article.createdAt ?? new Date())}
                       </p>
                     </div>
                   </div>
@@ -283,7 +283,7 @@ export default function ArticleViewPage() {
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {article.tags.map((tag) => (
+                      {article.tags.map((tag: string) => (
                         <span
                           key={tag}
                           className="text-xs sm:text-sm px-3 sm:px-4 py-1 sm:py-2 rounded-full bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors cursor-pointer"
