@@ -80,7 +80,9 @@ export class AuthAPI {
   /**
    * Firebase login (Google, GitHub, X)
    */
-  static async firebaseLogin(data: FirebaseLoginRequest): Promise<LoginResponse> {
+  static async firebaseLogin(
+    data: FirebaseLoginRequest,
+  ): Promise<LoginResponse> {
     const response = await http.post<ApiResponse<LoginResponse>>(
       `${this.BASE_URL}/firebase/login`,
       data,
@@ -98,7 +100,9 @@ export class AuthAPI {
   /**
    * Request OTP via email
    */
-  static async requestOTP(data: OTPRequestRequest): Promise<OTPRequestResponseData> {
+  static async requestOTP(
+    data: OTPRequestRequest,
+  ): Promise<OTPRequestResponseData> {
     const response = await http.post<ApiResponse<OTPRequestResponseData>>(
       `${this.BASE_URL}/otp/request`,
       data,
@@ -114,7 +118,9 @@ export class AuthAPI {
   /**
    * Verify OTP code
    */
-  static async verifyOTP(data: OTPVerifyRequest): Promise<OTPVerifyResponseData> {
+  static async verifyOTP(
+    data: OTPVerifyRequest,
+  ): Promise<OTPVerifyResponseData> {
     const response = await http.post<ApiResponse<OTPVerifyResponseData>>(
       `${this.BASE_URL}/otp/verify`,
       data,
@@ -130,7 +136,9 @@ export class AuthAPI {
   /**
    * Refresh access token
    */
-  static async refreshToken(data: RefreshTokenRequest): Promise<RefreshTokenResponse> {
+  static async refreshToken(
+    data: RefreshTokenRequest,
+  ): Promise<RefreshTokenResponse> {
     const response = await http.post<ApiResponse<RefreshTokenResponse>>(
       `${this.BASE_URL}/refresh`,
       data,
@@ -161,7 +169,9 @@ export class AuthAPI {
   /**
    * Change password
    */
-  static async changePassword(data: ChangePasswordRequest): Promise<ChangePasswordResponse> {
+  static async changePassword(
+    data: ChangePasswordRequest,
+  ): Promise<ChangePasswordResponse> {
     const response = await http.post<ApiResponse<ChangePasswordResponse>>(
       `${this.BASE_URL}/change-password`,
       data,
@@ -177,7 +187,9 @@ export class AuthAPI {
   /**
    * Forgot password
    */
-  static async forgotPassword(data: ForgotPasswordRequest): Promise<ForgotPasswordResponse> {
+  static async forgotPassword(
+    data: ForgotPasswordRequest,
+  ): Promise<ForgotPasswordResponse> {
     const response = await http.post<ApiResponse<ForgotPasswordResponse>>(
       `${this.BASE_URL}/forgot-password`,
       data,
@@ -193,7 +205,9 @@ export class AuthAPI {
   /**
    * Reset password
    */
-  static async resetPassword(data: ResetPasswordRequest): Promise<ResetPasswordResponse> {
+  static async resetPassword(
+    data: ResetPasswordRequest,
+  ): Promise<ResetPasswordResponse> {
     const response = await http.post<ApiResponse<ResetPasswordResponse>>(
       `${this.BASE_URL}/reset-password`,
       data,
@@ -209,7 +223,9 @@ export class AuthAPI {
   /**
    * Verify email
    */
-  static async verifyEmail(data: VerifyEmailRequest): Promise<VerifyEmailResponse> {
+  static async verifyEmail(
+    data: VerifyEmailRequest,
+  ): Promise<VerifyEmailResponse> {
     const response = await http.post<ApiResponse<VerifyEmailResponse>>(
       `${this.BASE_URL}/verify-email`,
       data,
@@ -225,14 +241,17 @@ export class AuthAPI {
   /**
    * Resend verification email
    */
-  static async resendVerificationEmail(data: ResendVerificationEmailRequest): Promise<ResendVerificationEmailResponse> {
-    const response = await http.post<ApiResponse<ResendVerificationEmailResponse>>(
-      `${this.BASE_URL}/resend-verification`,
-      data,
-    );
+  static async resendVerificationEmail(
+    data: ResendVerificationEmailRequest,
+  ): Promise<ResendVerificationEmailResponse> {
+    const response = await http.post<
+      ApiResponse<ResendVerificationEmailResponse>
+    >(`${this.BASE_URL}/resend-verification`, data);
 
     if (!response.data.success) {
-      throw new Error(response.data.message || "Failed to resend verification email");
+      throw new Error(
+        response.data.message || "Failed to resend verification email",
+      );
     }
 
     return response.data.data;
