@@ -71,6 +71,7 @@ import python from "highlight.js/lib/languages/python";
 import sql from "highlight.js/lib/languages/sql";
 import typescript from "highlight.js/lib/languages/typescript";
 import xml from "highlight.js/lib/languages/xml";
+import { Markdown } from "tiptap-markdown";
 
 interface TipTapEditorProps {
   readonly content?: string;
@@ -175,6 +176,12 @@ export function TipTapEditor({
           console.error("Image upload error:", error);
           setIsUploadingImage(false);
         },
+      }),
+      Markdown.configure({
+        html: true,
+        breaks: true,
+        transformPastedText: true, // Allow to paste markdown text in the editor
+        transformCopiedText: true,
       }),
     ],
     content,
