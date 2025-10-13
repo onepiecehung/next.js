@@ -1,6 +1,6 @@
-import { BaseEntityCustom } from "./base.entity";
-import { BookmarkFolder } from "./bookmark-folder.entity";
-import { User } from "./user.entity";
+import { BaseEntityCustom } from "./base.interface";
+import { BookmarkFolder } from "./bookmark-folder.interface";
+import { User } from "./user.interface";
 
 /**
  * Bookmark Entity

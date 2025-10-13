@@ -1,5 +1,5 @@
-import { BaseEntityCustom } from "./base.entity";
-import { User } from "./user.entity";
+import { BaseEntityCustom } from "./base.interface";
+import { User } from "./user.interface";
 
 export interface Media extends BaseEntityCustom {
   status?: string;

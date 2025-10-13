@@ -1,6 +1,6 @@
-import { BaseEntityCustom } from "./base.entity";
-import { Media } from "./media.entity";
-import { User } from "./user.entity";
+import { BaseEntityCustom } from "./base.interface";
+import { Media } from "./media.interface";
+import { User } from "./user.interface";
 
 /**
  * Comment Entity

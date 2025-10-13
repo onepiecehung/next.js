@@ -1,5 +1,5 @@
-import { Article } from "./article.entity";
-import { BaseEntityCustom } from "./base.entity";
+import { Article } from "./article.interface";
+import { BaseEntityCustom } from "./base.interface";
 
 /**
  * Tag Entity

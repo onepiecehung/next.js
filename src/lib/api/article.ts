@@ -4,7 +4,7 @@ import type {
   ApiResponseCursor,
   ApiResponseOffset,
 } from "../types";
-import { Article } from "@/lib/entities";
+import { Article } from "@/lib/interface";
 
 /**
  * Article API wrapper
