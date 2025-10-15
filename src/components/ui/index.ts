@@ -46,7 +46,7 @@ export {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "./layout";
-export { ThemeToggle } from "./theme";
+export { ThemeToggle, ThemeSelector } from "./theme";
 export { XIcon } from "./icons";
 export { UserDropdown, LanguageSwitcher } from "./navigation";
 export { ContentRenderer } from "./utilities";

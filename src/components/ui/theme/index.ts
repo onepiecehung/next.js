@@ -12,6 +12,12 @@ export {
   SimpleThemeToggle,
 } from "./theme-toggle";
 
+export {
+  ThemeSelector,
+  CompactThemeSelector,
+  FullThemeSelector,
+} from "./theme-selector";
+
 export { ThemeSwitcher, ThemePreview } from "./theme-switcher";
 export { ThemeTest } from "./theme-test";
 export { ThemeToggleDemo } from "./theme-toggle-demo";

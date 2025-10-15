@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 import { LoginDialog } from "@/components/features/auth";
 import { useI18n } from "@/components/providers/i18n-provider";
-import { ThemeToggle, UserDropdown } from "@/components/ui";
+import { ThemeSelector, UserDropdown } from "@/components/ui";
 import { LanguageSwitcher } from "@/components/ui/navigation";
 import {
   authLoadingAtom,
@@ -55,13 +55,13 @@ export default function SiteNav() {
 
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
-          <ThemeToggle />
+          <ThemeSelector variant="compact" />
           {(() => {
             if (authLoading)
               return (
                 <div className="h-8 w-20 animate-pulse bg-muted rounded" />
               );
-            if (user && user.id)
+            if (user?.id)
               return (
                 <UserDropdown
                   user={user as User & { id: string }}

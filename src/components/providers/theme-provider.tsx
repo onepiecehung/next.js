@@ -3,8 +3,21 @@
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { createContext, useContext, useEffect, useState, useMemo } from "react";
 
-// Theme types
-export type Theme = "neutral" | "stone" | "zinc" | "gray" | "slate" | "dracula";
+// Theme types - shadcn/ui color themes
+export type Theme =
+  | "neutral"
+  | "red"
+  | "rose"
+  | "orange"
+  | "green"
+  | "blue"
+  | "yellow"
+  | "violet"
+  | "stone"
+  | "zinc"
+  | "gray"
+  | "slate"
+  | "dracula";
 export type ColorScheme = "light" | "dark" | "system";
 
 // Theme context
@@ -19,24 +32,122 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// Theme data
-const themes: { value: Theme; label: string; description: string }[] = [
-  { value: "neutral", label: "Neutral", description: "Clean and minimal" },
-  { value: "stone", label: "Stone", description: "Warm and earthy" },
-  { value: "zinc", label: "Zinc", description: "Cool and modern" },
-  { value: "gray", label: "Gray", description: "Professional and balanced" },
-  { value: "slate", label: "Slate", description: "Sophisticated and elegant" },
-  { value: "dracula", label: "Dracula", description: "Dark and vibrant" },
+// Theme data - shadcn/ui color themes with improved organization
+const themes: {
+  value: Theme;
+  label: string;
+  description: string;
+  category: string;
+}[] = [
+  // Primary Color Themes
+  {
+    value: "neutral",
+    label: "Neutral",
+    description: "Clean and minimal",
+    category: "primary",
+  },
+  {
+    value: "red",
+    label: "Red",
+    description: "Bold and energetic",
+    category: "primary",
+  },
+  {
+    value: "rose",
+    label: "Rose",
+    description: "Warm and romantic",
+    category: "primary",
+  },
+  {
+    value: "orange",
+    label: "Orange",
+    description: "Vibrant and creative",
+    category: "primary",
+  },
+  {
+    value: "green",
+    label: "Green",
+    description: "Fresh and natural",
+    category: "primary",
+  },
+  {
+    value: "blue",
+    label: "Blue",
+    description: "Trustworthy and calm",
+    category: "primary",
+  },
+  {
+    value: "yellow",
+    label: "Yellow",
+    description: "Bright and optimistic",
+    category: "primary",
+  },
+  {
+    value: "violet",
+    label: "Violet",
+    description: "Creative and mysterious",
+    category: "primary",
+  },
+
+  // Neutral Themes
+  {
+    value: "stone",
+    label: "Stone",
+    description: "Warm and earthy",
+    category: "neutral",
+  },
+  {
+    value: "zinc",
+    label: "Zinc",
+    description: "Cool and modern",
+    category: "neutral",
+  },
+  {
+    value: "gray",
+    label: "Gray",
+    description: "Professional and balanced",
+    category: "neutral",
+  },
+  {
+    value: "slate",
+    label: "Slate",
+    description: "Sophisticated and elegant",
+    category: "neutral",
+  },
+
+  // Special Themes
+  {
+    value: "dracula",
+    label: "Dracula",
+    description: "Dark and vibrant",
+    category: "special",
+  },
 ];
 
 const colorSchemes: {
   value: ColorScheme;
   label: string;
   icon: React.ReactNode;
+  description: string;
 }[] = [
-  { value: "light", label: "Light", icon: "☀️" },
-  { value: "dark", label: "Dark", icon: "🌙" },
-  { value: "system", label: "System", icon: "💻" },
+  {
+    value: "light",
+    label: "Light",
+    icon: "☀️",
+    description: "Light mode for all themes",
+  },
+  {
+    value: "dark",
+    label: "Dark",
+    icon: "🌙",
+    description: "Dark mode for all themes",
+  },
+  {
+    value: "system",
+    label: "System",
+    icon: "💻",
+    description: "Follow system preference",
+  },
 ];
 
 /**
@@ -101,9 +212,13 @@ export function ThemeProvider({
       root.classList.remove("dark");
     }
 
-    // Save to localStorage
-    localStorage.setItem("theme", theme);
-    localStorage.setItem("colorScheme", colorScheme);
+    // Save to localStorage with validation
+    if (themes.some((t) => t.value === theme)) {
+      localStorage.setItem("theme", theme);
+    }
+    if (colorSchemes.some((cs) => cs.value === colorScheme)) {
+      localStorage.setItem("colorScheme", colorScheme);
+    }
   }, [theme, colorScheme, mounted]);
 
   const contextValue: ThemeContextType = useMemo(
