@@ -29,11 +29,11 @@ export function ThemeColorIndicator({
     yellow: "oklch(0.828 0.189 84.429)", // Yellow
     violet: "oklch(0.627 0.265 303.9)", // Violet
 
-    // Neutral Themes - these have subtle color variations
-    stone: "oklch(0.708 0.01 30)", // Stone - warm gray
-    zinc: "oklch(0.708 0.01 240)", // Zinc - cool gray
-    gray: "oklch(0.708 0 0)", // Gray - pure gray
-    slate: "oklch(0.708 0.01 210)", // Slate - blue-gray
+    // Neutral Themes - these have distinct color variations
+    stone: "oklch(0.65 0.05 45)", // Stone - warm brownish gray
+    zinc: "oklch(0.72 0.02 240)", // Zinc - cool blue-gray
+    gray: "oklch(0.68 0 0)", // Gray - pure neutral gray
+    slate: "oklch(0.66 0.03 210)", // Slate - blue-gray
 
     // Special Themes
     dracula: "oklch(0.627 0.265 303.9)", // Dracula purple
