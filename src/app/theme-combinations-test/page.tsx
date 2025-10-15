@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/core/card";
 import { Badge } from "@/components/ui/core/badge";
+import { ThemeColorIndicator } from "@/components/ui/theme/theme-color-indicator";
 
 export default function ThemeCombinationsTestPage() {
   const { theme, setTheme, colorScheme, setColorScheme, themes, colorSchemes } =
@@ -82,7 +83,7 @@ export default function ThemeCombinationsTestPage() {
                     onClick={() => setTheme(themeOption.value)}
                     className="h-auto p-3 flex flex-col items-center gap-2"
                   >
-                    <div className="w-6 h-6 rounded-full bg-primary" />
+                    <ThemeColorIndicator theme={themeOption.value} size="lg" />
                     <div className="text-center">
                       <div className="font-semibold text-sm">
                         {themeOption.label}

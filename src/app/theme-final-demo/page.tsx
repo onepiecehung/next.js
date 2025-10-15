@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/core/badge";
 import { ThemeSelector } from "@/components/ui/theme/theme-selector";
 import { ThemeColorIndicator } from "@/components/ui/theme/theme-color-indicator";
 
-export default function ThemeShowcasePage() {
+export default function ThemeFinalDemoPage() {
   const { theme, colorScheme } = useTheme();
 
   return (
@@ -21,26 +21,29 @@ export default function ThemeShowcasePage() {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto space-y-8">
           {/* Header */}
-          <div className="text-center space-y-4">
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Theme Showcase
+          <div className="text-center space-y-6">
+            <h1 className="text-6xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+              🎨 Theme System
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Experience the power of our enhanced theme system with beautiful
-              color combinations
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Experience our enhanced theme system with beautiful color
+              indicators and smooth transitions
             </p>
             <div className="flex items-center justify-center gap-4">
               <Badge variant="outline" className="text-lg px-4 py-2">
+                <ThemeColorIndicator theme={theme} size="sm" className="mr-2" />
                 {colorScheme} • {theme}
               </Badge>
             </div>
           </div>
 
           {/* Theme Selector */}
-          <Card className="border-primary/20">
+          <Card className="border-primary/20 bg-gradient-to-r from-card/50 to-card">
             <CardHeader>
-              <CardTitle className="text-center">Choose Your Theme</CardTitle>
-              <CardDescription className="text-center">
+              <CardTitle className="text-center text-2xl">
+                Choose Your Theme
+              </CardTitle>
+              <CardDescription className="text-center text-lg">
                 Select your preferred color scheme and theme colors
               </CardDescription>
             </CardHeader>
@@ -49,12 +52,15 @@ export default function ThemeShowcasePage() {
             </CardContent>
           </Card>
 
-          {/* Color Palette Grid */}
+          {/* Color Showcase */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Primary Colors */}
-            <Card>
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <CardTitle className="text-primary">Primary Colors</CardTitle>
+                <CardTitle className="text-primary flex items-center gap-2">
+                  <ThemeColorIndicator theme={theme} size="sm" />
+                  Primary Colors
+                </CardTitle>
                 <CardDescription>Main brand colors</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -74,7 +80,7 @@ export default function ThemeShowcasePage() {
             </Card>
 
             {/* Surface Colors */}
-            <Card>
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="text-secondary">Surface Colors</CardTitle>
                 <CardDescription>
@@ -98,7 +104,7 @@ export default function ThemeShowcasePage() {
             </Card>
 
             {/* Utility Colors */}
-            <Card>
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="text-accent">Utility Colors</CardTitle>
                 <CardDescription>Special purpose colors</CardDescription>
@@ -126,7 +132,7 @@ export default function ThemeShowcasePage() {
             </Card>
           </div>
 
-          {/* Interactive Elements Showcase */}
+          {/* Interactive Elements */}
           <Card>
             <CardHeader>
               <CardTitle>Interactive Elements</CardTitle>
@@ -164,14 +170,11 @@ export default function ThemeShowcasePage() {
                 <h3 className="text-lg font-semibold mb-3">Form Elements</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label
-                      htmlFor="showcase-input"
-                      className="text-sm font-medium"
-                    >
+                    <label htmlFor="demo-input" className="text-sm font-medium">
                       Input Field
                     </label>
                     <input
-                      id="showcase-input"
+                      id="demo-input"
                       type="text"
                       placeholder="Type something..."
                       className="w-full px-3 py-2 bg-background border border-input rounded-md text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
@@ -179,13 +182,13 @@ export default function ThemeShowcasePage() {
                   </div>
                   <div className="space-y-2">
                     <label
-                      htmlFor="showcase-select"
+                      htmlFor="demo-select"
                       className="text-sm font-medium"
                     >
                       Select
                     </label>
                     <select
-                      id="showcase-select"
+                      id="demo-select"
                       className="w-full px-3 py-2 bg-background border border-input rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                     >
                       <option>Option 1</option>
@@ -217,7 +220,10 @@ export default function ThemeShowcasePage() {
                       <span className="text-muted-foreground">
                         Theme Color:
                       </span>
-                      <span className="font-mono text-primary">{theme}</span>
+                      <span className="font-mono text-primary flex items-center gap-2">
+                        <ThemeColorIndicator theme={theme} size="sm" />
+                        {theme}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">

@@ -18,6 +18,8 @@ export {
   FullThemeSelector,
 } from "./theme-selector";
 
+export { ThemeColorIndicator } from "./theme-color-indicator";
+
 export { ThemeSwitcher, ThemePreview } from "./theme-switcher";
 export { ThemeTest } from "./theme-test";
 export { ThemeToggleDemo } from "./theme-toggle-demo";

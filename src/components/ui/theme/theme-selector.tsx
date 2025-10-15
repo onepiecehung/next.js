@@ -5,6 +5,7 @@ import { Moon, Sun, Monitor, Palette, ChevronRight } from "lucide-react";
 import { useIsMounted } from "@/components/providers/no-ssr";
 import { useTheme } from "@/components/providers/theme-provider";
 import { useI18n } from "@/components/providers/i18n-provider";
+import { ThemeColorIndicator } from "./theme-color-indicator";
 
 import {
   Button,
@@ -135,7 +136,11 @@ export function ThemeSelector({
             >
               <div className="flex items-center justify-between w-full">
                 <div className="flex items-center">
-                  <div className="w-3 h-3 rounded-full bg-primary mr-2" />
+                  <ThemeColorIndicator
+                    theme={themeOption.value}
+                    size="md"
+                    className="mr-2"
+                  />
                   <span>{t(`theme.${themeOption.value}`, "common")}</span>
                 </div>
                 <span className="text-xs text-muted-foreground">
@@ -207,7 +212,11 @@ export function ThemeSelector({
             >
               <div className="flex items-center justify-between w-full">
                 <div className="flex items-center">
-                  <div className="w-3 h-3 rounded-full bg-primary mr-2" />
+                  <ThemeColorIndicator
+                    theme={themeOption.value}
+                    size="md"
+                    className="mr-2"
+                  />
                   <span>{t(`theme.${themeOption.value}`, "common")}</span>
                 </div>
                 <span className="text-xs text-muted-foreground">
@@ -257,7 +266,11 @@ export function ThemeSelector({
                 className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary"
               >
                 <div className="flex items-center">
-                  <div className="w-3 h-3 rounded-full bg-primary mr-2" />
+                  <ThemeColorIndicator
+                    theme={themeOption.value}
+                    size="md"
+                    className="mr-2"
+                  />
                   <span>{t(`theme.${themeOption.value}`, "common")}</span>
                 </div>
               </DropdownMenuItem>
@@ -285,7 +298,11 @@ export function ThemeSelector({
                 className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary"
               >
                 <div className="flex items-center">
-                  <div className="w-3 h-3 rounded-full bg-primary mr-2" />
+                  <ThemeColorIndicator
+                    theme={themeOption.value}
+                    size="md"
+                    className="mr-2"
+                  />
                   <span>{t(`theme.${themeOption.value}`, "common")}</span>
                 </div>
               </DropdownMenuItem>
@@ -313,7 +330,11 @@ export function ThemeSelector({
                 className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary"
               >
                 <div className="flex items-center">
-                  <div className="w-3 h-3 rounded-full bg-primary mr-2" />
+                  <ThemeColorIndicator
+                    theme={themeOption.value}
+                    size="md"
+                    className="mr-2"
+                  />
                   <span>{t(`theme.${themeOption.value}`, "common")}</span>
                 </div>
               </DropdownMenuItem>
