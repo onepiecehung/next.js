@@ -1,0 +1,39 @@
+---
+alwaysApply: true
+---
+
+# 🧩 Architecture & Environment Rules
+
+## Project Structure
+```
+src/
+├── app/ (App Router pages)
+├── components/
+│   ├── ui/ (shadcn primitives)
+│   ├── features/ (widgets/forms/modals)
+│   ├── providers/ (auth/i18n/theme/loading)
+│   └── shared/ (skeletons, utilities)
+├── hooks/
+├── i18n/
+├── lib/
+│   ├── api/
+│   ├── stores/
+│   ├── validators/
+│   └── utils/
+└── __tests__/
+```
+
+> **FE-only rules**
+> - ❌ No `"use server"`, `app/api/*`, or secrets
+> - ✅ Only `NEXT_PUBLIC_*` envs  
+> - ✅ Network via `src/lib/http.ts`
+
+## Core Stack
+Next.js 15+, React 19, TypeScript 5, TailwindCSS 4, shadcn/ui, Jotai, Zod, RHF, next-intl, Jest, ESLint, Prettier.
+
+## Yarn scripts
+```bash
+yarn dev / build / start / lint / format / test
+yarn dlx shadcn add button card input
+```
+Always commit `yarn.lock`.

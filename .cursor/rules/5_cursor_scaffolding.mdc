@@ -1,0 +1,42 @@
+---
+alwaysApply: true
+---
+
+# ⚙️ Cursor Scaffolding & Definition of Done
+
+## Cursor Scaffolding
+
+**When:** `Create page <slug>`
+1. `src/app/<slug>/page.tsx` — RSC page
+2. `src/components/features/<slug>/*`
+3. `src/lib/api/<slug>.ts`
+4. `src/hooks/use<Slug>.ts`
+5. `src/i18n/locales/{en,vi}/<slug>.json`
+6. `src/__tests__/<slug>.spec.tsx`
+
+**When:** `Create form <name>`
+- Path: `src/components/features/<domain>/<name>-form.tsx`
+- Use RHF + Zod + shadcn `<Form />`
+- Disabled/loading state + toast
+
+**When:** `Create modal <name>`
+- Use `Dialog`/`Sheet`
+- Focus trap, ESC close, responsive sizing
+
+> ❌ Never create `app/api/*` or `"use server"`.
+> ✅ Always use `src/lib/http.ts`.
+
+---
+
+## ✅ Definition of Done
+
+| Check | Status |
+|-------|--------|
+| No TS/ESLint warnings | ✅ |
+| Theme dark/light works | ✅ |
+| Mobile-first responsive | ✅ |
+| No secrets/server actions | ✅ |
+| shadcn primitives w/ states | ✅ |
+| i18n EN+VI ready | ✅ |
+| Accessible (focus, aria, nav) | ✅ |
+| Tests ≥ 80% coverage | ✅ |

@@ -1,0 +1,22 @@
+---
+alwaysApply: true
+---
+
+# 🧪 Testing, Imports & Naming
+
+## Testing
+- Jest + RTL in `src/__tests__`
+- Coverage ≥ 80%
+- Test theme switching, responsive rendering, editor interactions
+- Mock network via `src/lib/http.ts` or MSW
+
+## Imports/Exports
+| Type | Convention |
+|------|-------------|
+| Components | PascalCase |
+| Hooks | camelCase |
+| Files | kebab-case.tsx |
+| Pages/layouts | default export |
+| Libs/components | named export |
+| Imports | use `@/` alias |
+| Size | ≤200 lines/component, ≤300 lines/file |

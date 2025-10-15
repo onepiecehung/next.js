@@ -1,0 +1,27 @@
+---
+alwaysApply: true
+---
+
+# 📱 Responsive Design (Mobile-First)
+
+**Breakpoints**
+- sm ≥ 640px, md ≥ 768px, lg ≥ 1024px, xl ≥ 1280px
+
+**Authoring Pattern**
+- Base layout = mobile
+- Scale up at sm/md/lg
+- Use `container mx-auto px-4 md:px-6`
+
+**Patterns**
+- `grid gap-4 sm:grid-cols-2 lg:grid-cols-3`
+- `flex flex-col gap-3 sm:flex-row`
+- `next/image` with responsive `sizes`
+
+**Example**
+```tsx
+<section className="container mx-auto px-4 md:px-6 py-6 md:py-8">
+  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    ...
+  </div>
+</section>
+```
