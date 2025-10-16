@@ -69,7 +69,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
   const [, setExpiresIn] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
-  const [hasError, setHasError] = useState(false); // Track if OTP has been submitted with error
+  const [hasSubmitted, setHasSubmitted] = useState(false); // Track if OTP has been submitted at least once
 
   // Email form
   const emailForm = useForm<EmailFormValues>({
@@ -109,7 +109,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
   const handleOTPSubmit = React.useCallback(
     async (values: OTPFormValues) => {
       try {
-        setHasError(false); // Reset error state before submission
+        setHasSubmitted(true); // Mark that OTP has been submitted
         await handleOTPLogin({
           email,
           code: values.code,
@@ -119,30 +119,24 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
         onSuccess();
       } catch (error) {
         // Error handling is already done in the mutation
-        setHasError(true); // Mark that there was an error
         console.error("OTP verification failed:", error);
       }
     },
     [email, requestId, onSuccess, t, handleOTPLogin],
   );
 
-  // Auto-submit when OTP is complete (only if no previous error)
+  // Auto-submit when OTP is complete (only on first time)
   const otpCode = otpForm.watch("code");
   useEffect(() => {
-    // Reset error state when user starts typing new OTP
-    if (hasError && otpCode && otpCode.length > 0) {
-      setHasError(false);
-    }
-    
-    // Auto-submit only if OTP is complete, not loading, and no previous error
-    if (otpCode && otpCode.length === 6 && !isLoggingIn && !hasError) {
+    // Auto-submit only if OTP is complete, not loading, and hasn't been submitted yet
+    if (otpCode && otpCode.length === 6 && !isLoggingIn && !hasSubmitted) {
       // Small delay to ensure the UI updates
       const timer = setTimeout(() => {
         otpForm.handleSubmit(handleOTPSubmit)();
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [otpCode, isLoggingIn, hasError, otpForm, handleOTPSubmit]);
+  }, [otpCode, isLoggingIn, hasSubmitted, otpForm, handleOTPSubmit]);
 
   // Handle email submission (Step 1)
   const handleEmailSubmit = async (values: EmailFormValues) => {
@@ -162,7 +156,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
     } catch (error: unknown) {
       const errorMessage = extractAndTranslateErrorMessage(
         error,
-        "toastOTPRequestError",
+        "errors.requestError",
         t,
         "toast"
       );
@@ -181,7 +175,8 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
       setRequestId(result.requestId);
       setExpiresIn(result.expiresIn);
       setCountdown(result.expiresIn);
-      setHasError(false); // Reset error state when resending
+      setHasSubmitted(false); // Reset submission state when resending
+      otpForm.reset(); // Clear the OTP input
 
       toast.success(t("toastOTPResentSuccess", "toast"), {
         description: t("toastOTPResentDescription", "toast", { email }),
@@ -189,7 +184,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
     } catch (error: unknown) {
       const errorMessage = extractAndTranslateErrorMessage(
         error,
-        "otpResendError",
+        "errors.resendError",
         t,
         "auth"
       );
@@ -206,7 +201,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
     setRequestId("");
     setExpiresIn(0);
     setCountdown(0);
-    setHasError(false); // Reset error state
+    setHasSubmitted(false); // Reset submission state
     emailForm.reset();
     otpForm.reset();
   };

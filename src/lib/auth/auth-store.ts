@@ -236,13 +236,12 @@ export async function verifyOTPAction(
   code: string,
   requestId: string,
 ): Promise<User> {
-  const user = await OTPAuthAPI.verifyOTP(email, code, requestId);
+  const response = await AuthAPI.verifyOTP({ email, code, requestId });
 
   // Get token for storage from the API response
-  const response = await AuthAPI.verifyOTP({ email, code, requestId });
   storeTokens(response.token.accessToken, response.token.refreshToken);
 
-  return user;
+  return response.user;
 }
 
 /**

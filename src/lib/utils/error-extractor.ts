@@ -23,10 +23,10 @@ export interface ApiErrorResponse {
  * @returns Extracted error message or default message
  */
 export function extractErrorMessage(error: unknown, defaultMessage: string): string {
-  // Handle Error instances
-  if (error instanceof Error) {
-    return error.message;
-  }
+  // // Handle Error instances
+  // if (error instanceof Error) {
+  //   return error.message;
+  // }
 
   // Handle API response errors
   if (typeof error === "object" && error !== null && "response" in error) {
