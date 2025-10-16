@@ -27,6 +27,7 @@ interface ImageUploadProps {
 export function ImageUpload({
   value,
   onChange,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onUploadBatch: _onUploadBatch, // Prefix with underscore to indicate intentionally unused
   className,
   placeholder = "Click to upload or drag and drop",
@@ -210,7 +211,7 @@ export function ImageUpload({
                     }
                   }}
                 >
-                  {t("writeFormCoverImageEdit", "write")}
+                  {t("form.coverImageEdit", "write")}
                 </Button>
               )}
               <Button
@@ -219,7 +220,7 @@ export function ImageUpload({
                 size="sm"
                 onClick={handleRemove}
               >
-                {t("writeFormCoverImageRemove", "write")}
+                {t("form.coverImageRemove", "write")}
               </Button>
             </div>
           </div>

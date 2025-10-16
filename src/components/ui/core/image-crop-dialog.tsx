@@ -1,21 +1,21 @@
 "use client";
 
-import * as React from "react";
+import { useI18n } from "@/components/providers/i18n-provider";
 import Image from "next/image";
-import { Button } from "./button";
+import * as React from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "../layout/dialog";
-import { useI18n } from "@/components/providers/i18n-provider";
 import {
   ImageCrop,
   ImageCropApply,
   ImageCropContent,
   ImageCropReset,
 } from "../shadcn-io/image-crop";
+import { Button } from "./button";
 
 interface ImageCropDialogProps {
   readonly isOpen: boolean;
@@ -66,7 +66,7 @@ export function ImageCropDialog({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl">
         <DialogHeader>
-          <DialogTitle>{t("imageEditorTitle", "write")}</DialogTitle>
+          <DialogTitle>{t("imageEditor.title", "write")}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -84,10 +84,10 @@ export function ImageCropDialog({
               </div>
               <div className="flex justify-center gap-2">
                 <Button onClick={handleSave}>
-                  {t("imageEditorSave", "write")}
+                  {t("imageEditor.save", "write")}
                 </Button>
                 <Button variant="outline" onClick={handleReset}>
-                  {t("imageEditorCancel", "write")}
+                  {t("imageEditor.cancel", "write")}
                 </Button>
               </div>
             </div>
@@ -101,22 +101,22 @@ export function ImageCropDialog({
               <ImageCropContent className="max-w-2xl mx-auto" />
               <div className="flex items-center justify-center gap-2 mt-4">
                 <ImageCropApply asChild>
-                  <Button>{t("imageEditorCrop", "write")}</Button>
+                  <Button>{t("imageEditor.crop", "write")}</Button>
                 </ImageCropApply>
                 <ImageCropReset asChild>
                   <Button variant="secondary">
-                    {t("imageEditorReset", "write")}
+                    {t("imageEditor.reset", "write")}
                   </Button>
                 </ImageCropReset>
                 <Button variant="outline" onClick={onClose}>
-                  {t("imageEditorCancel", "write")}
+                  {t("imageEditor.cancel", "write")}
                 </Button>
               </div>
             </ImageCrop>
           )}
 
           <div className="text-sm text-muted-foreground text-center">
-            {t("imageEditorInstructions", "write").replace(
+            {t("imageEditor.instructions", "write").replace(
               "{ratio}",
               aspectRatio.toFixed(1),
             )}
