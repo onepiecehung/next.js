@@ -121,8 +121,8 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
 
     if (minutes > 0) {
       return remainingSeconds > 0
-        ? `${minutes}p${remainingSeconds}s`
-        : `${minutes}p`;
+        ? `${minutes}m ${remainingSeconds}s`
+        : `${minutes}m`;
     }
 
     return `${remainingSeconds}s`;
