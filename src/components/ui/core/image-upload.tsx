@@ -201,10 +201,10 @@ export function ImageUpload({
                   type="button"
                   variant="secondary"
                   size="sm"
-                  onClick={() => {
+                  onClick={(e) => {
                     // Prevent parent container click from firing on mobile
                     // which could blur or reopen input instead of dialog
-                    event?.stopPropagation?.();
+                    e.stopPropagation();
                     if (value) {
                       setTempFile(value);
                       setIsEditorOpen(true);
