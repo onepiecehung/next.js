@@ -1,6 +1,31 @@
 import { SettingsPage } from "@/app/settings/page";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import React from "react";
+
+// Create a test query client
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        gcTime: 0,
+      },
+      mutations: {
+        retry: false,
+      },
+    },
+  });
+
+// Custom render function with React Query provider
+const renderWithQueryClient = (ui: React.ReactElement) => {
+  const queryClient = createTestQueryClient();
+  return render(
+    <QueryClientProvider client={queryClient}>
+      {ui}
+    </QueryClientProvider>
+  );
+};
 
 // Mock the i18n provider
 jest.mock("@/components/providers/i18n-provider", () => ({
@@ -87,7 +112,7 @@ jest.mock("@/components/ui/layout/separator", () => ({
 
 describe("SettingsPage", () => {
   it("renders settings page with navigation", () => {
-    render(<SettingsPage />);
+    renderWithQueryClient(<SettingsPage />);
 
     expect(screen.getByText("Settings")).toBeInTheDocument();
     expect(
@@ -96,7 +121,7 @@ describe("SettingsPage", () => {
   });
 
   it("shows login required when user is not authenticated", () => {
-    render(<SettingsPage />);
+    renderWithQueryClient(<SettingsPage />);
 
     expect(screen.getByText("Login Required")).toBeInTheDocument();
     expect(
@@ -106,7 +131,7 @@ describe("SettingsPage", () => {
   });
 
   it("renders settings navigation sections", () => {
-    render(<SettingsPage />);
+    renderWithQueryClient(<SettingsPage />);
 
     expect(screen.getByText("Profile")).toBeInTheDocument();
     expect(screen.getByText("Account & Security")).toBeInTheDocument();
@@ -116,7 +141,7 @@ describe("SettingsPage", () => {
   });
 
   it("shows profile section by default", () => {
-    render(<SettingsPage />);
+    renderWithQueryClient(<SettingsPage />);
 
     // Since user is not authenticated, it should show login required
     expect(screen.getByText("Login Required")).toBeInTheDocument();

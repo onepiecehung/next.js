@@ -2,7 +2,7 @@
 
 import { LoginFormShared, OTPLoginForm } from "@/components/features/auth";
 import { useI18n } from "@/components/providers/i18n-provider";
-import { useAuthRedirect } from "@/hooks/auth";
+import { useAuthRedirect } from "@/hooks/auth/useAuthQuery";
 import { authLoadingAtom, currentUserAtom } from "@/lib/auth";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";

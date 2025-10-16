@@ -2,19 +2,19 @@
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import {
-  Button,
-  Input,
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-  Label,
+    Button,
+    Input,
+    InputOTP,
+    InputOTPGroup,
+    InputOTPSeparator,
+    InputOTPSlot,
+    Label,
 } from "@/components/ui";
+import { useLogin } from "@/hooks/auth/useAuthQuery";
 import {
-  accessTokenAtom,
-  currentUserAtom,
-  requestOTPAction,
-  verifyOTPAction,
+    accessTokenAtom,
+    currentUserAtom,
+    requestOTPAction,
 } from "@/lib/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
@@ -82,6 +82,9 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
   const { t } = useI18n();
   const [, setUser] = useAtom(currentUserAtom);
   const [, setAccessToken] = useAtom(accessTokenAtom);
+  
+  // Use React Query login hook
+  const { mutate: loginWithOTP, isPending: isLoggingIn } = useLogin();
 
   // State management
   const [step, setStep] = useState<"email" | "otp">("email");
@@ -112,40 +115,39 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
   // Handle OTP verification (Step 2) - moved up to avoid temporal dead zone
   const handleOTPSubmit = React.useCallback(
     async (values: OTPFormValues) => {
-      setIsLoading(true);
-      try {
-        const user = await verifyOTPAction(email, values.code, requestId);
-
-        setUser(user);
-        setAccessToken(null); // Token is stored in http layer
-
-        toast.success(t("otpVerifySuccess", "auth") || "Login successful!");
-
-        onSuccess();
-      } catch (error: unknown) {
-        const errorMessage = extractErrorMessage(
-          error,
-          t("otpVerifyError", "auth") || "Invalid OTP code. Please try again.",
-        );
-        toast.error(errorMessage);
-      } finally {
-        setIsLoading(false);
-      }
+      loginWithOTP(
+        { email, otp: values.code, requestId },
+        {
+          onSuccess: (user) => {
+            setUser(user);
+            setAccessToken(null); // Token is stored in http layer
+            toast.success(t("otpVerifySuccess", "auth") || "Login successful!");
+            onSuccess();
+          },
+          onError: (error: unknown) => {
+            const errorMessage = extractErrorMessage(
+              error,
+              t("otpVerifyError", "auth") || "Invalid OTP code. Please try again.",
+            );
+            toast.error(errorMessage);
+          },
+        }
+      );
     },
-    [email, requestId, onSuccess, t, setUser, setAccessToken],
+    [email, requestId, onSuccess, t, setUser, setAccessToken, loginWithOTP],
   );
 
   // Auto-submit when OTP is complete
   const otpCode = otpForm.watch("code");
   useEffect(() => {
-    if (otpCode && otpCode.length === 6 && !isLoading) {
+    if (otpCode && otpCode.length === 6 && !isLoggingIn) {
       // Small delay to ensure the UI updates
       const timer = setTimeout(() => {
         otpForm.handleSubmit(handleOTPSubmit)();
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [otpCode, isLoading, otpForm, handleOTPSubmit]);
+  }, [otpCode, isLoggingIn, otpForm, handleOTPSubmit]);
 
   // Handle email submission (Step 1)
   const handleEmailSubmit = async (values: EmailFormValues) => {
@@ -265,8 +267,8 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t("back", "common") || "Back"}
             </Button>
-            <Button type="submit" className="flex-1" disabled={isLoading}>
-              {isLoading
+            <Button type="submit" className="flex-1" disabled={isLoggingIn}>
+              {isLoggingIn
                 ? t("sending", "auth") || "Sending..."
                 : t("sendOTP", "auth") || "Send OTP"}
             </Button>
@@ -343,8 +345,8 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t("back", "common") || "Back"}
             </Button>
-            <Button type="submit" className="flex-1" disabled={isLoading}>
-              {isLoading
+            <Button type="submit" className="flex-1" disabled={isLoggingIn}>
+              {isLoggingIn
                 ? t("verifying", "auth") || "Verifying..."
                 : t("verifyOTP", "auth") || "Verify OTP"}
             </Button>

@@ -17,43 +17,43 @@ import "./tiptap-editor.css";
 import { NoSSR } from "@/components/providers/no-ssr";
 import { Button } from "@/components/ui/core/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
 import { SyntaxHighlightedContent } from "@/hooks/content";
-import { useImageUpload } from "@/hooks/media";
+import { useImageUpload } from "@/hooks/media/useMediaQuery";
 import "highlight.js/styles/github.css";
 import { createLowlight } from "lowlight";
 import {
-  AlignCenter,
-  AlignJustify,
-  AlignLeft,
-  AlignRight,
-  Bold,
-  CheckSquare,
-  ChevronDown,
-  Code,
-  Edit3,
-  Eye,
-  FileCode,
-  Heading1,
-  Heading2,
-  Heading3,
-  Heading4,
-  Heading5,
-  Image as ImageIcon,
-  Italic,
-  Link as LinkIcon,
-  List,
-  ListOrdered,
-  Quote,
-  Redo,
-  SplitSquareHorizontalIcon as Split,
-  Strikethrough,
-  Underline as UnderlineIcon,
-  Undo,
+    AlignCenter,
+    AlignJustify,
+    AlignLeft,
+    AlignRight,
+    Bold,
+    CheckSquare,
+    ChevronDown,
+    Code,
+    Edit3,
+    Eye,
+    FileCode,
+    Heading1,
+    Heading2,
+    Heading3,
+    Heading4,
+    Heading5,
+    Image as ImageIcon,
+    Italic,
+    Link as LinkIcon,
+    List,
+    ListOrdered,
+    Quote,
+    Redo,
+    SplitSquareHorizontalIcon as Split,
+    Strikethrough,
+    Underline as UnderlineIcon,
+    Undo,
 } from "lucide-react";
 import { ColorHighlightPopover } from "./color-highlight-popover";
 import { CustomImageNode } from "./custom-image-node";
@@ -98,17 +98,14 @@ export function TipTapEditor({
   const [isCodeMode, setIsCodeMode] = useState(false);
   const [isLinkDialogOpen, setIsLinkDialogOpen] = useState(false);
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
-  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
-  // Image upload hook
-  const { uploadImages, error: uploadError } = useImageUpload({
+  // Image upload hook with React Query
+  const { mutate: uploadImages, isPending: isUploadingImage } = useImageUpload({
     onSuccess: (uploadedMedia) => {
       console.log("Images uploaded successfully:", uploadedMedia);
-      setIsUploadingImage(false);
     },
     onError: (error) => {
       console.error("Image upload failed:", error);
-      setIsUploadingImage(false);
     },
   });
 

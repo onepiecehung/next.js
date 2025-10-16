@@ -3,7 +3,7 @@
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button, Input } from "@/components/ui";
 import { GitHubIcon, GoogleIcon, XIcon } from "@/components/ui/icons";
-import { useLogin } from "@/hooks/auth";
+import { useLogin } from "@/hooks/auth/useAuthQuery";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState } from "react";

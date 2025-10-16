@@ -1,13 +1,12 @@
 "use client";
 
-import { useArticle } from "@/hooks/article";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button } from "@/components/ui";
+import { useArticle } from "@/hooks/article/useArticleQuery";
 import { FileText, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { toast } from "sonner";
 
 /**
  * Article Redirect Page Component
@@ -22,11 +21,7 @@ export default function ArticleRedirectPage() {
   const articleId = params.article_id as string;
 
   // Fetch article data to get the slug
-  const { article, isLoading, error } = useArticle(articleId, {
-    onError: (error) => {
-      toast.error(error.message || t("articleViewError", "article"));
-    },
-  });
+  const { data: article, isLoading, error } = useArticle(articleId);
 
   // Redirect to the proper URL with slug when article data is loaded
   useEffect(() => {

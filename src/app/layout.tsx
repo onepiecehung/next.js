@@ -1,4 +1,15 @@
+import { SiteNav } from "@/components/features/navigation";
+import AuthProvider from "@/components/providers/auth-provider";
+import { I18nProvider } from "@/components/providers/i18n-provider";
+import { LoadingProvider } from "@/components/providers/loading-provider";
+import { NoSSR } from "@/components/providers/no-ssr";
+import RateLimitProvider from "@/components/providers/rate-limit-provider";
 import { ReactQueryProvider } from "@/components/providers/react-query-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Toaster } from "@/components/ui";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
