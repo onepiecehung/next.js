@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 // Form validation schema - will be created inside component to access i18n
@@ -51,6 +52,9 @@ export default function LoginFormShared({
     handleGoogleLogin,
     handleGithubLogin,
     handleXLogin,
+    isGoogleLoading,
+    isGithubLoading,
+    isXLoading,
   } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
   const [showEmailForm, setShowEmailForm] = useState(false);
@@ -74,41 +78,54 @@ export default function LoginFormShared({
   });
 
   const onSubmit = async (values: LoginFormValues) => {
-    const result = await handleEmailPasswordLogin(
-      values.email,
-      values.password,
-    );
-    if (result.success) {
+    try {
+      await handleEmailPasswordLogin({
+        email: values.email,
+        password: values.password,
+      });
+      toast.success(t("toastLoginSuccess", "toast") || "Login successful!");
       reset();
       setShowPassword(false);
       onSuccess?.();
+    } catch (error) {
+      // Error is handled by the hook's onError callback
+      console.error("Login failed:", error);
     }
   };
 
   const handleGoogleClick = async () => {
-    const result = await handleGoogleLogin();
-    if (result.success) {
+    try {
+      await handleGoogleLogin();
+      toast.success(t("toastLoginSuccess", "toast") || "Login successful!");
       reset();
       setShowPassword(false);
       onSuccess?.();
+    } catch (error) {
+      console.error("Google login failed:", error);
     }
   };
 
   const handleGithubClick = async () => {
-    const result = await handleGithubLogin();
-    if (result.success) {
+    try {
+      await handleGithubLogin();
+      toast.success(t("toastLoginSuccess", "toast") || "Login successful!");
       reset();
       setShowPassword(false);
       onSuccess?.();
+    } catch (error) {
+      console.error("GitHub login failed:", error);
     }
   };
 
   const handleXClick = async () => {
-    const result = await handleXLogin();
-    if (result.success) {
+    try {
+      await handleXLogin();
+      toast.success(t("toastLoginSuccess", "toast") || "Login successful!");
       reset();
       setShowPassword(false);
       onSuccess?.();
+    } catch (error) {
+      console.error("X login failed:", error);
     }
   };
 
@@ -180,12 +197,14 @@ export default function LoginFormShared({
             <button
               type="button"
               onClick={handleGoogleClick}
-              disabled={isLoading || isSubmitting}
+              disabled={isGoogleLoading || isSubmitting}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
             >
               <GoogleIcon className="h-5 w-5" />
               <span className="font-medium text-gray-700">
-                {t("loginWithGoogle", "auth")}
+                {isGoogleLoading
+                  ? t("loggingIn", "auth")
+                  : t("loginWithGoogle", "auth")}
               </span>
             </button>
 
@@ -193,12 +212,14 @@ export default function LoginFormShared({
             <button
               type="button"
               onClick={handleGithubClick}
-              disabled={isLoading || isSubmitting}
+              disabled={isGithubLoading || isSubmitting}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
             >
               <GitHubIcon className="h-5 w-5" />
               <span className="font-medium text-gray-700">
-                {t("loginWithGithub", "auth")}
+                {isGithubLoading
+                  ? t("loggingIn", "auth")
+                  : t("loginWithGithub", "auth")}
               </span>
             </button>
 
@@ -206,12 +227,12 @@ export default function LoginFormShared({
             <button
               type="button"
               onClick={handleXClick}
-              disabled={isLoading || isSubmitting}
+              disabled={isXLoading || isSubmitting}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
             >
               <XIcon className="h-5 w-5" />
               <span className="font-medium text-gray-700">
-                {t("loginWithX", "auth")}
+                {isXLoading ? t("loggingIn", "auth") : t("loginWithX", "auth")}
               </span>
             </button>
           </div>

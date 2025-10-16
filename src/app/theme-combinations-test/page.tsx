@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/components/providers/theme-provider";
+import { Badge } from "@/components/ui/core/badge";
 import { Button } from "@/components/ui/core/button";
 import {
   Card,
@@ -9,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/core/card";
-import { Badge } from "@/components/ui/core/badge";
 import { ThemeColorIndicator } from "@/components/ui/theme/theme-color-indicator";
 
 export default function ThemeCombinationsTestPage() {
@@ -54,9 +54,7 @@ export default function ThemeCombinationsTestPage() {
                     <span className="text-2xl">{scheme.icon}</span>
                     <div className="text-center">
                       <div className="font-semibold">{scheme.label}</div>
-                      <div className="text-xs opacity-70">
-                        {scheme.description}
-                      </div>
+                      <div className="text-xs opacity-70">{scheme.value}</div>
                     </div>
                   </Button>
                 ))}
@@ -89,7 +87,7 @@ export default function ThemeCombinationsTestPage() {
                         {themeOption.label}
                       </div>
                       <div className="text-xs opacity-70">
-                        {themeOption.category}
+                        {themeOption.value}
                       </div>
                     </div>
                   </Button>

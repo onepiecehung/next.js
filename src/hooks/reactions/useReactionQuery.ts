@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { useI18n } from "@/components/providers/i18n-provider";
-import { ReactionsAPI } from "@/lib/api/reactions";
+import { ReactionsApi } from "@/lib/api/reactions";
 
 /**
  * Hook for fetching reactions for an article
@@ -10,7 +10,7 @@ import { ReactionsAPI } from "@/lib/api/reactions";
 export function useReactions(articleId: string) {
   return useQuery({
     queryKey: ["reactions", articleId],
-    queryFn: () => ReactionsAPI.getReactions(articleId),
+    queryFn: () => ReactionsApi.getArticleReactionCounts(articleId),
     enabled: !!articleId,
     staleTime: 2 * 60 * 1000, // 2 minutes
     retry: 2,
@@ -25,18 +25,28 @@ export function useToggleReaction() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ articleId, type }: { articleId: string; type: string }) =>
-      ReactionsAPI.toggleReaction(articleId, type),
+    mutationFn: ({ articleId, type }: { articleId: string; type: string }) => {
+      // Use the type parameter to determine which reaction method to call
+      if (type === "like") {
+        return ReactionsApi.likeArticle(articleId, "toggle");
+      } else if (type === "bookmark") {
+        return ReactionsApi.bookmarkArticle(articleId, "toggle");
+      } else {
+        // Generic reaction toggle
+        return ReactionsApi.createOrSetReaction({
+          subjectType: "article",
+          subjectId: articleId,
+          kind: type,
+          action: "toggle",
+        });
+      }
+    },
     onSuccess: (_, { articleId }) => {
-      // Invalidate reactions for this article
+      // Only invalidate reactions for this article
       queryClient.invalidateQueries({ queryKey: ["reactions", articleId] });
 
-      // Also invalidate article data to update reaction counts
-      queryClient.invalidateQueries({ queryKey: ["article", articleId] });
-
-      toast.success(
-        t("reactionToggleSuccess", "reactions") || "Reaction updated!",
-      );
+      // Don't invalidate article data - it will be updated by the reaction count
+      // queryClient.invalidateQueries({ queryKey: ["article", articleId] });
     },
     onError: (error) => {
       console.error("Reaction toggle error:", error);
@@ -56,12 +66,16 @@ export function useAddReaction() {
 
   return useMutation({
     mutationFn: ({ articleId, type }: { articleId: string; type: string }) =>
-      ReactionsAPI.addReaction(articleId, type),
+      ReactionsApi.createOrSetReaction({
+        subjectType: "article",
+        subjectId: articleId,
+        kind: type,
+        action: "set",
+        value: true,
+      }),
     onSuccess: (_, { articleId }) => {
       queryClient.invalidateQueries({ queryKey: ["reactions", articleId] });
-      queryClient.invalidateQueries({ queryKey: ["article", articleId] });
-
-      toast.success(t("reactionAddSuccess", "reactions") || "Reaction added!");
+      // Don't invalidate article data - it will be updated by the reaction count
     },
     onError: (error) => {
       console.error("Add reaction error:", error);
@@ -81,14 +95,14 @@ export function useRemoveReaction() {
 
   return useMutation({
     mutationFn: ({ articleId, type }: { articleId: string; type: string }) =>
-      ReactionsAPI.removeReaction(articleId, type),
+      ReactionsApi.removeReaction({
+        subjectType: "article",
+        subjectId: articleId,
+        kind: type,
+      }),
     onSuccess: (_, { articleId }) => {
       queryClient.invalidateQueries({ queryKey: ["reactions", articleId] });
-      queryClient.invalidateQueries({ queryKey: ["article", articleId] });
-
-      toast.success(
-        t("reactionRemoveSuccess", "reactions") || "Reaction removed!",
-      );
+      // Don't invalidate article data - it will be updated by the reaction count
     },
     onError: (error) => {
       console.error("Remove reaction error:", error);

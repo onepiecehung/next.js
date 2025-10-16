@@ -51,12 +51,8 @@ export function useUpdateUserProfile() {
       // Update current user if it's the same user
       queryClient.setQueryData(["currentUserProfile"], user);
 
-      // Invalidate users list
+      // Only invalidate users list if needed
       queryClient.invalidateQueries({ queryKey: ["users"] });
-
-      toast.success(
-        t("profileUpdateSuccess", "profile") || "Profile updated successfully!",
-      );
     },
     onError: (error) => {
       console.error("Profile update error:", error);

@@ -47,4 +47,20 @@ export class MediaAPI {
     );
     return response.data;
   }
+
+  static async getUserMedia(
+    userId: string,
+  ): Promise<ApiResponse<UploadedMedia[]>> {
+    const response = await http.get<ApiResponse<UploadedMedia[]>>(
+      `${this.BASE_URL}/user/${userId}`,
+    );
+    return response.data;
+  }
+
+  static async delete(mediaId: string): Promise<ApiResponse<void>> {
+    const response = await http.delete<ApiResponse<void>>(
+      `${this.BASE_URL}/${mediaId}`,
+    );
+    return response.data;
+  }
 }

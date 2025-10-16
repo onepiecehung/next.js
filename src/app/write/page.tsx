@@ -24,7 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
 import {
-  useArticleForm,
+  useArticleFormState,
   useCreateArticle,
 } from "@/hooks/article/useArticleQuery";
 import { MediaAPI } from "@/lib/api/media";
@@ -43,7 +43,7 @@ export default function WritePage() {
   const [currentUser] = useAtom(currentUserAtom);
   const router = useRouter();
 
-  // Use article form hook
+  // Use article form state hook
   const {
     coverImage,
     setCoverImage,
@@ -62,54 +62,73 @@ export default function WritePage() {
     showValidationErrors,
     wordCount,
     readTimeMinutes,
-  } = useArticleForm();
+  } = useArticleFormState();
 
   // Use create article hook
-  const { saveArticle, isLoading: isSubmitting } = useCreateArticle({
-    onSuccess: (article) => {
-      switch (article.status) {
-        case ARTICLE_CONSTANTS.STATUS.DRAFT:
-          toast.info(
-            t("writeFormDraftSuccess", "write") ||
-              "Article created successfully!",
-            {
-              description:
-                t("writeFormDraftSuccess", "write") ||
+  const { mutate: createArticle, isPending: isSubmitting } = useCreateArticle();
+
+  // Handle article creation with success/error callbacks
+  const handleCreateArticle = (articleData: {
+    title: string;
+    content: string;
+    tags: string[];
+    visibility: string;
+    scheduledPublish?: string;
+  }) => {
+    const createRequest = {
+      ...articleData,
+      contentFormat: "html" as const,
+      status: (visibility === "draft" ? "draft" : "published") as
+        | "draft"
+        | "published"
+        | "scheduled",
+      visibility: visibility as "public" | "unlisted" | "private",
+    };
+
+    createArticle(createRequest, {
+      onSuccess: (article) => {
+        switch (article.status) {
+          case ARTICLE_CONSTANTS.STATUS.DRAFT:
+            toast.info(
+              t("writeFormDraftSuccess", "write") ||
                 "Article created successfully!",
-            },
-          );
-          break;
-        case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
-          toast.success(
-            t("writeFormScheduledPublishSuccess", "write") ||
-              "Article scheduled for publication!",
-            {
-              description: t(
-                "writeFormScheduledPublishSuccessDescription",
-                "write",
-                {
-                  date: article.scheduledAt?.toLocaleString(),
-                },
-              ),
-            },
-          );
-          break;
-
-        default:
-          toast.success(
-            t("writeFormSuccess", "write") || "Article created successfully!",
-          );
-          break;
-      }
-      resetForm();
-
-      // Redirect to article view page with a small delay to ensure cleanup
-      return router.push(`/article/${article.id}/${article.slug}`);
-    },
-    onError: (error) => {
-      toast.error(error.message || "Failed to create article");
-    },
-  });
+              {
+                description:
+                  t("writeFormDraftSuccess", "write") ||
+                  "Article created successfully!",
+              },
+            );
+            break;
+          case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
+            toast.success(
+              t("writeFormScheduledPublishSuccess", "write") ||
+                "Article scheduled for publication!",
+              {
+                description: t(
+                  "writeFormScheduledPublishSuccessDescription",
+                  "write",
+                  {
+                    date: article.scheduledAt?.toLocaleString(),
+                  },
+                ),
+              },
+            );
+            break;
+          default:
+            toast.success(
+              t("writeFormSuccess", "write") || "Article created successfully!",
+            );
+            break;
+        }
+        resetForm();
+        // Redirect to article view page with a small delay to ensure cleanup
+        router.push(`/article/${article.id}/${article.slug}`);
+      },
+      onError: (error) => {
+        toast.error(error.message || "Failed to create article");
+      },
+    });
+  };
 
   // Simulate loading delay
   React.useEffect(() => {
@@ -147,17 +166,17 @@ export default function WritePage() {
 
   // Handle save draft
   const handleSaveDraft = async () => {
-    const errors = validateForm();
-    if (errors.length > 0) {
-      showValidationErrors(errors);
+    const isValid = validateForm();
+    if (!isValid) {
       return;
     }
 
     try {
       const articleData = await prepareArticleData();
-      await saveArticle({
+      handleCreateArticle({
         ...articleData,
-        status: ARTICLE_CONSTANTS.STATUS.DRAFT,
+        tags: articleData.tags || [],
+        visibility: "draft",
       });
     } catch {
       // Error handled by hook
@@ -166,23 +185,20 @@ export default function WritePage() {
 
   // Handle publish article (immediate or scheduled)
   const handlePublishArticle = async () => {
-    const errors = validateForm();
-    if (errors.length > 0) {
-      showValidationErrors(errors);
+    const isValid = validateForm();
+    if (!isValid) {
       return;
     }
 
     try {
       const articleData = await prepareArticleData();
-      await saveArticle({
+      handleCreateArticle({
         ...articleData,
-        status: scheduledPublish
-          ? ARTICLE_CONSTANTS.STATUS.SCHEDULED
-          : ARTICLE_CONSTANTS.STATUS.PUBLISHED,
-        scheduledAt: scheduledPublish ?? undefined,
+        tags: articleData.tags || [],
         visibility: scheduledPublish
           ? ARTICLE_CONSTANTS.VISIBILITY.PRIVATE
           : visibility,
+        scheduledPublish: scheduledPublish?.toISOString(),
       });
     } catch {
       // Error handled by hook
@@ -249,7 +265,7 @@ export default function WritePage() {
                       className="w-full px-3 sm:px-4 py-3 sm:py-3.5 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-base sm:text-lg transition-shadow"
                     />
                     <p className="text-xs text-muted-foreground mt-1.5">
-                      {title.length}/256 characters
+                      {(title || "").length}/256 characters
                     </p>
                   </div>
 
@@ -265,8 +281,10 @@ export default function WritePage() {
                       className="min-h-[300px] sm:min-h-[400px] md:min-h-[500px]"
                     />
                     <div className="flex justify-between items-center mt-1.5 sm:mt-2 text-xs text-muted-foreground">
-                      <span className="font-medium">{wordCount} words</span>
-                      <span>{readTimeMinutes} min read</span>
+                      <span className="font-medium">
+                        {wordCount || 0} words
+                      </span>
+                      <span>{readTimeMinutes || 0} min read</span>
                     </div>
                   </div>
 
@@ -289,7 +307,7 @@ export default function WritePage() {
                       className="w-full px-3 sm:px-4 py-3 sm:py-3.5 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm sm:text-base transition-shadow"
                     />
                     <p className="text-xs text-muted-foreground mt-1.5">
-                      {tags.length}/20 tags (separate with commas)
+                      {(tags || []).length}/20 tags (separate with commas)
                     </p>
                   </div>
 

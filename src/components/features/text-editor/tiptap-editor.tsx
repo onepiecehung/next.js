@@ -23,7 +23,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
 import { SyntaxHighlightedContent } from "@/hooks/content";
-import { useImageUpload } from "@/hooks/media/useMediaQuery";
+import { useMultipleImageUpload } from "@/hooks/media/useMediaQuery";
+import type { UploadedMedia } from "@/lib/api/media";
 import "highlight.js/styles/github.css";
 import { createLowlight } from "lowlight";
 import {
@@ -100,14 +101,22 @@ export function TipTapEditor({
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
 
   // Image upload hook with React Query
-  const { mutate: uploadImages, isPending: isUploadingImage } = useImageUpload({
-    onSuccess: (uploadedMedia) => {
-      console.log("Images uploaded successfully:", uploadedMedia);
-    },
-    onError: (error) => {
+  const {
+    mutateAsync: uploadImagesAsync,
+    isPending: isUploadingImage,
+    error: uploadError,
+  } = useMultipleImageUpload();
+
+  // Wrapper function for ImageUploadExtension
+  const uploadImages = async (files: File[]): Promise<UploadedMedia[]> => {
+    try {
+      const result = await uploadImagesAsync(files);
+      return result.data || [];
+    } catch (error) {
       console.error("Image upload failed:", error);
-    },
-  });
+      throw error;
+    }
+  };
 
   const editor = useEditor({
     extensions: [
@@ -167,11 +176,14 @@ export function TipTapEditor({
       }),
       ImageUploadExtension.configure({
         onUpload: uploadImages,
-        onUploadStart: () => setIsUploadingImage(true),
-        onUploadEnd: () => setIsUploadingImage(false),
+        onUploadStart: () => {
+          // Upload start handled by React Query
+        },
+        onUploadEnd: () => {
+          // Upload end handled by React Query
+        },
         onUploadError: (error) => {
           console.error("Image upload error:", error);
-          setIsUploadingImage(false);
         },
       }),
       Markdown.configure({

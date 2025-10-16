@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/components/providers/theme-provider";
+import { Badge } from "@/components/ui/core/badge";
 import { Button } from "@/components/ui/core/button";
 import {
   Card,
@@ -9,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/core/card";
-import { Badge } from "@/components/ui/core/badge";
 import { ThemeColorIndicator } from "@/components/ui/theme/theme-color-indicator";
 
 export default function ThemeColorComparisonPage() {
@@ -57,7 +57,7 @@ export default function ThemeColorComparisonPage() {
                         {themeOption.description}
                       </div>
                       <div className="text-xs opacity-50 capitalize">
-                        {themeOption.category}
+                        {themeOption.value}
                       </div>
                     </div>
                   </Button>
@@ -153,9 +153,7 @@ export default function ThemeColorComparisonPage() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {themes
-                  .filter(
-                    (t) => t.category === "neutral" || t.value === "neutral",
-                  )
+                  .filter((t) => t.value === "neutral")
                   .map((themeOption) => (
                     <div
                       key={themeOption.value}

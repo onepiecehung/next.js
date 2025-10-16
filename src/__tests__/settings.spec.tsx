@@ -71,33 +71,33 @@ jest.mock("@/components/shared", () => ({
 
 // Mock the UI components
 jest.mock("@/components/ui/core/button", () => ({
-  Button: ({ children, ...props }: any) => (
+  Button: ({ children, ...props }: React.ComponentProps<"button">) => (
     <button {...props}>{children}</button>
   ),
 }));
 
 jest.mock("@/components/ui/core/card", () => ({
-  Card: ({ children, ...props }: any) => (
+  Card: ({ children, ...props }: React.ComponentProps<"div">) => (
     <div data-testid="card" {...props}>
       {children}
     </div>
   ),
-  CardContent: ({ children, ...props }: any) => (
+  CardContent: ({ children, ...props }: React.ComponentProps<"div">) => (
     <div data-testid="card-content" {...props}>
       {children}
     </div>
   ),
-  CardDescription: ({ children, ...props }: any) => (
+  CardDescription: ({ children, ...props }: React.ComponentProps<"div">) => (
     <div data-testid="card-description" {...props}>
       {children}
     </div>
   ),
-  CardHeader: ({ children, ...props }: any) => (
+  CardHeader: ({ children, ...props }: React.ComponentProps<"div">) => (
     <div data-testid="card-header" {...props}>
       {children}
     </div>
   ),
-  CardTitle: ({ children, ...props }: any) => (
+  CardTitle: ({ children, ...props }: React.ComponentProps<"div">) => (
     <div data-testid="card-title" {...props}>
       {children}
     </div>

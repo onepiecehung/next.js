@@ -76,10 +76,7 @@ export function AppearanceSettings() {
             <h4 className="font-medium mb-3">
               {t("appearanceThemeColor", "settings")}
             </h4>
-            <ThemeSelector
-              onThemeChange={handleThemeChange}
-              currentTheme={appearance?.theme || "neutral"}
-            />
+            <ThemeSelector />
 
             {previewTheme && previewTheme !== appearance?.theme && (
               <div className="mt-4 flex gap-2">

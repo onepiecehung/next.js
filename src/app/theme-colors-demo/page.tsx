@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/components/providers/theme-provider";
+import { Badge } from "@/components/ui/core/badge";
 import { Button } from "@/components/ui/core/button";
 import {
   Card,
@@ -9,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/core/card";
-import { Badge } from "@/components/ui/core/badge";
 import { ThemeColorIndicator } from "@/components/ui/theme/theme-color-indicator";
 
 export default function ThemeColorsDemoPage() {
@@ -56,7 +56,7 @@ export default function ThemeColorsDemoPage() {
                         {themeOption.description}
                       </div>
                       <div className="text-xs opacity-50 capitalize">
-                        {themeOption.category}
+                        {themeOption.value}
                       </div>
                     </div>
                   </Button>
@@ -82,7 +82,10 @@ export default function ThemeColorsDemoPage() {
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {themes
-                      .filter((t) => t.category === "primary")
+                      .filter(
+                        (t) =>
+                          t.value.includes("primary") || t.value === "blue",
+                      )
                       .map((themeOption) => (
                         <button
                           key={themeOption.value}
@@ -116,7 +119,14 @@ export default function ThemeColorsDemoPage() {
                   <h3 className="text-lg font-semibold mb-3">Neutral Themes</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {themes
-                      .filter((t) => t.category === "neutral")
+                      .filter(
+                        (t) =>
+                          t.value === "neutral" ||
+                          t.value === "stone" ||
+                          t.value === "zinc" ||
+                          t.value === "gray" ||
+                          t.value === "slate",
+                      )
                       .map((themeOption) => (
                         <button
                           key={themeOption.value}
@@ -150,7 +160,7 @@ export default function ThemeColorsDemoPage() {
                   <h3 className="text-lg font-semibold mb-3">Special Themes</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {themes
-                      .filter((t) => t.category === "special")
+                      .filter((t) => t.value === "dracula")
                       .map((themeOption) => (
                         <button
                           key={themeOption.value}

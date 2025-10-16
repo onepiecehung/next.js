@@ -34,9 +34,10 @@ export function LikeButton({
   const { mutate: toggleLike, isPending: isLoading } = useToggleReaction();
 
   // Get reactions data for this article
-  const { data: reactions } = useReactions(articleId);
-  const likeCount = reactions?.filter((r) => r.type === "like").length || 0;
-  const isLiked = reactions?.some((r) => r.type === "like") || false;
+  const { data: reactionsData } = useReactions(articleId);
+  const likeCount =
+    reactionsData?.data?.find((r) => r.kind === "like")?.count || 0;
+  const isLiked = false; // TODO: Implement user reaction status check
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();

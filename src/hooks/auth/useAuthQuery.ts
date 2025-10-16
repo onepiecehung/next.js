@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { toast } from "sonner";
 
 import { useI18n } from "@/components/providers/i18n-provider";
@@ -20,7 +22,6 @@ import {
  */
 export function useCurrentUser() {
   const [, setUser] = useAtom(currentUserAtom);
-  const [, setAccessToken] = useAtom(accessTokenAtom);
 
   return useQuery({
     queryKey: ["currentUser"],
@@ -58,8 +59,6 @@ export function useLogin() {
 
       // Update current user cache
       queryClient.setQueryData(["currentUser"], completeUser);
-
-      toast.success(t("toastLoginSuccess", "toast") || "Login successful!");
     },
     onError: (error) => {
       console.error("Login error:", error);
@@ -79,7 +78,6 @@ export function useLogin() {
       setAccessToken(null);
       setUser(user);
       queryClient.setQueryData(["currentUser"], user);
-      toast.success(t("toastLoginSuccess", "toast") || "Login successful!");
     },
     onError: (error) => {
       handleOAuthError(error, "google", t);
@@ -93,7 +91,6 @@ export function useLogin() {
       setAccessToken(null);
       setUser(user);
       queryClient.setQueryData(["currentUser"], user);
-      toast.success(t("toastLoginSuccess", "toast") || "Login successful!");
     },
     onError: (error) => {
       handleOAuthError(error, "github", t);
@@ -107,7 +104,6 @@ export function useLogin() {
       setAccessToken(null);
       setUser(user);
       queryClient.setQueryData(["currentUser"], user);
-      toast.success(t("toastLoginSuccess", "toast") || "Login successful!");
     },
     onError: (error) => {
       handleOAuthError(error, "x", t);
@@ -170,8 +166,20 @@ export function useLogout() {
 }
 
 /**
- * Helper function to extract error message from various error types
+ * Hook for auth redirect logic
+ * Redirects authenticated users away from auth pages
  */
+export function useAuthRedirect() {
+  const [user] = useAtom(currentUserAtom);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      // Redirect authenticated users to home page
+      router.push("/");
+    }
+  }, [user, router]);
+}
 function extractErrorMessage(error: unknown, defaultMessage: string): string {
   if (error instanceof Error) {
     return error.message;
@@ -200,7 +208,11 @@ function extractErrorMessage(error: unknown, defaultMessage: string): string {
 /**
  * Helper function to handle OAuth errors
  */
-function handleOAuthError(error: unknown, provider: string, t: any) {
+function handleOAuthError(
+  error: unknown,
+  provider: string,
+  t: (key: string, ns?: string) => string,
+) {
   if (error && typeof error === "object" && "code" in error) {
     const firebaseError = error as { code: string; message: string };
 

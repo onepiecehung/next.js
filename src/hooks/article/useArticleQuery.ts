@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { useI18n } from "@/components/providers/i18n-provider";
@@ -37,7 +38,7 @@ export function useArticles(params?: {
     queryKey: ["articles", params],
     queryFn: () => ArticleAPI.getArticlesOffset(params),
     staleTime: 2 * 60 * 1000, // 2 minutes
-    keepPreviousData: true, // Keep previous data while fetching new
+    placeholderData: (previousData) => previousData, // Keep previous data while fetching new
   });
 }
 
@@ -142,37 +143,66 @@ export function useDeleteArticle() {
 }
 
 /**
- * Hook for article form management
- * Combines create and update operations
+ * Hook for managing article form state
+ * Provides form state management for creating/editing articles
  */
-export function useArticleForm(articleId?: string) {
-  const createMutation = useCreateArticle();
-  const updateMutation = useUpdateArticle();
+export function useArticleFormState() {
+  const [coverImage, setCoverImage] = useState<File | null>(null);
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [visibility, setVisibility] = useState<string>(
+    ARTICLE_CONSTANTS.VISIBILITY.PUBLIC,
+  );
+  const [scheduledPublish, setScheduledPublish] = useState<Date | null>(null);
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
 
-  const isCreating = createMutation.isPending;
-  const isUpdating = updateMutation.isPending;
-  const isLoading = isCreating || isUpdating;
+  // Calculate word count and read time
+  const wordCount = content
+    ? content.split(/\s+/).filter((word) => word.length > 0).length
+    : 0;
+  const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200)); // 200 words per minute
 
-  const saveArticle = async (
-    data: CreateArticleRequest | UpdateArticleRequest,
-  ) => {
-    if (articleId) {
-      // Update existing article
-      return updateMutation.mutateAsync({
-        id: articleId,
-        data: data as UpdateArticleRequest,
-      });
-    } else {
-      // Create new article
-      return createMutation.mutateAsync(data as CreateArticleRequest);
+  const validateForm = () => {
+    if (!title.trim()) {
+      setShowValidationErrors(true);
+      return false;
     }
+    if (!content.trim()) {
+      setShowValidationErrors(true);
+      return false;
+    }
+    setShowValidationErrors(false);
+    return true;
+  };
+
+  const resetForm = () => {
+    setCoverImage(null);
+    setTitle("");
+    setContent("");
+    setTags([]);
+    setVisibility(ARTICLE_CONSTANTS.VISIBILITY.PUBLIC);
+    setScheduledPublish(null);
+    setShowValidationErrors(false);
   };
 
   return {
-    saveArticle,
-    isLoading,
-    isCreating,
-    isUpdating,
-    error: createMutation.error || updateMutation.error,
+    coverImage,
+    setCoverImage,
+    title,
+    setTitle,
+    content,
+    setContent,
+    tags,
+    setTags,
+    visibility,
+    setVisibility,
+    scheduledPublish,
+    setScheduledPublish,
+    validateForm,
+    resetForm,
+    showValidationErrors,
+    wordCount,
+    readTimeMinutes,
   };
 }

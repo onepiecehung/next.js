@@ -12,7 +12,7 @@ export function useImageUpload() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (file: File) => MediaAPI.uploadImage(file),
+    mutationFn: (file: File) => MediaAPI.upload([file]),
     onSuccess: (media) => {
       // Invalidate media queries to refresh the list
       queryClient.invalidateQueries({ queryKey: ["media"] });
@@ -20,7 +20,7 @@ export function useImageUpload() {
       toast.success(
         t("imageUploadSuccess", "media") || "Image uploaded successfully!",
       );
-      return media;
+      return media.data?.[0];
     },
     onError: (error) => {
       console.error("Image upload error:", error);
@@ -37,15 +37,15 @@ export function useMultipleImageUpload() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (files: File[]) => MediaAPI.uploadMultipleImages(files),
+    mutationFn: (files: File[]) => MediaAPI.upload(files),
     onSuccess: (mediaList) => {
       queryClient.invalidateQueries({ queryKey: ["media"] });
 
       toast.success(
         t("multipleImageUploadSuccess", "media") ||
-          `${mediaList.length} images uploaded successfully!`,
+          `${mediaList.data?.length || 0} images uploaded successfully!`,
       );
-      return mediaList;
+      return mediaList.data || [];
     },
     onError: (error) => {
       console.error("Multiple image upload error:", error);
@@ -64,7 +64,7 @@ export function useDeleteMedia() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (mediaId: string) => MediaAPI.deleteMedia(mediaId),
+    mutationFn: (mediaId: string) => MediaAPI.delete(mediaId),
     onSuccess: (_, mediaId) => {
       // Remove media from cache
       queryClient.removeQueries({ queryKey: ["media", mediaId] });
