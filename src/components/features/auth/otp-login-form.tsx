@@ -11,9 +11,8 @@ import {
   Label,
 } from "@/components/ui";
 import { useLogin } from "@/hooks/auth/useAuthQuery";
-import { accessTokenAtom, currentUserAtom, requestOTPAction } from "@/lib/auth";
+import { requestOTPAction } from "@/lib/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAtom } from "jotai";
 import { ArrowLeft, Mail, RefreshCw } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -21,20 +20,22 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 // Form validation schemas factory
-const createEmailSchema = (t: (key: string, ns?: string) => string) => z.object({
-  email: z
-    .string()
-    .min(1, t("validation.emailRequired", "auth"))
-    .email({ message: t("validation.emailInvalid", "auth") }),
-});
+const createEmailSchema = (t: (key: string, ns?: string) => string) =>
+  z.object({
+    email: z
+      .string()
+      .min(1, t("validation.emailRequired", "auth"))
+      .email({ message: t("validation.emailInvalid", "auth") }),
+  });
 
-const createOtpSchema = (t: (key: string, ns?: string) => string) => z.object({
-  code: z
-    .string()
-    .min(6, t("validation.otpRequired", "auth"))
-    .max(6, t("validation.otpInvalid", "auth"))
-    .regex(/^\d{6}$/, t("validation.otpNumbersOnly", "auth")),
-});
+const createOtpSchema = (t: (key: string, ns?: string) => string) =>
+  z.object({
+    code: z
+      .string()
+      .min(6, t("validation.otpRequired", "auth"))
+      .max(6, t("validation.otpInvalid", "auth"))
+      .regex(/^\d{6}$/, t("validation.otpNumbersOnly", "auth")),
+  });
 
 type EmailFormValues = {
   email: string;
@@ -81,12 +82,9 @@ interface OTPLoginFormProps {
  */
 export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
   const { t } = useI18n();
-  const [, setUser] = useAtom(currentUserAtom);
-  const [, setAccessToken] = useAtom(accessTokenAtom);
 
   // Use React Query login hook
-  const { handleEmailPasswordLogin, isEmailPasswordLoading: isLoggingIn } =
-    useLogin();
+  const { handleOTPLogin, isOTPLoading: isLoggingIn } = useLogin();
 
   // State management
   const [step, setStep] = useState<"email" | "otp">("email");
@@ -114,27 +112,39 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
     }
   }, [countdown]);
 
+  // Format countdown display (minutes and seconds)
+  const formatCountdown = (seconds: number): string => {
+    if (seconds <= 0) return "0s";
+
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    if (minutes > 0) {
+      return remainingSeconds > 0
+        ? `${minutes}p${remainingSeconds}s`
+        : `${minutes}p`;
+    }
+
+    return `${remainingSeconds}s`;
+  };
+
   // Handle OTP verification (Step 2) - moved up to avoid temporal dead zone
   const handleOTPSubmit = React.useCallback(
     async (values: OTPFormValues) => {
       try {
-        // For now, we'll use email/password login as a fallback
-        // In a real implementation, you'd have a separate OTP verification endpoint
-        await handleEmailPasswordLogin({
+        await handleOTPLogin({
           email,
-          password: values.code, // Using OTP as password temporarily
+          code: values.code,
+          requestId,
         });
         toast.success(t("toastLoginSuccess", "toast"));
         onSuccess();
       } catch (error) {
-        const errorMessage = extractErrorMessage(
-          error,
-          t("errors.verifyError", "auth"),
-        );
-        toast.error(errorMessage);
+        // Error handling is already done in the mutation
+        console.error("OTP verification failed:", error);
       }
     },
-    [email, onSuccess, t, handleEmailPasswordLogin],
+    [email, requestId, onSuccess, t, handleOTPLogin],
   );
 
   // Auto-submit when OTP is complete
@@ -162,10 +172,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
       setStep("otp");
 
       toast.success(
-        t("toastOTPSentSuccess", "toast"),{
-          description:
-            t("toastOTPSentDescription", "toast", { email: values.email }),
-        },
+        t("toastOTPSentDescription", "toast", { email: values.email }),
       );
     } catch (error: unknown) {
       const errorMessage = extractErrorMessage(
@@ -188,13 +195,9 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
       setExpiresIn(result.expiresIn);
       setCountdown(result.expiresIn);
 
-      toast.success(
-        t("toastOTPResentSuccess", "toast"),
-        {
-          description:
-            t("toastOTPResentDescription", "toast", { email }),
-        },
-      );
+      toast.success(t("toastOTPResentSuccess", "toast"), {
+        description: t("toastOTPResentDescription", "toast", { email }),
+      });
     } catch (error: unknown) {
       const errorMessage = extractErrorMessage(
         error,
@@ -272,10 +275,8 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t("actions.back", "common")}
             </Button>
-            <Button type="submit" className="flex-1" disabled={isLoggingIn}>
-              {isLoggingIn
-                ? t("otp.sending", "auth")
-                : t("otp.send", "auth")}
+            <Button type="submit" className="flex-1" disabled={isLoading}>
+              {isLoading ? t("otp.sending", "auth") : t("otp.send", "auth")}
             </Button>
           </div>
         </form>
@@ -296,7 +297,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
                 maxLength={6}
                 value={otpForm.watch("code") || ""}
                 onChange={(value) => otpForm.setValue("code", value)}
-                disabled={isLoading}
+                disabled={isLoggingIn}
                 className="gap-2"
               >
                 <InputOTPGroup>
@@ -323,14 +324,14 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
           <div className="text-center">
             {countdown > 0 ? (
               <p className="text-sm text-muted-foreground">
-                {t("otp.resendIn", "auth")} {countdown}s
+                {t("otp.resendIn", "auth")} {formatCountdown(countdown)}
               </p>
             ) : (
               <Button
                 type="button"
                 variant="link"
                 onClick={handleResendOTP}
-                disabled={isLoading}
+                disabled={isLoggingIn}
                 className="text-sm"
               >
                 <RefreshCw className="mr-2 h-4 w-4" />
@@ -345,7 +346,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
               variant="outline"
               onClick={handleBackToEmail}
               className="flex-1"
-              disabled={isLoading}
+              disabled={isLoggingIn}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t("actions.back", "common")}

@@ -14,6 +14,7 @@ import {
   loginWithGithubAction,
   loginWithGoogleAction,
   loginWithXAction,
+  verifyOTPAction,
 } from "@/lib/auth";
 
 /**
@@ -110,6 +111,33 @@ export function useLogin() {
     },
   });
 
+  // OTP login mutation
+  const otpLoginMutation = useMutation({
+    mutationFn: ({
+      email,
+      code,
+      requestId,
+    }: {
+      email: string;
+      code: string;
+      requestId: string;
+    }) => verifyOTPAction(email, code, requestId),
+    onSuccess: (user) => {
+      setAccessToken(null); // Token managed in http layer
+      setUser(user);
+      queryClient.setQueryData(["currentUser"], user);
+    },
+    onError: (error) => {
+      console.error("OTP login error:", error);
+      const errorMessage = extractErrorMessage(
+        error,
+        t("otpVerifyError", "auth") ||
+          "OTP verification failed. Please check your code and try again.",
+      );
+      toast.error(errorMessage);
+    },
+  });
+
   return {
     // Email/Password login
     handleEmailPasswordLogin: emailPasswordMutation.mutateAsync,
@@ -127,12 +155,17 @@ export function useLogin() {
     handleXLogin: xLoginMutation.mutateAsync,
     isXLoading: xLoginMutation.isPending,
 
+    // OTP login
+    handleOTPLogin: otpLoginMutation.mutateAsync,
+    isOTPLoading: otpLoginMutation.isPending,
+
     // Overall loading state
     isLoading:
       emailPasswordMutation.isPending ||
       googleLoginMutation.isPending ||
       githubLoginMutation.isPending ||
-      xLoginMutation.isPending,
+      xLoginMutation.isPending ||
+      otpLoginMutation.isPending,
   };
 }
 
