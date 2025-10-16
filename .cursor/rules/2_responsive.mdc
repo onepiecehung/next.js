@@ -16,6 +16,10 @@ alwaysApply: true
 - `grid gap-4 sm:grid-cols-2 lg:grid-cols-3`
 - `flex flex-col gap-3 sm:flex-row`
 - `next/image` with responsive `sizes`
+- `container mx-auto px-4 md:px-6` for page layouts
+- `py-6 md:py-8` for vertical spacing
+- `text-sm md:text-base` for responsive typography
+- `space-y-4 md:space-y-6` for responsive spacing
 
 **Example**
 ```tsx

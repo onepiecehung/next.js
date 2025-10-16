@@ -8,28 +8,54 @@ alwaysApply: true
 ```
 src/
 ├── app/ (App Router pages)
+│   ├── auth/ (login, register)
+│   ├── article/ (article viewing)
+│   ├── user/ (user profiles)
+│   ├── write/ (article writing)
+│   └── theme-*/ (theme testing pages)
 ├── components/
-│   ├── ui/ (shadcn primitives)
-│   ├── features/ (widgets/forms/modals)
-│   ├── providers/ (auth/i18n/theme/loading)
+│   ├── ui/ (shadcn primitives + custom)
+│   │   ├── core/ (basic components)
+│   │   ├── layout/ (dialogs, forms)
+│   │   ├── navigation/ (nav components)
+│   │   ├── theme/ (theme components)
+│   │   ├── utilities/ (utility components)
+│   │   └── dracula/ (dracula variants)
+│   ├── features/ (business logic)
+│   │   ├── auth/ (auth components)
+│   │   ├── navigation/ (site nav)
+│   │   ├── reactions/ (like/reaction)
+│   │   └── text-editor/ (TipTap editor)
+│   ├── providers/ (context providers)
 │   └── shared/ (skeletons, utilities)
-├── hooks/
-├── i18n/
-├── lib/
-│   ├── api/
-│   ├── stores/
-│   ├── validators/
-│   └── utils/
-└── __tests__/
+├── hooks/ (custom React hooks)
+│   ├── auth/ (auth hooks)
+│   ├── article/ (article hooks)
+│   ├── content/ (content rendering)
+│   ├── media/ (media handling)
+│   ├── reactions/ (reaction hooks)
+│   └── ui/ (UI hooks)
+├── i18n/ (internationalization)
+├── lib/ (utilities, API, stores)
+│   ├── api/ (API wrappers)
+│   ├── auth/ (Firebase config)
+│   ├── constants/ (app constants)
+│   ├── http/ (HTTP client + interceptors)
+│   ├── interface/ (TypeScript interfaces)
+│   ├── rate-limit/ (rate limiting)
+│   ├── types/ (TypeScript types)
+│   ├── utils/ (utility functions)
+│   └── validators/ (Zod schemas)
+└── __tests__/ (Jest + RTL tests)
 ```
 
 > **FE-only rules**
 > - ❌ No `"use server"`, `app/api/*`, or secrets
 > - ✅ Only `NEXT_PUBLIC_*` envs  
-> - ✅ Network via `src/lib/http.ts`
+> - ✅ Network via `src/lib/http/client.ts`
 
 ## Core Stack
-Next.js 15+, React 19, TypeScript 5, TailwindCSS 4, shadcn/ui, Jotai, Zod, RHF, next-intl, Jest, ESLint, Prettier.
+Next.js 15+, React 19, TypeScript 5, TailwindCSS 4, shadcn/ui, Jotai, Zod, RHF, next-intl, Jest, ESLint, Prettier, TipTap, Firebase Auth, Axios, Sonner, Mermaid.
 
 ## Yarn scripts
 ```bash

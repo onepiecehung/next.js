@@ -24,7 +24,7 @@ alwaysApply: true
 - Focus trap, ESC close, responsive sizing
 
 > ❌ Never create `app/api/*` or `"use server"`.
-> ✅ Always use `src/lib/http.ts`.
+> ✅ Always use `src/lib/http/client.ts`.
 
 ---
 
@@ -33,10 +33,22 @@ alwaysApply: true
 | Check | Status |
 |-------|--------|
 | No TS/ESLint warnings | ✅ |
-| Theme dark/light works | ✅ |
+| Theme dark/light + color variants works | ✅ |
 | Mobile-first responsive | ✅ |
 | No secrets/server actions | ✅ |
 | shadcn primitives w/ states | ✅ |
-| i18n EN+VI ready | ✅ |
+| i18n EN+VI ready (9 namespaces) | ✅ |
 | Accessible (focus, aria, nav) | ✅ |
 | Tests ≥ 80% coverage | ✅ |
+| HTTP interceptors configured | ✅ |
+| Rate limit handling implemented | ✅ |
+| Form validation with Zod | ✅ |
+| Error boundaries and user feedback | ✅ |
+| Custom hooks for reusable logic | ✅ |
+| TypeScript interfaces defined | ✅ |
+| Loading states implemented | ✅ |
+| Toast notifications working | ✅ |
+| Image optimization with Next.js | ✅ |
+| Rich text editor functionality | ✅ |
+| Authentication flows complete | ✅ |
+| Middleware protection active | ✅ |

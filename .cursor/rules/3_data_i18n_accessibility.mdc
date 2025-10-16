@@ -5,8 +5,10 @@ alwaysApply: true
 # 🌍 Data Fetching, i18n & Accessibility
 
 ## Data Fetching
-- All API via `src/lib/http.ts`
+- All API via `src/lib/http/client.ts`
 - Base URL: `process.env.NEXT_PUBLIC_API_BASE_URL`
+- **HTTP Interceptors** for token management and error handling
+- **Rate limiting** with event bus system
 - Public-safe RSC only:
 ```ts
 fetch(url, { next: { revalidate: 60, tags: ['posts'] } })
@@ -17,14 +19,18 @@ fetch(url, { next: { revalidate: 60, tags: ['posts'] } })
 - `react-hook-form` + `zod` + shadcn `<Form />`
 - Disable submit while pending
 - Show `FormMessage` for errors
+- **Toast notifications** with Sonner for feedback
 
 ## i18n
 - All text in `src/i18n/locales/{en,vi}/*.json`
-- Namespaces: `auth`, `home`, `profile`, `toast`, `user`, `write`, `demo`, `common`
+- **9 namespaces**: `auth`, `article`, `common`, `demo`, `home`, `profile`, `toast`, `user`, `write`
 - Use `useTranslations('namespace')`
+- **Language switching** with dynamic locale switching
 
 ## Accessibility
 - AA contrast in both themes
 - Keyboard nav (Tab, ESC)
 - `aria-live="polite"` for async feedback
 - `VisuallyHidden` for non-visual labels
+- **Focus management** in dialogs and modals
+- **Screen reader** friendly components
