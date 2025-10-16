@@ -15,5 +15,13 @@
   "generalOperationSuccess": "Operation completed successfully",
   "generalOperationFailed": "Operation failed. Please try again.",
   "generalNetworkError": "Network error. Please check your connection.",
-  "generalValidationError": "Please check your input and try again."
+  "generalValidationError": "Please check your input and try again.",
+  "toastOTPSentSuccess": "OTP code has been sent to {email}",
+  "toastOTPSentDescription": "OTP code has been sent to {email}",
+  "toastOTPRequestError": "Failed to send OTP. Please try again.",
+  "toastOTPResentSuccess": "OTP code has been resent",
+  "toastOTPResentDescription": "OTP code has been resent",
+  "toastOTPVerifySuccess": "OTP code has been verified",
+  "toastOTPVerifyDescription": "OTP code has been verified",
+  "toastOTPVerifyError": "Failed to verify OTP. Please try again."
 }

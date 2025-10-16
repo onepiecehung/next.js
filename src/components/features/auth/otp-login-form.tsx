@@ -20,24 +20,29 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-// Form validation schemas
-const emailSchema = z.object({
+// Form validation schemas factory
+const createEmailSchema = (t: (key: string, ns?: string) => string) => z.object({
   email: z
     .string()
-    .min(1, "Email is required")
-    .email({ message: "Please enter a valid email address" }),
+    .min(1, t("validation.emailRequired", "auth"))
+    .email({ message: t("validation.emailInvalid", "auth") }),
 });
 
-const otpSchema = z.object({
+const createOtpSchema = (t: (key: string, ns?: string) => string) => z.object({
   code: z
     .string()
-    .min(6, "OTP code must be 6 digits")
-    .max(6, "OTP code must be 6 digits")
-    .regex(/^\d{6}$/, "OTP code must contain only digits"),
+    .min(6, t("validation.otpRequired", "auth"))
+    .max(6, t("validation.otpInvalid", "auth"))
+    .regex(/^\d{6}$/, t("validation.otpNumbersOnly", "auth")),
 });
 
-type EmailFormValues = z.infer<typeof emailSchema>;
-type OTPFormValues = z.infer<typeof otpSchema>;
+type EmailFormValues = {
+  email: string;
+};
+
+type OTPFormValues = {
+  code: string;
+};
 
 // Helper function to extract error message from various error types
 function extractErrorMessage(error: unknown, defaultMessage: string): string {
@@ -93,12 +98,12 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
 
   // Email form
   const emailForm = useForm<EmailFormValues>({
-    resolver: zodResolver(emailSchema),
+    resolver: zodResolver(createEmailSchema(t)),
   });
 
   // OTP form
   const otpForm = useForm<OTPFormValues>({
-    resolver: zodResolver(otpSchema),
+    resolver: zodResolver(createOtpSchema(t)),
   });
 
   // Countdown timer effect
@@ -119,12 +124,12 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
           email,
           password: values.code, // Using OTP as password temporarily
         });
-        toast.success(t("otpVerifySuccess", "auth") || "Login successful!");
+        toast.success(t("toastLoginSuccess", "toast"));
         onSuccess();
       } catch (error) {
         const errorMessage = extractErrorMessage(
           error,
-          t("otpVerifyError", "auth") || "Invalid OTP code. Please try again.",
+          t("errors.verifyError", "auth"),
         );
         toast.error(errorMessage);
       }
@@ -157,13 +162,15 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
       setStep("otp");
 
       toast.success(
-        t("otpSentSuccess", "auth") ||
-          `OTP code has been sent to ${values.email}`,
+        t("toastOTPSentSuccess", "toast"),{
+          description:
+            t("toastOTPSentDescription", "toast", { email: values.email }),
+        },
       );
     } catch (error: unknown) {
       const errorMessage = extractErrorMessage(
         error,
-        t("otpRequestError", "auth") || "Failed to send OTP. Please try again.",
+        t("toastOTPRequestError", "toast"),
       );
       toast.error(errorMessage);
     } finally {
@@ -182,7 +189,11 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
       setCountdown(result.expiresIn);
 
       toast.success(
-        t("otpResentSuccess", "auth") || "OTP code has been resent",
+        t("toastOTPResentSuccess", "toast"),
+        {
+          description:
+            t("toastOTPResentDescription", "toast", { email }),
+        },
       );
     } catch (error: unknown) {
       const errorMessage = extractErrorMessage(
@@ -216,15 +227,14 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
         </div>
         <h2 className="text-2xl font-bold">
           {step === "email"
-            ? t("otpLoginTitle", "auth") || "Login with OTP"
-            : t("otpVerifyTitle", "auth") || "Verify OTP Code"}
+            ? t("otp.loginTitle", "auth")
+            : t("otp.verifyTitle", "auth")}
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
           {step === "email"
-            ? t("otpLoginDescription", "auth") ||
+            ? t("otp.loginDescription", "auth") ||
               "Enter your email to receive a verification code"
-            : t("otpVerifyDescription", "auth") ||
-              `Enter the 6-digit code sent to ${email}`}
+            : t("otp.verifyDescription", "auth", { email })}
         </p>
       </div>
 
@@ -235,11 +245,11 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
           className="space-y-4"
         >
           <div className="space-y-2">
-            <Label htmlFor="email">{t("email", "auth") || "Email"}</Label>
+            <Label htmlFor="email">{t("fields.email", "common")}</Label>
             <Input
               id="email"
               type="email"
-              placeholder={t("emailPlaceholder", "auth") || "you@example.com"}
+              placeholder={t("placeholders.email", "common")}
               className="h-12"
               {...emailForm.register("email")}
               disabled={isLoading}
@@ -260,12 +270,12 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
               disabled={isLoading}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              {t("back", "common") || "Back"}
+              {t("actions.back", "common")}
             </Button>
             <Button type="submit" className="flex-1" disabled={isLoggingIn}>
               {isLoggingIn
-                ? t("sending", "auth") || "Sending..."
-                : t("sendOTP", "auth") || "Send OTP"}
+                ? t("otp.sending", "auth")
+                : t("otp.send", "auth")}
             </Button>
           </div>
         </form>
@@ -279,7 +289,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
         >
           <div className="space-y-4">
             <Label htmlFor="code" className="text-center block">
-              {t("otpCode", "auth") || "OTP Code"}
+              {t("otp.code", "auth")}
             </Label>
             <div className="flex justify-center">
               <InputOTP
@@ -313,7 +323,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
           <div className="text-center">
             {countdown > 0 ? (
               <p className="text-sm text-muted-foreground">
-                {t("otpResendIn", "auth") || "Resend code in"} {countdown}s
+                {t("otp.resendIn", "auth")} {countdown}s
               </p>
             ) : (
               <Button
@@ -324,7 +334,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
                 className="text-sm"
               >
                 <RefreshCw className="mr-2 h-4 w-4" />
-                {t("resendOTP", "auth") || "Resend OTP"}
+                {t("otp.resend", "auth")}
               </Button>
             )}
           </div>
@@ -338,12 +348,12 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
               disabled={isLoading}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              {t("back", "common") || "Back"}
+              {t("actions.back", "common")}
             </Button>
             <Button type="submit" className="flex-1" disabled={isLoggingIn}>
               {isLoggingIn
-                ? t("verifying", "auth") || "Verifying..."
-                : t("verifyOTP", "auth") || "Verify OTP"}
+                ? t("otp.verifying", "auth")
+                : t("otp.verify", "auth")}
             </Button>
           </div>
         </form>

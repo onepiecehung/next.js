@@ -1,18 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useI18n } from "@/components/providers/i18n-provider";
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
-  Button,
   VisuallyHidden,
 } from "@/components/ui";
-import { useI18n } from "@/components/providers/i18n-provider";
-import SignupForm from "./signup-form";
-import OTPLoginForm from "./otp-login-form";
+import { useState } from "react";
 import LoginFormShared from "./login-form-shared";
+import OTPLoginForm from "./otp-login-form";
+import SignupForm from "./signup-form";
 
 /**
  * Internationalized Login Dialog Component
@@ -56,15 +56,15 @@ export default function LoginDialog() {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline">{t("loginButton", "auth")}</Button>
+        <Button variant="outline">{t("login.button", "auth")}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <VisuallyHidden>
           <DialogTitle>
             {(() => {
-              if (showSignup) return t("signupTitle", "auth");
-              if (loginMode === "otp") return t("otpLoginTitle", "auth");
-              return t("loginTitle", "auth");
+              if (showSignup) return t("register.title", "auth");
+              if (loginMode === "otp") return t("otp.loginTitle", "auth");
+              return t("login.title", "auth");
             })()}
           </DialogTitle>
         </VisuallyHidden>
@@ -88,8 +88,8 @@ export default function LoginDialog() {
               onRegister={handleRegister}
               onBack={handleBack}
               showBackButton={true}
-              title="Welcome back!"
-              description="Please login to continue"
+              title={t("login.cardTitle", "auth")}
+              description={t("login.cardDescription", "auth")}
             />
           );
         })()}

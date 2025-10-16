@@ -50,7 +50,7 @@ export default function SiteNav() {
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
       <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
         <Link href="/" className="font-semibold text-xl text-foreground">
-          {t("navBrand", "common")}
+          {t("appName", "common")}
         </Link>
 
         <div className="flex items-center gap-3">
