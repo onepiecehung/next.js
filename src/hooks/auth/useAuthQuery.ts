@@ -16,6 +16,7 @@ import {
   loginWithXAction,
   verifyOTPAction,
 } from "@/lib/auth";
+import { extractAndTranslateErrorMessage } from "@/lib/utils";
 
 /**
  * Hook for fetching current user
@@ -63,10 +64,11 @@ export function useLogin() {
     },
     onError: (error) => {
       console.error("Login error:", error);
-      const errorMessage = extractErrorMessage(
+      const errorMessage = extractAndTranslateErrorMessage(
         error,
-        t("loginErrorDefault", "auth") ||
-          "Login failed. Please check your credentials.",
+        "loginErrorDefault",
+        t,
+        "auth"
       );
       toast.error(errorMessage);
     },
@@ -129,10 +131,11 @@ export function useLogin() {
     },
     onError: (error) => {
       console.error("OTP login error:", error);
-      const errorMessage = extractErrorMessage(
+      const errorMessage = extractAndTranslateErrorMessage(
         error,
-        t("otpVerifyError", "auth") ||
-          "OTP verification failed. Please check your code and try again.",
+        "otpVerifyError",
+        t,
+        "auth"
       );
       toast.error(errorMessage);
     },
@@ -212,30 +215,6 @@ export function useAuthRedirect() {
       router.push("/");
     }
   }, [user, router]);
-}
-function extractErrorMessage(error: unknown, defaultMessage: string): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  if (typeof error === "object" && error !== null && "response" in error) {
-    const response = (error as { response?: unknown }).response;
-    if (
-      typeof response === "object" &&
-      response !== null &&
-      "data" in response
-    ) {
-      const data = (response as { data?: unknown }).data;
-      if (typeof data === "object" && data !== null && "message" in data) {
-        const message = (data as { message?: unknown }).message;
-        if (typeof message === "string") {
-          return message;
-        }
-      }
-    }
-  }
-
-  return defaultMessage;
 }
 
 /**
