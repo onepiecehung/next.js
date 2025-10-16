@@ -15,7 +15,7 @@ import { requestOTPAction } from "@/lib/auth";
 import { extractAndTranslateErrorMessage } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Mail, RefreshCw } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -70,6 +70,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [hasSubmitted, setHasSubmitted] = useState(false); // Track if OTP has been submitted at least once
+  const isSubmittingRef = useRef(false); // Ref to prevent double submission
 
   // Email form
   const emailForm = useForm<EmailFormValues>({
@@ -108,18 +109,30 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
   // Handle OTP verification (Step 2) - moved up to avoid temporal dead zone
   const handleOTPSubmit = React.useCallback(
     async (values: OTPFormValues) => {
+      // Prevent double submission
+      if (isSubmittingRef.current) {
+        console.log("OTP submission already in progress, skipping...");
+        return;
+      }
+
       try {
+        isSubmittingRef.current = true;
         setHasSubmitted(true); // Mark that OTP has been submitted
+        
+        console.log("Submitting OTP:", { email, code: values.code, requestId });
         await handleOTPLogin({
           email,
           code: values.code,
           requestId,
         });
+        console.log("OTP submission successful");
         toast.success(t("toastLoginSuccess", "toast"));
         onSuccess();
       } catch (error) {
         // Error handling is already done in the mutation
         console.error("OTP verification failed:", error);
+      } finally {
+        isSubmittingRef.current = false;
       }
     },
     [email, requestId, onSuccess, t, handleOTPLogin],
@@ -128,15 +141,16 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
   // Auto-submit when OTP is complete (only on first time)
   const otpCode = otpForm.watch("code");
   useEffect(() => {
-    // Auto-submit only if OTP is complete, not loading, and hasn't been submitted yet
-    if (otpCode && otpCode.length === 6 && !isLoggingIn && !hasSubmitted) {
+    // Auto-submit only if OTP is complete, not loading, hasn't been submitted yet, and not currently submitting
+    if (otpCode && otpCode.length === 6 && !isLoggingIn && !hasSubmitted && !isSubmittingRef.current) {
+      console.log("Auto-submitting OTP...");
       // Small delay to ensure the UI updates
       const timer = setTimeout(() => {
         otpForm.handleSubmit(handleOTPSubmit)();
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [otpCode, isLoggingIn, hasSubmitted, otpForm, handleOTPSubmit]);
+  }, [otpCode, isLoggingIn, hasSubmitted]); // Remove otpForm and handleOTPSubmit from dependencies
 
   // Handle email submission (Step 1)
   const handleEmailSubmit = async (values: EmailFormValues) => {
@@ -176,6 +190,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
       setExpiresIn(result.expiresIn);
       setCountdown(result.expiresIn);
       setHasSubmitted(false); // Reset submission state when resending
+      isSubmittingRef.current = false; // Reset submitting ref
       otpForm.reset(); // Clear the OTP input
 
       toast.success(t("toastOTPResentSuccess", "toast"), {
@@ -202,6 +217,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
     setExpiresIn(0);
     setCountdown(0);
     setHasSubmitted(false); // Reset submission state
+    isSubmittingRef.current = false; // Reset submitting ref
     emailForm.reset();
     otpForm.reset();
   };

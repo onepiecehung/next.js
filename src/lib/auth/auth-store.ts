@@ -237,7 +237,7 @@ export async function verifyOTPAction(
   requestId: string,
 ): Promise<User> {
   const response = await AuthAPI.verifyOTP({ email, code, requestId });
-
+  console.log("verifyOTPAction: response:", response);
   // Get token for storage from the API response
   storeTokens(response.token.accessToken, response.token.refreshToken);
 

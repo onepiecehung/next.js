@@ -52,6 +52,7 @@ export function useLogin() {
   const emailPasswordMutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       loginAction(email, password),
+    retry: false, // Disable retry for login
     onSuccess: async (user) => {
       setAccessToken(null); // Token managed in http layer
 
@@ -124,7 +125,9 @@ export function useLogin() {
       code: string;
       requestId: string;
     }) => verifyOTPAction(email, code, requestId),
+    retry: false, // Disable retry for OTP verification
     onSuccess: (user) => {
+      console.log("OTP login successful:", user);
       setAccessToken(null); // Token managed in http layer
       setUser(user);
       queryClient.setQueryData(["currentUser"], user);
