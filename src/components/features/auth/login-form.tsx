@@ -1,12 +1,12 @@
-import { cn } from "@/lib/utils";
 import { Button, Input, Label } from "@/components/ui";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/core";
+import { cn } from "@/lib/utils";
 // Keep only one import for Input and Label above
 
 export function LoginForm({
@@ -31,6 +31,7 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
+                  autoComplete="email"
                   required
                 />
               </div>
@@ -44,7 +45,12 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input 
+                  id="password" 
+                  type="password" 
+                  autoComplete="current-password"
+                  required 
+                />
               </div>
               <div className="flex flex-col gap-3">
                 <Button type="submit" className="w-full">

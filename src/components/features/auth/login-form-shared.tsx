@@ -273,6 +273,7 @@ export default function LoginFormShared({
                   type="email"
                   placeholder={t("email", "auth")}
                   className="pl-10 h-12"
+                  autoComplete="email"
                   required
                   aria-invalid={!!errors.email}
                   {...register("email")}
@@ -292,6 +293,7 @@ export default function LoginFormShared({
                   type={showPassword ? "text" : "password"}
                   placeholder={t("password", "auth")}
                   className="pl-10 pr-10 h-12"
+                  autoComplete="current-password"
                   required
                   aria-invalid={!!errors.password}
                   {...register("password")}

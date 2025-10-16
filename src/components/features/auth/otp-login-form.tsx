@@ -144,11 +144,11 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
     // Auto-submit only if OTP is complete, not loading, hasn't been submitted yet, and not currently submitting
     if (otpCode && otpCode.length === 6 && !isLoggingIn && !hasSubmitted && !isSubmittingRef.current) {
       console.log("Auto-submitting OTP...");
-      // Small delay to ensure the UI updates
-      const timer = setTimeout(() => {
+      // Use requestAnimationFrame to avoid forced reflow
+      const timer = requestAnimationFrame(() => {
         otpForm.handleSubmit(handleOTPSubmit)();
-      }, 100);
-      return () => clearTimeout(timer);
+      });
+      return () => cancelAnimationFrame(timer);
     }
   }, [otpCode, isLoggingIn, hasSubmitted]); // Remove otpForm and handleOTPSubmit from dependencies
 
@@ -255,6 +255,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
               type="email"
               placeholder={t("placeholders.email", "common")}
               className="h-12"
+              autoComplete="email"
               {...emailForm.register("email")}
               disabled={isLoading}
             />
