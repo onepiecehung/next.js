@@ -7,13 +7,14 @@ alwaysApply: true
 ## Data Fetching
 - All API via `src/lib/http/client.ts`
 - Base URL: `process.env.NEXT_PUBLIC_API_BASE_URL`
+- **React Query** for all client-side data fetching
 - **HTTP Interceptors** for token management and error handling
 - **Rate limiting** with event bus system
 - Public-safe RSC only:
 ```ts
 fetch(url, { next: { revalidate: 60, tags: ['posts'] } })
 ```
-- Client hooks: `usePosts()`, etc.
+- Client hooks: `useQuery()` and `useMutation()` from React Query
 
 ## Forms
 - `react-hook-form` + `zod` + shadcn `<Form />`

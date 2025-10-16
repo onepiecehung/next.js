@@ -1,14 +1,4 @@
-import { SiteNav } from "@/components/features/navigation";
-import AuthProvider from "@/components/providers/auth-provider";
-import { I18nProvider } from "@/components/providers/i18n-provider";
-import { LoadingProvider } from "@/components/providers/loading-provider";
-import { NoSSR } from "@/components/providers/no-ssr";
-import RateLimitProvider from "@/components/providers/rate-limit-provider";
-import { ThemeProvider } from "@/components/providers/theme-provider";
-import { Toaster } from "@/components/ui";
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { ReactQueryProvider } from "@/components/providers/react-query-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,18 +27,20 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         <NoSSR>
-          <I18nProvider>
-            <ThemeProvider>
-              <AuthProvider>
-                <LoadingProvider>
-                  <RateLimitProvider>
-                    <SiteNav />
-                    {children}
-                  </RateLimitProvider>
-                </LoadingProvider>
-              </AuthProvider>
-            </ThemeProvider>
-          </I18nProvider>
+          <ReactQueryProvider>
+            <I18nProvider>
+              <ThemeProvider>
+                <AuthProvider>
+                  <LoadingProvider>
+                    <RateLimitProvider>
+                      <SiteNav />
+                      {children}
+                    </RateLimitProvider>
+                  </LoadingProvider>
+                </AuthProvider>
+              </ThemeProvider>
+            </I18nProvider>
+          </ReactQueryProvider>
         </NoSSR>
         <Toaster richColors position="top-center" expand={true} />
       </body>
