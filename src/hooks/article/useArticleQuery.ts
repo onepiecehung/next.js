@@ -75,19 +75,21 @@ export function useCreateArticle() {
           toast.info(
             t("writeFormDraftSuccess", "write") || "Article saved as draft!",
             {
-              description: t("writeFormDraftSuccessDescription", "write") || 
+              description:
+                t("writeFormDraftSuccessDescription", "write") ||
                 "Your article has been saved and can be edited later.",
             },
           );
           break;
         case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
           toast.success(
-            t("writeFormScheduledPublishSuccess", "write") || 
+            t("writeFormScheduledPublishSuccess", "write") ||
               "Article scheduled for publication!",
             {
-              description: t("writeFormScheduledPublishSuccessDescription", "write", {
-                date: article.scheduledAt?.toLocaleString(),
-              }) || `Scheduled for ${article.scheduledAt?.toLocaleString()}`,
+              description:
+                t("writeFormScheduledPublishSuccessDescription", "write", {
+                  date: article.scheduledAt?.toLocaleString(),
+                }) || `Scheduled for ${article.scheduledAt?.toLocaleString()}`,
             },
           );
           break;
@@ -95,7 +97,8 @@ export function useCreateArticle() {
           toast.success(
             t("writeFormSuccess", "write") || "Article published successfully!",
             {
-              description: t("writeFormSuccessDescription", "write") || 
+              description:
+                t("writeFormSuccessDescription", "write") ||
                 "Your article is now live and visible to readers.",
             },
           );
@@ -104,14 +107,16 @@ export function useCreateArticle() {
     },
     onError: (error) => {
       console.error("Article creation error:", error);
-      
+
       // Extract meaningful error message
-      const errorMessage = error instanceof Error 
-        ? error.message 
-        : t("writeFormError", "write") || "Failed to create article";
-        
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : t("writeFormError", "write") || "Failed to create article";
+
       toast.error(errorMessage, {
-        description: t("writeFormErrorDescription", "write") || 
+        description:
+          t("writeFormErrorDescription", "write") ||
           "Please check your input and try again.",
       });
     },
