@@ -18,6 +18,7 @@
     "tagsPlaceholder": "Enter tags separated by commas...",
     "visibility": "Visibility",
     "saveDraft": "Save Draft",
+    "publishingArticle": "Publishing...",
     "publishArticle": "Publish Article",
     "schedulePublish": "Schedule Publish",
     "publishNow": "Publish Now"

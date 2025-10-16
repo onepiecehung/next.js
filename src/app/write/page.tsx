@@ -460,7 +460,7 @@ export default function WritePage() {
                   disabled={isSubmitting}
                 >
                   {isSubmitting
-                    ? "Publishing..."
+                    ? t("form.publishingArticle", "write")
                     : t("form.publishArticle", "write")}
                 </Button>
 
