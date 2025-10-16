@@ -3,11 +3,12 @@
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button, Input } from "@/components/ui";
 import { GitHubIcon, GoogleIcon, XIcon } from "@/components/ui/icons";
-import { useLogin } from "@/hooks/auth";
+import { useLogin } from "@/hooks/auth/useAuthQuery";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 // Form validation schema - will be created inside component to access i18n
@@ -51,6 +52,9 @@ export default function LoginFormShared({
     handleGoogleLogin,
     handleGithubLogin,
     handleXLogin,
+    isGoogleLoading,
+    isGithubLoading,
+    isXLoading,
   } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
   const [showEmailForm, setShowEmailForm] = useState(false);
@@ -59,9 +63,9 @@ export default function LoginFormShared({
   const loginSchema = z.object({
     email: z
       .string()
-      .min(1, t("emailRequired", "auth"))
-      .email({ message: t("emailInvalid", "auth") }),
-    password: z.string().min(6, t("passwordMinLength", "auth")),
+      .min(1, t("validation.emailRequired", "auth"))
+      .email({ message: t("validation.emailInvalid", "auth") }),
+    password: z.string().min(6, t("validation.passwordMinLength", "auth")),
   });
 
   const {
@@ -74,41 +78,54 @@ export default function LoginFormShared({
   });
 
   const onSubmit = async (values: LoginFormValues) => {
-    const result = await handleEmailPasswordLogin(
-      values.email,
-      values.password,
-    );
-    if (result.success) {
+    try {
+      await handleEmailPasswordLogin({
+        email: values.email,
+        password: values.password,
+      });
+      toast.success(t("toastLoginSuccess", "toast") || "Login successful!");
       reset();
       setShowPassword(false);
       onSuccess?.();
+    } catch (error) {
+      // Error is handled by the hook's onError callback
+      console.error("Login failed:", error);
     }
   };
 
   const handleGoogleClick = async () => {
-    const result = await handleGoogleLogin();
-    if (result.success) {
+    try {
+      await handleGoogleLogin();
+      toast.success(t("toastLoginSuccess", "toast") || "Login successful!");
       reset();
       setShowPassword(false);
       onSuccess?.();
+    } catch (error) {
+      console.error("Google login failed:", error);
     }
   };
 
   const handleGithubClick = async () => {
-    const result = await handleGithubLogin();
-    if (result.success) {
+    try {
+      await handleGithubLogin();
+      toast.success(t("toastLoginSuccess", "toast") || "Login successful!");
       reset();
       setShowPassword(false);
       onSuccess?.();
+    } catch (error) {
+      console.error("GitHub login failed:", error);
     }
   };
 
   const handleXClick = async () => {
-    const result = await handleXLogin();
-    if (result.success) {
+    try {
+      await handleXLogin();
+      toast.success(t("toastLoginSuccess", "toast") || "Login successful!");
       reset();
       setShowPassword(false);
       onSuccess?.();
+    } catch (error) {
+      console.error("X login failed:", error);
     }
   };
 
@@ -146,7 +163,7 @@ export default function LoginFormShared({
           className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          {t("backToHome", "auth")}
+          {t("actions.back", "common")}
         </button>
       )}
 
@@ -157,17 +174,17 @@ export default function LoginFormShared({
           className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          {t("backToSocial", "auth")}
+          {t("actions.back", "common")}
         </button>
       )}
 
       {/* Welcome message */}
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-bold">
-          {showEmailForm ? t("emailLoginTitle", "auth") : title}
+          {showEmailForm ? t("login.cardTitle", "auth") : title}
         </h2>
         <p className="text-muted-foreground">
-          {showEmailForm ? description : t("welcomeMessage", "auth")}
+          {showEmailForm ? description : t("login.cardDescription", "auth")}
         </p>
       </div>
 
@@ -180,12 +197,16 @@ export default function LoginFormShared({
             <button
               type="button"
               onClick={handleGoogleClick}
-              disabled={isLoading || isSubmitting}
+              disabled={isGoogleLoading || isSubmitting}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
             >
               <GoogleIcon className="h-5 w-5" />
               <span className="font-medium text-gray-700">
-                {t("loginWithGoogle", "auth")}
+                {isGoogleLoading
+                  ? t("login.submitting", "auth")
+                  : t("oauth.loginWith", "auth", {
+                      provider: t("oauth.google", "auth"),
+                    })}
               </span>
             </button>
 
@@ -193,12 +214,16 @@ export default function LoginFormShared({
             <button
               type="button"
               onClick={handleGithubClick}
-              disabled={isLoading || isSubmitting}
+              disabled={isGithubLoading || isSubmitting}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
             >
               <GitHubIcon className="h-5 w-5" />
               <span className="font-medium text-gray-700">
-                {t("loginWithGithub", "auth")}
+                {isGithubLoading
+                  ? t("login.submitting", "auth")
+                  : t("oauth.loginWith", "auth", {
+                      provider: t("oauth.github", "auth"),
+                    })}
               </span>
             </button>
 
@@ -206,12 +231,16 @@ export default function LoginFormShared({
             <button
               type="button"
               onClick={handleXClick}
-              disabled={isLoading || isSubmitting}
+              disabled={isXLoading || isSubmitting}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
             >
               <XIcon className="h-5 w-5" />
               <span className="font-medium text-gray-700">
-                {t("loginWithX", "auth")}
+                {isXLoading
+                  ? t("login.submitting", "auth")
+                  : t("oauth.loginWith", "auth", {
+                      provider: t("oauth.x", "auth"),
+                    })}
               </span>
             </button>
           </div>
@@ -219,7 +248,7 @@ export default function LoginFormShared({
           {/* Alternative login option */}
           <div className="text-center space-y-3">
             <p className="text-sm text-muted-foreground">
-              {t("dontHaveGoogleAccount", "auth")}
+              {t("oauth.dontHaveSNSAccount", "auth")}
             </p>
             <button
               type="button"
@@ -227,7 +256,7 @@ export default function LoginFormShared({
               className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all duration-200 text-gray-700 font-medium"
             >
               <Mail className="h-4 w-4" />
-              {t("loginWithEmailInstead", "auth")}
+              {t("oauth.continueWith", "auth")}
             </button>
           </div>
         </>
@@ -242,8 +271,9 @@ export default function LoginFormShared({
                 <Input
                   id="email"
                   type="email"
-                  placeholder={t("emailAddress", "auth")}
+                  placeholder={t("email", "auth")}
                   className="pl-10 h-12"
+                  autoComplete="email"
                   required
                   aria-invalid={!!errors.email}
                   {...register("email")}
@@ -263,6 +293,7 @@ export default function LoginFormShared({
                   type={showPassword ? "text" : "password"}
                   placeholder={t("password", "auth")}
                   className="pl-10 pr-10 h-12"
+                  autoComplete="current-password"
                   required
                   aria-invalid={!!errors.password}
                   {...register("password")}
@@ -295,9 +326,9 @@ export default function LoginFormShared({
                   type="button"
                   onClick={handleForgotPasswordClick}
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  aria-label={t("forgotPassword", "auth")}
+                  aria-label={t("password.forgot", "auth")}
                 >
-                  {t("forgotPassword", "auth")}
+                  {t("password.forgot", "auth")}
                 </button>
               </div>
             </div>
@@ -309,8 +340,8 @@ export default function LoginFormShared({
               disabled={isSubmitting || isLoading}
             >
               {isSubmitting || isLoading
-                ? t("loggingIn", "auth")
-                : t("login", "auth")}
+                ? t("login.submitting", "auth")
+                : t("login.button", "auth")}
             </Button>
           </form>
         </>
@@ -327,14 +358,14 @@ export default function LoginFormShared({
               className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-gray-700 font-medium"
             >
               <Mail className="h-4 w-4" />
-              {t("loginWithOTPInstead", "auth")}
+              {t("login.withOTP", "auth")}
             </button>
           </div>
 
           {/* Register Section */}
           <div className="space-y-3">
             <p className="text-sm text-muted-foreground text-center">
-              {t("dontHaveAccount", "auth")}
+              {t("register.dontHaveAccount", "auth")}
             </p>
             <button
               type="button"
@@ -342,7 +373,7 @@ export default function LoginFormShared({
               className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-gray-700 font-medium"
             >
               <Mail className="h-4 w-4" />
-              {t("register", "auth")}
+              {t("register.button", "auth")}
             </button>
           </div>
         </div>

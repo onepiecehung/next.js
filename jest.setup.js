@@ -84,7 +84,7 @@ jest.mock('@/components/providers/i18n-provider', () => ({
 }))
 
 // Mock auth store
-jest.mock('@/lib/auth-store', () => ({
+jest.mock('@/lib/auth', () => ({
   currentUserAtom: jest.fn(),
   accessTokenAtom: jest.fn(),
   authLoadingAtom: jest.fn(),
@@ -93,9 +93,35 @@ jest.mock('@/lib/auth-store', () => ({
   loginWithGithubAction: jest.fn(),
 }))
 
-// Mock auth redirect hook
-jest.mock('@/hooks/useAuthRedirect', () => ({
-  useAuthRedirect: jest.fn(),
+// Mock @tanstack/react-query
+jest.mock('@tanstack/react-query', () => ({
+  useQuery: jest.fn(() => ({
+    data: null,
+    isLoading: false,
+    error: null,
+    refetch: jest.fn(),
+  })),
+  useMutation: jest.fn(() => ({
+    mutate: jest.fn(),
+    mutateAsync: jest.fn(),
+    isLoading: false,
+    error: null,
+    isSuccess: false,
+    isError: false,
+  })),
+  useQueryClient: jest.fn(() => ({
+    setQueryData: jest.fn(),
+    invalidateQueries: jest.fn(),
+    refetchQueries: jest.fn(),
+  })),
+  QueryClient: jest.fn(),
+  QueryClientProvider: ({ children }) => children,
+  ReactQueryDevtools: () => null,
+}))
+
+// Mock @tanstack/react-query-devtools
+jest.mock('@tanstack/react-query-devtools', () => ({
+  ReactQueryDevtools: () => null,
 }))
 
 // Global test setup

@@ -1,10 +1,9 @@
 "use client";
 
-import * as React from "react";
-import { Moon, Sun, Monitor, Palette, ChevronRight } from "lucide-react";
+import { useI18n } from "@/components/providers/i18n-provider";
 import { useIsMounted } from "@/components/providers/no-ssr";
 import { useTheme } from "@/components/providers/theme-provider";
-import { useI18n } from "@/components/providers/i18n-provider";
+import { ChevronRight, Monitor, Moon, Palette, Sun } from "lucide-react";
 import { ThemeColorIndicator } from "./theme-color-indicator";
 
 import {
@@ -12,11 +11,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
   DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
 } from "@/components/ui";
 
 interface ThemeSelectorProps {
@@ -114,7 +113,7 @@ export function ThemeSelector({
                   <span>{t(`theme.${scheme.value}`, "common")}</span>
                 </div>
                 <span className="text-xs text-muted-foreground">
-                  {scheme.description}
+                  {scheme.value}
                 </span>
               </div>
             </DropdownMenuItem>

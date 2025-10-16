@@ -5,7 +5,7 @@ import {
   signInWithX,
   signOutFirebase,
 } from "../auth/firebase";
-import { http } from "../http";
+import { http ,publicHttp} from "../http";
 import type {
   ApiResponse,
   ChangePasswordRequest,
@@ -42,7 +42,7 @@ export class AuthAPI {
    * Login with email and password
    */
   static async login(data: LoginRequest): Promise<LoginResponse> {
-    const response = await http.post<ApiResponse<LoginResponse>>(
+    const response = await publicHttp.post<ApiResponse<LoginResponse>>(
       `${this.BASE_URL}/login`,
       data,
     );
@@ -65,7 +65,7 @@ export class AuthAPI {
     dob?: string;
     phoneNumber?: string;
   }): Promise<LoginResponse> {
-    const response = await http.post<ApiResponse<LoginResponse>>(
+    const response = await publicHttp.post<ApiResponse<LoginResponse>>(
       `${this.BASE_URL}/signup`,
       data,
     );
@@ -83,7 +83,7 @@ export class AuthAPI {
   static async firebaseLogin(
     data: FirebaseLoginRequest,
   ): Promise<LoginResponse> {
-    const response = await http.post<ApiResponse<LoginResponse>>(
+    const response = await publicHttp.post<ApiResponse<LoginResponse>>(
       `${this.BASE_URL}/firebase/login`,
       data,
     );
@@ -103,7 +103,7 @@ export class AuthAPI {
   static async requestOTP(
     data: OTPRequestRequest,
   ): Promise<OTPRequestResponseData> {
-    const response = await http.post<ApiResponse<OTPRequestResponseData>>(
+    const response = await publicHttp.post<ApiResponse<OTPRequestResponseData>>(
       `${this.BASE_URL}/otp/request`,
       data,
     );
@@ -121,7 +121,7 @@ export class AuthAPI {
   static async verifyOTP(
     data: OTPVerifyRequest,
   ): Promise<OTPVerifyResponseData> {
-    const response = await http.post<ApiResponse<OTPVerifyResponseData>>(
+    const response = await publicHttp.post<ApiResponse<OTPVerifyResponseData>>(
       `${this.BASE_URL}/otp/verify`,
       data,
     );
@@ -190,7 +190,7 @@ export class AuthAPI {
   static async forgotPassword(
     data: ForgotPasswordRequest,
   ): Promise<ForgotPasswordResponse> {
-    const response = await http.post<ApiResponse<ForgotPasswordResponse>>(
+    const response = await publicHttp.post<ApiResponse<ForgotPasswordResponse>>(
       `${this.BASE_URL}/forgot-password`,
       data,
     );
@@ -208,7 +208,7 @@ export class AuthAPI {
   static async resetPassword(
     data: ResetPasswordRequest,
   ): Promise<ResetPasswordResponse> {
-    const response = await http.post<ApiResponse<ResetPasswordResponse>>(
+    const response = await publicHttp.post<ApiResponse<ResetPasswordResponse>>(
       `${this.BASE_URL}/reset-password`,
       data,
     );
@@ -364,29 +364,6 @@ export class OTPAuthAPI {
       };
     } catch (error) {
       console.error("OTP request error:", error);
-      throw error;
-    }
-  }
-
-  /**
-   * Verify OTP and return user
-   */
-  static async verifyOTP(
-    email: string,
-    code: string,
-    requestId: string,
-  ): Promise<User> {
-    try {
-      const response = await AuthAPI.verifyOTP({ email, code, requestId });
-      const { user, token } = response;
-
-      if (!token.accessToken) {
-        throw new Error("No access token returned from server");
-      }
-
-      return user;
-    } catch (error) {
-      console.error("OTP verification error:", error);
       throw error;
     }
   }

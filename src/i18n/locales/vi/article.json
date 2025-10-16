@@ -1,37 +1,48 @@
 {
-  "articleViewTitle": "Bài Viết",
-  "articleViewLoading": "Đang tải bài viết...",
-  "articleViewError": "Không thể tải bài viết",
-  "articleViewNotFound": "Không tìm thấy bài viết",
-  "articleViewBackToHome": "Về Trang Chủ",
-  "articleViewPublishedOn": "Xuất bản ngày",
-  "articleViewReadTime": "phút đọc",
-  "articleViewWordCount": "từ",
-  "articleViewTags": "Thẻ",
-  "articleViewNoTags": "Không có thẻ",
-  "articleViewVisibility": "Hiển thị",
-  "articleViewVisibilityPublic": "Công khai",
-  "articleViewVisibilityUnlisted": "Không Công khai",
-  "articleViewVisibilityPrivate": "Riêng tư",
-  "articleViewStatus": "Trạng thái",
-  "articleViewStatusDraft": "Bản nháp",
-  "articleViewStatusPublished": "Đã xuất bản",
-  "articleViewStatusScheduled": "Đã lên lịch",
-  "articleViewStatusArchived": "Đã lưu trữ",
-  "articleViewAuthor": "Tác giả",
-  "articleViewLastUpdated": "Cập nhật lần cuối",
-  "articleViewScheduledPublishSuccess": "Bài viết đã được hẹn giờ xuất bản!",
-  "articleViewScheduledPublishSuccessDescription": "Bài viết đã được hẹn giờ xuất bản vào {date}",
-  "articleViewScheduledPublishError": "Không thể hẹn giờ bài viết",
-  "articleViewScheduledPublishErrorDescription": "Không thể hẹn giờ bài viết",
-  "articleRedirectLoading": "Đang tải bài viết...",
-  "articleRedirectLoadingDesc": "Đang chuyển hướng đến trang bài viết...",
-  "articleRedirectProcessing": "Đang xử lý chuyển hướng...",
-  "articleRedirectProcessingDesc": "Vui lòng đợi trong khi chúng tôi chuyển hướng bạn đến bài viết.",
-  "articleNotFound": "Không Tìm Thấy Bài Viết",
-  "articleNotFoundDesc": "Bài viết bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.",
-  "reactionLike": "Thích",
-  "reactionLiked": "Đã Thích",
-  "reactionLikes": "lượt thích",
-  "reactionLikeError": "Không thể cập nhật lượt thích"
+  "title": "Bài Viết",
+  "loading": "Đang tải bài viết...",
+  "notFound": "Không tìm thấy bài viết",
+  "backToHome": "Về Trang Chủ",
+  "publishedOn": "Xuất bản ngày",
+  "readTime": "phút đọc",
+  "wordCount": "từ",
+  "tags": "Thẻ",
+  "noTags": "Không có thẻ",
+  "visibility": "Hiển thị",
+  "status": "Trạng thái",
+  "author": "Tác giả",
+  "lastUpdated": "Cập nhật lần cuối",
+  "redirect": {
+    "loading": "Đang tải bài viết...",
+    "loadingDesc": "Đang chuyển hướng đến trang bài viết...",
+    "processing": "Đang xử lý chuyển hướng...",
+    "processingDesc": "Vui lòng đợi trong khi chúng tôi chuyển hướng bạn đến bài viết."
+  },
+  "notFoundPage": {
+    "title": "Không Tìm Thấy Bài Viết",
+    "description": "Bài viết bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."
+  },
+  "visibility": {
+    "public": "Công khai",
+    "unlisted": "Không Công khai",
+    "private": "Riêng tư"
+  },
+  "status": {
+    "draft": "Bản nháp",
+    "published": "Đã xuất bản",
+    "scheduled": "Đã lên lịch",
+    "archived": "Đã lưu trữ"
+  },
+  "schedule": {
+    "success": "Bài viết đã được hẹn giờ xuất bản!",
+    "successDescription": "Bài viết đã được hẹn giờ xuất bản vào {date}",
+    "error": "Không thể hẹn giờ bài viết",
+    "errorDescription": "Không thể hẹn giờ bài viết"
+  },
+  "reactions": {
+    "like": "Thích",
+    "liked": "Đã Thích",
+    "likes": "lượt thích",
+    "likeError": "Không thể cập nhật lượt thích"
+  }
 }

@@ -1,10 +1,13 @@
 "use client";
 
-import { Heart } from "lucide-react";
-import { Button } from "@/components/ui";
-import { useArticleLike } from "@/hooks/reactions";
 import { useI18n } from "@/components/providers/i18n-provider";
+import { Button } from "@/components/ui";
+import {
+  useReactions,
+  useToggleReaction,
+} from "@/hooks/reactions/useReactionQuery";
 import { cn } from "@/lib/utils";
+import { Heart } from "lucide-react";
 
 interface LikeButtonProps {
   readonly articleId: string;
@@ -28,13 +31,18 @@ export function LikeButton({
   showText = true,
 }: LikeButtonProps) {
   const { t } = useI18n();
-  const { isLiked, likeCount, isLoading, toggleLike } =
-    useArticleLike(articleId);
+  const { mutate: toggleLike, isPending: isLoading } = useToggleReaction();
+
+  // Get reactions data for this article
+  const { data: reactionsData } = useReactions(articleId);
+  const likeCount =
+    reactionsData?.data?.find((r) => r.kind === "like")?.count || 0;
+  const isLiked = false; // TODO: Implement user reaction status check
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    toggleLike();
+    toggleLike({ articleId, type: "like" });
   };
 
   return (

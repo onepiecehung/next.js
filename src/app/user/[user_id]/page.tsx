@@ -10,7 +10,7 @@ import {
   Rss,
 } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import { useIsMounted } from "@/components/providers/no-ssr";
@@ -23,7 +23,7 @@ import {
   GitHubIcon,
   XIcon,
 } from "@/components/ui";
-import { UserAPI, type UserProfile } from "@/lib/api/users";
+import { useUserProfile } from "@/hooks/users/useUserQuery";
 import { currentUserAtom } from "@/lib/auth";
 
 /**
@@ -37,35 +37,13 @@ export default function ProfilePage() {
   const userId = params.user_id as string;
 
   const [currentUser] = useAtom(currentUserAtom);
-  const [profileData, setProfileData] = useState<UserProfile | null>(null);
   const [activeTab, setActiveTab] = useState<
     "articles" | "scraps" | "comments"
   >("articles");
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const isMounted = useIsMounted();
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-
-        const data = await UserAPI.getUserProfile(userId);
-        setProfileData(data);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to fetch user profile",
-        );
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (userId) {
-      fetchProfileData();
-    }
-  }, [userId]);
+  // Fetch user profile data with React Query
+  const { data: profileData, isLoading, error } = useUserProfile(userId);
 
   // Prevent hydration mismatch
   if (!isMounted) {
@@ -80,7 +58,11 @@ export default function ProfilePage() {
           <h1 className="text-2xl font-bold text-foreground mb-4">
             {t("userErrorTitle", "user")}
           </h1>
-          <p className="text-muted-foreground">{error}</p>
+          <p className="text-muted-foreground">
+            {error instanceof Error
+              ? error.message
+              : "Failed to fetch user profile"}
+          </p>
         </div>
       </div>
     );

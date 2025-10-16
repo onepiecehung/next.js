@@ -10,64 +10,42 @@ import {
   InputOTPSlot,
   Label,
 } from "@/components/ui";
-import {
-  accessTokenAtom,
-  currentUserAtom,
-  requestOTPAction,
-  verifyOTPAction,
-} from "@/lib/auth";
+import { useLogin } from "@/hooks/auth/useAuthQuery";
+import { requestOTPAction } from "@/lib/auth";
+import { extractAndTranslateErrorMessage } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAtom } from "jotai";
 import { ArrowLeft, Mail, RefreshCw } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-// Form validation schemas
-const emailSchema = z.object({
-  email: z
-    .string()
-    .min(1, "Email is required")
-    .email({ message: "Please enter a valid email address" }),
-});
+// Form validation schemas factory
+const createEmailSchema = (t: (key: string, ns?: string) => string) =>
+  z.object({
+    email: z
+      .string()
+      .min(1, t("validation.emailRequired", "auth"))
+      .email({ message: t("validation.emailInvalid", "auth") }),
+  });
 
-const otpSchema = z.object({
-  code: z
-    .string()
-    .min(6, "OTP code must be 6 digits")
-    .max(6, "OTP code must be 6 digits")
-    .regex(/^\d{6}$/, "OTP code must contain only digits"),
-});
+const createOtpSchema = (t: (key: string, ns?: string) => string) =>
+  z.object({
+    code: z
+      .string()
+      .min(6, t("validation.otpRequired", "auth"))
+      .max(6, t("validation.otpInvalid", "auth"))
+      .regex(/^\d{6}$/, t("validation.otpNumbersOnly", "auth")),
+  });
 
-type EmailFormValues = z.infer<typeof emailSchema>;
-type OTPFormValues = z.infer<typeof otpSchema>;
+type EmailFormValues = {
+  email: string;
+};
 
-// Helper function to extract error message from various error types
-function extractErrorMessage(error: unknown, defaultMessage: string): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
+type OTPFormValues = {
+  code: string;
+};
 
-  if (typeof error === "object" && error !== null && "response" in error) {
-    const response = (error as { response?: unknown }).response;
-    if (
-      typeof response === "object" &&
-      response !== null &&
-      "data" in response
-    ) {
-      const data = (response as { data?: unknown }).data;
-      if (typeof data === "object" && data !== null && "message" in data) {
-        const message = (data as { message?: unknown }).message;
-        if (typeof message === "string") {
-          return message;
-        }
-      }
-    }
-  }
-
-  return defaultMessage;
-}
 
 interface OTPLoginFormProps {
   readonly onBack: () => void;
@@ -80,8 +58,9 @@ interface OTPLoginFormProps {
  */
 export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
   const { t } = useI18n();
-  const [, setUser] = useAtom(currentUserAtom);
-  const [, setAccessToken] = useAtom(accessTokenAtom);
+
+  // Use React Query login hook
+  const { handleOTPLogin, isOTPLoading: isLoggingIn } = useLogin();
 
   // State management
   const [step, setStep] = useState<"email" | "otp">("email");
@@ -90,15 +69,17 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
   const [, setExpiresIn] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [hasSubmitted, setHasSubmitted] = useState(false); // Track if OTP has been submitted at least once
+  const isSubmittingRef = useRef(false); // Ref to prevent double submission
 
   // Email form
   const emailForm = useForm<EmailFormValues>({
-    resolver: zodResolver(emailSchema),
+    resolver: zodResolver(createEmailSchema(t)),
   });
 
   // OTP form
   const otpForm = useForm<OTPFormValues>({
-    resolver: zodResolver(otpSchema),
+    resolver: zodResolver(createOtpSchema(t)),
   });
 
   // Countdown timer effect
@@ -109,43 +90,67 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
     }
   }, [countdown]);
 
+  // Format countdown display (minutes and seconds)
+  const formatCountdown = (seconds: number): string => {
+    if (seconds <= 0) return "0s";
+
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    if (minutes > 0) {
+      return remainingSeconds > 0
+        ? `${minutes}m ${remainingSeconds}s`
+        : `${minutes}m`;
+    }
+
+    return `${remainingSeconds}s`;
+  };
+
   // Handle OTP verification (Step 2) - moved up to avoid temporal dead zone
   const handleOTPSubmit = React.useCallback(
     async (values: OTPFormValues) => {
-      setIsLoading(true);
+      // Prevent double submission
+      if (isSubmittingRef.current) {
+        console.log("OTP submission already in progress, skipping...");
+        return;
+      }
+
       try {
-        const user = await verifyOTPAction(email, values.code, requestId);
-
-        setUser(user);
-        setAccessToken(null); // Token is stored in http layer
-
-        toast.success(t("otpVerifySuccess", "auth") || "Login successful!");
-
+        isSubmittingRef.current = true;
+        setHasSubmitted(true); // Mark that OTP has been submitted
+        
+        console.log("Submitting OTP:", { email, code: values.code, requestId });
+        await handleOTPLogin({
+          email,
+          code: values.code,
+          requestId,
+        });
+        console.log("OTP submission successful");
+        toast.success(t("toastLoginSuccess", "toast"));
         onSuccess();
-      } catch (error: unknown) {
-        const errorMessage = extractErrorMessage(
-          error,
-          t("otpVerifyError", "auth") || "Invalid OTP code. Please try again.",
-        );
-        toast.error(errorMessage);
+      } catch (error) {
+        // Error handling is already done in the mutation
+        console.error("OTP verification failed:", error);
       } finally {
-        setIsLoading(false);
+        isSubmittingRef.current = false;
       }
     },
-    [email, requestId, onSuccess, t, setUser, setAccessToken],
+    [email, requestId, onSuccess, t, handleOTPLogin],
   );
 
-  // Auto-submit when OTP is complete
+  // Auto-submit when OTP is complete (only on first time)
   const otpCode = otpForm.watch("code");
   useEffect(() => {
-    if (otpCode && otpCode.length === 6 && !isLoading) {
-      // Small delay to ensure the UI updates
-      const timer = setTimeout(() => {
+    // Auto-submit only if OTP is complete, not loading, hasn't been submitted yet, and not currently submitting
+    if (otpCode && otpCode.length === 6 && !isLoggingIn && !hasSubmitted && !isSubmittingRef.current) {
+      console.log("Auto-submitting OTP...");
+      // Use requestAnimationFrame to avoid forced reflow
+      const timer = requestAnimationFrame(() => {
         otpForm.handleSubmit(handleOTPSubmit)();
-      }, 100);
-      return () => clearTimeout(timer);
+      });
+      return () => cancelAnimationFrame(timer);
     }
-  }, [otpCode, isLoading, otpForm, handleOTPSubmit]);
+  }, [otpCode, isLoggingIn, hasSubmitted]); // Remove otpForm and handleOTPSubmit from dependencies
 
   // Handle email submission (Step 1)
   const handleEmailSubmit = async (values: EmailFormValues) => {
@@ -160,13 +165,14 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
       setStep("otp");
 
       toast.success(
-        t("otpSentSuccess", "auth") ||
-          `OTP code has been sent to ${values.email}`,
+        t("toastOTPSentDescription", "toast", { email: values.email }),
       );
     } catch (error: unknown) {
-      const errorMessage = extractErrorMessage(
+      const errorMessage = extractAndTranslateErrorMessage(
         error,
-        t("otpRequestError", "auth") || "Failed to send OTP. Please try again.",
+        "errors.requestError",
+        t,
+        "toast"
       );
       toast.error(errorMessage);
     } finally {
@@ -183,15 +189,19 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
       setRequestId(result.requestId);
       setExpiresIn(result.expiresIn);
       setCountdown(result.expiresIn);
+      setHasSubmitted(false); // Reset submission state when resending
+      isSubmittingRef.current = false; // Reset submitting ref
+      otpForm.reset(); // Clear the OTP input
 
-      toast.success(
-        t("otpResentSuccess", "auth") || "OTP code has been resent",
-      );
+      toast.success(t("toastOTPResentSuccess", "toast"), {
+        description: t("toastOTPResentDescription", "toast", { email }),
+      });
     } catch (error: unknown) {
-      const errorMessage = extractErrorMessage(
+      const errorMessage = extractAndTranslateErrorMessage(
         error,
-        t("otpResendError", "auth") ||
-          "Failed to resend OTP. Please try again.",
+        "errors.resendError",
+        t,
+        "auth"
       );
       toast.error(errorMessage);
     } finally {
@@ -206,6 +216,8 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
     setRequestId("");
     setExpiresIn(0);
     setCountdown(0);
+    setHasSubmitted(false); // Reset submission state
+    isSubmittingRef.current = false; // Reset submitting ref
     emailForm.reset();
     otpForm.reset();
   };
@@ -219,15 +231,14 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
         </div>
         <h2 className="text-2xl font-bold">
           {step === "email"
-            ? t("otpLoginTitle", "auth") || "Login with OTP"
-            : t("otpVerifyTitle", "auth") || "Verify OTP Code"}
+            ? t("otp.loginTitle", "auth")
+            : t("otp.verifyTitle", "auth")}
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
           {step === "email"
-            ? t("otpLoginDescription", "auth") ||
+            ? t("otp.loginDescription", "auth") ||
               "Enter your email to receive a verification code"
-            : t("otpVerifyDescription", "auth") ||
-              `Enter the 6-digit code sent to ${email}`}
+            : t("otp.verifyDescription", "auth", { email })}
         </p>
       </div>
 
@@ -238,12 +249,13 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
           className="space-y-4"
         >
           <div className="space-y-2">
-            <Label htmlFor="email">{t("email", "auth") || "Email"}</Label>
+            <Label htmlFor="email">{t("fields.email", "common")}</Label>
             <Input
               id="email"
               type="email"
-              placeholder={t("emailPlaceholder", "auth") || "you@example.com"}
+              placeholder={t("placeholders.email", "common")}
               className="h-12"
+              autoComplete="email"
               {...emailForm.register("email")}
               disabled={isLoading}
             />
@@ -263,12 +275,10 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
               disabled={isLoading}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              {t("back", "common") || "Back"}
+              {t("actions.back", "common")}
             </Button>
             <Button type="submit" className="flex-1" disabled={isLoading}>
-              {isLoading
-                ? t("sending", "auth") || "Sending..."
-                : t("sendOTP", "auth") || "Send OTP"}
+              {isLoading ? t("otp.sending", "auth") : t("otp.send", "auth")}
             </Button>
           </div>
         </form>
@@ -282,14 +292,14 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
         >
           <div className="space-y-4">
             <Label htmlFor="code" className="text-center block">
-              {t("otpCode", "auth") || "OTP Code"}
+              {t("otp.code", "auth")}
             </Label>
             <div className="flex justify-center">
               <InputOTP
                 maxLength={6}
                 value={otpForm.watch("code") || ""}
                 onChange={(value) => otpForm.setValue("code", value)}
-                disabled={isLoading}
+                disabled={isLoggingIn}
                 className="gap-2"
               >
                 <InputOTPGroup>
@@ -316,18 +326,18 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
           <div className="text-center">
             {countdown > 0 ? (
               <p className="text-sm text-muted-foreground">
-                {t("otpResendIn", "auth") || "Resend code in"} {countdown}s
+                {t("otp.resendIn", "auth")} {formatCountdown(countdown)}
               </p>
             ) : (
               <Button
                 type="button"
                 variant="link"
                 onClick={handleResendOTP}
-                disabled={isLoading}
+                disabled={isLoggingIn}
                 className="text-sm"
               >
                 <RefreshCw className="mr-2 h-4 w-4" />
-                {t("resendOTP", "auth") || "Resend OTP"}
+                {t("otp.resend", "auth")}
               </Button>
             )}
           </div>
@@ -338,15 +348,15 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
               variant="outline"
               onClick={handleBackToEmail}
               className="flex-1"
-              disabled={isLoading}
+              disabled={isLoggingIn}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              {t("back", "common") || "Back"}
+              {t("actions.back", "common")}
             </Button>
-            <Button type="submit" className="flex-1" disabled={isLoading}>
-              {isLoading
-                ? t("verifying", "auth") || "Verifying..."
-                : t("verifyOTP", "auth") || "Verify OTP"}
+            <Button type="submit" className="flex-1" disabled={isLoggingIn}>
+              {isLoggingIn
+                ? t("otp.verifying", "auth")
+                : t("otp.verify", "auth")}
             </Button>
           </div>
         </form>
