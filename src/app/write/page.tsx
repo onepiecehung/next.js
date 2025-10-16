@@ -179,7 +179,7 @@ export default function WritePage() {
               {/* Header - Compact on mobile */}
               <div className="space-y-1 md:space-y-2">
                 <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">
-                  {t("writeTitle", "write")}
+                  {t("title", "write")}
                 </h1>
                 <p className="text-xs sm:text-sm md:text-base text-muted-foreground line-clamp-2 md:line-clamp-none">
                   Create and publish your articles with our modern rich text
@@ -193,15 +193,15 @@ export default function WritePage() {
                   {/* Cover Image Upload - Touch-friendly */}
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-foreground mb-1.5 sm:mb-2">
-                      {t("writeFormCoverImage", "write")}
+                      {t("form.coverImage", "write")}
                     </label>
                     <p className="text-xs text-muted-foreground mb-2 sm:mb-3 hidden sm:block">
-                      {t("writeFormCoverImageDescription", "write")}
+                      {t("form.coverImageDescription", "write")}
                     </p>
                     <ImageUpload
                       value={coverImage}
                       onChange={setCoverImage}
-                      placeholder={t("writeFormCoverImagePlaceholder", "write")}
+                      placeholder={t("form.coverImagePlaceholder", "write")}
                       maxSizeInMB={10}
                       acceptedTypes={[
                         "image/jpeg",
@@ -218,13 +218,13 @@ export default function WritePage() {
                   {/* Title Input - Larger touch target on mobile */}
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-foreground mb-1.5 sm:mb-2">
-                      {t("writeFormTitle", "write")}
+                      {t("form.title", "write")}
                     </label>
                     <input
                       type="text"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
-                      placeholder={t("writeFormTitlePlaceholder", "write")}
+                      placeholder={t("form.titlePlaceholder", "write")}
                       maxLength={256}
                       className="w-full px-3 sm:px-4 py-3 sm:py-3.5 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-base sm:text-lg transition-shadow"
                     />
@@ -236,12 +236,12 @@ export default function WritePage() {
                   {/* Content Editor - Responsive min-height */}
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-foreground mb-1.5 sm:mb-2">
-                      {t("writeFormContent", "write")}
+                      {t("form.content", "write")}
                     </label>
                     <TipTapEditor
                       content={content}
                       onChange={setContent}
-                      placeholder={t("writeFormContentPlaceholder", "write")}
+                      placeholder={t("form.contentPlaceholder", "write")}
                       className="min-h-[300px] sm:min-h-[400px] md:min-h-[500px]"
                     />
                     <div className="flex justify-between items-center mt-1.5 sm:mt-2 text-xs text-muted-foreground">
@@ -255,7 +255,7 @@ export default function WritePage() {
                   {/* Tags Input - Better mobile UX */}
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-foreground mb-1.5 sm:mb-2">
-                      {t("writeFormTags", "write")}
+                      {t("form.tags", "write")}
                     </label>
                     <input
                       type="text"
@@ -267,7 +267,7 @@ export default function WritePage() {
                           .filter((tag) => tag.length > 0);
                         setTags(tagList.slice(0, 20)); // Limit to 20 tags
                       }}
-                      placeholder={t("writeFormTagsPlaceholder", "write")}
+                      placeholder={t("form.tagsPlaceholder", "write")}
                       className="w-full px-3 sm:px-4 py-3 sm:py-3.5 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm sm:text-base transition-shadow"
                     />
                     <p className="text-xs text-muted-foreground mt-1.5">
@@ -280,7 +280,7 @@ export default function WritePage() {
                     {/* Visibility Dropdown - Hidden on mobile, shown in sticky bar */}
                     <div className="hidden md:flex items-center gap-2">
                       <span className="text-sm text-muted-foreground">
-                        {t("writeFormVisibility", "write")}:
+                        {t("form.visibility", "write")}:
                       </span>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -290,11 +290,11 @@ export default function WritePage() {
                             className="gap-2 h-9"
                           >
                             {visibility === "public" &&
-                              t("writeFormVisibilityPublic", "write")}
+                              t("visibility.public", "write")}
                             {visibility === "unlisted" &&
-                              t("writeFormVisibilityUnlisted", "write")}
+                              t("visibility.unlisted", "write")}
                             {visibility === "private" &&
-                              t("writeFormVisibilityPrivate", "write")}
+                              t("visibility.private", "write")}
                             <ChevronDown className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -305,7 +305,7 @@ export default function WritePage() {
                               visibility === "public" ? "bg-accent" : ""
                             }
                           >
-                            {t("writeFormVisibilityPublic", "write")}
+                            {t("visibility.public", "write")}
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() => setVisibility("unlisted")}
@@ -313,7 +313,7 @@ export default function WritePage() {
                               visibility === "unlisted" ? "bg-accent" : ""
                             }
                           >
-                            {t("writeFormVisibilityUnlisted", "write")}
+                            {t("visibility.unlisted", "write")}
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() => setVisibility("private")}
@@ -321,7 +321,7 @@ export default function WritePage() {
                               visibility === "private" ? "bg-accent" : ""
                             }
                           >
-                            {t("writeFormVisibilityPrivate", "write")}
+                            {t("visibility.private", "write")}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -337,7 +337,7 @@ export default function WritePage() {
                       >
                         {isSubmitting
                           ? "Saving..."
-                          : t("writeFormSaveDraft", "write")}
+                          : t("form.saveDraft", "write")}
                       </Button>
 
                       <ButtonGroup>
@@ -352,7 +352,7 @@ export default function WritePage() {
                         >
                           {isSubmitting
                             ? "Publishing..."
-                            : t("writeFormPublishArticle", "write")}
+                            : t("form.publishArticle", "write")}
                         </Button>
 
                         {/* Schedule Publish Dropdown */}
@@ -377,7 +377,7 @@ export default function WritePage() {
                               className="gap-2"
                             >
                               <Clock className="h-4 w-4" />
-                              {t("writeFormSchedulePublish", "write")}
+                              {t("form.schedulePublish", "write")}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -397,7 +397,7 @@ export default function WritePage() {
               {/* Visibility Selector - Mobile */}
               <div className="flex items-center justify-between">
                 <span className="text-xs text-muted-foreground">
-                  {t("writeFormVisibility", "write")}:
+                  {t("form.visibility", "write")}:
                 </span>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -407,11 +407,11 @@ export default function WritePage() {
                       className="gap-2 h-8 text-xs"
                     >
                       {visibility === "public" &&
-                        t("writeFormVisibilityPublic", "write")}
+                        t("visibility.public", "write")}
                       {visibility === "unlisted" &&
-                        t("writeFormVisibilityUnlisted", "write")}
+                        t("visibility.unlisted", "write")}
                       {visibility === "private" &&
-                        t("writeFormVisibilityPrivate", "write")}
+                        t("visibility.private", "write")}
                       <ChevronDown className="h-3 w-3" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -420,19 +420,19 @@ export default function WritePage() {
                       onClick={() => setVisibility("public")}
                       className={visibility === "public" ? "bg-accent" : ""}
                     >
-                      {t("writeFormVisibilityPublic", "write")}
+                      {t("visibility.public", "write")}
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => setVisibility("unlisted")}
                       className={visibility === "unlisted" ? "bg-accent" : ""}
                     >
-                      {t("writeFormVisibilityUnlisted", "write")}
+                      {t("visibility.unlisted", "write")}
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => setVisibility("private")}
                       className={visibility === "private" ? "bg-accent" : ""}
                     >
-                      {t("writeFormVisibilityPrivate", "write")}
+                      {t("visibility.private", "write")}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -449,7 +449,7 @@ export default function WritePage() {
                 >
                   {isSubmitting
                     ? "Saving..."
-                    : t("writeFormSaveDraft", "write")}
+                    : t("form.saveDraft", "write")}
                 </Button>
 
                 <Button
@@ -461,7 +461,7 @@ export default function WritePage() {
                 >
                   {isSubmitting
                     ? "Publishing..."
-                    : t("writeFormPublishArticle", "write")}
+                    : t("form.publishArticle", "write")}
                 </Button>
 
                 <DropdownMenu>
@@ -481,7 +481,7 @@ export default function WritePage() {
                       className="gap-2"
                     >
                       <Clock className="h-4 w-4" />
-                      {t("writeFormSchedulePublish", "write")}
+                      {t("form.schedulePublish", "write")}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
