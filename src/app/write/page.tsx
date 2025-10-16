@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { toast } from "sonner";
 
 import { ProtectedRoute } from "@/components/features/auth";
 import { TipTapEditor } from "@/components/features/text-editor";
@@ -59,7 +58,6 @@ export default function WritePage() {
     setScheduledPublish,
     validateForm,
     resetForm,
-    showValidationErrors,
     wordCount,
     readTimeMinutes,
   } = useArticleFormState();
@@ -87,46 +85,12 @@ export default function WritePage() {
 
     createArticle(createRequest, {
       onSuccess: (article) => {
-        switch (article.status) {
-          case ARTICLE_CONSTANTS.STATUS.DRAFT:
-            toast.info(
-              t("writeFormDraftSuccess", "write") ||
-                "Article created successfully!",
-              {
-                description:
-                  t("writeFormDraftSuccess", "write") ||
-                  "Article created successfully!",
-              },
-            );
-            break;
-          case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
-            toast.success(
-              t("writeFormScheduledPublishSuccess", "write") ||
-                "Article scheduled for publication!",
-              {
-                description: t(
-                  "writeFormScheduledPublishSuccessDescription",
-                  "write",
-                  {
-                    date: article.scheduledAt?.toLocaleString(),
-                  },
-                ),
-              },
-            );
-            break;
-          default:
-            toast.success(
-              t("writeFormSuccess", "write") || "Article created successfully!",
-            );
-            break;
-        }
+        // Reset form after successful creation
         resetForm();
         // Redirect to article view page with a small delay to ensure cleanup
         router.push(`/article/${article.id}/${article.slug}`);
       },
-      onError: (error) => {
-        toast.error(error.message || "Failed to create article");
-      },
+      // onError is now handled by the hook itself
     });
   };
 

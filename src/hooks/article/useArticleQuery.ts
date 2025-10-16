@@ -12,8 +12,6 @@ import type { CreateArticleRequest, UpdateArticleRequest } from "@/lib/types";
  * Replaces the complex manual implementation with React Query
  */
 export function useArticle(articleId: string) {
-  const { t } = useI18n();
-
   return useQuery({
     queryKey: ["article", articleId],
     queryFn: () => ArticleAPI.getArticle(articleId),
@@ -45,6 +43,7 @@ export function useArticles(params?: {
 /**
  * Hook for creating articles
  * Replaces the manual useCreateArticle implementation
+ * Handles toast notifications internally for better separation of concerns
  */
 export function useCreateArticle() {
   const { t } = useI18n();
@@ -70,15 +69,51 @@ export function useCreateArticle() {
       // Add the new article to cache
       queryClient.setQueryData(["article", article.id], article);
 
-      toast.success(
-        t("articleCreateSuccess", "article") || "Article created successfully!",
-      );
+      // Handle different success scenarios with appropriate toast messages
+      switch (article.status) {
+        case ARTICLE_CONSTANTS.STATUS.DRAFT:
+          toast.info(
+            t("writeFormDraftSuccess", "write") || "Article saved as draft!",
+            {
+              description: t("writeFormDraftSuccessDescription", "write") || 
+                "Your article has been saved and can be edited later.",
+            },
+          );
+          break;
+        case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
+          toast.success(
+            t("writeFormScheduledPublishSuccess", "write") || 
+              "Article scheduled for publication!",
+            {
+              description: t("writeFormScheduledPublishSuccessDescription", "write", {
+                date: article.scheduledAt?.toLocaleString(),
+              }) || `Scheduled for ${article.scheduledAt?.toLocaleString()}`,
+            },
+          );
+          break;
+        default:
+          toast.success(
+            t("writeFormSuccess", "write") || "Article published successfully!",
+            {
+              description: t("writeFormSuccessDescription", "write") || 
+                "Your article is now live and visible to readers.",
+            },
+          );
+          break;
+      }
     },
     onError: (error) => {
       console.error("Article creation error:", error);
-      toast.error(
-        t("articleCreateError", "article") || "Failed to create article",
-      );
+      
+      // Extract meaningful error message
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : t("writeFormError", "write") || "Failed to create article";
+        
+      toast.error(errorMessage, {
+        description: t("writeFormErrorDescription", "write") || 
+          "Please check your input and try again.",
+      });
     },
   });
 }
