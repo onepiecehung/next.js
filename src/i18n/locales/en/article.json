@@ -1,37 +1,48 @@
 {
-  "articleViewTitle": "Article",
-  "articleViewLoading": "Loading article...",
-  "articleViewError": "Failed to load article",
-  "articleViewNotFound": "Article not found",
-  "articleViewBackToHome": "Back to Home",
-  "articleViewPublishedOn": "Published on",
-  "articleViewReadTime": "min read",
-  "articleViewWordCount": "words",
-  "articleViewTags": "Tags",
-  "articleViewNoTags": "No tags",
-  "articleViewVisibility": "Visibility",
-  "articleViewVisibilityPublic": "Public",
-  "articleViewVisibilityUnlisted": "Unlisted",
-  "articleViewVisibilityPrivate": "Private",
-  "articleViewStatus": "Status",
-  "articleViewStatusDraft": "Draft",
-  "articleViewStatusPublished": "Published",
-  "articleViewStatusScheduled": "Scheduled",
-  "articleViewStatusArchived": "Archived",
-  "articleViewAuthor": "Author",
-  "articleViewLastUpdated": "Last updated",
-  "articleViewScheduledPublishSuccess": "Article scheduled for publication!",
-  "articleViewScheduledPublishSuccessDescription": "Article scheduled for publication at {date}",
-  "articleViewScheduledPublishError": "Failed to schedule article",
-  "articleViewScheduledPublishErrorDescription": "Failed to schedule article",
-  "articleRedirectLoading": "Loading article...",
-  "articleRedirectLoadingDesc": "Redirecting to the article page...",
-  "articleRedirectProcessing": "Processing redirect...",
-  "articleRedirectProcessingDesc": "Please wait while we redirect you to the article.",
-  "articleNotFound": "Article Not Found",
-  "articleNotFoundDesc": "The article you're looking for doesn't exist or has been removed.",
-  "reactionLike": "Like",
-  "reactionLiked": "Liked",
-  "reactionLikes": "likes",
-  "reactionLikeError": "Failed to update like"
+  "title": "Article",
+  "loading": "Loading article...",
+  "notFound": "Article not found",
+  "backToHome": "Back to Home",
+  "publishedOn": "Published on",
+  "readTime": "min read",
+  "wordCount": "words",
+  "tags": "Tags",
+  "noTags": "No tags",
+  "visibility": "Visibility",
+  "status": "Status",
+  "author": "Author",
+  "lastUpdated": "Last updated",
+  "redirect": {
+    "loading": "Loading article...",
+    "loadingDesc": "Redirecting to the article page...",
+    "processing": "Processing redirect...",
+    "processingDesc": "Please wait while we redirect you to the article."
+  },
+  "notFoundPage": {
+    "title": "Article Not Found",
+    "description": "The article you're looking for doesn't exist or has been removed."
+  },
+  "visibility": {
+    "public": "Public",
+    "unlisted": "Unlisted",
+    "private": "Private"
+  },
+  "status": {
+    "draft": "Draft",
+    "published": "Published",
+    "scheduled": "Scheduled",
+    "archived": "Archived"
+  },
+  "schedule": {
+    "success": "Article scheduled for publication!",
+    "successDescription": "Article scheduled for publication at {date}",
+    "error": "Failed to schedule article",
+    "errorDescription": "Failed to schedule article"
+  },
+  "reactions": {
+    "like": "Like",
+    "liked": "Liked",
+    "likes": "likes",
+    "likeError": "Failed to update like"
+  }
 }

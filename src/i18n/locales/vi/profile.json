@@ -1,12 +1,12 @@
 {
-  "headerProfileNotFound": "Không tìm thấy hồ sơ",
+  "headerProfileNotFound": "Không Tìm Thấy Hồ Sơ",
   "headerLoginRequired": "Vui lòng đăng nhập để xem hồ sơ của bạn.",
-  "headerLikes": "Thích",
-  "headerFollowers": "Người theo dõi",
-  "headerFollowing": "Đang theo dõi",
-  "tabsArticles": "Bài viết",
-  "tabsScraps": "Ghi chú",
-  "tabsComments": "Bình luận",
+  "headerLikes": "Lượt Thích",
+  "headerFollowers": "Người Theo Dõi",
+  "headerFollowing": "Đang Theo Dõi",
+  "tabsArticles": "Bài Viết",
+  "tabsScraps": "Ghi Chú",
+  "tabsComments": "Bình Luận",
   "contentNoScraps": "Chưa có ghi chú nào",
   "contentNoScrapsDescription": "Bắt đầu viết ghi chú đầu tiên để chia sẻ suy nghĩ của bạn.",
   "contentNoComments": "Chưa có bình luận nào",
@@ -16,5 +16,5 @@
   "contentWeeksAgo": "tuần trước",
   "categoriesTech": "CÔNG NGHỆ",
   "categoriesTutorial": "HƯỚNG DẪN",
-  "categoriesInsights": "GÓC NHÌN"
+  "categoriesInsights": "HIỂU BIẾT"
 }
