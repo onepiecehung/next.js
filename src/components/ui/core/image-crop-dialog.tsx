@@ -39,6 +39,13 @@ export function ImageCropDialog({
   const { t } = useI18n();
   const [croppedImage, setCroppedImage] = React.useState<string | null>(null);
 
+  // Clear cropped image when dialog opens with new file
+  React.useEffect(() => {
+    if (isOpen && imageFile) {
+      setCroppedImage(null);
+    }
+  }, [isOpen, imageFile]);
+
   const handleCrop = (croppedImageUrl: string) => {
     setCroppedImage(croppedImageUrl);
   };
@@ -54,10 +61,6 @@ export function ImageCropDialog({
           onClose();
         });
     }
-  };
-
-  const handleReset = () => {
-    setCroppedImage(null);
   };
 
   if (!imageFile) return null;
@@ -86,7 +89,7 @@ export function ImageCropDialog({
                 <Button onClick={handleSave}>
                   {t("imageEditor.save", "write")}
                 </Button>
-                <Button variant="outline" onClick={handleReset}>
+                <Button variant="outline" onClick={onClose}>
                   {t("imageEditor.cancel", "write")}
                 </Button>
               </div>

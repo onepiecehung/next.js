@@ -48,6 +48,7 @@ export function ImageUpload({
   const [error, setError] = React.useState<string | null>(null);
   const [isEditorOpen, setIsEditorOpen] = React.useState(false);
   const [tempFile, setTempFile] = React.useState<File | null>(null);
+  const [isRemoved, setIsRemoved] = React.useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   // Validate file type and size
@@ -69,6 +70,9 @@ export function ImageUpload({
   // Handle file selection
   const handleFileSelect = (file: File) => {
     setError(null);
+    setTempFile(null); // Clear any existing temp file
+    setIsEditorOpen(false); // Close any open editor
+    setIsRemoved(false); // Reset removed state
 
     const validationError = validateFile(file);
     if (validationError) {
@@ -122,6 +126,9 @@ export function ImageUpload({
     event.stopPropagation();
     onChange(null);
     setError(null);
+    setTempFile(null); // Clear temp file when removing
+    setIsEditorOpen(false); // Close editor if open
+    setIsRemoved(true); // Mark as removed
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -140,8 +147,8 @@ export function ImageUpload({
     setIsEditorOpen(false);
   };
 
-  // Get file preview URL
-  const previewUrl = value ? URL.createObjectURL(value) : null;
+  // Get file preview URL - only show if we have a value, no temp file, and not removed
+  const previewUrl = value && !tempFile && !isRemoved ? URL.createObjectURL(value) : null;
 
   return (
     <div className={cn("space-y-2", className)}>
@@ -206,6 +213,7 @@ export function ImageUpload({
                     // which could blur or reopen input instead of dialog
                     e.stopPropagation();
                     if (value) {
+                      setError(null); // Clear any errors
                       setTempFile(value);
                       setIsEditorOpen(true);
                     }
