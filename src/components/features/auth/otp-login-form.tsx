@@ -2,20 +2,16 @@
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import {
-    Button,
-    Input,
-    InputOTP,
-    InputOTPGroup,
-    InputOTPSeparator,
-    InputOTPSlot,
-    Label,
+  Button,
+  Input,
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+  Label,
 } from "@/components/ui";
 import { useLogin } from "@/hooks/auth/useAuthQuery";
-import {
-    accessTokenAtom,
-    currentUserAtom,
-    requestOTPAction,
-} from "@/lib/auth";
+import { accessTokenAtom, currentUserAtom, requestOTPAction } from "@/lib/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { ArrowLeft, Mail, RefreshCw } from "lucide-react";
@@ -82,7 +78,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
   const { t } = useI18n();
   const [, setUser] = useAtom(currentUserAtom);
   const [, setAccessToken] = useAtom(accessTokenAtom);
-  
+
   // Use React Query login hook
   const { mutate: loginWithOTP, isPending: isLoggingIn } = useLogin();
 
@@ -127,11 +123,12 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
           onError: (error: unknown) => {
             const errorMessage = extractErrorMessage(
               error,
-              t("otpVerifyError", "auth") || "Invalid OTP code. Please try again.",
+              t("otpVerifyError", "auth") ||
+                "Invalid OTP code. Please try again.",
             );
             toast.error(errorMessage);
           },
-        }
+        },
       );
     },
     [email, requestId, onSuccess, t, setUser, setAccessToken, loginWithOTP],

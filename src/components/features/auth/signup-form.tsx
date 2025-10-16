@@ -3,21 +3,17 @@
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button, Input, Label } from "@/components/ui";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/core";
 import { useLogin } from "@/hooks/auth/useAuthQuery";
+import { accessTokenAtom, currentUserAtom, fetchMeAction } from "@/lib/auth";
 import {
-    accessTokenAtom,
-    currentUserAtom,
-    fetchMeAction
-} from "@/lib/auth";
-import {
-    registerFormSchemaSimple,
-    type RegisterFormDataSimple,
+  registerFormSchemaSimple,
+  type RegisterFormDataSimple,
 } from "@/lib/validators/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
@@ -66,7 +62,7 @@ export default function SignupForm({
   const [, setUser] = useAtom(currentUserAtom);
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const [showPassword, setShowPassword] = useState(false);
-  
+
   // Use React Query login hook for signup
   const { mutate: signupWithCredentials, isPending: isSigningUp } = useLogin();
 
@@ -114,7 +110,7 @@ export default function SignupForm({
           );
           toast.error(errorMessage);
         },
-      }
+      },
     );
   };
 

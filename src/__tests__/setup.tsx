@@ -19,20 +19,17 @@ const createTestQueryClient = () =>
 // Custom render function with React Query provider
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   const queryClient = createTestQueryClient();
-  
+
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 };
 
 const customRender = (
   ui: React.ReactElement,
-  options?: Omit<RenderOptions, "wrapper">
+  options?: Omit<RenderOptions, "wrapper">,
 ) => render(ui, { wrapper: AllTheProviders, ...options });
 
 // Re-export everything
 export * from "@testing-library/react";
 export { customRender as render };
-

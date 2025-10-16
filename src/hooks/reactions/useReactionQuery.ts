@@ -30,15 +30,19 @@ export function useToggleReaction() {
     onSuccess: (_, { articleId }) => {
       // Invalidate reactions for this article
       queryClient.invalidateQueries({ queryKey: ["reactions", articleId] });
-      
+
       // Also invalidate article data to update reaction counts
       queryClient.invalidateQueries({ queryKey: ["article", articleId] });
-      
-      toast.success(t("reactionToggleSuccess", "reactions") || "Reaction updated!");
+
+      toast.success(
+        t("reactionToggleSuccess", "reactions") || "Reaction updated!",
+      );
     },
     onError: (error) => {
       console.error("Reaction toggle error:", error);
-      toast.error(t("reactionToggleError", "reactions") || "Failed to update reaction");
+      toast.error(
+        t("reactionToggleError", "reactions") || "Failed to update reaction",
+      );
     },
   });
 }
@@ -56,12 +60,14 @@ export function useAddReaction() {
     onSuccess: (_, { articleId }) => {
       queryClient.invalidateQueries({ queryKey: ["reactions", articleId] });
       queryClient.invalidateQueries({ queryKey: ["article", articleId] });
-      
+
       toast.success(t("reactionAddSuccess", "reactions") || "Reaction added!");
     },
     onError: (error) => {
       console.error("Add reaction error:", error);
-      toast.error(t("reactionAddError", "reactions") || "Failed to add reaction");
+      toast.error(
+        t("reactionAddError", "reactions") || "Failed to add reaction",
+      );
     },
   });
 }
@@ -79,12 +85,16 @@ export function useRemoveReaction() {
     onSuccess: (_, { articleId }) => {
       queryClient.invalidateQueries({ queryKey: ["reactions", articleId] });
       queryClient.invalidateQueries({ queryKey: ["article", articleId] });
-      
-      toast.success(t("reactionRemoveSuccess", "reactions") || "Reaction removed!");
+
+      toast.success(
+        t("reactionRemoveSuccess", "reactions") || "Reaction removed!",
+      );
     },
     onError: (error) => {
       console.error("Remove reaction error:", error);
-      toast.error(t("reactionRemoveError", "reactions") || "Failed to remove reaction");
+      toast.error(
+        t("reactionRemoveError", "reactions") || "Failed to remove reaction",
+      );
     },
   });
 }
@@ -104,6 +114,9 @@ export function useReactionManagement() {
     isToggling: toggleMutation.isPending,
     isAdding: addMutation.isPending,
     isRemoving: removeMutation.isPending,
-    isLoading: toggleMutation.isPending || addMutation.isPending || removeMutation.isPending,
+    isLoading:
+      toggleMutation.isPending ||
+      addMutation.isPending ||
+      removeMutation.isPending,
   };
 }

@@ -1,8 +1,8 @@
 "use client";
 
 import {
-    CompactLikeButton,
-    LargeLikeButton,
+  CompactLikeButton,
+  LargeLikeButton,
 } from "@/components/features/reactions";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
@@ -13,14 +13,14 @@ import { useArticleLike } from "@/hooks/reactions";
 import { ARTICLE_CONSTANTS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import {
-    Calendar,
-    Clock,
-    Eye,
-    FileText,
-    Heart,
-    Share2,
-    Tag,
-    User,
+  Calendar,
+  Clock,
+  Eye,
+  FileText,
+  Heart,
+  Share2,
+  Tag,
+  User,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

@@ -37,23 +37,32 @@ export function useUpdateUserProfile() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ userId, data }: { userId: string; data: Partial<UserProfile> }) =>
-      UserAPI.updateUserProfile(userId, data),
+    mutationFn: ({
+      userId,
+      data,
+    }: {
+      userId: string;
+      data: Partial<UserProfile>;
+    }) => UserAPI.updateUserProfile(userId, data),
     onSuccess: (user) => {
       // Update user in cache
       queryClient.setQueryData(["user", user.id], user);
-      
+
       // Update current user if it's the same user
       queryClient.setQueryData(["currentUserProfile"], user);
-      
+
       // Invalidate users list
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      
-      toast.success(t("profileUpdateSuccess", "profile") || "Profile updated successfully!");
+
+      toast.success(
+        t("profileUpdateSuccess", "profile") || "Profile updated successfully!",
+      );
     },
     onError: (error) => {
       console.error("Profile update error:", error);
-      toast.error(t("profileUpdateError", "profile") || "Failed to update profile");
+      toast.error(
+        t("profileUpdateError", "profile") || "Failed to update profile",
+      );
     },
   });
 }

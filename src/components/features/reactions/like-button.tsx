@@ -2,7 +2,10 @@
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button } from "@/components/ui";
-import { useReactions, useToggleReaction } from "@/hooks/reactions/useReactionQuery";
+import {
+  useReactions,
+  useToggleReaction,
+} from "@/hooks/reactions/useReactionQuery";
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
 
@@ -29,11 +32,11 @@ export function LikeButton({
 }: LikeButtonProps) {
   const { t } = useI18n();
   const { mutate: toggleLike, isPending: isLoading } = useToggleReaction();
-  
+
   // Get reactions data for this article
   const { data: reactions } = useReactions(articleId);
-  const likeCount = reactions?.filter(r => r.type === "like").length || 0;
-  const isLiked = reactions?.some(r => r.type === "like") || false;
+  const likeCount = reactions?.filter((r) => r.type === "like").length || 0;
+  const isLiked = reactions?.some((r) => r.type === "like") || false;
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();

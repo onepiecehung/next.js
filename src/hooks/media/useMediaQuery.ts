@@ -16,8 +16,10 @@ export function useImageUpload() {
     onSuccess: (media) => {
       // Invalidate media queries to refresh the list
       queryClient.invalidateQueries({ queryKey: ["media"] });
-      
-      toast.success(t("imageUploadSuccess", "media") || "Image uploaded successfully!");
+
+      toast.success(
+        t("imageUploadSuccess", "media") || "Image uploaded successfully!",
+      );
       return media;
     },
     onError: (error) => {
@@ -38,16 +40,18 @@ export function useMultipleImageUpload() {
     mutationFn: (files: File[]) => MediaAPI.uploadMultipleImages(files),
     onSuccess: (mediaList) => {
       queryClient.invalidateQueries({ queryKey: ["media"] });
-      
+
       toast.success(
-        t("multipleImageUploadSuccess", "media") || 
-        `${mediaList.length} images uploaded successfully!`
+        t("multipleImageUploadSuccess", "media") ||
+          `${mediaList.length} images uploaded successfully!`,
       );
       return mediaList;
     },
     onError: (error) => {
       console.error("Multiple image upload error:", error);
-      toast.error(t("multipleImageUploadError", "media") || "Failed to upload images");
+      toast.error(
+        t("multipleImageUploadError", "media") || "Failed to upload images",
+      );
     },
   });
 }
@@ -64,11 +68,13 @@ export function useDeleteMedia() {
     onSuccess: (_, mediaId) => {
       // Remove media from cache
       queryClient.removeQueries({ queryKey: ["media", mediaId] });
-      
+
       // Invalidate media list
       queryClient.invalidateQueries({ queryKey: ["media"] });
-      
-      toast.success(t("mediaDeleteSuccess", "media") || "Media deleted successfully!");
+
+      toast.success(
+        t("mediaDeleteSuccess", "media") || "Media deleted successfully!",
+      );
     },
     onError: (error) => {
       console.error("Media deletion error:", error);
@@ -104,6 +110,9 @@ export function useMediaManagement() {
     isUploading: uploadMutation.isPending,
     isUploadingMultiple: multipleUploadMutation.isPending,
     isDeleting: deleteMutation.isPending,
-    isLoading: uploadMutation.isPending || multipleUploadMutation.isPending || deleteMutation.isPending,
+    isLoading:
+      uploadMutation.isPending ||
+      multipleUploadMutation.isPending ||
+      deleteMutation.isPending,
   };
 }

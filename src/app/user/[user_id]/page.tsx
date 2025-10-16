@@ -2,12 +2,12 @@
 
 import { useAtom } from "jotai";
 import {
-    BookOpen,
-    Eye,
-    Heart,
-    MessageSquare,
-    PenTool,
-    Rss,
+  BookOpen,
+  Eye,
+  Heart,
+  MessageSquare,
+  PenTool,
+  Rss,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
@@ -16,12 +16,12 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { useIsMounted } from "@/components/providers/no-ssr";
 import { Skeletonize } from "@/components/shared";
 import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-    Button,
-    GitHubIcon,
-    XIcon,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
+  GitHubIcon,
+  XIcon,
 } from "@/components/ui";
 import { useUserProfile } from "@/hooks/users/useUserQuery";
 import { currentUserAtom } from "@/lib/auth";
@@ -59,7 +59,9 @@ export default function ProfilePage() {
             {t("userErrorTitle", "user")}
           </h1>
           <p className="text-muted-foreground">
-            {error instanceof Error ? error.message : "Failed to fetch user profile"}
+            {error instanceof Error
+              ? error.message
+              : "Failed to fetch user profile"}
           </p>
         </div>
       </div>
