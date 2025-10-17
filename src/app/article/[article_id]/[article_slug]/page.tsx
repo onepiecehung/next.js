@@ -1,7 +1,6 @@
 "use client";
 
 import { AuthorCard } from "@/components/features/navigation";
-import { CompactLikeButton } from "@/components/features/reactions";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
 import { Button, TagsInputComponent } from "@/components/ui";
@@ -180,7 +179,7 @@ export default function ArticleViewPage() {
 
                   {/* Action Buttons */}
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                    <CompactLikeButton articleId={articleId} />
+                    {/* <CompactLikeButton articleId={articleId} /> */}
                     <Button
                       variant="outline"
                       size="sm"
@@ -194,58 +193,7 @@ export default function ArticleViewPage() {
                   </div>
                 </div>
 
-                {/* Article Engagement Stats - Clean display */}
-                <div className="flex items-center justify-center gap-6 sm:gap-8 mb-6 sm:mb-8 py-4 sm:py-6 border-y border-border">
-                  {/* Like Count */}
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="flex items-center gap-2">
-                      <Heart
-                        className={cn(
-                          "h-5 w-5 sm:h-6 sm:w-6 transition-colors",
-                          isLiked && "text-red-500 fill-current",
-                        )}
-                      />
-                      <span className="text-lg sm:text-xl font-semibold text-foreground">
-                        {likeCount}
-                      </span>
-                    </div>
-                    <span className="text-xs sm:text-sm text-muted-foreground">
-                      {likeCount === 1
-                        ? t("actions.reactions.like", "article")
-                        : t("actions.reactions.likes", "article")}
-                    </span>
-                  </div>
-
-                  {/* Read Time */}
-                  {article.readTimeMinutes && (
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
-                        <span className="text-lg sm:text-xl font-semibold text-foreground">
-                          {article.readTimeMinutes}
-                        </span>
-                      </div>
-                      <span className="text-xs sm:text-sm text-muted-foreground">
-                        {t("readTime", "article")}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Word Count */}
-                  {article.wordCount && (
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="flex items-center gap-2">
-                        <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
-                        <span className="text-lg sm:text-xl font-semibold text-foreground">
-                          {article.wordCount}
-                        </span>
-                      </div>
-                      <span className="text-xs sm:text-sm text-muted-foreground">
-                        {t("wordCount", "article")}
-                      </span>
-                    </div>
-                  )}
-                </div>
+              
 
                 {/* Article Metadata - Clean badges */}
                 <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6">
@@ -308,6 +256,59 @@ export default function ArticleViewPage() {
                   useTipTapStyling={true}
                   variant="default"
                 />
+              </div>
+
+              {/* Article Engagement Stats - Moved below content, above author card */}
+              <div className="flex items-center justify-center gap-6 sm:gap-8 mt-8 sm:mt-10 mb-6 sm:mb-8 py-4 sm:py-6 border-y border-border">
+                {/* Like Count */}
+                <div className="flex flex-col items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <Heart
+                      className={cn(
+                        "h-5 w-5 sm:h-6 sm:w-6 transition-colors",
+                        isLiked && "text-red-500 fill-current",
+                      )}
+                    />
+                    <span className="text-lg sm:text-xl font-semibold text-foreground">
+                      {likeCount}
+                    </span>
+                  </div>
+                  <span className="text-xs sm:text-sm text-muted-foreground">
+                    {likeCount === 1
+                      ? t("actions.reactions.like", "article")
+                      : t("actions.reactions.likes", "article")}
+                  </span>
+                </div>
+
+                {/* Read Time */}
+                {article.readTimeMinutes && (
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
+                      <span className="text-lg sm:text-xl font-semibold text-foreground">
+                        {article.readTimeMinutes}
+                      </span>
+                    </div>
+                    <span className="text-xs sm:text-sm text-muted-foreground">
+                      {t("actions.readTime", "article")}
+                    </span>
+                  </div>
+                )}
+
+                {/* Word Count */}
+                {article.wordCount && (
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
+                      <span className="text-lg sm:text-xl font-semibold text-foreground">
+                        {article.wordCount}
+                      </span>
+                    </div>
+                    <span className="text-xs sm:text-sm text-muted-foreground">
+                      {t("actions.wordCount", "article")}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Author Profile Card - Using reusable component */}
