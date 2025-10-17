@@ -312,7 +312,7 @@ export default function ArticleViewPage() {
               </div>
 
               {/* Author Profile Card - Using reusable component */}
-              <div className="mt-12 sm:mt-16 pt-8 sm:pt-12 border-t border-border">
+              <div className="mt-2 sm:mt-4 pt-2 sm:pt-4">
                 <AuthorCard
                   author={{
                     id: article.userId,
