@@ -53,7 +53,9 @@
     "titleTooLong": "Title must be less than 256 characters",
     "contentRequired": "Content is required",
     "summaryTooLong": "Summary must be less than 1000 characters",
-    "tagsTooMany": "Maximum 20 tags allowed"
+    "tagsTooMany": "Maximum 20 tags allowed",
+    "titleEmpty": "Please enter a title for your article",
+    "contentEmpty": "Please write some content for your article"
   },
   "success": {
     "draft": "Draft created successfully!",

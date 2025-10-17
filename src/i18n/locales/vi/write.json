@@ -52,7 +52,9 @@
     "titleTooLong": "Tiêu đề phải ít hơn 256 ký tự",
     "contentRequired": "Nội dung là bắt buộc",
     "summaryTooLong": "Tóm tắt phải ít hơn 1000 ký tự",
-    "tagsTooMany": "Tối đa 20 thẻ"
+    "tagsTooMany": "Tối đa 20 thẻ",
+    "titleEmpty": "Vui lòng nhập tiêu đề cho bài viết",
+    "contentEmpty": "Vui lòng viết nội dung cho bài viết"
   },
   "success": {
     "draft": "Bản nháp đã được tạo thành công!",

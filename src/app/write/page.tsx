@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 import { ProtectedRoute } from "@/components/features/auth";
 import { TipTapEditor } from "@/components/features/text-editor";
@@ -129,8 +130,28 @@ export default function WritePage() {
     };
   };
 
+  // Helper function to validate required fields
+  const validateRequiredFields = () => {
+    if (!title.trim()) {
+      toast.error(t("validation.titleEmpty", "write"));
+      return false;
+    }
+    
+    if (!content.trim() || content.trim() === "<p></p>") {
+      toast.error(t("validation.contentEmpty", "write"));
+      return false;
+    }
+    
+    return true;
+  };
+
   // Handle save draft
   const handleSaveDraft = async () => {
+    // Validate required fields first
+    if (!validateRequiredFields()) {
+      return;
+    }
+
     const isValid = validateForm();
     if (!isValid) {
       return;
@@ -150,6 +171,11 @@ export default function WritePage() {
 
   // Handle publish article (immediate or scheduled)
   const handlePublishArticle = async () => {
+    // Validate required fields first
+    if (!validateRequiredFields()) {
+      return;
+    }
+
     const isValid = validateForm();
     if (!isValid) {
       return;
