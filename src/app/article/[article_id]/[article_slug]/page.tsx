@@ -1,19 +1,18 @@
 "use client";
 
+import { AuthorCard } from "@/components/features/navigation";
 import {
   CompactLikeButton,
-  LargeLikeButton,
 } from "@/components/features/reactions";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
 import { Button } from "@/components/ui";
 import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useArticle } from "@/hooks/article/useArticleQuery";
-import { useReactions, useToggleReaction } from "@/hooks/reactions";
+import { useReactions } from "@/hooks/reactions";
 import { ARTICLE_CONSTANTS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import {
-  Calendar,
   Clock,
   Eye,
   FileText,
@@ -44,13 +43,10 @@ export default function ArticleViewPage() {
 
   // Initialize reactions using React Query
   const { data: reactionsData } = useReactions(articleId);
-  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleReaction();
 
   // Derive reaction data from React Query
   const likeCount =
     reactionsData?.data?.find((r) => r.kind === "like")?.count || 0;
-  const bookmarkCount =
-    reactionsData?.data?.find((r) => r.kind === "bookmark")?.count || 0;
 
   // For now, we'll assume user hasn't liked (this should be fetched separately)
   const isLiked = false; // TODO: Implement user reaction status check
@@ -221,11 +217,11 @@ export default function ArticleViewPage() {
                         {likeCount}
                       </span>
                     </div>
-                    <span className="text-xs sm:text-sm text-muted-foreground">
-                      {likeCount === 1
-                        ? t("actions.reactions.likes", "article")
-                        : t("actions.reactions.like", "article")}
-                    </span>
+                      <span className="text-xs sm:text-sm text-muted-foreground">
+                        {likeCount === 1
+                          ? t("actions.reactions.like", "article")
+                          : t("actions.reactions.likes", "article")}
+                      </span>
                   </div>
 
                   {/* Read Time */}
@@ -312,49 +308,31 @@ export default function ArticleViewPage() {
                 />
               </div>
 
-              {/* Article Footer - Clean layout */}
-              <footer className="mt-12 sm:mt-16 pt-6 sm:pt-8 border-t border-border">
-                <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
-                  {/* Author Info */}
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <User className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground text-sm sm:text-base">
-                        User ID {article.userId}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-muted-foreground">
-                        {t("author", "article")}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Last Updated */}
-                  <div className="text-xs sm:text-sm text-muted-foreground">
-                    <Calendar className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1 sm:mr-2" />
-                    {t("lastUpdated", "article")}:{" "}
-                    {formatDate(article.updatedAt)}
-                  </div>
-                </div>
-
-                {/* Bottom Action Buttons - Clean layout */}
-                <div className="flex flex-col sm:flex-row justify-center mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-border">
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
-                    <LargeLikeButton articleId={articleId} />
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="gap-2 justify-center"
-                    >
-                      <Share2 className="h-4 w-4 sm:h-5 sm:w-5" />
-                      <span className="text-sm sm:text-base">
-                        {t("actions.share", "article")}
-                      </span>
-                    </Button>
-                  </div>
-                </div>
-              </footer>
+              {/* Author Profile Card - Using reusable component */}
+              <div className="mt-12 sm:mt-16 pt-8 sm:pt-12 border-t border-border">
+                <AuthorCard
+                  author={{
+                    id: article.userId,
+                    name: `User ID ${article.userId}`,
+                    bio: "This is a sample author bio. In a real application, this would come from the user's profile data. The author shares insights about technology, business, and innovation through their articles.",
+                    website: "https://example.com",
+                    socialLinks: {
+                      github: "#",
+                      x: "#",
+                      instagram: "#",
+                      rss: "#",
+                    },
+                    stats: {
+                      followers: 1234,
+                      articles: 42,
+                    },
+                  }}
+                  onFollow={(authorId) => {
+                    console.log(`Following author: ${authorId}`);
+                    // TODO: Implement follow functionality
+                  }}
+                />
+              </div>
             </article>
           )}
         </Skeletonize>

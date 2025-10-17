@@ -4,14 +4,6 @@
   "notFound": "Article not found",
   "backToHome": "Back to Home",
   "publishedOn": "Published on",
-  "readTime": "min read",
-  "wordCount": "words",
-  "tags": "Tags",
-  "noTags": "No tags",
-  "visibility": "Visibility",
-  "status": "Status",
-  "author": "Author",
-  "lastUpdated": "Last updated",
   "redirect": {
     "loading": "Loading article...",
     "loadingDesc": "Redirecting to the article page...",
@@ -54,5 +46,13 @@
     "status": "Status",
     "author": "Author",
     "lastUpdated": "Last updated"
+  },
+  "authorCard": {
+    "follow": "Follow",
+    "followers": "followers",
+    "articles": "articles",
+    "website": "Website",
+    "bio": "About the author",
+    "socialLinks": "Social Links"
   }
 }

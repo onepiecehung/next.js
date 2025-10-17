@@ -5,9 +5,10 @@
  * Only includes brand icons that are not available in lucide-react
  */
 
-export { XIcon } from "./x-icon";
 export { GitHubIcon } from "./github-icon";
 export { GoogleIcon } from "./google-icon";
+export { InstagramIcon } from "./instagram-icon";
+export { XIcon } from "./x-icon";
 
 // Add more custom brand icons here as needed
 // export { CustomIcon } from "./custom-icon";
