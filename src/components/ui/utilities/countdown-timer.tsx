@@ -8,47 +8,47 @@ interface CountdownTimerProps {
   /**
    * Target date/time for the countdown
    */
-  targetDate: Date | string;
+  readonly targetDate: Date | string;
 
   /**
    * Callback when countdown reaches zero
    */
-  onComplete?: () => void;
+  readonly onComplete?: () => void;
 
   /**
    * Custom className for styling
    */
-  className?: string;
+  readonly className?: string;
 
   /**
    * Whether to show days in the countdown
    */
-  showDays?: boolean;
+  readonly showDays?: boolean;
 
   /**
    * Whether to show hours in the countdown
    */
-  showHours?: boolean;
+  readonly showHours?: boolean;
 
   /**
    * Whether to show minutes in the countdown
    */
-  showMinutes?: boolean;
+  readonly showMinutes?: boolean;
 
   /**
    * Whether to show seconds in the countdown
    */
-  showSeconds?: boolean;
+  readonly showSeconds?: boolean;
 
   /**
    * Text to display when countdown is complete
    */
-  completedText?: string;
+  readonly completedText?: string;
 
   /**
    * Text to display when countdown is expired
    */
-  expiredText?: string;
+  readonly expiredText?: string;
 }
 
 interface TimeLeft {
@@ -82,7 +82,7 @@ export function CountdownTimer({
   useEffect(() => {
     const calculateTimeLeft = (): TimeLeft | null => {
       const now = new Date().getTime();
-      const target = new Date(targetDate).getTime();
+      const target = new Date(targetDate).getTime() + 30000; // Add 30 seconds
       const difference = target - now;
 
       if (difference <= 0) {

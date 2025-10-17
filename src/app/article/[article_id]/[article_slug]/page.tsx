@@ -1,5 +1,11 @@
 "use client";
 
+import { Clock, Eye, FileText, Heart, Share2, Tag, User } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound, useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
 import { ScheduledCountdownDialog } from "@/components/features/article/scheduled-countdown-dialog";
 import { AuthorCard } from "@/components/features/navigation";
 import { useI18n } from "@/components/providers/i18n-provider";
@@ -10,11 +16,6 @@ import { useArticle } from "@/hooks/article/useArticleQuery";
 import { useReactions } from "@/hooks/reactions";
 import { ARTICLE_CONSTANTS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { Clock, Eye, FileText, Heart, Share2, Tag, User } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { notFound, useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
 /**
  * Article View Page Component
@@ -23,6 +24,8 @@ import { useEffect, useState } from "react";
  * Layout inspired by note.jp design
  */
 export default function ArticleViewPage() {
+  const router = useRouter();
+
   const params = useParams();
   const { t } = useI18n();
 
@@ -102,8 +105,7 @@ export default function ArticleViewPage() {
 
   // Handle countdown completion
   const handleCountdownComplete = () => {
-    // Refresh the page to get updated article status
-    window.location.reload();
+    router.refresh();
   };
 
   // Auto-open countdown dialog for scheduled articles
@@ -272,7 +274,7 @@ export default function ArticleViewPage() {
                     <Heart
                       className={cn(
                         "h-5 w-5 sm:h-6 sm:w-6 transition-colors",
-                        isLiked && "text-red-500 fill-current",
+                        isLiked && "text-red-500 fill-current"
                       )}
                     />
                     <span className="text-lg sm:text-xl font-semibold text-foreground">

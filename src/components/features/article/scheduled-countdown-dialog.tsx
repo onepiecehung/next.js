@@ -1,5 +1,7 @@
 "use client";
 
+import { Clock } from "lucide-react";
+
 import { useI18n } from "@/components/providers/i18n-provider";
 import {
   Dialog,
@@ -8,33 +10,32 @@ import {
   DialogTitle,
 } from "@/components/ui/layout/dialog";
 import { CountdownTimer } from "@/components/ui/utilities";
-import { Clock } from "lucide-react";
 
 interface ScheduledCountdownDialogProps {
   /**
    * Target date/time for the countdown
    */
-  scheduledAt: Date | string;
+  readonly scheduledAt: Date | string;
 
   /**
    * Article title for context
    */
-  articleTitle?: string;
+  readonly articleTitle?: string;
 
   /**
    * Callback when countdown completes
    */
-  onComplete?: () => void;
+  readonly onComplete?: () => void;
 
   /**
    * Whether the dialog is open
    */
-  open: boolean;
+  readonly open: boolean;
 
   /**
    * Callback when dialog open state changes
    */
-  onOpenChange?: (open: boolean) => void;
+  readonly onOpenChange?: (open: boolean) => void;
 }
 
 /**

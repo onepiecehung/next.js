@@ -10,22 +10,22 @@ interface ScheduledCountdownProps {
   /**
    * Scheduled publish date
    */
-  scheduledAt: Date | string;
+  readonly scheduledAt: Date | string;
 
   /**
    * Article title for context
    */
-  articleTitle?: string;
+  readonly articleTitle?: string;
 
   /**
    * Custom className
    */
-  className?: string;
+  readonly className?: string;
 
   /**
    * Callback when countdown completes
    */
-  onComplete?: () => void;
+  readonly onComplete?: () => void;
 }
 
 /**
