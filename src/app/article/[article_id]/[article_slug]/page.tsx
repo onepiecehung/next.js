@@ -3,7 +3,7 @@
 import { AuthorCard } from "@/components/features/navigation";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
-import { Button, TagsInputComponent } from "@/components/ui";
+import { Button } from "@/components/ui";
 import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useArticle } from "@/hooks/article/useArticleQuery";
 import { useReactions } from "@/hooks/reactions";
@@ -213,36 +213,25 @@ export default function ArticleViewPage() {
                   </div>
                 </div>
 
-                {/* Tags - Interactive Tags Component */}
-                {article.tags && article.tags.length > 0 && (
+                {/* Tags - Simple display */}
+                {article.tagsArray && article.tagsArray.length > 0 && (
                   <div className="mb-6 sm:mb-8">
                     <div className="flex items-center gap-2 mb-3 sm:mb-4">
                       <Tag className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
                       <span className="text-xs sm:text-sm font-medium text-muted-foreground">
-                        {t("tags", "article")}
+                        {t("actions.tags", "article")}
                       </span>
                     </div>
-                    <TagsInputComponent
-                      tags={article.tags.map((tag: string) => ({
-                        id: tag.toLowerCase().replace(/\s+/g, "-"),
-                        label: tag,
-                      }))}
-                      selectedTags={article.tags.map((tag: string) =>
-                        tag.toLowerCase().replace(/\s+/g, "-"),
-                      )}
-                      onTagsChange={() => {}} // Read-only for article view
-                      onTagCreate={() => {}} // Not needed for read-only view
-                      placeholder={
-                        t("actions.search", "common") +
-                        " " +
-                        t("tags", "article").toLowerCase() +
-                        "..."
-                      }
-                      allowCreate={false}
-                      allowRemove={false}
-                      disabled={true}
-                      className="w-full"
-                    />
+                    <div className="flex flex-wrap gap-2">
+                      {article.tagsArray.map((tag: string, index: number) => (
+                        <span
+                          key={index}
+                          className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 )}
               </header>
