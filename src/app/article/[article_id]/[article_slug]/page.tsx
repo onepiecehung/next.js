@@ -1,6 +1,6 @@
 "use client";
 
-import { ScheduledCountdown } from "@/components/features/article/scheduled-countdown";
+import { ScheduledCountdownDialog } from "@/components/features/article/scheduled-countdown-dialog";
 import { AuthorCard } from "@/components/features/navigation";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
@@ -14,7 +14,7 @@ import { Clock, Eye, FileText, Heart, Share2, Tag, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Article View Page Component
@@ -98,12 +98,20 @@ export default function ArticleViewPage() {
   const isScheduledArticle =
     article?.status === ARTICLE_CONSTANTS.STATUS.SCHEDULED;
   const scheduledAt = article?.scheduledAt;
+  const [isCountdownDialogOpen, setIsCountdownDialogOpen] = useState(false);
 
   // Handle countdown completion
   const handleCountdownComplete = () => {
     // Refresh the page to get updated article status
     window.location.reload();
   };
+
+  // Auto-open countdown dialog for scheduled articles
+  useEffect(() => {
+    if (isScheduledArticle && scheduledAt && !isLoading) {
+      setIsCountdownDialogOpen(true);
+    }
+  }, [isScheduledArticle, scheduledAt, isLoading]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -129,7 +137,7 @@ export default function ArticleViewPage() {
               </div>
             </div>
           )}
-          {!error && article && (
+          {!error && article && !isScheduledArticle && (
             <article className="max-w-4xl mx-auto">
               {/* Back Button - Mobile optimized */}
               <div className="mb-4 sm:mb-6">
@@ -162,16 +170,6 @@ export default function ArticleViewPage() {
                 </div>
               )}
 
-              {/* Scheduled Countdown - Show only for scheduled articles */}
-              {isScheduledArticle && scheduledAt && (
-                <div className="mb-6 sm:mb-8">
-                  <ScheduledCountdown
-                    scheduledAt={scheduledAt}
-                    articleTitle={article.title}
-                    onComplete={handleCountdownComplete}
-                  />
-                </div>
-              )}
 
               {/* Article Header */}
               <header className="mb-6 sm:mb-8">
@@ -349,6 +347,17 @@ export default function ArticleViewPage() {
           )}
         </Skeletonize>
       </div>
+
+      {/* Scheduled Countdown Dialog - Auto-opens for scheduled articles */}
+      {isScheduledArticle && scheduledAt && (
+        <ScheduledCountdownDialog
+          scheduledAt={scheduledAt}
+          articleTitle={article?.title}
+          onComplete={handleCountdownComplete}
+          open={isCountdownDialogOpen}
+          onOpenChange={setIsCountdownDialogOpen}
+        />
+      )}
     </div>
   );
 }

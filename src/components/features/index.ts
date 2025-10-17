@@ -5,6 +5,7 @@
 
 // Article feature
 export { ScheduledCountdown } from "./article/scheduled-countdown";
+export { ScheduledCountdownDialog } from "./article/scheduled-countdown-dialog";
 
 // Auth feature
 export * from "./auth";
