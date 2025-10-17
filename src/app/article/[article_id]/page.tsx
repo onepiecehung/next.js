@@ -42,10 +42,10 @@ export default function ArticleRedirectPage() {
           <div className="max-w-md mx-auto text-center py-12">
             <Loader2 className="h-8 w-8 text-primary mx-auto mb-4 animate-spin" />
             <h2 className="text-lg font-semibold text-foreground mb-2">
-              {t("articleRedirectLoading", "article") || "Loading article..."}
+              {t("redirect.loading", "article") || "Loading article..."}
             </h2>
             <p className="text-sm text-muted-foreground">
-              {t("articleRedirectLoadingDesc", "article") ||
+              {t("redirect.loadingDesc", "article") ||
                 "Redirecting to the article page..."}
             </p>
           </div>
@@ -62,17 +62,17 @@ export default function ArticleRedirectPage() {
           <div className="max-w-md mx-auto text-center py-12">
             <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h1 className="text-xl font-semibold text-foreground mb-2">
-              {t("articleNotFound", "article") || "Article Not Found"}
+              {t("notFoundPage.title", "article") || "Article Not Found"}
             </h1>
             <p className="text-muted-foreground mb-6">
               {error?.message ||
-                t("articleNotFoundDesc", "article") ||
+                t("notFoundPage.description", "article") ||
                 "The article you're looking for doesn't exist or has been removed."}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/">
                 <Button className="w-full sm:w-auto">
-                  {t("articleViewBackToHome", "article") || "Back to Home"}
+                  {t("backToHome", "article") || "Back to Home"}
                 </Button>
               </Link>
               <Button
@@ -97,11 +97,11 @@ export default function ArticleRedirectPage() {
         <div className="max-w-md mx-auto text-center py-12">
           <Loader2 className="h-8 w-8 text-primary mx-auto mb-4 animate-spin" />
           <h2 className="text-lg font-semibold text-foreground mb-2">
-            {t("articleRedirectProcessing", "article") ||
+            {t("redirect.processing", "article") ||
               "Processing redirect..."}
           </h2>
           <p className="text-sm text-muted-foreground">
-            {t("articleRedirectProcessingDesc", "article") ||
+            {t("redirect.processingDesc", "article") ||
               "Please wait while we redirect you to the article."}
           </p>
         </div>

@@ -39,10 +39,20 @@
     "error": "Failed to schedule article",
     "errorDescription": "Failed to schedule article"
   },
-  "reactions": {
-    "like": "Like",
-    "liked": "Liked",
-    "likes": "likes",
-    "likeError": "Failed to update like"
+  "actions": {
+    "share": "Share",
+    "reactions": {
+      "like": "like",
+      "liked": "Liked ",
+      "likes": "likes"
+    },
+    "readTime": "min read",
+    "wordCount": "words",
+    "tags": "Tags",
+    "noTags": "No tags",
+    "visibility": "Visibility",
+    "status": "Status",
+    "author": "Author",
+    "lastUpdated": "Last updated"
   }
 }
