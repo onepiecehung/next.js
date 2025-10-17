@@ -164,31 +164,41 @@ export function CountdownTimer({
   }
 
   const timeUnits = [
-    ...(showDays ? [{ 
-      label: "Days", 
-      value: timeLeft.days, 
-      short: t("schedule.timeUnits.days", "article") || "d" 
-    }] : []),
+    ...(showDays
+      ? [
+          {
+            label: "Days",
+            value: timeLeft.days,
+            short: t("schedule.timeUnits.days", "article") || "d",
+          },
+        ]
+      : []),
     ...(showHours
-      ? [{ 
-          label: "Hours", 
-          value: timeLeft.hours, 
-          short: t("schedule.timeUnits.hours", "article") || "h" 
-        }]
+      ? [
+          {
+            label: "Hours",
+            value: timeLeft.hours,
+            short: t("schedule.timeUnits.hours", "article") || "h",
+          },
+        ]
       : []),
     ...(showMinutes
-      ? [{ 
-          label: "Minutes", 
-          value: timeLeft.minutes, 
-          short: t("schedule.timeUnits.minutes", "article") || "m" 
-        }]
+      ? [
+          {
+            label: "Minutes",
+            value: timeLeft.minutes,
+            short: t("schedule.timeUnits.minutes", "article") || "m",
+          },
+        ]
       : []),
     ...(showSeconds
-      ? [{ 
-          label: "Seconds", 
-          value: timeLeft.seconds, 
-          short: t("schedule.timeUnits.seconds", "article") || "s" 
-        }]
+      ? [
+          {
+            label: "Seconds",
+            value: timeLeft.seconds,
+            short: t("schedule.timeUnits.seconds", "article") || "s",
+          },
+        ]
       : []),
   ];
 

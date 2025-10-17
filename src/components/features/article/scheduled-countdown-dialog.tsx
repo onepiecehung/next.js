@@ -2,10 +2,10 @@
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/layout/dialog";
 import { CountdownTimer } from "@/components/ui/utilities";
 import { Clock } from "lucide-react";
@@ -15,22 +15,22 @@ interface ScheduledCountdownDialogProps {
    * Target date/time for the countdown
    */
   scheduledAt: Date | string;
-  
+
   /**
    * Article title for context
    */
   articleTitle?: string;
-  
+
   /**
    * Callback when countdown completes
    */
   onComplete?: () => void;
-  
+
   /**
    * Whether the dialog is open
    */
   open: boolean;
-  
+
   /**
    * Callback when dialog open state changes
    */
@@ -68,7 +68,7 @@ export function ScheduledCountdownDialog({
             {t("schedule.countdownTitle", "article")}
           </DialogTitle>
         </DialogHeader>
-        
+
         <div className="space-y-4">
           {/* Article Title */}
           {articleTitle && (
@@ -78,7 +78,7 @@ export function ScheduledCountdownDialog({
               </p>
             </div>
           )}
-          
+
           {/* Countdown Timer */}
           <div className="flex justify-center py-4">
             <CountdownTimer
@@ -88,12 +88,14 @@ export function ScheduledCountdownDialog({
               showHours={true}
               showMinutes={true}
               showSeconds={true}
-              completedText={t("schedule.publishing", "article") || "Publishing now..."}
+              completedText={
+                t("schedule.publishing", "article") || "Publishing now..."
+              }
               expiredText={t("schedule.published", "article") || "Published"}
               className="scale-110"
             />
           </div>
-          
+
           {/* Additional Info */}
           <div className="text-center">
             <p className="text-xs text-muted-foreground">

@@ -170,7 +170,6 @@ export default function ArticleViewPage() {
                 </div>
               )}
 
-
               {/* Article Header */}
               <header className="mb-6 sm:mb-8">
                 {/* Title - Clean typography */}
