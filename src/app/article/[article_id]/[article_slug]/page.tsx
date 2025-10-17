@@ -241,7 +241,7 @@ export default function ArticleViewPage() {
                         key={index}
                         className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors"
                       >
-                        {tag}
+                        #{tag}
                       </span>
                     ))}
                   </div>
