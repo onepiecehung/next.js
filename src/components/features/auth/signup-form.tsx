@@ -3,17 +3,17 @@
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button, Input, Label } from "@/components/ui";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/core";
 import { useLogin } from "@/hooks/auth/useAuthQuery";
 import { accessTokenAtom, currentUserAtom, fetchMeAction } from "@/lib/auth";
 import {
-    registerFormSchemaSimple,
-    type RegisterFormDataSimple,
+  registerFormSchemaSimple,
+  type RegisterFormDataSimple,
 } from "@/lib/validators/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";

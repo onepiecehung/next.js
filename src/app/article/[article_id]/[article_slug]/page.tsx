@@ -1,26 +1,16 @@
 "use client";
 
 import { AuthorCard } from "@/components/features/navigation";
-import {
-  CompactLikeButton,
-} from "@/components/features/reactions";
+import { CompactLikeButton } from "@/components/features/reactions";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
-import { Button } from "@/components/ui";
+import { Button, TagsInputComponent } from "@/components/ui";
 import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useArticle } from "@/hooks/article/useArticleQuery";
 import { useReactions } from "@/hooks/reactions";
 import { ARTICLE_CONSTANTS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import {
-  Clock,
-  Eye,
-  FileText,
-  Heart,
-  Share2,
-  Tag,
-  User,
-} from "lucide-react";
+import { Clock, Eye, FileText, Heart, Share2, Tag, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
@@ -197,7 +187,9 @@ export default function ArticleViewPage() {
                       className="gap-2 justify-center"
                     >
                       <Share2 className="h-4 w-4" />
-                      <span className="hidden sm:inline">{t("actions.share", "article")}</span>
+                      <span className="hidden sm:inline">
+                        {t("actions.share", "article")}
+                      </span>
                     </Button>
                   </div>
                 </div>
@@ -217,11 +209,11 @@ export default function ArticleViewPage() {
                         {likeCount}
                       </span>
                     </div>
-                      <span className="text-xs sm:text-sm text-muted-foreground">
-                        {likeCount === 1
-                          ? t("actions.reactions.like", "article")
-                          : t("actions.reactions.likes", "article")}
-                      </span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">
+                      {likeCount === 1
+                        ? t("actions.reactions.like", "article")
+                        : t("actions.reactions.likes", "article")}
+                    </span>
                   </div>
 
                   {/* Read Time */}
@@ -273,7 +265,7 @@ export default function ArticleViewPage() {
                   </div>
                 </div>
 
-                {/* Tags - Clean horizontal layout */}
+                {/* Tags - Interactive Tags Component */}
                 {article.tags && article.tags.length > 0 && (
                   <div className="mb-6 sm:mb-8">
                     <div className="flex items-center gap-2 mb-3 sm:mb-4">
@@ -282,17 +274,27 @@ export default function ArticleViewPage() {
                         {t("tags", "article")}
                       </span>
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      {article.tags.map((tag: string) => (
-                        <Link
-                          key={tag}
-                          href={`/tag/${tag}`}
-                          className="text-xs sm:text-sm px-3 sm:px-4 py-1 sm:py-2 rounded-full bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors cursor-pointer"
-                        >
-                          #{tag}
-                        </Link>
-                      ))}
-                    </div>
+                    <TagsInputComponent
+                      tags={article.tags.map((tag: string) => ({
+                        id: tag.toLowerCase().replace(/\s+/g, "-"),
+                        label: tag,
+                      }))}
+                      selectedTags={article.tags.map((tag: string) =>
+                        tag.toLowerCase().replace(/\s+/g, "-"),
+                      )}
+                      onTagsChange={() => {}} // Read-only for article view
+                      onTagCreate={() => {}} // Not needed for read-only view
+                      placeholder={
+                        t("actions.search", "common") +
+                        " " +
+                        t("tags", "article").toLowerCase() +
+                        "..."
+                      }
+                      allowCreate={false}
+                      allowRemove={false}
+                      disabled={true}
+                      className="w-full"
+                    />
                   </div>
                 )}
               </header>

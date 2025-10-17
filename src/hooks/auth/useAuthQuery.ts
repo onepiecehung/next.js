@@ -69,7 +69,7 @@ export function useLogin() {
         error,
         "loginErrorDefault",
         t,
-        "auth"
+        "auth",
       );
       toast.error(errorMessage);
     },
@@ -138,7 +138,7 @@ export function useLogin() {
         error,
         "otpVerifyError",
         t,
-        "auth"
+        "auth",
       );
       toast.error(errorMessage);
     },

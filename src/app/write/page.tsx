@@ -447,9 +447,7 @@ export default function WritePage() {
                   onClick={handleSaveDraft}
                   disabled={isSubmitting}
                 >
-                  {isSubmitting
-                    ? "Saving..."
-                    : t("form.saveDraft", "write")}
+                  {isSubmitting ? "Saving..." : t("form.saveDraft", "write")}
                 </Button>
 
                 <Button

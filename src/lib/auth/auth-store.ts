@@ -177,7 +177,7 @@ export async function loginWithGoogleAction(): Promise<User> {
   // Call Firebase login once and reuse the result
   const firebaseUser = await (await import("./firebase")).signInWithGoogle();
   const idToken = await firebaseUser.getIdToken();
-  
+
   // Get user data and token from backend
   const { user, token } = await AuthAPI.firebaseLogin({ idToken });
 
@@ -192,7 +192,7 @@ export async function loginWithGithubAction(): Promise<User> {
   // Call Firebase login once and reuse the result
   const firebaseUser = await (await import("./firebase")).signInWithGithub();
   const idToken = await firebaseUser.getIdToken();
-  
+
   // Get user data and token from backend
   const { user, token } = await AuthAPI.firebaseLogin({ idToken });
 
@@ -207,7 +207,7 @@ export async function loginWithXAction(): Promise<User> {
   // Call Firebase login once and reuse the result
   const firebaseUser = await (await import("./firebase")).signInWithX();
   const idToken = await firebaseUser.getIdToken();
-  
+
   // Get user data and token from backend
   const { user, token } = await AuthAPI.firebaseLogin({ idToken });
 

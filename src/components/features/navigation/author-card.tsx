@@ -3,11 +3,7 @@
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button, GitHubIcon, InstagramIcon, XIcon } from "@/components/ui";
 import { AuthorCardData } from "@/lib/interface/user.interface";
-import {
-  ExternalLink,
-  Rss,
-  User,
-} from "lucide-react";
+import { ExternalLink, Rss, User } from "lucide-react";
 import Image from "next/image";
 
 interface AuthorCardProps {
@@ -31,7 +27,9 @@ export function AuthorCard({ author, onFollow, className }: AuthorCardProps) {
   };
 
   return (
-    <div className={`bg-card border border-border rounded-xl p-6 sm:p-8 ${className || ""}`}>
+    <div
+      className={`bg-card border border-border rounded-xl p-6 sm:p-8 ${className || ""}`}
+    >
       <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
         {/* Author Avatar */}
         <div className="flex-shrink-0">
@@ -64,7 +62,11 @@ export function AuthorCard({ author, onFollow, className }: AuthorCardProps) {
                 {t("authorCard.bio", "article")}
               </p>
             </div>
-            <Button size="sm" className="w-full sm:w-auto" onClick={handleFollow}>
+            <Button
+              size="sm"
+              className="w-full sm:w-auto"
+              onClick={handleFollow}
+            >
               {t("authorCard.follow", "article")}
             </Button>
           </div>
@@ -79,9 +81,9 @@ export function AuthorCard({ author, onFollow, className }: AuthorCardProps) {
           {/* Website Link */}
           {author.website && (
             <div className="mb-4">
-              <a 
-                href={author.website} 
-                target="_blank" 
+              <a
+                href={author.website}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
               >
@@ -99,8 +101,8 @@ export function AuthorCard({ author, onFollow, className }: AuthorCardProps) {
               </span>
               <div className="flex items-center gap-3">
                 {author.socialLinks.github && (
-                  <a 
-                    href={author.socialLinks.github} 
+                  <a
+                    href={author.socialLinks.github}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-primary transition-colors"
@@ -110,8 +112,8 @@ export function AuthorCard({ author, onFollow, className }: AuthorCardProps) {
                   </a>
                 )}
                 {author.socialLinks.x && (
-                  <a 
-                    href={author.socialLinks.x} 
+                  <a
+                    href={author.socialLinks.x}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-primary transition-colors"
@@ -121,8 +123,8 @@ export function AuthorCard({ author, onFollow, className }: AuthorCardProps) {
                   </a>
                 )}
                 {author.socialLinks.instagram && (
-                  <a 
-                    href={author.socialLinks.instagram} 
+                  <a
+                    href={author.socialLinks.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-primary transition-colors"
@@ -132,8 +134,8 @@ export function AuthorCard({ author, onFollow, className }: AuthorCardProps) {
                   </a>
                 )}
                 {author.socialLinks.rss && (
-                  <a 
-                    href={author.socialLinks.rss} 
+                  <a
+                    href={author.socialLinks.rss}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-primary transition-colors"
@@ -152,13 +154,17 @@ export function AuthorCard({ author, onFollow, className }: AuthorCardProps) {
               <div className="flex items-center gap-6 text-sm text-muted-foreground">
                 {author.stats.followers !== undefined && (
                   <span>
-                    <span className="font-semibold text-foreground">{author.stats.followers}</span>{" "}
+                    <span className="font-semibold text-foreground">
+                      {author.stats.followers}
+                    </span>{" "}
                     {t("authorCard.followers", "article")}
                   </span>
                 )}
                 {author.stats.articles !== undefined && (
                   <span>
-                    <span className="font-semibold text-foreground">{author.stats.articles}</span>{" "}
+                    <span className="font-semibold text-foreground">
+                      {author.stats.articles}
+                    </span>{" "}
                     {t("authorCard.articles", "article")}
                   </span>
                 )}

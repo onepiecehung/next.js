@@ -97,8 +97,7 @@ export default function ArticleRedirectPage() {
         <div className="max-w-md mx-auto text-center py-12">
           <Loader2 className="h-8 w-8 text-primary mx-auto mb-4 animate-spin" />
           <h2 className="text-lg font-semibold text-foreground mb-2">
-            {t("redirect.processing", "article") ||
-              "Processing redirect..."}
+            {t("redirect.processing", "article") || "Processing redirect..."}
           </h2>
           <p className="text-sm text-muted-foreground">
             {t("redirect.processingDesc", "article") ||

@@ -81,7 +81,9 @@ export default function LoginPage() {
             onBack={handleBack}
             showBackButton={true}
             title={t("login.title", "auth") || "Welcome back!"}
-            description={t("login.description", "auth") || "Please login to continue"}
+            description={
+              t("login.description", "auth") || "Please login to continue"
+            }
           />
         )}
       </div>

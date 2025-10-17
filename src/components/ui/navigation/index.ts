@@ -4,8 +4,8 @@
  */
 
 export {
-    CompactLanguageSwitcher,
-    FullLanguageSwitcher, LanguageSwitcher
+  CompactLanguageSwitcher,
+  FullLanguageSwitcher,
+  LanguageSwitcher,
 } from "./language-switcher";
 export { UserDropdown } from "./user-dropdown";
-

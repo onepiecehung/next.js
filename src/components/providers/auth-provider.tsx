@@ -24,7 +24,10 @@ export default function AuthProvider({
     // Check if user is already authenticated on app load
     const checkAuth = async () => {
       try {
-        console.log("AuthProvider: Starting auth check...", new Date().toISOString());
+        console.log(
+          "AuthProvider: Starting auth check...",
+          new Date().toISOString(),
+        );
         hasCheckedAuth.current = true;
         setAuthLoading(true);
 
@@ -41,7 +44,7 @@ export default function AuthProvider({
       } finally {
         console.log(
           "AuthProvider: Auth check complete, setting loading to false",
-          new Date().toISOString()
+          new Date().toISOString(),
         );
         setAuthLoading(false);
       }
