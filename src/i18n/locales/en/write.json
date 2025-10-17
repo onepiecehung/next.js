@@ -60,7 +60,9 @@
   "success": {
     "draft": "Draft created successfully!",
     "published": "Article published successfully!",
-    "scheduled": "Article scheduled for publication!"
+    "scheduled": "Article scheduled for publication!",
+    "redirecting": "Redirecting to your article...",
+    "redirectCountdown": "Redirecting in {seconds}s"
   },
   "errors": {
     "create": "Failed to create article",

@@ -59,7 +59,9 @@
   "success": {
     "draft": "Bản nháp đã được tạo thành công!",
     "published": "Bài viết đã được xuất bản thành công!",
-    "scheduled": "Bài viết đã được hẹn giờ xuất bản!"
+    "scheduled": "Bài viết đã được hẹn giờ xuất bản!",
+    "redirecting": "Đang chuyển hướng đến bài viết...",
+    "redirectCountdown": "Chuyển hướng trong {seconds}s"
   },
   "errors": {
     "create": "Không thể tạo bài viết",

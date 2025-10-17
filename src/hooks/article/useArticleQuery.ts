@@ -73,33 +73,27 @@ export function useCreateArticle() {
       switch (article.status) {
         case ARTICLE_CONSTANTS.STATUS.DRAFT:
           toast.info(
-            t("writeFormDraftSuccess", "write") || "Article saved as draft!",
+            t("status.draft", "article") + " " + t("schedule.success", "article"),
             {
-              description:
-                t("writeFormDraftSuccessDescription", "write") ||
-                "Your article has been saved and can be edited later.",
+              description: "Your article has been saved and can be edited later.",
             },
           );
           break;
         case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
           toast.success(
-            t("writeFormScheduledPublishSuccess", "write") ||
-              "Article scheduled for publication!",
+            t("schedule.success", "article"),
             {
-              description:
-                t("writeFormScheduledPublishSuccessDescription", "write", {
-                  date: article.scheduledAt?.toLocaleString(),
-                }) || `Scheduled for ${article.scheduledAt?.toLocaleString()}`,
+              description: t("schedule.successDescription", "article", {
+                date: article.scheduledAt?.toLocaleString(),
+              }),
             },
           );
           break;
         default:
           toast.success(
-            t("writeFormSuccess", "write") || "Article published successfully!",
+            t("status.published", "article") + " " + t("schedule.success", "article"),
             {
-              description:
-                t("writeFormSuccessDescription", "write") ||
-                "Your article is now live and visible to readers.",
+              description: "Your article is now live and visible to readers.",
             },
           );
           break;
@@ -112,11 +106,11 @@ export function useCreateArticle() {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : t("writeFormError", "write") || "Failed to create article";
+          : t("schedule.error", "article") || "Failed to create article";
 
       toast.error(errorMessage, {
         description:
-          t("writeFormErrorDescription", "write") ||
+          t("schedule.errorDescription", "article") ||
           "Please check your input and try again.",
       });
     },
@@ -141,13 +135,13 @@ export function useUpdateArticle() {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
 
       toast.success(
-        t("articleUpdateSuccess", "article") || "Article updated successfully!",
+        t("status.published", "article") + " " + t("schedule.success", "article"),
       );
     },
     onError: (error) => {
       console.error("Article update error:", error);
       toast.error(
-        t("articleUpdateError", "article") || "Failed to update article",
+        t("schedule.error", "article") || "Failed to update article",
       );
     },
   });
@@ -170,13 +164,13 @@ export function useDeleteArticle() {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
 
       toast.success(
-        t("articleDeleteSuccess", "article") || "Article deleted successfully!",
+        t("status.archived", "article") + " " + t("schedule.success", "article"),
       );
     },
     onError: (error) => {
       console.error("Article deletion error:", error);
       toast.error(
-        t("articleDeleteError", "article") || "Failed to delete article",
+        t("schedule.error", "article") || "Failed to delete article",
       );
     },
   });

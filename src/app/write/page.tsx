@@ -8,14 +8,14 @@ import {
   Clock,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { ProtectedRoute } from "@/components/features/auth";
 import { TipTapEditor } from "@/components/features/text-editor";
 import { ScheduledPublishDialog } from "@/components/features/write";
 import { useI18n } from "@/components/providers/i18n-provider";
-import { Skeletonize } from "@/components/shared";
+import { RedirectOverlay, Skeletonize } from "@/components/shared";
 import { Button, ButtonGroup, ImageUpload } from "@/components/ui";
 import {
   DropdownMenu,
@@ -41,6 +41,8 @@ export default function WritePage() {
   const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(true);
   const [isScheduleDialogOpen, setIsScheduleDialogOpen] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [redirectCountdown, setRedirectCountdown] = useState(0);
   const [currentUser] = useAtom(currentUserAtom);
   const router = useRouter();
 
@@ -87,10 +89,17 @@ export default function WritePage() {
 
     createArticle(createRequest, {
       onSuccess: (article) => {
+        // Start redirect countdown
+        setIsRedirecting(true);
+        setRedirectCountdown(3);
+
         // Reset form after successful creation
         resetForm();
-        // Redirect to article view page with a small delay to ensure cleanup
-        router.push(`/article/${article.id}/${article.slug}`);
+
+        // Redirect to article view page with smooth transition
+        setTimeout(() => {
+          router.push(`/article/${article.id}/${article.slug}`);
+        }, 3000);
       },
       // onError is now handled by the hook itself
     });
@@ -101,6 +110,18 @@ export default function WritePage() {
     const timer = setTimeout(() => setIsLoading(false), 500);
     return () => clearTimeout(timer);
   }, []);
+
+  // Handle redirect countdown
+  useEffect(() => {
+    if (redirectCountdown > 0) {
+      const timer = setTimeout(() => {
+        setRedirectCountdown(redirectCountdown - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else if (redirectCountdown === 0 && isRedirecting) {
+      setIsRedirecting(false);
+    }
+  }, [redirectCountdown, isRedirecting]);
 
   // Helper function to prepare article data with cover image upload
   const prepareArticleData = async () => {
@@ -199,6 +220,12 @@ export default function WritePage() {
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-background pb-24 md:pb-8">
+        {/* Redirect Overlay */}
+        <RedirectOverlay
+          isVisible={isRedirecting}
+          countdown={redirectCountdown}
+        />
+
         {/* Main Container - Optimized for mobile scrolling */}
         <div className="container mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-8 max-w-5xl">
           <Skeletonize loading={isLoading}>
