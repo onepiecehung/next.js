@@ -65,14 +65,13 @@ export function ScheduledCountdown({
 
           {articleTitle && (
             <p className="text-xs text-amber-700 mb-3 line-clamp-2">
-              "{articleTitle}"
+              &quot;{articleTitle}&quot;
             </p>
           )}
 
           <div className="space-y-2">
             <p className="text-xs text-amber-600">
-              {t("schedule.countdownDescription", "article") ||
-                "This article will be published in:"}
+              {t("schedule.countdownDescription", "article")}
             </p>
 
             <CountdownTimer
