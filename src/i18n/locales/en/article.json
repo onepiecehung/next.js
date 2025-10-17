@@ -41,7 +41,13 @@
     "scheduleDialogTitle": "Schedule Publication",
     "scheduleDialogDescription": "Choose when you want to publish this article",
     "scheduleButton": "Schedule Article",
-    "schedulePlaceholder": "Select publication date and time"
+    "schedulePlaceholder": "Select publication date and time",
+    "timeUnits": {
+      "days": "d",
+      "hours": "h", 
+      "minutes": "m",
+      "seconds": "s"
+    }
   },
   "actions": {
     "share": "Share",

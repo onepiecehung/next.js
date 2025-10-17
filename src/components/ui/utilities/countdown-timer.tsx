@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/components/providers/i18n-provider";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
@@ -73,6 +74,7 @@ export function CountdownTimer({
   completedText = "Publishing now...",
   expiredText = "Published",
 }: CountdownTimerProps) {
+  const { t } = useI18n();
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
   const [isExpired, setIsExpired] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -162,21 +164,37 @@ export function CountdownTimer({
   }
 
   const timeUnits = [
-    ...(showDays ? [{ label: "Days", value: timeLeft.days, short: "d" }] : []),
+    ...(showDays ? [{ 
+      label: "Days", 
+      value: timeLeft.days, 
+      short: t("schedule.timeUnits.days", "article") || "d" 
+    }] : []),
     ...(showHours
-      ? [{ label: "Hours", value: timeLeft.hours, short: "h" }]
+      ? [{ 
+          label: "Hours", 
+          value: timeLeft.hours, 
+          short: t("schedule.timeUnits.hours", "article") || "h" 
+        }]
       : []),
     ...(showMinutes
-      ? [{ label: "Minutes", value: timeLeft.minutes, short: "m" }]
+      ? [{ 
+          label: "Minutes", 
+          value: timeLeft.minutes, 
+          short: t("schedule.timeUnits.minutes", "article") || "m" 
+        }]
       : []),
     ...(showSeconds
-      ? [{ label: "Seconds", value: timeLeft.seconds, short: "s" }]
+      ? [{ 
+          label: "Seconds", 
+          value: timeLeft.seconds, 
+          short: t("schedule.timeUnits.seconds", "article") || "s" 
+        }]
       : []),
   ];
 
   return (
     <div className={cn("flex items-center justify-center gap-2", className)}>
-      {timeUnits.map((unit, index) => (
+      {timeUnits.map((unit) => (
         <div key={unit.label} className="flex flex-col items-center">
           <div className="bg-primary/10 text-primary border border-primary/20 rounded-lg px-2 py-1 min-w-[2.5rem] text-center">
             <span className="text-lg font-bold tabular-nums">
