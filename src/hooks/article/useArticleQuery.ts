@@ -73,28 +73,23 @@ export function useCreateArticle() {
       switch (article.status) {
         case ARTICLE_CONSTANTS.STATUS.DRAFT:
           toast.info(
-            t("status.draft", "article") + " " + t("schedule.success", "article"),
-            {
-              description: "Your article has been saved and can be edited later.",
-            },
+            t("status.draft", "article") +
+              " " +
+              t("schedule.success", "article"),
           );
           break;
         case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
-          toast.success(
-            t("schedule.success", "article"),
-            {
-              description: t("schedule.successDescription", "article", {
-                date: article.scheduledAt?.toLocaleString(),
-              }),
-            },
-          );
+          toast.success(t("schedule.success", "article"), {
+            description: t("schedule.successDescription", "article", {
+              date: article.scheduledAt?.toLocaleString(),
+            }),
+          });
           break;
         default:
           toast.success(
-            t("status.published", "article") + " " + t("schedule.success", "article"),
-            {
-              description: "Your article is now live and visible to readers.",
-            },
+            t("status.published", "article") +
+              " " +
+              t("schedule.success", "article"),
           );
           break;
       }
@@ -108,11 +103,7 @@ export function useCreateArticle() {
           ? error.message
           : t("schedule.error", "article") || "Failed to create article";
 
-      toast.error(errorMessage, {
-        description:
-          t("schedule.errorDescription", "article") ||
-          "Please check your input and try again.",
-      });
+      toast.error(errorMessage);
     },
   });
 }
@@ -135,14 +126,14 @@ export function useUpdateArticle() {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
 
       toast.success(
-        t("status.published", "article") + " " + t("schedule.success", "article"),
+        t("status.published", "article") +
+          " " +
+          t("schedule.success", "article"),
       );
     },
     onError: (error) => {
       console.error("Article update error:", error);
-      toast.error(
-        t("schedule.error", "article") || "Failed to update article",
-      );
+      toast.error(t("schedule.error", "article") || "Failed to update article");
     },
   });
 }
@@ -164,14 +155,14 @@ export function useDeleteArticle() {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
 
       toast.success(
-        t("status.archived", "article") + " " + t("schedule.success", "article"),
+        t("status.archived", "article") +
+          " " +
+          t("schedule.success", "article"),
       );
     },
     onError: (error) => {
       console.error("Article deletion error:", error);
-      toast.error(
-        t("schedule.error", "article") || "Failed to delete article",
-      );
+      toast.error(t("schedule.error", "article") || "Failed to delete article");
     },
   });
 }
