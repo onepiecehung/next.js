@@ -1,0 +1,1694 @@
+<testsuites id="" name="" tests="42" failures="42" skipped="0" errors="0" time="129.731095">
+<testsuite name="flows/simple-login-to-create.spec.ts" timestamp="2025-10-17T07:48:28.290Z" hostname="chromium" tests="7" failures="7" skipped="0" time="53.439" errors="0">
+<testcase name="Simple Login to Create Article Flow › should login and create a basic article" classname="flows/simple-login-to-create.spec.ts" time="10.291">
+<failure message="simple-login-to-create.spec.ts:12:7 should login and create a basic article" type="FAILURE">
+<![CDATA[  [chromium] › flows/simple-login-to-create.spec.ts:12:7 › Simple Login to Create Article Flow › should login and create a basic article 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:18:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-chromium/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-chromium/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-chromium/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-chromium/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Simple Login to Create Article Flow › should login and publish an article" classname="flows/simple-login-to-create.spec.ts" time="7.795">
+<failure message="simple-login-to-create.spec.ts:46:7 should login and publish an article" type="FAILURE">
+<![CDATA[  [chromium] › flows/simple-login-to-create.spec.ts:46:7 › Simple Login to Create Article Flow › should login and publish an article 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:51:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-chromium/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-chromium/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-chromium/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-chromium/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle login failure and retry successfully" classname="flows/simple-login-to-create.spec.ts" time="6.679">
+<failure message="simple-login-to-create.spec.ts:80:7 should handle login failure and retry successfully" type="FAILURE">
+<![CDATA[  [chromium] › flows/simple-login-to-create.spec.ts:80:7 › Error Handling in Login to Create Article Flow › should handle login failure and retry successfully 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:85:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-chromium/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-chromium/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-chromium/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-chromium/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle network errors during article creation" classname="flows/simple-login-to-create.spec.ts" time="6.209">
+<failure message="simple-login-to-create.spec.ts:100:7 should handle network errors during article creation" type="FAILURE">
+<![CDATA[  [chromium] › flows/simple-login-to-create.spec.ts:100:7 › Error Handling in Login to Create Article Flow › should handle network errors during article creation 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:105:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-chromium/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-chromium/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-chromium/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-chromium/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle validation errors in article creation" classname="flows/simple-login-to-create.spec.ts" time="5.94">
+<failure message="simple-login-to-create.spec.ts:132:7 should handle validation errors in article creation" type="FAILURE">
+<![CDATA[  [chromium] › flows/simple-login-to-create.spec.ts:132:7 › Error Handling in Login to Create Article Flow › should handle validation errors in article creation 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:137:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-chromium/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-chromium/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-chromium/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-chromium/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Performance in Login to Create Article Flow › should complete flow within reasonable time" classname="flows/simple-login-to-create.spec.ts" time="7.202">
+<failure message="simple-login-to-create.spec.ts:169:7 should complete flow within reasonable time" type="FAILURE">
+<![CDATA[  [chromium] › flows/simple-login-to-create.spec.ts:169:7 › Performance in Login to Create Article Flow › should complete flow within reasonable time 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:176:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-chromium/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-chromium/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-chromium/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-chromium/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Performance in Login to Create Article Flow › should handle slow network conditions" classname="flows/simple-login-to-create.spec.ts" time="9.323">
+<failure message="simple-login-to-create.spec.ts:197:7 should handle slow network conditions" type="FAILURE">
+<![CDATA[  [chromium] › flows/simple-login-to-create.spec.ts:197:7 › Performance in Login to Create Article Flow › should handle slow network conditions 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:207:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-chromium/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-chromium/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-chromium/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-chromium/error-context.md is missing]]>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="flows/simple-login-to-create.spec.ts" timestamp="2025-10-17T07:48:28.290Z" hostname="firefox" tests="7" failures="7" skipped="0" time="59.024" errors="0">
+<testcase name="Simple Login to Create Article Flow › should login and create a basic article" classname="flows/simple-login-to-create.spec.ts" time="11.284">
+<failure message="simple-login-to-create.spec.ts:12:7 should login and create a basic article" type="FAILURE">
+<![CDATA[  [firefox] › flows/simple-login-to-create.spec.ts:12:7 › Simple Login to Create Article Flow › should login and create a basic article 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:18:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-firefox/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-firefox/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-firefox/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-firefox/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Simple Login to Create Article Flow › should login and publish an article" classname="flows/simple-login-to-create.spec.ts" time="7.785">
+<failure message="simple-login-to-create.spec.ts:46:7 should login and publish an article" type="FAILURE">
+<![CDATA[  [firefox] › flows/simple-login-to-create.spec.ts:46:7 › Simple Login to Create Article Flow › should login and publish an article 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:51:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-firefox/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-firefox/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-firefox/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-firefox/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle login failure and retry successfully" classname="flows/simple-login-to-create.spec.ts" time="7.813">
+<failure message="simple-login-to-create.spec.ts:80:7 should handle login failure and retry successfully" type="FAILURE">
+<![CDATA[  [firefox] › flows/simple-login-to-create.spec.ts:80:7 › Error Handling in Login to Create Article Flow › should handle login failure and retry successfully 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:85:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-firefox/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-firefox/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-firefox/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-firefox/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle network errors during article creation" classname="flows/simple-login-to-create.spec.ts" time="7.616">
+<failure message="simple-login-to-create.spec.ts:100:7 should handle network errors during article creation" type="FAILURE">
+<![CDATA[  [firefox] › flows/simple-login-to-create.spec.ts:100:7 › Error Handling in Login to Create Article Flow › should handle network errors during article creation 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:105:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-firefox/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-firefox/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-firefox/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-firefox/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle validation errors in article creation" classname="flows/simple-login-to-create.spec.ts" time="7.702">
+<failure message="simple-login-to-create.spec.ts:132:7 should handle validation errors in article creation" type="FAILURE">
+<![CDATA[  [firefox] › flows/simple-login-to-create.spec.ts:132:7 › Error Handling in Login to Create Article Flow › should handle validation errors in article creation 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:137:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-firefox/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-firefox/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-firefox/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-firefox/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Performance in Login to Create Article Flow › should complete flow within reasonable time" classname="flows/simple-login-to-create.spec.ts" time="7.535">
+<failure message="simple-login-to-create.spec.ts:169:7 should complete flow within reasonable time" type="FAILURE">
+<![CDATA[  [firefox] › flows/simple-login-to-create.spec.ts:169:7 › Performance in Login to Create Article Flow › should complete flow within reasonable time 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:176:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-firefox/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-firefox/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-firefox/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-firefox/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Performance in Login to Create Article Flow › should handle slow network conditions" classname="flows/simple-login-to-create.spec.ts" time="9.289">
+<failure message="simple-login-to-create.spec.ts:197:7 should handle slow network conditions" type="FAILURE">
+<![CDATA[  [firefox] › flows/simple-login-to-create.spec.ts:197:7 › Performance in Login to Create Article Flow › should handle slow network conditions 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:207:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-firefox/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-firefox/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-firefox/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-firefox/error-context.md is missing]]>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="flows/simple-login-to-create.spec.ts" timestamp="2025-10-17T07:48:28.290Z" hostname="webkit" tests="7" failures="7" skipped="0" time="57.78" errors="0">
+<testcase name="Simple Login to Create Article Flow › should login and create a basic article" classname="flows/simple-login-to-create.spec.ts" time="11.374">
+<failure message="simple-login-to-create.spec.ts:12:7 should login and create a basic article" type="FAILURE">
+<![CDATA[  [webkit] › flows/simple-login-to-create.spec.ts:12:7 › Simple Login to Create Article Flow › should login and create a basic article 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:18:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-webkit/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-webkit/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-webkit/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-webkit/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Simple Login to Create Article Flow › should login and publish an article" classname="flows/simple-login-to-create.spec.ts" time="7.295">
+<failure message="simple-login-to-create.spec.ts:46:7 should login and publish an article" type="FAILURE">
+<![CDATA[  [webkit] › flows/simple-login-to-create.spec.ts:46:7 › Simple Login to Create Article Flow › should login and publish an article 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:51:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-webkit/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-webkit/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-webkit/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-webkit/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle login failure and retry successfully" classname="flows/simple-login-to-create.spec.ts" time="6.222">
+<failure message="simple-login-to-create.spec.ts:80:7 should handle login failure and retry successfully" type="FAILURE">
+<![CDATA[  [webkit] › flows/simple-login-to-create.spec.ts:80:7 › Error Handling in Login to Create Article Flow › should handle login failure and retry successfully 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:85:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-webkit/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-webkit/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-webkit/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-webkit/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle network errors during article creation" classname="flows/simple-login-to-create.spec.ts" time="6.893">
+<failure message="simple-login-to-create.spec.ts:100:7 should handle network errors during article creation" type="FAILURE">
+<![CDATA[  [webkit] › flows/simple-login-to-create.spec.ts:100:7 › Error Handling in Login to Create Article Flow › should handle network errors during article creation 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:105:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-webkit/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-webkit/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-webkit/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-webkit/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle validation errors in article creation" classname="flows/simple-login-to-create.spec.ts" time="6.311">
+<failure message="simple-login-to-create.spec.ts:132:7 should handle validation errors in article creation" type="FAILURE">
+<![CDATA[  [webkit] › flows/simple-login-to-create.spec.ts:132:7 › Error Handling in Login to Create Article Flow › should handle validation errors in article creation 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:137:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-webkit/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-webkit/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-webkit/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-webkit/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Performance in Login to Create Article Flow › should complete flow within reasonable time" classname="flows/simple-login-to-create.spec.ts" time="6.226">
+<failure message="simple-login-to-create.spec.ts:169:7 should complete flow within reasonable time" type="FAILURE">
+<![CDATA[  [webkit] › flows/simple-login-to-create.spec.ts:169:7 › Performance in Login to Create Article Flow › should complete flow within reasonable time 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:176:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-webkit/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-webkit/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-webkit/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-webkit/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Performance in Login to Create Article Flow › should handle slow network conditions" classname="flows/simple-login-to-create.spec.ts" time="13.459">
+<failure message="simple-login-to-create.spec.ts:197:7 should handle slow network conditions" type="FAILURE">
+<![CDATA[  [webkit] › flows/simple-login-to-create.spec.ts:197:7 › Performance in Login to Create Article Flow › should handle slow network conditions 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:207:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-webkit/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-webkit/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-webkit/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-webkit/error-context.md is missing]]>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="flows/simple-login-to-create.spec.ts" timestamp="2025-10-17T07:48:28.290Z" hostname="Mobile Chrome" tests="7" failures="7" skipped="0" time="54.163" errors="0">
+<testcase name="Simple Login to Create Article Flow › should login and create a basic article" classname="flows/simple-login-to-create.spec.ts" time="10.201">
+<failure message="simple-login-to-create.spec.ts:12:7 should login and create a basic article" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › flows/simple-login-to-create.spec.ts:12:7 › Simple Login to Create Article Flow › should login and create a basic article 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:18:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-Mobile-Chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-Mobile-Chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-Mobile-Chrome/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-Mobile-Chrome/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-Mobile-Chrome/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-Mobile-Chrome/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Simple Login to Create Article Flow › should login and publish an article" classname="flows/simple-login-to-create.spec.ts" time="7.968">
+<failure message="simple-login-to-create.spec.ts:46:7 should login and publish an article" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › flows/simple-login-to-create.spec.ts:46:7 › Simple Login to Create Article Flow › should login and publish an article 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:51:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-Mobile-Chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-Mobile-Chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-Mobile-Chrome/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-Mobile-Chrome/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-Mobile-Chrome/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-Mobile-Chrome/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle login failure and retry successfully" classname="flows/simple-login-to-create.spec.ts" time="7.512">
+<failure message="simple-login-to-create.spec.ts:80:7 should handle login failure and retry successfully" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › flows/simple-login-to-create.spec.ts:80:7 › Error Handling in Login to Create Article Flow › should handle login failure and retry successfully 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:85:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-Mobile-Chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-Mobile-Chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-Mobile-Chrome/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-Mobile-Chrome/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-Mobile-Chrome/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-Mobile-Chrome/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle network errors during article creation" classname="flows/simple-login-to-create.spec.ts" time="6.67">
+<failure message="simple-login-to-create.spec.ts:100:7 should handle network errors during article creation" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › flows/simple-login-to-create.spec.ts:100:7 › Error Handling in Login to Create Article Flow › should handle network errors during article creation 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:105:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-Mobile-Chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-Mobile-Chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-Mobile-Chrome/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-Mobile-Chrome/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-Mobile-Chrome/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-Mobile-Chrome/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle validation errors in article creation" classname="flows/simple-login-to-create.spec.ts" time="6.443">
+<failure message="simple-login-to-create.spec.ts:132:7 should handle validation errors in article creation" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › flows/simple-login-to-create.spec.ts:132:7 › Error Handling in Login to Create Article Flow › should handle validation errors in article creation 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:137:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-Mobile-Chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-Mobile-Chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-Mobile-Chrome/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-Mobile-Chrome/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-Mobile-Chrome/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-Mobile-Chrome/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Performance in Login to Create Article Flow › should complete flow within reasonable time" classname="flows/simple-login-to-create.spec.ts" time="6.185">
+<failure message="simple-login-to-create.spec.ts:169:7 should complete flow within reasonable time" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › flows/simple-login-to-create.spec.ts:169:7 › Performance in Login to Create Article Flow › should complete flow within reasonable time 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:176:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-Mobile-Chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-Mobile-Chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-Mobile-Chrome/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-Mobile-Chrome/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-Mobile-Chrome/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-Mobile-Chrome/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Performance in Login to Create Article Flow › should handle slow network conditions" classname="flows/simple-login-to-create.spec.ts" time="9.184">
+<failure message="simple-login-to-create.spec.ts:197:7 should handle slow network conditions" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › flows/simple-login-to-create.spec.ts:197:7 › Performance in Login to Create Article Flow › should handle slow network conditions 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:207:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-Mobile-Chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-Mobile-Chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-Mobile-Chrome/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-Mobile-Chrome/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-Mobile-Chrome/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-Mobile-Chrome/error-context.md is missing]]>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="flows/simple-login-to-create.spec.ts" timestamp="2025-10-17T07:48:28.290Z" hostname="Mobile Safari" tests="7" failures="7" skipped="0" time="45.485" errors="0">
+<testcase name="Simple Login to Create Article Flow › should login and create a basic article" classname="flows/simple-login-to-create.spec.ts" time="6.454">
+<failure message="simple-login-to-create.spec.ts:12:7 should login and create a basic article" type="FAILURE">
+<![CDATA[  [Mobile Safari] › flows/simple-login-to-create.spec.ts:12:7 › Simple Login to Create Article Flow › should login and create a basic article 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:18:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-Mobile-Safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-Mobile-Safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-Mobile-Safari/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-Mobile-Safari/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-Mobile-Safari/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-Mobile-Safari/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Simple Login to Create Article Flow › should login and publish an article" classname="flows/simple-login-to-create.spec.ts" time="5.923">
+<failure message="simple-login-to-create.spec.ts:46:7 should login and publish an article" type="FAILURE">
+<![CDATA[  [Mobile Safari] › flows/simple-login-to-create.spec.ts:46:7 › Simple Login to Create Article Flow › should login and publish an article 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:51:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-Mobile-Safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-Mobile-Safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-Mobile-Safari/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-Mobile-Safari/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-Mobile-Safari/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-Mobile-Safari/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle login failure and retry successfully" classname="flows/simple-login-to-create.spec.ts" time="5.834">
+<failure message="simple-login-to-create.spec.ts:80:7 should handle login failure and retry successfully" type="FAILURE">
+<![CDATA[  [Mobile Safari] › flows/simple-login-to-create.spec.ts:80:7 › Error Handling in Login to Create Article Flow › should handle login failure and retry successfully 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:85:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-Mobile-Safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-Mobile-Safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-Mobile-Safari/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-Mobile-Safari/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-Mobile-Safari/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-Mobile-Safari/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle network errors during article creation" classname="flows/simple-login-to-create.spec.ts" time="6.077">
+<failure message="simple-login-to-create.spec.ts:100:7 should handle network errors during article creation" type="FAILURE">
+<![CDATA[  [Mobile Safari] › flows/simple-login-to-create.spec.ts:100:7 › Error Handling in Login to Create Article Flow › should handle network errors during article creation 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:105:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-Mobile-Safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-Mobile-Safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-Mobile-Safari/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-Mobile-Safari/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-Mobile-Safari/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-Mobile-Safari/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle validation errors in article creation" classname="flows/simple-login-to-create.spec.ts" time="6.146">
+<failure message="simple-login-to-create.spec.ts:132:7 should handle validation errors in article creation" type="FAILURE">
+<![CDATA[  [Mobile Safari] › flows/simple-login-to-create.spec.ts:132:7 › Error Handling in Login to Create Article Flow › should handle validation errors in article creation 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:137:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-Mobile-Safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-Mobile-Safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-Mobile-Safari/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-Mobile-Safari/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-Mobile-Safari/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-Mobile-Safari/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Performance in Login to Create Article Flow › should complete flow within reasonable time" classname="flows/simple-login-to-create.spec.ts" time="6.136">
+<failure message="simple-login-to-create.spec.ts:169:7 should complete flow within reasonable time" type="FAILURE">
+<![CDATA[  [Mobile Safari] › flows/simple-login-to-create.spec.ts:169:7 › Performance in Login to Create Article Flow › should complete flow within reasonable time 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:176:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-Mobile-Safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-Mobile-Safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-Mobile-Safari/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-Mobile-Safari/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-Mobile-Safari/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-Mobile-Safari/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Performance in Login to Create Article Flow › should handle slow network conditions" classname="flows/simple-login-to-create.spec.ts" time="8.915">
+<failure message="simple-login-to-create.spec.ts:197:7 should handle slow network conditions" type="FAILURE">
+<![CDATA[  [Mobile Safari] › flows/simple-login-to-create.spec.ts:197:7 › Performance in Login to Create Article Flow › should handle slow network conditions 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:207:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-Mobile-Safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-Mobile-Safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-Mobile-Safari/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-Mobile-Safari/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-Mobile-Safari/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-Mobile-Safari/error-context.md is missing]]>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="flows/simple-login-to-create.spec.ts" timestamp="2025-10-17T07:48:28.290Z" hostname="iPad" tests="7" failures="7" skipped="0" time="45.255" errors="0">
+<testcase name="Simple Login to Create Article Flow › should login and create a basic article" classname="flows/simple-login-to-create.spec.ts" time="6.025">
+<failure message="simple-login-to-create.spec.ts:12:7 should login and create a basic article" type="FAILURE">
+<![CDATA[  [iPad] › flows/simple-login-to-create.spec.ts:12:7 › Simple Login to Create Article Flow › should login and create a basic article 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:18:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-iPad/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-iPad/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-iPad/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-iPad/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-iPad/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-4a1ff--and-create-a-basic-article-iPad/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Simple Login to Create Article Flow › should login and publish an article" classname="flows/simple-login-to-create.spec.ts" time="5.947">
+<failure message="simple-login-to-create.spec.ts:46:7 should login and publish an article" type="FAILURE">
+<![CDATA[  [iPad] › flows/simple-login-to-create.spec.ts:46:7 › Simple Login to Create Article Flow › should login and publish an article 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:51:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-iPad/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-iPad/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-71622-ogin-and-publish-an-article-iPad/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-iPad/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-iPad/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-71622-ogin-and-publish-an-article-iPad/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle login failure and retry successfully" classname="flows/simple-login-to-create.spec.ts" time="6.268">
+<failure message="simple-login-to-create.spec.ts:80:7 should handle login failure and retry successfully" type="FAILURE">
+<![CDATA[  [iPad] › flows/simple-login-to-create.spec.ts:80:7 › Error Handling in Login to Create Article Flow › should handle login failure and retry successfully 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:85:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-iPad/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-iPad/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-c8470-lure-and-retry-successfully-iPad/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-iPad/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-iPad/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-c8470-lure-and-retry-successfully-iPad/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle network errors during article creation" classname="flows/simple-login-to-create.spec.ts" time="6.499">
+<failure message="simple-login-to-create.spec.ts:100:7 should handle network errors during article creation" type="FAILURE">
+<![CDATA[  [iPad] › flows/simple-login-to-create.spec.ts:100:7 › Error Handling in Login to Create Article Flow › should handle network errors during article creation 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:105:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-iPad/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-iPad/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-ee840-ors-during-article-creation-iPad/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-iPad/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-iPad/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-ee840-ors-during-article-creation-iPad/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Error Handling in Login to Create Article Flow › should handle validation errors in article creation" classname="flows/simple-login-to-create.spec.ts" time="6.437">
+<failure message="simple-login-to-create.spec.ts:132:7 should handle validation errors in article creation" type="FAILURE">
+<![CDATA[  [iPad] › flows/simple-login-to-create.spec.ts:132:7 › Error Handling in Login to Create Article Flow › should handle validation errors in article creation 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:137:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-iPad/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-iPad/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-adeed--errors-in-article-creation-iPad/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-iPad/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-iPad/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-adeed--errors-in-article-creation-iPad/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Performance in Login to Create Article Flow › should complete flow within reasonable time" classname="flows/simple-login-to-create.spec.ts" time="5.829">
+<failure message="simple-login-to-create.spec.ts:169:7 should complete flow within reasonable time" type="FAILURE">
+<![CDATA[  [iPad] › flows/simple-login-to-create.spec.ts:169:7 › Performance in Login to Create Article Flow › should complete flow within reasonable time 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:176:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-iPad/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-iPad/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-268cd-flow-within-reasonable-time-iPad/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-iPad/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-iPad/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-268cd-flow-within-reasonable-time-iPad/error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Performance in Login to Create Article Flow › should handle slow network conditions" classname="flows/simple-login-to-create.spec.ts" time="8.25">
+<failure message="simple-login-to-create.spec.ts:197:7 should handle slow network conditions" type="FAILURE">
+<![CDATA[  [iPad] › flows/simple-login-to-create.spec.ts:197:7 › Performance in Login to Create Article Flow › should handle slow network conditions 
+
+    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="email"]') to be visible
+
+
+       at ../utils/page-objects/login-page.ts:23
+
+      21 |    */
+      22 |   async waitForPageLoad() {
+    > 23 |     await this.page.waitForSelector(testSelectors.loginForm.emailInput);
+         |                     ^
+      24 |     await this.page.waitForSelector(testSelectors.loginForm.passwordInput);
+      25 |     await this.page.waitForSelector(testSelectors.loginForm.submitButton);
+      26 |   }
+        at LoginPage.waitForPageLoad (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:23:21)
+        at LoginPage.goto (/Users/nguyenhuuhung/Documents/GitHub/next.js/tests/utils/page-objects/login-page.ts:16:16)
+        at /Users/nguyenhuuhung/Documents/GitHub/next.js/tests/e2e/flows/simple-login-to-create.spec.ts:207:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-iPad/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-iPad/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/flows-simple-login-to-crea-92adb-dle-slow-network-conditions-iPad/error-context.md
+]]>
+</failure>
+<system-err>
+<![CDATA[
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-iPad/test-failed-1.png is missing
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-iPad/video.webm is missing
+Warning: attachment flows-simple-login-to-crea-92adb-dle-slow-network-conditions-iPad/error-context.md is missing]]>
+</system-err>
+</testcase>
+</testsuite>
+</testsuites>
