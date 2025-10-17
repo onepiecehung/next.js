@@ -37,7 +37,11 @@
     "success": "Bài viết đã được hẹn giờ xuất bản!",
     "successDescription": "Bài viết đã được hẹn giờ xuất bản vào {date}",
     "error": "Không thể hẹn giờ bài viết",
-    "errorDescription": "Không thể hẹn giờ bài viết"
+    "errorDescription": "Không thể hẹn giờ bài viết",
+    "creating": "Đang tạo bài viết...",
+    "updating": "Đang cập nhật bài viết...",
+    "deleting": "Đang xóa bài viết...",
+    "scheduledFor": "Đã lên lịch cho {date}"
   },
   "reactions": {
     "like": "Thích",

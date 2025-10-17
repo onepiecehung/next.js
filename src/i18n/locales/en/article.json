@@ -29,7 +29,11 @@
     "success": "Article scheduled for publication!",
     "successDescription": "Article scheduled for publication at {date}",
     "error": "Failed to schedule article",
-    "errorDescription": "Failed to schedule article"
+    "errorDescription": "Failed to schedule article",
+    "creating": "Creating article...",
+    "updating": "Updating article...",
+    "deleting": "Deleting article...",
+    "scheduledFor": "Scheduled for {date}"
   },
   "actions": {
     "share": "Share",

@@ -89,8 +89,7 @@ export default function WritePage() {
       onSuccess: (article) => {
         // Reset form after successful creation
         resetForm();
-        router.prefetch(`/article/${article.id}/${article.slug}`);
-        router.push(`/article/${article.id}/${article.slug}`);
+        router.push(`/article/${article.id}`);
       },
     });
   };
@@ -251,7 +250,7 @@ export default function WritePage() {
                       onChange={(e) => setTitle(e.target.value)}
                       placeholder={t("form.titlePlaceholder", "write")}
                       maxLength={256}
-                      className="w-full px-3 sm:px-4 py-3 sm:py-3.5 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-base sm:text-lg transition-shadow"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-base sm:text-lg transition-shadow"
                     />
                     <p className="text-xs text-muted-foreground mt-1.5">
                       {(title || "").length}/256 characters
