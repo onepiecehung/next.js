@@ -16,6 +16,7 @@ export interface CreateArticleRequest extends Partial<Article> {
   visibility: "public" | "unlisted" | "private";
   status: "draft" | "published" | "scheduled";
   userId?: string;
+  scheduledAt?: string; // ISO string for scheduled articles
 }
 
 /**

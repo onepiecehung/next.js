@@ -73,16 +73,15 @@ export default function WritePage() {
     content: string;
     tags: string[];
     visibility: string;
-    scheduledPublish?: string;
+    status: string;
+    scheduledAt?: string;
   }) => {
     const createRequest = {
       ...articleData,
       contentFormat: "html" as const,
-      status: (visibility === "draft" ? "draft" : "published") as
-        | "draft"
-        | "published"
-        | "scheduled",
-      visibility: visibility as "public" | "unlisted" | "private",
+      status: articleData.status as "draft" | "published" | "scheduled",
+      visibility: articleData.visibility as "public" | "unlisted" | "private",
+      scheduledAt: articleData.scheduledAt,
     };
 
     createArticle(createRequest, {
@@ -93,7 +92,6 @@ export default function WritePage() {
       },
     });
   };
-
 
   React.useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 500);
@@ -161,6 +159,7 @@ export default function WritePage() {
         ...articleData,
         tags: articleData.tags || [],
         visibility: "draft",
+        status: ARTICLE_CONSTANTS.STATUS.DRAFT,
       });
     } catch {
       // Error handled by hook
@@ -184,10 +183,11 @@ export default function WritePage() {
       handleCreateArticle({
         ...articleData,
         tags: articleData.tags || [],
-        visibility: scheduledPublish
-          ? ARTICLE_CONSTANTS.VISIBILITY.PRIVATE
-          : visibility,
-        scheduledPublish: scheduledPublish?.toISOString(),
+        visibility: visibility, // Keep the selected visibility
+        status: scheduledPublish
+          ? ARTICLE_CONSTANTS.STATUS.SCHEDULED
+          : ARTICLE_CONSTANTS.STATUS.PUBLISHED,
+        scheduledAt: scheduledPublish?.toISOString(),
       });
     } catch {
       // Error handled by hook

@@ -33,7 +33,15 @@
     "creating": "Creating article...",
     "updating": "Updating article...",
     "deleting": "Deleting article...",
-    "scheduledFor": "Scheduled for {date}"
+    "scheduledFor": "Scheduled for {date}",
+    "countdownTitle": "Scheduled Publication",
+    "countdownDescription": "This article will be published in:",
+    "publishing": "Publishing now...",
+    "published": "Published",
+    "scheduleDialogTitle": "Schedule Publication",
+    "scheduleDialogDescription": "Choose when you want to publish this article",
+    "scheduleButton": "Schedule Article",
+    "schedulePlaceholder": "Select publication date and time"
   },
   "actions": {
     "share": "Share",

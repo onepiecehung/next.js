@@ -41,7 +41,15 @@
     "creating": "Đang tạo bài viết...",
     "updating": "Đang cập nhật bài viết...",
     "deleting": "Đang xóa bài viết...",
-    "scheduledFor": "Đã lên lịch cho {date}"
+    "scheduledFor": "Đã lên lịch cho {date}",
+    "countdownTitle": "Xuất bản theo lịch",
+    "countdownDescription": "Bài viết này sẽ được xuất bản trong:",
+    "publishing": "Đang xuất bản...",
+    "published": "Đã xuất bản",
+    "scheduleDialogTitle": "Lên lịch xuất bản",
+    "scheduleDialogDescription": "Chọn thời điểm bạn muốn xuất bản bài viết này",
+    "scheduleButton": "Lên lịch bài viết",
+    "schedulePlaceholder": "Chọn ngày và giờ xuất bản"
   },
   "reactions": {
     "like": "Thích",

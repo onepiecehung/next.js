@@ -1,5 +1,6 @@
 "use client";
 
+import { ScheduledCountdown } from "@/components/features/article/scheduled-countdown";
 import { AuthorCard } from "@/components/features/navigation";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
@@ -93,6 +94,17 @@ export default function ArticleViewPage() {
     }
   };
 
+  // Check if article is scheduled
+  const isScheduledArticle =
+    article?.status === ARTICLE_CONSTANTS.STATUS.SCHEDULED;
+  const scheduledAt = article?.scheduledAt;
+
+  // Handle countdown completion
+  const handleCountdownComplete = () => {
+    // Refresh the page to get updated article status
+    window.location.reload();
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Mobile-first container with responsive padding */}
@@ -117,7 +129,6 @@ export default function ArticleViewPage() {
               </div>
             </div>
           )}
-
           {!error && article && (
             <article className="max-w-4xl mx-auto">
               {/* Back Button - Mobile optimized */}
@@ -148,6 +159,17 @@ export default function ArticleViewPage() {
                     {/* Subtle gradient overlay for better text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
                   </div>
+                </div>
+              )}
+
+              {/* Scheduled Countdown - Show only for scheduled articles */}
+              {isScheduledArticle && scheduledAt && (
+                <div className="mb-6 sm:mb-8">
+                  <ScheduledCountdown
+                    scheduledAt={scheduledAt}
+                    articleTitle={article.title}
+                    onComplete={handleCountdownComplete}
+                  />
                 </div>
               )}
 
@@ -193,8 +215,6 @@ export default function ArticleViewPage() {
                   </div>
                 </div>
 
-              
-
                 {/* Article Metadata - Clean badges */}
                 <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6">
                   {/* Visibility */}
@@ -212,7 +232,6 @@ export default function ArticleViewPage() {
                     </span>
                   </div>
                 </div>
-
               </header>
 
               {/* Article Content - Clean typography */}

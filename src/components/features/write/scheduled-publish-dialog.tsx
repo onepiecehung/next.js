@@ -39,18 +39,18 @@ export function ScheduledPublishDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Clock className="h-5 w-5" />
-            {t("writeFormScheduledPublish", "write")}
+            {t("schedule.scheduleDialogTitle", "article")}
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            {t("writeFormScheduledPublishDescription", "write")}
+            {t("schedule.scheduleDialogDescription", "article")}
           </p>
           <DateTimePicker
             value={scheduledPublish}
             onChange={setScheduledPublish}
-            placeholder={t("writeFormScheduledPublishPlaceholder", "write")}
-            label={t("writeFormScheduledPublishLabel", "write")}
+            placeholder={t("schedule.schedulePlaceholder", "article")}
+            label={t("schedule.scheduleDialogTitle", "article")}
           />
           <div className="flex justify-end gap-2 pt-4">
             <Button
@@ -71,8 +71,8 @@ export function ScheduledPublishDialog({
               disabled={isSubmitting || !scheduledPublish}
             >
               {isSubmitting
-                ? t("writeFormScheduling", "write") || "Scheduling..."
-                : t("writeFormSchedulePublish", "write")}
+                ? t("schedule.creating", "article")
+                : t("schedule.scheduleButton", "article")}
             </Button>
           </div>
         </div>

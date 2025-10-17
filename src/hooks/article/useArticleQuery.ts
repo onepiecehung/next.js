@@ -51,20 +51,25 @@ export function useCreateArticle() {
 
   return useMutation({
     mutationFn: async (data: CreateArticleRequest) => {
-      // Auto-set visibility to PRIVATE for drafts
+      // Auto-set visibility to PRIVATE for drafts only
       const finalData = {
         ...data,
         visibility:
           data.status === ARTICLE_CONSTANTS.STATUS.DRAFT
             ? ARTICLE_CONSTANTS.VISIBILITY.PRIVATE
             : data.visibility,
+        // Ensure scheduledAt is properly set for scheduled articles
+        scheduledAt:
+          data.status === ARTICLE_CONSTANTS.STATUS.SCHEDULED
+            ? data.scheduledAt
+            : undefined,
       };
 
       // Create promise for toast.promise with additional delay
       const promise = async () => {
         const result = await ArticleAPI.createArticle(finalData);
         // Add 1-2 seconds delay after promise completes
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         return result;
       };
 
@@ -81,13 +86,25 @@ export function useCreateArticle() {
           // Handle different success scenarios with appropriate messages
           switch (article.status) {
             case ARTICLE_CONSTANTS.STATUS.DRAFT:
-              return t("status.draft", "article") + " " + t("schedule.success", "article");
+              return (
+                t("status.draft", "article") +
+                " " +
+                t("schedule.success", "article")
+              );
             case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
-              return t("schedule.success", "article") + " - " + t("schedule.scheduledFor", "article", {
-                date: article.scheduledAt?.toLocaleString(),
-              });
+              return (
+                t("schedule.success", "article") +
+                " - " +
+                t("schedule.scheduledFor", "article", {
+                  date: article.scheduledAt?.toLocaleString(),
+                })
+              );
             default:
-              return t("status.published", "article") + " " + t("schedule.success", "article");
+              return (
+                t("status.published", "article") +
+                " " +
+                t("schedule.success", "article")
+              );
           }
         },
         error: (error) => {
@@ -116,7 +133,7 @@ export function useUpdateArticle() {
       const promise = async () => {
         const result = await ArticleAPI.updateArticle(id, data);
         // Add 1-2 seconds delay after promise completes
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise((resolve) => setTimeout(resolve, 1500));
         return result;
       };
 
@@ -130,7 +147,11 @@ export function useUpdateArticle() {
           // Invalidate articles list to refetch
           queryClient.invalidateQueries({ queryKey: ["articles"] });
 
-          return t("status.published", "article") + " " + t("schedule.success", "article");
+          return (
+            t("status.published", "article") +
+            " " +
+            t("schedule.success", "article")
+          );
         },
         error: (error) => {
           console.error("Article update error:", error);
@@ -156,7 +177,7 @@ export function useDeleteArticle() {
       const promise = async () => {
         const result = await ArticleAPI.deleteArticle(id);
         // Add 1-2 seconds delay after promise completes
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise((resolve) => setTimeout(resolve, 1500));
         return result;
       };
 
@@ -170,7 +191,11 @@ export function useDeleteArticle() {
           // Invalidate articles list
           queryClient.invalidateQueries({ queryKey: ["articles"] });
 
-          return t("status.archived", "article") + " " + t("schedule.success", "article");
+          return (
+            t("status.archived", "article") +
+            " " +
+            t("schedule.success", "article")
+          );
         },
         error: (error) => {
           console.error("Article deletion error:", error);
