@@ -2,15 +2,15 @@
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import {
-    Tags,
-    TagsContent,
-    TagsEmpty,
-    TagsGroup,
-    TagsInput,
-    TagsItem,
-    TagsList,
-    TagsTrigger,
-    TagsValue,
+  Tags,
+  TagsContent,
+  TagsEmpty,
+  TagsGroup,
+  TagsInput,
+  TagsItem,
+  TagsList,
+  TagsTrigger,
+  TagsValue,
 } from "@/components/ui/layout/tags";
 import { CheckIcon, PlusIcon } from "lucide-react";
 import { KeyboardEvent, useState } from "react";

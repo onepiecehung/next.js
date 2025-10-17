@@ -260,19 +260,23 @@ export default function WritePage() {
                     </label>
                     <TagsInputComponent
                       tags={[]} // Empty array for now - could be populated with existing tags
-                      selectedTags={tags.map((tag: string) => 
-                        tag.toLowerCase().replace(/\s+/g, "-")
+                      selectedTags={tags.map((tag: string) =>
+                        tag.toLowerCase().replace(/\s+/g, "-"),
                       )}
                       onTagsChange={(newSelectedTags) => {
                         // Convert back to original tag format
-                        const tagLabels = newSelectedTags.map(tagId => 
-                          tagId.replace(/-/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase())
+                        const tagLabels = newSelectedTags.map((tagId) =>
+                          tagId
+                            .replace(/-/g, " ")
+                            .replace(/\b\w/g, (l: string) => l.toUpperCase()),
                         );
                         setTags(tagLabels.slice(0, 20)); // Limit to 20 tags
                       }}
                       onTagCreate={(newTag) => {
                         // Add new tag to the list
-                        const formattedTag = newTag.label.replace(/-/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase());
+                        const formattedTag = newTag.label
+                          .replace(/-/g, " ")
+                          .replace(/\b\w/g, (l: string) => l.toUpperCase());
                         if (!tags.includes(formattedTag) && tags.length < 20) {
                           setTags([...tags, formattedTag]);
                         }
