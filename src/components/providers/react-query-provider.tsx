@@ -28,10 +28,12 @@ export function ReactQueryProvider({
             // Retry delay with exponential backoff
             retryDelay: (attemptIndex) =>
               Math.min(1000 * 2 ** attemptIndex, 30000),
-            // Refetch on window focus
-            refetchOnWindowFocus: true,
+            // Disable refetch on window focus to prevent double queries
+            refetchOnWindowFocus: false,
             // Refetch on reconnect
             refetchOnReconnect: true,
+            // Disable refetch on mount if data is fresh
+            refetchOnMount: "always",
           },
           mutations: {
             // Retry mutations once
