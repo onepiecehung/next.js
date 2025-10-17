@@ -183,8 +183,7 @@ export default function WritePage() {
                   {t("title", "write")}
                 </h1>
                 <p className="text-xs sm:text-sm md:text-base text-muted-foreground line-clamp-2 md:line-clamp-none">
-                  Create and publish your articles with our modern rich text
-                  editor
+                  {t("description", "write")}
                 </p>
               </div>
 
