@@ -44,7 +44,7 @@
     "schedulePlaceholder": "Select publication date and time",
     "timeUnits": {
       "days": "d",
-      "hours": "h", 
+      "hours": "h",
       "minutes": "m",
       "seconds": "s"
     }
