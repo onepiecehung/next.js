@@ -213,27 +213,6 @@ export default function ArticleViewPage() {
                   </div>
                 </div>
 
-                {/* Tags - Simple display */}
-                {article.tagsArray && article.tagsArray.length > 0 && (
-                  <div className="mb-6 sm:mb-8">
-                    <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                      <Tag className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
-                      <span className="text-xs sm:text-sm font-medium text-muted-foreground">
-                        {t("actions.tags", "article")}
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {article.tagsArray.map((tag: string, index: number) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </header>
 
               {/* Article Content - Clean typography */}
@@ -246,6 +225,28 @@ export default function ArticleViewPage() {
                   variant="default"
                 />
               </div>
+
+              {/* Tags - Moved to end of article */}
+              {article.tagsArray && article.tagsArray.length > 0 && (
+                <div className="mt-8 sm:mt-10 mb-6 sm:mb-8">
+                  <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                    <Tag className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                    <span className="text-xs sm:text-sm font-medium text-muted-foreground">
+                      {t("actions.tags", "article")}
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {article.tagsArray.map((tag: string, index: number) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Article Engagement Stats - Moved below content, above author card */}
               <div className="flex items-center justify-center gap-6 sm:gap-8 mt-8 sm:mt-10 mb-6 sm:mb-8 py-4 sm:py-6 border-y border-border">
