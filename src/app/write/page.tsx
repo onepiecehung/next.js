@@ -22,6 +22,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
+import { TagsInputComponent } from "@/components/ui/layout/tags-input";
 import {
   useArticleFormState,
   useCreateArticle,
@@ -252,26 +253,38 @@ export default function WritePage() {
                     </div>
                   </div>
 
-                  {/* Tags Input - Better mobile UX */}
+                  {/* Tags Input - Interactive Tags Component */}
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-foreground mb-1.5 sm:mb-2">
                       {t("form.tags", "write")}
                     </label>
-                    <input
-                      type="text"
-                      value={tags.join(", ")}
-                      onChange={(e) => {
-                        const tagList = e.target.value
-                          .split(",")
-                          .map((tag) => tag.trim())
-                          .filter((tag) => tag.length > 0);
-                        setTags(tagList.slice(0, 20)); // Limit to 20 tags
+                    <TagsInputComponent
+                      tags={[]} // Empty array for now - could be populated with existing tags
+                      selectedTags={tags.map((tag: string) => 
+                        tag.toLowerCase().replace(/\s+/g, "-")
+                      )}
+                      onTagsChange={(newSelectedTags) => {
+                        // Convert back to original tag format
+                        const tagLabels = newSelectedTags.map(tagId => 
+                          tagId.replace(/-/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase())
+                        );
+                        setTags(tagLabels.slice(0, 20)); // Limit to 20 tags
+                      }}
+                      onTagCreate={(newTag) => {
+                        // Add new tag to the list
+                        const formattedTag = newTag.label.replace(/-/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase());
+                        if (!tags.includes(formattedTag) && tags.length < 20) {
+                          setTags([...tags, formattedTag]);
+                        }
                       }}
                       placeholder={t("form.tagsPlaceholder", "write")}
-                      className="w-full px-3 sm:px-4 py-3 sm:py-3.5 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm sm:text-base transition-shadow"
+                      allowCreate={true}
+                      allowRemove={true}
+                      disabled={false}
+                      className="w-full"
                     />
                     <p className="text-xs text-muted-foreground mt-1.5">
-                      {(tags || []).length}/20 tags (separate with commas)
+                      {(tags || []).length}/20 tags
                     </p>
                   </div>
 

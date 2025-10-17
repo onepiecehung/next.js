@@ -2,18 +2,18 @@
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import {
-  Tags,
-  TagsContent,
-  TagsEmpty,
-  TagsGroup,
-  TagsInput,
-  TagsItem,
-  TagsList,
-  TagsTrigger,
-  TagsValue,
+    Tags,
+    TagsContent,
+    TagsEmpty,
+    TagsGroup,
+    TagsInput,
+    TagsItem,
+    TagsList,
+    TagsTrigger,
+    TagsValue,
 } from "@/components/ui/layout/tags";
 import { CheckIcon, PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 
 export interface TagData {
   id: string;
@@ -88,6 +88,13 @@ export function TagsInputComponent({
     setNewTag("");
   };
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleCreateTag();
+    }
+  };
+
   const availableTags = tags.filter((tag) => !selectedTags.includes(tag.id));
 
   return (
@@ -106,6 +113,7 @@ export function TagsInputComponent({
         <TagsInput
           value={newTag}
           onValueChange={setNewTag}
+          onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={disabled}
         />

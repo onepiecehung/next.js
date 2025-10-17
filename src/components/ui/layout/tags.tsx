@@ -1,7 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -10,11 +8,13 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { Badge } from "@/components/ui/core/badge";
+import { Button } from "@/components/ui/core/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/ui/shadcn-io/popover";
 import { cn } from "@/lib/utils";
 import { XIcon } from "lucide-react";
 import {
