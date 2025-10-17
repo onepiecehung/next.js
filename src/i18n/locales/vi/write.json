@@ -1,5 +1,6 @@
 {
   "title": "Viết Bài Viết Của Bạn",
+  "description": "Tạo và xuất bản bài viết của bạn với trình soạn thảo văn bản phong phú hiện đại",
   "accessDenied": "Truy Cập Bị Từ Chối",
   "loginRequired": "Bạn cần đăng nhập để truy cập trang này.",
   "goToHome": "Về Trang Chủ",
@@ -51,12 +52,16 @@
     "titleTooLong": "Tiêu đề phải ít hơn 256 ký tự",
     "contentRequired": "Nội dung là bắt buộc",
     "summaryTooLong": "Tóm tắt phải ít hơn 1000 ký tự",
-    "tagsTooMany": "Tối đa 20 thẻ"
+    "tagsTooMany": "Tối đa 20 thẻ",
+    "titleEmpty": "Vui lòng nhập tiêu đề cho bài viết",
+    "contentEmpty": "Vui lòng viết nội dung cho bài viết"
   },
   "success": {
     "draft": "Bản nháp đã được tạo thành công!",
     "published": "Bài viết đã được xuất bản thành công!",
-    "scheduled": "Bài viết đã được hẹn giờ xuất bản!"
+    "scheduled": "Bài viết đã được hẹn giờ xuất bản!",
+    "redirecting": "Đang chuyển hướng đến bài viết...",
+    "redirectCountdown": "Chuyển hướng trong {seconds}s"
   },
   "errors": {
     "create": "Không thể tạo bài viết",

@@ -48,7 +48,8 @@ export function LanguageSwitcher({
   ];
 
   // Get current language info
-  const currentLanguage = languages.find((lang) => lang.value === locale) || languages[0];
+  const currentLanguage =
+    languages.find((lang) => lang.value === locale) || languages[0];
 
   // Prevent hydration mismatch by not rendering until mounted
   if (!isMounted) {
@@ -127,11 +128,7 @@ export function LanguageSwitcher({
             className={`px-3 border-primary/30 hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 ${className}`}
           >
             <Globe className="mr-2 h-4 w-4 text-primary" />
-            {showLabels && (
-              <span>
-                {currentLanguage.label}
-              </span>
-            )}
+            {showLabels && <span>{currentLanguage.label}</span>}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -171,9 +168,7 @@ export function LanguageSwitcher({
           className={`flex items-center gap-2 border-primary/30 hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 ${className}`}
         >
           <Globe className="h-4 w-4 text-primary" />
-          <span className="hidden sm:inline">
-            {currentLanguage.label}
-          </span>
+          <span className="hidden sm:inline">{currentLanguage.label}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

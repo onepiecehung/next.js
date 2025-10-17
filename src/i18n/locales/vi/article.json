@@ -37,12 +37,54 @@
     "success": "Bài viết đã được hẹn giờ xuất bản!",
     "successDescription": "Bài viết đã được hẹn giờ xuất bản vào {date}",
     "error": "Không thể hẹn giờ bài viết",
-    "errorDescription": "Không thể hẹn giờ bài viết"
+    "errorDescription": "Không thể hẹn giờ bài viết",
+    "creating": "Đang tạo bài viết...",
+    "updating": "Đang cập nhật bài viết...",
+    "deleting": "Đang xóa bài viết...",
+    "scheduledFor": "Đã lên lịch cho {date}",
+    "countdownTitle": "Xuất bản theo lịch",
+    "countdownDescription": "Bài viết này sẽ được xuất bản trong:",
+    "publishing": "Đang xuất bản...",
+    "published": "Đã xuất bản",
+    "scheduleDialogTitle": "Lên lịch xuất bản",
+    "scheduleDialogDescription": "Chọn thời điểm bạn muốn xuất bản bài viết này",
+    "scheduleButton": "Lên lịch bài viết",
+    "schedulePlaceholder": "Chọn ngày và giờ xuất bản",
+    "timeUnits": {
+      "days": "ngày",
+      "hours": "giờ",
+      "minutes": "phút",
+      "seconds": "giây"
+    }
   },
   "reactions": {
     "like": "Thích",
     "liked": "Đã Thích",
     "likes": "lượt thích",
     "likeError": "Không thể cập nhật lượt thích"
+  },
+  "actions": {
+    "share": "Chia sẻ",
+    "reactions": {
+      "like": "thích",
+      "liked": "Đã thích ",
+      "likes": "lượt thích"
+    },
+    "readTime": "phút đọc",
+    "wordCount": "từ",
+    "tags": "Thẻ",
+    "noTags": "Không có thẻ",
+    "visibility": "Hiển thị",
+    "status": "Trạng thái",
+    "author": "Tác giả",
+    "lastUpdated": "Cập nhật lần cuối"
+  },
+  "authorCard": {
+    "follow": "Theo dõi",
+    "followers": "người theo dõi",
+    "articles": "bài viết",
+    "website": "Trang web",
+    "bio": "Về tác giả",
+    "socialLinks": "Liên kết xã hội"
   }
 }

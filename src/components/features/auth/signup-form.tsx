@@ -3,17 +3,17 @@
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button, Input, Label } from "@/components/ui";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/core";
 import { useLogin } from "@/hooks/auth/useAuthQuery";
 import { accessTokenAtom, currentUserAtom, fetchMeAction } from "@/lib/auth";
 import {
-    registerFormSchemaSimple,
-    type RegisterFormDataSimple,
+  registerFormSchemaSimple,
+  type RegisterFormDataSimple,
 } from "@/lib/validators/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
@@ -21,32 +21,7 @@ import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
-// Helper function to extract error message from various error types
-function extractErrorMessage(error: unknown, defaultMessage: string): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  if (typeof error === "object" && error !== null && "response" in error) {
-    const response = (error as { response?: unknown }).response;
-    if (
-      typeof response === "object" &&
-      response !== null &&
-      "data" in response
-    ) {
-      const data = (response as { data?: unknown }).data;
-      if (typeof data === "object" && data !== null && "message" in data) {
-        const message = (data as { message?: unknown }).message;
-        if (typeof message === "string") {
-          return message;
-        }
-      }
-    }
-  }
-
-  return defaultMessage;
-}
+import { extractErrorMessage } from "@/lib/utils/error-extractor";
 
 /**
  * Signup Form Component

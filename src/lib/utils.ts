@@ -6,5 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // Re-export error utilities
-export { extractAndTranslateErrorMessage, extractErrorMessage } from "./utils/error-extractor";
-
+export {
+  extractAndTranslateErrorMessage,
+  extractErrorMessage,
+} from "./utils/error-extractor";

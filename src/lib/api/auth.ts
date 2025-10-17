@@ -5,7 +5,7 @@ import {
   signInWithX,
   signOutFirebase,
 } from "../auth/firebase";
-import { http ,publicHttp} from "../http";
+import { http, publicHttp } from "../http";
 import type {
   ApiResponse,
   ChangePasswordRequest,

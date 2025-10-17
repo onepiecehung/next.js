@@ -51,74 +51,71 @@ export function useCreateArticle() {
 
   return useMutation({
     mutationFn: async (data: CreateArticleRequest) => {
-      // Auto-set visibility to PRIVATE for drafts
+      // Auto-set visibility to PRIVATE for drafts only
       const finalData = {
         ...data,
         visibility:
           data.status === ARTICLE_CONSTANTS.STATUS.DRAFT
             ? ARTICLE_CONSTANTS.VISIBILITY.PRIVATE
             : data.visibility,
+        // Ensure scheduledAt is properly set for scheduled articles
+        scheduledAt:
+          data.status === ARTICLE_CONSTANTS.STATUS.SCHEDULED
+            ? data.scheduledAt
+            : undefined,
       };
 
-      return ArticleAPI.createArticle(finalData);
-    },
-    onSuccess: (article) => {
-      // Invalidate and refetch articles list
-      queryClient.invalidateQueries({ queryKey: ["articles"] });
+      // Create promise for toast.promise with additional delay
+      const promise = async () => {
+        const result = await ArticleAPI.createArticle(finalData);
+        // Add 1-2 seconds delay after promise completes
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        return result;
+      };
 
-      // Add the new article to cache
-      queryClient.setQueryData(["article", article.id], article);
+      // Show promise toast
+      toast.promise(promise(), {
+        loading: t("schedule.creating", "article") || "Creating article...",
+        success: (article) => {
+          // Invalidate and refetch articles list
+          queryClient.invalidateQueries({ queryKey: ["articles"] });
 
-      // Handle different success scenarios with appropriate toast messages
-      switch (article.status) {
-        case ARTICLE_CONSTANTS.STATUS.DRAFT:
-          toast.info(
-            t("writeFormDraftSuccess", "write") || "Article saved as draft!",
-            {
-              description:
-                t("writeFormDraftSuccessDescription", "write") ||
-                "Your article has been saved and can be edited later.",
-            },
-          );
-          break;
-        case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
-          toast.success(
-            t("writeFormScheduledPublishSuccess", "write") ||
-              "Article scheduled for publication!",
-            {
-              description:
-                t("writeFormScheduledPublishSuccessDescription", "write", {
+          // Add the new article to cache
+          queryClient.setQueryData(["article", article.id], article);
+
+          // Handle different success scenarios with appropriate messages
+          switch (article.status) {
+            case ARTICLE_CONSTANTS.STATUS.DRAFT:
+              return (
+                t("status.draft", "article") +
+                " " +
+                t("schedule.success", "article")
+              );
+            case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
+              return (
+                t("schedule.success", "article") +
+                " - " +
+                t("schedule.scheduledFor", "article", {
                   date: article.scheduledAt?.toLocaleString(),
-                }) || `Scheduled for ${article.scheduledAt?.toLocaleString()}`,
-            },
-          );
-          break;
-        default:
-          toast.success(
-            t("writeFormSuccess", "write") || "Article published successfully!",
-            {
-              description:
-                t("writeFormSuccessDescription", "write") ||
-                "Your article is now live and visible to readers.",
-            },
-          );
-          break;
-      }
-    },
-    onError: (error) => {
-      console.error("Article creation error:", error);
-
-      // Extract meaningful error message
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : t("writeFormError", "write") || "Failed to create article";
-
-      toast.error(errorMessage, {
-        description:
-          t("writeFormErrorDescription", "write") ||
-          "Please check your input and try again.",
+                })
+              );
+            default:
+              return (
+                t("status.published", "article") +
+                " " +
+                t("schedule.success", "article")
+              );
+          }
+        },
+        error: (error) => {
+          console.error("Article creation error:", error);
+          return error instanceof Error
+            ? error.message
+            : t("schedule.error", "article") || "Failed to create article";
+        },
       });
+
+      return promise();
     },
   });
 }
@@ -131,24 +128,38 @@ export function useUpdateArticle() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateArticleRequest }) =>
-      ArticleAPI.updateArticle(id, data),
-    onSuccess: (article) => {
-      // Update the article in cache
-      queryClient.setQueryData(["article", article.id], article);
+    mutationFn: ({ id, data }: { id: string; data: UpdateArticleRequest }) => {
+      // Create promise for toast.promise with additional delay
+      const promise = async () => {
+        const result = await ArticleAPI.updateArticle(id, data);
+        // Add 1-2 seconds delay after promise completes
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        return result;
+      };
 
-      // Invalidate articles list to refetch
-      queryClient.invalidateQueries({ queryKey: ["articles"] });
+      // Show promise toast
+      toast.promise(promise(), {
+        loading: t("schedule.updating", "article") || "Updating article...",
+        success: (article) => {
+          // Update the article in cache
+          queryClient.setQueryData(["article", article.id], article);
 
-      toast.success(
-        t("articleUpdateSuccess", "article") || "Article updated successfully!",
-      );
-    },
-    onError: (error) => {
-      console.error("Article update error:", error);
-      toast.error(
-        t("articleUpdateError", "article") || "Failed to update article",
-      );
+          // Invalidate articles list to refetch
+          queryClient.invalidateQueries({ queryKey: ["articles"] });
+
+          return (
+            t("status.published", "article") +
+            " " +
+            t("schedule.success", "article")
+          );
+        },
+        error: (error) => {
+          console.error("Article update error:", error);
+          return t("schedule.error", "article") || "Failed to update article";
+        },
+      });
+
+      return promise();
     },
   });
 }
@@ -161,23 +172,38 @@ export function useDeleteArticle() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => ArticleAPI.deleteArticle(id),
-    onSuccess: (_, articleId) => {
-      // Remove article from cache
-      queryClient.removeQueries({ queryKey: ["article", articleId] });
+    mutationFn: (id: string) => {
+      // Create promise for toast.promise with additional delay
+      const promise = async () => {
+        const result = await ArticleAPI.deleteArticle(id);
+        // Add 1-2 seconds delay after promise completes
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        return result;
+      };
 
-      // Invalidate articles list
-      queryClient.invalidateQueries({ queryKey: ["articles"] });
+      // Show promise toast
+      toast.promise(promise(), {
+        loading: t("schedule.deleting", "article") || "Deleting article...",
+        success: () => {
+          // Remove article from cache
+          queryClient.removeQueries({ queryKey: ["article", id] });
 
-      toast.success(
-        t("articleDeleteSuccess", "article") || "Article deleted successfully!",
-      );
-    },
-    onError: (error) => {
-      console.error("Article deletion error:", error);
-      toast.error(
-        t("articleDeleteError", "article") || "Failed to delete article",
-      );
+          // Invalidate articles list
+          queryClient.invalidateQueries({ queryKey: ["articles"] });
+
+          return (
+            t("status.archived", "article") +
+            " " +
+            t("schedule.success", "article")
+          );
+        },
+        error: (error) => {
+          console.error("Article deletion error:", error);
+          return t("schedule.error", "article") || "Failed to delete article";
+        },
+      });
+
+      return promise();
     },
   });
 }

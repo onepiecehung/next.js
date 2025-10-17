@@ -20,3 +20,21 @@ export interface User extends BaseEntityCustom {
   avatarId?: string;
   avatar?: Media; // Avatar media
 }
+
+export interface AuthorCardData {
+  id: string;
+  name: string;
+  bio?: string;
+  website?: string;
+  avatar?: string;
+  socialLinks?: {
+    github?: string;
+    x?: string;
+    instagram?: string;
+    rss?: string;
+  };
+  stats?: {
+    followers?: number;
+    articles?: number;
+  };
+}

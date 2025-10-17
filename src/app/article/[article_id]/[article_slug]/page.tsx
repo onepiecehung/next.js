@@ -1,31 +1,20 @@
 "use client";
 
-import {
-  CompactLikeButton,
-  LargeLikeButton,
-} from "@/components/features/reactions";
+import { ScheduledCountdownDialog } from "@/components/features/article/scheduled-countdown-dialog";
+import { AuthorCard } from "@/components/features/navigation";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
 import { Button } from "@/components/ui";
 import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
 import { useArticle } from "@/hooks/article/useArticleQuery";
-import { useReactions, useToggleReaction } from "@/hooks/reactions";
+import { useReactions } from "@/hooks/reactions";
 import { ARTICLE_CONSTANTS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import {
-  Calendar,
-  Clock,
-  Eye,
-  FileText,
-  Heart,
-  Share2,
-  Tag,
-  User,
-} from "lucide-react";
+import { Clock, Eye, FileText, Heart, Share2, Tag, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Article View Page Component
@@ -44,13 +33,10 @@ export default function ArticleViewPage() {
 
   // Initialize reactions using React Query
   const { data: reactionsData } = useReactions(articleId);
-  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleReaction();
 
   // Derive reaction data from React Query
   const likeCount =
     reactionsData?.data?.find((r) => r.kind === "like")?.count || 0;
-  const bookmarkCount =
-    reactionsData?.data?.find((r) => r.kind === "bookmark")?.count || 0;
 
   // For now, we'll assume user hasn't liked (this should be fetched separately)
   const isLiked = false; // TODO: Implement user reaction status check
@@ -82,11 +68,11 @@ export default function ArticleViewPage() {
   const getVisibilityText = (visibility: string) => {
     switch (visibility) {
       case ARTICLE_CONSTANTS.VISIBILITY.PUBLIC:
-        return t("articleViewVisibilityPublic", "article");
+        return t("visibility.public", "article");
       case ARTICLE_CONSTANTS.VISIBILITY.UNLISTED:
-        return t("articleViewVisibilityUnlisted", "article");
+        return t("visibility.unlisted", "article");
       case ARTICLE_CONSTANTS.VISIBILITY.PRIVATE:
-        return t("articleViewVisibilityPrivate", "article");
+        return t("visibility.private", "article");
       default:
         return visibility;
     }
@@ -96,17 +82,36 @@ export default function ArticleViewPage() {
   const getStatusText = (status: string) => {
     switch (status) {
       case ARTICLE_CONSTANTS.STATUS.DRAFT:
-        return t("articleViewStatusDraft", "article");
+        return t("status.draft", "article");
       case ARTICLE_CONSTANTS.STATUS.PUBLISHED:
-        return t("articleViewStatusPublished", "article");
+        return t("status.published", "article");
       case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
-        return t("articleViewStatusScheduled", "article");
+        return t("status.scheduled", "article");
       case ARTICLE_CONSTANTS.STATUS.ARCHIVED:
-        return t("articleViewStatusArchived", "article");
+        return t("status.archived", "article");
       default:
         return status;
     }
   };
+
+  // Check if article is scheduled
+  const isScheduledArticle =
+    article?.status === ARTICLE_CONSTANTS.STATUS.SCHEDULED;
+  const scheduledAt = article?.scheduledAt;
+  const [isCountdownDialogOpen, setIsCountdownDialogOpen] = useState(false);
+
+  // Handle countdown completion
+  const handleCountdownComplete = () => {
+    // Refresh the page to get updated article status
+    window.location.reload();
+  };
+
+  // Auto-open countdown dialog for scheduled articles
+  useEffect(() => {
+    if (isScheduledArticle && scheduledAt && !isLoading) {
+      setIsCountdownDialogOpen(true);
+    }
+  }, [isScheduledArticle, scheduledAt, isLoading]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -118,7 +123,7 @@ export default function ArticleViewPage() {
               <div className="max-w-md mx-auto px-4">
                 <FileText className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground mx-auto mb-4" />
                 <h1 className="text-lg sm:text-xl font-semibold text-foreground mb-2">
-                  {t("articleViewError", "article")}
+                  {t("notFound", "article")}
                 </h1>
                 <p className="text-sm sm:text-base text-muted-foreground mb-6">
                   {error.message ||
@@ -126,14 +131,13 @@ export default function ArticleViewPage() {
                 </p>
                 <Link href="/">
                   <Button className="w-full sm:w-auto">
-                    {t("articleViewBackToHome", "article")}
+                    {t("backToHome", "article")}
                   </Button>
                 </Link>
               </div>
             </div>
           )}
-
-          {!error && article && (
+          {!error && article && !isScheduledArticle && (
             <article className="max-w-4xl mx-auto">
               {/* Back Button - Mobile optimized */}
               <div className="mb-4 sm:mb-6">
@@ -143,12 +147,12 @@ export default function ArticleViewPage() {
                     size="sm"
                     className="gap-2 w-full sm:w-auto justify-center sm:justify-start"
                   >
-                    ← {t("articleViewBackToHome", "article")}
+                    ← {t("backToHome", "article")}
                   </Button>
                 </Link>
               </div>
 
-              {/* Cover Image Hero Section - Responsive heights */}
+              {/* Cover Image Hero Section - Clean and modern */}
               {article.coverImage && (
                 <div className="mb-6 sm:mb-8">
                   <div className="relative w-full h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px] rounded-xl sm:rounded-2xl overflow-hidden shadow-sm sm:shadow-lg">
@@ -160,20 +164,20 @@ export default function ArticleViewPage() {
                       sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1280px) 80vw, 70vw"
                       priority
                     />
-                    {/* Gradient overlay for better text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                    {/* Subtle gradient overlay for better text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
                   </div>
                 </div>
               )}
 
               {/* Article Header */}
               <header className="mb-6 sm:mb-8">
-                {/* Title - Responsive typography */}
+                {/* Title - Clean typography */}
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-tight tracking-tight">
                   {article.title}
                 </h1>
 
-                {/* Author and Metadata Row - Mobile stacked, tablet+ horizontal */}
+                {/* Author and Metadata Row - Clean layout */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6">
                   {/* Author Info */}
                   <div className="flex items-center gap-3">
@@ -192,74 +196,23 @@ export default function ArticleViewPage() {
                     </div>
                   </div>
 
-                  {/* Action Buttons - Mobile stacked, tablet+ horizontal */}
+                  {/* Action Buttons */}
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                    <CompactLikeButton articleId={articleId} />
+                    {/* <CompactLikeButton articleId={articleId} /> */}
                     <Button
                       variant="outline"
                       size="sm"
                       className="gap-2 justify-center"
                     >
                       <Share2 className="h-4 w-4" />
-                      <span className="hidden sm:inline">Share</span>
+                      <span className="hidden sm:inline">
+                        {t("actions.share", "article")}
+                      </span>
                     </Button>
                   </div>
                 </div>
 
-                {/* Article Engagement Stats */}
-                <div className="flex items-center justify-center gap-6 sm:gap-8 mb-6 sm:mb-8 py-4 sm:py-6 border-y border-border">
-                  {/* Like Count - Prominent Display */}
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="flex items-center gap-2">
-                      <Heart
-                        className={cn(
-                          "h-5 w-5 sm:h-6 sm:w-6 transition-colors",
-                          isLiked && "text-red-500 fill-current",
-                        )}
-                      />
-                      <span className="text-lg sm:text-xl font-semibold text-foreground">
-                        {likeCount}
-                      </span>
-                    </div>
-                    <span className="text-xs sm:text-sm text-muted-foreground">
-                      {likeCount === 1
-                        ? t("reactionLike", "article")
-                        : t("reactionLikes", "article")}
-                    </span>
-                  </div>
-
-                  {/* Read Time - Secondary */}
-                  {article.readTimeMinutes && (
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
-                        <span className="text-lg sm:text-xl font-semibold text-foreground">
-                          {article.readTimeMinutes}
-                        </span>
-                      </div>
-                      <span className="text-xs sm:text-sm text-muted-foreground">
-                        {t("articleViewReadTime", "article")}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Word Count - Secondary */}
-                  {article.wordCount && (
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="flex items-center gap-2">
-                        <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
-                        <span className="text-lg sm:text-xl font-semibold text-foreground">
-                          {article.wordCount}
-                        </span>
-                      </div>
-                      <span className="text-xs sm:text-sm text-muted-foreground">
-                        {t("articleViewWordCount", "article")}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Article Metadata - Compact */}
+                {/* Article Metadata - Clean badges */}
                 <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6">
                   {/* Visibility */}
                   <div className="flex items-center gap-2">
@@ -276,32 +229,10 @@ export default function ArticleViewPage() {
                     </span>
                   </div>
                 </div>
-
-                {/* Tags - Mobile optimized */}
-                {article.tags && article.tags.length > 0 && (
-                  <div className="mb-6 sm:mb-8">
-                    <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                      <Tag className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
-                      <span className="text-xs sm:text-sm font-medium text-muted-foreground">
-                        {t("articleViewTags", "article")}
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {article.tags.map((tag: string) => (
-                        <span
-                          key={tag}
-                          className="text-xs sm:text-sm px-3 sm:px-4 py-1 sm:py-2 rounded-full bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors cursor-pointer"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </header>
 
-              {/* Article Content - Responsive prose */}
-              <div className="prose prose-sm sm:prose-base lg:prose-lg prose-slate max-w-none dark:prose-invert prose-headings:scroll-mt-20">
+              {/* Article Content - Clean typography */}
+              <div className="prose prose-sm sm:prose-base lg:prose-lg prose-slate max-w-none dark:prose-invert prose-headings:scroll-mt-20 prose-p:leading-relaxed">
                 <ContentRenderer
                   content={article.content}
                   className="article-content"
@@ -311,53 +242,121 @@ export default function ArticleViewPage() {
                 />
               </div>
 
-              {/* Article Footer - Mobile optimized */}
-              <footer className="mt-12 sm:mt-16 pt-6 sm:pt-8 border-t border-border">
-                <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
-                  {/* Author Info */}
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <User className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground text-sm sm:text-base">
-                        User ID {article.userId}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-muted-foreground">
-                        {t("articleViewAuthor", "article")}
-                      </p>
-                    </div>
+              {/* Tags - Moved to end of article */}
+              {article.tagsArray && article.tagsArray.length > 0 && (
+                <div className="mt-8 sm:mt-10 mb-6 sm:mb-8">
+                  <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                    <Tag className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                    <span className="text-xs sm:text-sm font-medium text-muted-foreground">
+                      {t("actions.tags", "article")}
+                    </span>
                   </div>
-
-                  {/* Last Updated */}
-                  <div className="text-xs sm:text-sm text-muted-foreground">
-                    <Calendar className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1 sm:mr-2" />
-                    {t("articleViewLastUpdated", "article")}:{" "}
-                    {formatDate(article.updatedAt)}
-                  </div>
-                </div>
-
-                {/* Bottom Action Buttons - Mobile stacked, tablet+ horizontal */}
-                <div className="flex flex-col sm:flex-row justify-center mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-border">
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
-                    <LargeLikeButton articleId={articleId} />
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="gap-2 justify-center"
-                    >
-                      <Share2 className="h-4 w-4 sm:h-5 sm:w-5" />
-                      <span className="text-sm sm:text-base">
-                        Share article
+                  <div className="flex flex-wrap gap-2">
+                    {article.tagsArray.map((tag: string, index: number) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors"
+                      >
+                        #{tag}
                       </span>
-                    </Button>
+                    ))}
                   </div>
                 </div>
-              </footer>
+              )}
+
+              {/* Article Engagement Stats - Moved below content, above author card */}
+              <div className="flex items-center justify-center gap-6 sm:gap-8 mt-8 sm:mt-10 mb-6 sm:mb-8 py-4 sm:py-6 border-y border-border">
+                {/* Like Count */}
+                <div className="flex flex-col items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <Heart
+                      className={cn(
+                        "h-5 w-5 sm:h-6 sm:w-6 transition-colors",
+                        isLiked && "text-red-500 fill-current",
+                      )}
+                    />
+                    <span className="text-lg sm:text-xl font-semibold text-foreground">
+                      {likeCount}
+                    </span>
+                  </div>
+                  <span className="text-xs sm:text-sm text-muted-foreground">
+                    {likeCount === 1
+                      ? t("actions.reactions.like", "article")
+                      : t("actions.reactions.likes", "article")}
+                  </span>
+                </div>
+
+                {/* Read Time */}
+                {article.readTimeMinutes && (
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
+                      <span className="text-lg sm:text-xl font-semibold text-foreground">
+                        {article.readTimeMinutes}
+                      </span>
+                    </div>
+                    <span className="text-xs sm:text-sm text-muted-foreground">
+                      {t("actions.readTime", "article")}
+                    </span>
+                  </div>
+                )}
+
+                {/* Word Count */}
+                {article.wordCount && (
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
+                      <span className="text-lg sm:text-xl font-semibold text-foreground">
+                        {article.wordCount}
+                      </span>
+                    </div>
+                    <span className="text-xs sm:text-sm text-muted-foreground">
+                      {t("actions.wordCount", "article")}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Author Profile Card - Using reusable component */}
+              <div className="mt-2 sm:mt-4 pt-2 sm:pt-4">
+                <AuthorCard
+                  author={{
+                    id: article.userId,
+                    name: `User ID ${article.userId}`,
+                    bio: "This is a sample author bio. In a real application, this would come from the user's profile data. The author shares insights about technology, business, and innovation through their articles.",
+                    website: "https://example.com",
+                    socialLinks: {
+                      github: "#",
+                      x: "#",
+                      instagram: "#",
+                      rss: "#",
+                    },
+                    stats: {
+                      followers: 1234,
+                      articles: 42,
+                    },
+                  }}
+                  onFollow={(authorId) => {
+                    console.log(`Following author: ${authorId}`);
+                    // TODO: Implement follow functionality
+                  }}
+                />
+              </div>
             </article>
           )}
         </Skeletonize>
       </div>
+
+      {/* Scheduled Countdown Dialog - Auto-opens for scheduled articles */}
+      {isScheduledArticle && scheduledAt && (
+        <ScheduledCountdownDialog
+          scheduledAt={scheduledAt}
+          articleTitle={article?.title}
+          onComplete={handleCountdownComplete}
+          open={isCountdownDialogOpen}
+          onOpenChange={setIsCountdownDialogOpen}
+        />
+      )}
     </div>
   );
 }

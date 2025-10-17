@@ -1,10 +1,10 @@
 import { Button, Input, Label } from "@/components/ui";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/core";
 import { cn } from "@/lib/utils";
 // Keep only one import for Input and Label above
@@ -45,11 +45,11 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input 
-                  id="password" 
-                  type="password" 
+                <Input
+                  id="password"
+                  type="password"
                   autoComplete="current-password"
-                  required 
+                  required
                 />
               </div>
               <div className="flex flex-col gap-3">

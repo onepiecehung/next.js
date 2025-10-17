@@ -80,9 +80,9 @@ export default function LoginPage() {
             onRegister={handleRegister}
             onBack={handleBack}
             showBackButton={true}
-            title={t("loginTitle", "auth") || "Welcome back!"}
+            title={t("login.title", "auth") || "Welcome back!"}
             description={
-              t("loginSubtitle", "auth") || "Please login to continue"
+              t("login.description", "auth") || "Please login to continue"
             }
           />
         )}

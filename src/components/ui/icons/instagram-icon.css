@@ -1,0 +1,20 @@
+/* Custom Instagram Icon Styling */
+.instagram-icon {
+  /* Base icon styles */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Custom hover effects if needed */
+.instagram-icon:hover {
+  /* Add any custom hover effects here */
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+/* Dark mode adjustments if needed */
+@media (prefers-color-scheme: dark) {
+  .instagram-icon {
+    /* Dark mode specific styles */
+  }
+}

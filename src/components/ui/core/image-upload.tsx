@@ -148,7 +148,8 @@ export function ImageUpload({
   };
 
   // Get file preview URL - only show if we have a value, no temp file, and not removed
-  const previewUrl = value && !tempFile && !isRemoved ? URL.createObjectURL(value) : null;
+  const previewUrl =
+    value && !tempFile && !isRemoved ? URL.createObjectURL(value) : null;
 
   return (
     <div className={cn("space-y-2", className)}>

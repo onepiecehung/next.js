@@ -4,14 +4,6 @@
   "notFound": "Article not found",
   "backToHome": "Back to Home",
   "publishedOn": "Published on",
-  "readTime": "min read",
-  "wordCount": "words",
-  "tags": "Tags",
-  "noTags": "No tags",
-  "visibility": "Visibility",
-  "status": "Status",
-  "author": "Author",
-  "lastUpdated": "Last updated",
   "redirect": {
     "loading": "Loading article...",
     "loadingDesc": "Redirecting to the article page...",
@@ -37,12 +29,48 @@
     "success": "Article scheduled for publication!",
     "successDescription": "Article scheduled for publication at {date}",
     "error": "Failed to schedule article",
-    "errorDescription": "Failed to schedule article"
+    "errorDescription": "Failed to schedule article",
+    "creating": "Creating article...",
+    "updating": "Updating article...",
+    "deleting": "Deleting article...",
+    "scheduledFor": "Scheduled for {date}",
+    "countdownTitle": "Scheduled Publication",
+    "countdownDescription": "This article will be published in:",
+    "publishing": "Publishing now...",
+    "published": "Published",
+    "scheduleDialogTitle": "Schedule Publication",
+    "scheduleDialogDescription": "Choose when you want to publish this article",
+    "scheduleButton": "Schedule Article",
+    "schedulePlaceholder": "Select publication date and time",
+    "timeUnits": {
+      "days": "d",
+      "hours": "h",
+      "minutes": "m",
+      "seconds": "s"
+    }
   },
-  "reactions": {
-    "like": "Like",
-    "liked": "Liked",
-    "likes": "likes",
-    "likeError": "Failed to update like"
+  "actions": {
+    "share": "Share",
+    "reactions": {
+      "like": "like",
+      "liked": "Liked ",
+      "likes": "likes"
+    },
+    "readTime": "min read",
+    "wordCount": "words",
+    "tags": "Tags",
+    "noTags": "No tags",
+    "visibility": "Visibility",
+    "status": "Status",
+    "author": "Author",
+    "lastUpdated": "Last updated"
+  },
+  "authorCard": {
+    "follow": "Follow",
+    "followers": "followers",
+    "articles": "articles",
+    "website": "Website",
+    "bio": "About the author",
+    "socialLinks": "Social Links"
   }
 }

@@ -35,20 +35,36 @@ export * from "./navigation";
 export * from "./shadcn-io/input-otp";
 
 // Re-export commonly used components for convenience
-export { Avatar, AvatarFallback, AvatarImage, Button, Input, Label, buttonVariants } from "./core";
+export {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
+  Input,
+  Label,
+  buttonVariants,
+} from "./core";
 export { XIcon } from "./icons";
 export {
-    Dialog, DialogContent, DialogTrigger, DropdownMenu, DropdownMenuContent,
-    DropdownMenuItem, DropdownMenuTrigger
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "./layout";
 export {
-    CompactLanguageSwitcher,
-    FullLanguageSwitcher, LanguageSwitcher, UserDropdown
+  CompactLanguageSwitcher,
+  FullLanguageSwitcher,
+  LanguageSwitcher,
+  UserDropdown,
 } from "./navigation";
 export {
-    InputOTP,
-    InputOTPGroup, InputOTPSeparator, InputOTPSlot
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
 } from "./shadcn-io/input-otp";
 export { ThemeSelector, ThemeToggle } from "./theme";
 export { ContentRenderer } from "./utilities";
-

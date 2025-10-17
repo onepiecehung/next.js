@@ -174,12 +174,12 @@ export async function checkAndRefreshToken(): Promise<boolean> {
  * Firebase Google login action
  */
 export async function loginWithGoogleAction(): Promise<User> {
-  const user = await FirebaseAuthAPI.loginWithGoogle();
-
-  // Get token for storage
+  // Call Firebase login once and reuse the result
   const firebaseUser = await (await import("./firebase")).signInWithGoogle();
   const idToken = await firebaseUser.getIdToken();
-  const { token } = await AuthAPI.firebaseLogin({ idToken });
+
+  // Get user data and token from backend
+  const { user, token } = await AuthAPI.firebaseLogin({ idToken });
 
   storeTokens(token.accessToken, token.refreshToken);
   return user;
@@ -189,12 +189,12 @@ export async function loginWithGoogleAction(): Promise<User> {
  * Firebase GitHub login action
  */
 export async function loginWithGithubAction(): Promise<User> {
-  const user = await FirebaseAuthAPI.loginWithGithub();
-
-  // Get token for storage
+  // Call Firebase login once and reuse the result
   const firebaseUser = await (await import("./firebase")).signInWithGithub();
   const idToken = await firebaseUser.getIdToken();
-  const { token } = await AuthAPI.firebaseLogin({ idToken });
+
+  // Get user data and token from backend
+  const { user, token } = await AuthAPI.firebaseLogin({ idToken });
 
   storeTokens(token.accessToken, token.refreshToken);
   return user;
@@ -204,12 +204,12 @@ export async function loginWithGithubAction(): Promise<User> {
  * Firebase X (Twitter) login action
  */
 export async function loginWithXAction(): Promise<User> {
-  const user = await FirebaseAuthAPI.loginWithX();
-
-  // Get token for storage
+  // Call Firebase login once and reuse the result
   const firebaseUser = await (await import("./firebase")).signInWithX();
   const idToken = await firebaseUser.getIdToken();
-  const { token } = await AuthAPI.firebaseLogin({ idToken });
+
+  // Get user data and token from backend
+  const { user, token } = await AuthAPI.firebaseLogin({ idToken });
 
   storeTokens(token.accessToken, token.refreshToken);
   return user;

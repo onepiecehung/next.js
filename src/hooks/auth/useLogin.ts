@@ -13,32 +13,7 @@ import {
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { toast } from "sonner";
-
-// Helper function to extract error message from various error types
-function extractErrorMessage(error: unknown, defaultMessage: string): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  if (typeof error === "object" && error !== null && "response" in error) {
-    const response = (error as { response?: unknown }).response;
-    if (
-      typeof response === "object" &&
-      response !== null &&
-      "data" in response
-    ) {
-      const data = (response as { data?: unknown }).data;
-      if (typeof data === "object" && data !== null && "message" in data) {
-        const message = (data as { message?: unknown }).message;
-        if (typeof message === "string") {
-          return message;
-        }
-      }
-    }
-  }
-
-  return defaultMessage;
-}
+import { extractErrorMessage } from "@/lib/utils/error-extractor";
 
 /**
  * Custom hook for handling login logic

@@ -46,7 +46,6 @@ type OTPFormValues = {
   code: string;
 };
 
-
 interface OTPLoginFormProps {
   readonly onBack: () => void;
   readonly onSuccess: () => void;
@@ -118,7 +117,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
       try {
         isSubmittingRef.current = true;
         setHasSubmitted(true); // Mark that OTP has been submitted
-        
+
         console.log("Submitting OTP:", { email, code: values.code, requestId });
         await handleOTPLogin({
           email,
@@ -142,7 +141,13 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
   const otpCode = otpForm.watch("code");
   useEffect(() => {
     // Auto-submit only if OTP is complete, not loading, hasn't been submitted yet, and not currently submitting
-    if (otpCode && otpCode.length === 6 && !isLoggingIn && !hasSubmitted && !isSubmittingRef.current) {
+    if (
+      otpCode &&
+      otpCode.length === 6 &&
+      !isLoggingIn &&
+      !hasSubmitted &&
+      !isSubmittingRef.current
+    ) {
       console.log("Auto-submitting OTP...");
       // Use requestAnimationFrame to avoid forced reflow
       const timer = requestAnimationFrame(() => {
@@ -172,7 +177,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
         error,
         "errors.requestError",
         t,
-        "toast"
+        "toast",
       );
       toast.error(errorMessage);
     } finally {
@@ -201,7 +206,7 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
         error,
         "errors.resendError",
         t,
-        "auth"
+        "auth",
       );
       toast.error(errorMessage);
     } finally {

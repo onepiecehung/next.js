@@ -3,7 +3,7 @@
 import { ClientOnly } from "@/components/ui";
 import { authLoadingAtom, currentUserAtom, fetchMeAction } from "@/lib/auth";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function AuthProvider({
   children,
@@ -12,12 +12,23 @@ export default function AuthProvider({
 }) {
   const [, setUser] = useAtom(currentUserAtom);
   const [, setAuthLoading] = useAtom(authLoadingAtom);
+  const hasCheckedAuth = useRef(false);
 
   useEffect(() => {
+    // Prevent double calls in development mode or component re-mounting
+    if (hasCheckedAuth.current) {
+      console.log("AuthProvider: Auth already checked, skipping...");
+      return;
+    }
+
     // Check if user is already authenticated on app load
     const checkAuth = async () => {
       try {
-        console.log("AuthProvider: Starting auth check...");
+        console.log(
+          "AuthProvider: Starting auth check...",
+          new Date().toISOString(),
+        );
+        hasCheckedAuth.current = true;
         setAuthLoading(true);
 
         // Try to fetch user data directly
@@ -33,6 +44,7 @@ export default function AuthProvider({
       } finally {
         console.log(
           "AuthProvider: Auth check complete, setting loading to false",
+          new Date().toISOString(),
         );
         setAuthLoading(false);
       }

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 import { ProtectedRoute } from "@/components/features/auth";
 import { TipTapEditor } from "@/components/features/text-editor";
@@ -22,6 +23,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
+import { TagsInputComponent } from "@/components/ui/layout/tags-input";
 import {
   useArticleFormState,
   useCreateArticle,
@@ -71,30 +73,26 @@ export default function WritePage() {
     content: string;
     tags: string[];
     visibility: string;
-    scheduledPublish?: string;
+    status: string;
+    scheduledAt?: string;
   }) => {
     const createRequest = {
       ...articleData,
       contentFormat: "html" as const,
-      status: (visibility === "draft" ? "draft" : "published") as
-        | "draft"
-        | "published"
-        | "scheduled",
-      visibility: visibility as "public" | "unlisted" | "private",
+      status: articleData.status as "draft" | "published" | "scheduled",
+      visibility: articleData.visibility as "public" | "unlisted" | "private",
+      scheduledAt: articleData.scheduledAt,
     };
 
     createArticle(createRequest, {
       onSuccess: (article) => {
         // Reset form after successful creation
         resetForm();
-        // Redirect to article view page with a small delay to ensure cleanup
-        router.push(`/article/${article.id}/${article.slug}`);
+        router.push(`/article/${article.id}`);
       },
-      // onError is now handled by the hook itself
     });
   };
 
-  // Simulate loading delay
   React.useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 500);
     return () => clearTimeout(timer);
@@ -128,8 +126,28 @@ export default function WritePage() {
     };
   };
 
+  // Helper function to validate required fields
+  const validateRequiredFields = () => {
+    if (!title.trim()) {
+      toast.error(t("validation.titleEmpty", "write"));
+      return false;
+    }
+
+    if (!content.trim() || content.trim() === "<p></p>") {
+      toast.error(t("validation.contentEmpty", "write"));
+      return false;
+    }
+
+    return true;
+  };
+
   // Handle save draft
   const handleSaveDraft = async () => {
+    // Validate required fields first
+    if (!validateRequiredFields()) {
+      return;
+    }
+
     const isValid = validateForm();
     if (!isValid) {
       return;
@@ -141,6 +159,7 @@ export default function WritePage() {
         ...articleData,
         tags: articleData.tags || [],
         visibility: "draft",
+        status: ARTICLE_CONSTANTS.STATUS.DRAFT,
       });
     } catch {
       // Error handled by hook
@@ -149,6 +168,11 @@ export default function WritePage() {
 
   // Handle publish article (immediate or scheduled)
   const handlePublishArticle = async () => {
+    // Validate required fields first
+    if (!validateRequiredFields()) {
+      return;
+    }
+
     const isValid = validateForm();
     if (!isValid) {
       return;
@@ -159,10 +183,11 @@ export default function WritePage() {
       handleCreateArticle({
         ...articleData,
         tags: articleData.tags || [],
-        visibility: scheduledPublish
-          ? ARTICLE_CONSTANTS.VISIBILITY.PRIVATE
-          : visibility,
-        scheduledPublish: scheduledPublish?.toISOString(),
+        visibility: visibility, // Keep the selected visibility
+        status: scheduledPublish
+          ? ARTICLE_CONSTANTS.STATUS.SCHEDULED
+          : ARTICLE_CONSTANTS.STATUS.PUBLISHED,
+        scheduledAt: scheduledPublish?.toISOString(),
       });
     } catch {
       // Error handled by hook
@@ -182,8 +207,7 @@ export default function WritePage() {
                   {t("title", "write")}
                 </h1>
                 <p className="text-xs sm:text-sm md:text-base text-muted-foreground line-clamp-2 md:line-clamp-none">
-                  Create and publish your articles with our modern rich text
-                  editor
+                  {t("description", "write")}
                 </p>
               </div>
 
@@ -226,7 +250,7 @@ export default function WritePage() {
                       onChange={(e) => setTitle(e.target.value)}
                       placeholder={t("form.titlePlaceholder", "write")}
                       maxLength={256}
-                      className="w-full px-3 sm:px-4 py-3 sm:py-3.5 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-base sm:text-lg transition-shadow"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-base sm:text-lg transition-shadow"
                     />
                     <p className="text-xs text-muted-foreground mt-1.5">
                       {(title || "").length}/256 characters
@@ -252,26 +276,53 @@ export default function WritePage() {
                     </div>
                   </div>
 
-                  {/* Tags Input - Better mobile UX */}
+                  {/* Tags Input - Interactive Tags Component */}
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-foreground mb-1.5 sm:mb-2">
                       {t("form.tags", "write")}
                     </label>
-                    <input
-                      type="text"
-                      value={tags.join(", ")}
-                      onChange={(e) => {
-                        const tagList = e.target.value
-                          .split(",")
-                          .map((tag) => tag.trim())
-                          .filter((tag) => tag.length > 0);
-                        setTags(tagList.slice(0, 20)); // Limit to 20 tags
+                    <TagsInputComponent
+                      tags={[]} // Empty array for now - could be populated with existing tags
+                      selectedTags={tags.map((tag: string) =>
+                        tag.toLowerCase().replace(/\s+/g, "-"),
+                      )}
+                      onTagsChange={(newSelectedTags) => {
+                        // Convert back to original tag format and remove duplicates
+                        const tagLabels = newSelectedTags.map((tagId) =>
+                          tagId
+                            .replace(/-/g, " ")
+                            .replace(/\b\w/g, (l: string) => l.toUpperCase()),
+                        );
+
+                        // Remove duplicates by converting to Set and back to Array
+                        const uniqueTags = Array.from(new Set(tagLabels));
+                        setTags(uniqueTags.slice(0, 20)); // Limit to 20 tags
+                      }}
+                      onTagCreate={(newTag) => {
+                        // Add new tag to the list, but check for duplicates first
+                        const formattedTag = newTag.label
+                          .replace(/-/g, " ")
+                          .replace(/\b\w/g, (l: string) => l.toUpperCase());
+
+                        // Check if tag already exists (case-insensitive)
+                        const tagExists = tags.some(
+                          (existingTag) =>
+                            existingTag.toLowerCase() ===
+                            formattedTag.toLowerCase(),
+                        );
+
+                        if (!tagExists && tags.length < 20) {
+                          setTags([...tags, formattedTag]);
+                        }
                       }}
                       placeholder={t("form.tagsPlaceholder", "write")}
-                      className="w-full px-3 sm:px-4 py-3 sm:py-3.5 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm sm:text-base transition-shadow"
+                      allowCreate={true}
+                      allowRemove={true}
+                      disabled={false}
+                      className="w-full"
                     />
                     <p className="text-xs text-muted-foreground mt-1.5">
-                      {(tags || []).length}/20 tags (separate with commas)
+                      {(tags || []).length}/20 tags
                     </p>
                   </div>
 
@@ -447,9 +498,7 @@ export default function WritePage() {
                   onClick={handleSaveDraft}
                   disabled={isSubmitting}
                 >
-                  {isSubmitting
-                    ? "Saving..."
-                    : t("form.saveDraft", "write")}
+                  {isSubmitting ? "Saving..." : t("form.saveDraft", "write")}
                 </Button>
 
                 <Button

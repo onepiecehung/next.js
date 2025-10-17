@@ -1,5 +1,6 @@
 {
   "title": "Write Your Article",
+  "description": "Create and publish your articles with our modern rich text editor",
   "accessDenied": "Access Denied",
   "loginRequired": "You need to be logged in to access this page.",
   "goToHome": "Go to Home",
@@ -52,12 +53,16 @@
     "titleTooLong": "Title must be less than 256 characters",
     "contentRequired": "Content is required",
     "summaryTooLong": "Summary must be less than 1000 characters",
-    "tagsTooMany": "Maximum 20 tags allowed"
+    "tagsTooMany": "Maximum 20 tags allowed",
+    "titleEmpty": "Please enter a title for your article",
+    "contentEmpty": "Please write some content for your article"
   },
   "success": {
     "draft": "Draft created successfully!",
     "published": "Article published successfully!",
-    "scheduled": "Article scheduled for publication!"
+    "scheduled": "Article scheduled for publication!",
+    "redirecting": "Redirecting to your article...",
+    "redirectCountdown": "Redirecting in {seconds}s"
   },
   "errors": {
     "create": "Failed to create article",
