@@ -289,20 +289,30 @@ export default function WritePage() {
                         tag.toLowerCase().replace(/\s+/g, "-"),
                       )}
                       onTagsChange={(newSelectedTags) => {
-                        // Convert back to original tag format
+                        // Convert back to original tag format and remove duplicates
                         const tagLabels = newSelectedTags.map((tagId) =>
                           tagId
                             .replace(/-/g, " ")
                             .replace(/\b\w/g, (l: string) => l.toUpperCase()),
                         );
-                        setTags(tagLabels.slice(0, 20)); // Limit to 20 tags
+                        
+                        // Remove duplicates by converting to Set and back to Array
+                        const uniqueTags = Array.from(new Set(tagLabels));
+                        setTags(uniqueTags.slice(0, 20)); // Limit to 20 tags
                       }}
                       onTagCreate={(newTag) => {
-                        // Add new tag to the list
+                        // Add new tag to the list, but check for duplicates first
                         const formattedTag = newTag.label
                           .replace(/-/g, " ")
                           .replace(/\b\w/g, (l: string) => l.toUpperCase());
-                        if (!tags.includes(formattedTag) && tags.length < 20) {
+                        
+                        // Check if tag already exists (case-insensitive)
+                        const tagExists = tags.some(
+                          (existingTag) => 
+                            existingTag.toLowerCase() === formattedTag.toLowerCase()
+                        );
+                        
+                        if (!tagExists && tags.length < 20) {
                           setTags([...tags, formattedTag]);
                         }
                       }}
