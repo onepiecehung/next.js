@@ -21,6 +21,10 @@ import { useEffect, useState } from "react";
  * Displays a single article with full content, metadata, and author information
  * URL pattern: /article/[article_id]/[article_slug]
  * Layout inspired by note.jp design
+ *
+ * Note: This is a client component, so metadata is handled by the root layout
+ * For dynamic metadata based on article data, consider converting to Server Component
+ * or using Next.js generateMetadata function
  */
 export default function ArticleViewPage() {
   const params = useParams();

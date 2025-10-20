@@ -1,21 +1,24 @@
 "use client";
 
+import { useI18n } from "@/components/providers/i18n-provider";
 import { Button } from "@/components/ui";
-import Link from "next/link";
 import {
   BookOpen,
-  PenTool,
-  User,
-  Sparkles,
-  Palette,
   Edit3,
+  Palette,
+  PenTool,
+  Sparkles,
+  User,
 } from "lucide-react";
-import { useI18n } from "@/components/providers/i18n-provider";
+import Link from "next/link";
 
 /**
  * Internationalized Home Page Component
  * Welcome page with navigation to main features
  * Uses custom i18n hook for multi-language support
+ *
+ * Note: This is a client component, so metadata is handled by the root layout
+ * For server-side metadata, consider converting to Server Component
  */
 export default function HomePage() {
   const { t } = useI18n();
