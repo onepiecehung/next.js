@@ -177,7 +177,6 @@ export function useUserArticlesLayout(
           return {
             ...baseArticle,
             // Grid-specific formatting
-            excerpt: article.content?.substring(0, 150) + "...",
             readTime: Math.max(
               1,
               Math.ceil((article.content?.split(/\s+/).length || 0) / 200),
@@ -185,13 +184,22 @@ export function useUserArticlesLayout(
             formattedDate: new Date(article.createdAt).toLocaleDateString(),
             statusColor: getStatusColor(article.status),
             visibilityIcon: getVisibilityIcon(article.visibility),
+            statusText: getStatusText(article.status),
+            visibilityText: getVisibilityText(article.visibility),
+            // Format cover image data
+            coverImage: article.coverImage
+              ? {
+                  url: article.coverImage.url,
+                  thumbnailUrl: article.coverImage.thumbnailUrl,
+                  altText: article.coverImage.altText || article.title,
+                }
+              : undefined,
           };
 
         case "list":
           return {
             ...baseArticle,
             // List-specific formatting
-            excerpt: article.content?.substring(0, 200) + "...",
             readTime: Math.max(
               1,
               Math.ceil((article.content?.split(/\s+/).length || 0) / 200),
@@ -199,13 +207,20 @@ export function useUserArticlesLayout(
             formattedDate: new Date(article.createdAt).toLocaleDateString(),
             statusBadge: getStatusBadge(article.status),
             visibilityBadge: getVisibilityBadge(article.visibility),
+            // Format cover image data
+            coverImage: article.coverImage
+              ? {
+                  url: article.coverImage.url,
+                  thumbnailUrl: article.coverImage.thumbnailUrl,
+                  altText: article.coverImage.altText || article.title,
+                }
+              : undefined,
           };
 
         case "card":
           return {
             ...baseArticle,
             // Card-specific formatting
-            excerpt: article.content?.substring(0, 100) + "...",
             readTime: Math.max(
               1,
               Math.ceil((article.content?.split(/\s+/).length || 0) / 200),
@@ -213,6 +228,14 @@ export function useUserArticlesLayout(
             formattedDate: new Date(article.createdAt).toLocaleDateString(),
             statusText: getStatusText(article.status),
             visibilityText: getVisibilityText(article.visibility),
+            // Format cover image data
+            coverImage: article.coverImage
+              ? {
+                  url: article.coverImage.url,
+                  thumbnailUrl: article.coverImage.thumbnailUrl,
+                  altText: article.coverImage.altText || article.title,
+                }
+              : undefined,
           };
 
         default:
@@ -223,7 +246,7 @@ export function useUserArticlesLayout(
   // Layout-specific configuration
   const layoutConfig = {
     grid: {
-      containerClass: "grid gap-6 sm:grid-cols-2 lg:grid-cols-3",
+      containerClass: "grid gap-6 sm:grid-cols-2",
       itemClass: "w-full",
     },
     list: {
@@ -244,6 +267,12 @@ export function useUserArticlesLayout(
     layoutConfig: layoutConfig[layout],
     totalCount: data?.data?.metaData?.totalRecords || 0,
     hasMore: data?.data?.metaData?.hasNextPage || false,
+    // Pagination info
+    currentPage: data?.data?.metaData?.currentPage || 1,
+    totalPages: data?.data?.metaData?.totalPages || 1,
+    pageSize: data?.data?.metaData?.pageSize || 10,
+    hasNextPage: data?.data?.metaData?.hasNextPage || false,
+    hasPreviousPage: (data?.data?.metaData?.currentPage || 1) > 1,
     // Layout-specific helpers
     getStatusColor,
     getVisibilityIcon,
