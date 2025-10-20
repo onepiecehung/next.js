@@ -1,13 +1,15 @@
 import { http } from "@/lib/http";
-import { Article } from "@/lib/interface";
+import {
+  Article,
+  CreateArticleDto,
+  UpdateArticleRequest,
+} from "@/lib/interface";
 import type {
   AdvancedQueryParams,
   ApiResponse,
   ApiResponseCursor,
   ApiResponseOffset,
-  CreateArticleDto,
   QueryParamsWithCursor,
-  UpdateArticleRequest,
 } from "@/lib/types";
 
 /**

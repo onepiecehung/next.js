@@ -81,7 +81,9 @@ export default function WritePage() {
       contentFormat: "html" as const,
       status: articleData.status as "draft" | "published" | "scheduled",
       visibility: articleData.visibility as "public" | "unlisted" | "private",
-      scheduledAt: articleData.scheduledAt,
+      scheduledAt: articleData.scheduledAt
+        ? new Date(articleData.scheduledAt)
+        : undefined,
     };
 
     createArticle(createRequest, {

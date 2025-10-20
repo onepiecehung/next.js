@@ -6,10 +6,10 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { ArticleAPI } from "@/lib/api/article";
 import { ARTICLE_CONSTANTS } from "@/lib/constants";
 import type {
-  AdvancedQueryParams,
   CreateArticleDto,
   UpdateArticleRequest,
-} from "@/lib/types";
+} from "@/lib/interface/article.interface";
+import type { AdvancedQueryParams } from "@/lib/types";
 
 /**
  * Hook for fetching a single article by ID

@@ -53,3 +53,15 @@ export interface Article extends BaseEntityCustom {
 
   publishedAt?: Date;
 }
+
+export interface CreateArticleDto extends Partial<Article> {
+  title: string;
+  content: string;
+  contentFormat: "html" | "markdown";
+  visibility: "public" | "unlisted" | "private";
+  status: "draft" | "published" | "scheduled";
+  userId?: string;
+  scheduledAt?: Date; // ISO string for scheduled articles
+}
+
+export type UpdateArticleRequest = Partial<Article>;
