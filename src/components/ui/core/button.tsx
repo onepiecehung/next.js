@@ -1,7 +1,7 @@
 // Re-export Calumma button so all core imports use a single, consistent implementation
-import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
 

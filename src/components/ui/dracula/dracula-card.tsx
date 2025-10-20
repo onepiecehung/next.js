@@ -1,5 +1,5 @@
-import * as React from "react";
 import { cn } from "@/lib/utils";
+import * as React from "react";
 
 const DraculaCard = React.forwardRef<
   HTMLDivElement,
@@ -76,10 +76,6 @@ const DraculaCardFooter = React.forwardRef<
 DraculaCardFooter.displayName = "DraculaCardFooter";
 
 export {
-  DraculaCard,
-  DraculaCardHeader,
-  DraculaCardFooter,
-  DraculaCardTitle,
-  DraculaCardDescription,
-  DraculaCardContent,
+  DraculaCard, DraculaCardContent, DraculaCardDescription, DraculaCardFooter, DraculaCardHeader, DraculaCardTitle
 };
+
