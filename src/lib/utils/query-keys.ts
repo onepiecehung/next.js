@@ -5,6 +5,8 @@
  * @see https://tkdodo.eu/blog/effective-react-query-keys
  */
 
+import { AdvancedQueryParams } from "../types";
+
 export const queryKeys = {
   // Auth related queries
   auth: {
@@ -16,7 +18,7 @@ export const queryKeys = {
   articles: {
     all: () => ["articles"] as const,
     lists: () => ["articles", "list"] as const,
-    list: (params?: Record<string, unknown>) =>
+    list: (params?: AdvancedQueryParams) =>
       ["articles", "list", params] as const,
     details: () => ["articles", "detail"] as const,
     detail: (id: string) => ["articles", "detail", id] as const,
@@ -24,6 +26,8 @@ export const queryKeys = {
     byTag: (tag: string) => ["articles", "tag", tag] as const,
     byCategory: (category: string) =>
       ["articles", "category", category] as const,
+    myList: (userId: string, params?: AdvancedQueryParams) =>
+      ["articles", "my", "list", userId, params] as const,
   },
 
   // Settings related queries

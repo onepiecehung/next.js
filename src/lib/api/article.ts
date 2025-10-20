@@ -72,6 +72,16 @@ export class ArticleAPI {
   }
 
   /**
+   * Get articles list with offset pagination
+   */
+  static async myArticlesOffset(
+    params?: AdvancedQueryParams,
+  ): Promise<ApiResponseOffset<Article>> {
+    const response = await http.get<ApiResponseOffset<Article>>(`${this.BASE_URL}/my`, { params });
+    return response.data;
+  }
+
+  /**
    * Get articles list with cursor pagination
    */
   static async getArticlesCursor(

@@ -10,6 +10,7 @@ import type {
   UpdateArticleRequest,
 } from "@/lib/interface/article.interface";
 import type { AdvancedQueryParams } from "@/lib/types";
+import { queryKeys } from "@/lib/utils/query-keys";
 
 /**
  * Hook for fetching a single article by ID
@@ -17,7 +18,7 @@ import type { AdvancedQueryParams } from "@/lib/types";
  */
 export function useArticle(articleId: string) {
   return useQuery({
-    queryKey: ["article", articleId],
+    queryKey: queryKeys.articles.detail(articleId),
     queryFn: () => ArticleAPI.getArticle(articleId),
     enabled: !!articleId && articleId !== "undefined" && articleId !== "null",
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -31,8 +32,20 @@ export function useArticle(articleId: string) {
  */
 export function useArticles(params?: AdvancedQueryParams) {
   return useQuery({
-    queryKey: ["articles", params],
+    queryKey: queryKeys.articles.list(params),
     queryFn: () => ArticleAPI.getArticlesOffset(params),
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    placeholderData: (previousData) => previousData, // Keep previous data while fetching new
+  });
+}
+
+/**
+ * Hook for fetching my articles list with pagination
+ */
+export function useMyArticles(userId: string, params?: AdvancedQueryParams) {
+  return useQuery({
+    queryKey: queryKeys.articles.myList(userId, params),
+    queryFn: () => ArticleAPI.myArticlesOffset(params),
     staleTime: 2 * 60 * 1000, // 2 minutes
     placeholderData: (previousData) => previousData, // Keep previous data while fetching new
   });
@@ -76,10 +89,10 @@ export function useCreateArticle() {
         loading: t("schedule.creating", "article") || "Creating article...",
         success: (article) => {
           // Invalidate and refetch articles list
-          queryClient.invalidateQueries({ queryKey: ["articles"] });
+          queryClient.invalidateQueries({ queryKey: queryKeys.articles.all() });
 
           // Add the new article to cache
-          queryClient.setQueryData(["article", article.id], article);
+          queryClient.setQueryData(queryKeys.articles.detail(article.id), article);
 
           // Handle different success scenarios with appropriate messages
           switch (article.status) {
@@ -140,10 +153,10 @@ export function useUpdateArticle() {
         loading: t("schedule.updating", "article") || "Updating article...",
         success: (article) => {
           // Update the article in cache
-          queryClient.setQueryData(["article", article.id], article);
+          queryClient.setQueryData(queryKeys.articles.detail(article.id), article);
 
           // Invalidate articles list to refetch
-          queryClient.invalidateQueries({ queryKey: ["articles"] });
+          queryClient.invalidateQueries({ queryKey: queryKeys.articles.all() });
 
           return (
             t("status.published", "article") +
@@ -184,10 +197,10 @@ export function useDeleteArticle() {
         loading: t("schedule.deleting", "article") || "Deleting article...",
         success: () => {
           // Remove article from cache
-          queryClient.removeQueries({ queryKey: ["article", id] });
+          queryClient.removeQueries({ queryKey: queryKeys.articles.detail(id) });
 
           // Invalidate articles list
-          queryClient.invalidateQueries({ queryKey: ["articles"] });
+          queryClient.invalidateQueries({ queryKey: queryKeys.articles.all() });
 
           return (
             t("status.archived", "article") +
