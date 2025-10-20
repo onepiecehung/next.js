@@ -12,69 +12,93 @@ export interface RouteConfig {
 }
 
 /**
- * Default route configuration
- * Centralized configuration following Single Responsibility
+ * Route configuration - Direct Edit approach
+ * Easy to modify and extend following SOLID principles
  */
-export const DEFAULT_ROUTE_CONFIG: RouteConfig = {
-  protected: ["/write", "/users", "/demo/editor"],
-  auth: ["/auth/login", "/auth/register"],
-  public: ["/", "/demo", "/demo/theming"],
+export const ROUTE_CONFIG: RouteConfig = {
+  // 🔒 Protected routes - require authentication
+  protected: [
+    "/write",           // Article writing
+    "/user",           // User management
+    // Add more protected routes here:
+    // "/admin",         // Admin panel
+    // "/dashboard",     // User dashboard
+    // "/settings",      // User settings
+  ],
+  
+  // 🔐 Auth routes - redirect if already authenticated
+  auth: [
+    "/auth/login",      // Login page
+    "/auth/register",   // Registration page
+    // Add more auth routes here:
+    // "/auth/forgot",   // Password reset
+    // "/auth/signup",   // Alternative signup
+  ],
+  
+  // 🌐 Public routes - accessible to everyone
+  public: [
+    "/",                // Home page
+    "/demo",            // Demo pages
+    "/demo/theming",    // Theme demo
+    // Add more public routes here:
+    // "/about",         // About page
+    // "/contact",       // Contact page
+    // "/help",          // Help center
+  ],
 } as const;
 
 /**
- * Route matcher service
- * Single responsibility: determine route types
+ * Route matcher utility functions
+ * Simple, functional approach following Single Responsibility Principle
  */
-export class RouteMatcher {
-  constructor(private readonly config: RouteConfig) {}
-
+export const RouteMatcher = {
   /**
    * Check if pathname matches any protected routes
    */
-  isProtectedRoute(pathname: string): boolean {
-    return this.config.protected.some((route) => pathname.startsWith(route));
-  }
+  isProtectedRoute(pathname: string, config: RouteConfig = ROUTE_CONFIG): boolean {
+    return config.protected.some((route) => pathname.startsWith(route));
+  },
 
   /**
    * Check if pathname matches any auth routes
    */
-  isAuthRoute(pathname: string): boolean {
-    return this.config.auth.some((route) => pathname.startsWith(route));
-  }
+  isAuthRoute(pathname: string, config: RouteConfig = ROUTE_CONFIG): boolean {
+    return config.auth.some((route) => pathname.startsWith(route));
+  },
 
   /**
    * Check if pathname matches any public routes
    */
-  isPublicRoute(pathname: string): boolean {
-    return this.config.public.some((route) => pathname.startsWith(route));
-  }
-}
+  isPublicRoute(pathname: string, config: RouteConfig = ROUTE_CONFIG): boolean {
+    return config.public.some((route) => pathname.startsWith(route));
+  },
+};
 
 /**
- * Authentication service
- * Single responsibility: handle auth-related operations
+ * Authentication utility functions
+ * Simple, functional approach following Single Responsibility Principle
  */
-export class AuthService {
+export const AuthUtils = {
   /**
    * Extract access token from request cookies
    */
   getAccessToken(request: NextRequest): string | null {
     return request.cookies.get("accessToken")?.value || null;
-  }
+  },
 
   /**
    * Check if user is authenticated
    */
   isAuthenticated(request: NextRequest): boolean {
-    return !!this.getAccessToken(request);
-  }
-}
+    return !!AuthUtils.getAccessToken(request);
+  },
+};
 
 /**
- * Redirect service
- * Single responsibility: handle redirects
+ * Redirect utility functions
+ * Simple, functional approach following Single Responsibility Principle
  */
-export class RedirectService {
+export const RedirectUtils = {
   /**
    * Create login redirect URL with return path
    */
@@ -82,7 +106,7 @@ export class RedirectService {
     const loginUrl = new URL("/auth/login", request.url);
     loginUrl.searchParams.set("redirect", returnPath);
     return NextResponse.redirect(loginUrl);
-  }
+  },
 
   /**
    * Create authenticated user redirect
@@ -90,104 +114,75 @@ export class RedirectService {
   createAuthRedirect(request: NextRequest, redirectPath?: string): NextResponse {
     const redirectUrl = redirectPath || request.nextUrl.searchParams.get("redirect") || "/";
     return NextResponse.redirect(new URL(redirectUrl, request.url));
-  }
-}
+  },
+};
 
 /**
- * Logger service
- * Single responsibility: handle logging
+ * Logger utility functions
+ * Simple logging with development-only output
  */
-export class LoggerService {
-  private readonly isDevelopment = process.env.NODE_ENV === "development";
-
+export const Logger = {
   /**
-   * Log middleware processing information
+   * Log middleware processing information (development only)
    */
   logRequest(pathname: string, isProtected: boolean, isAuth: boolean, hasToken: boolean): void {
-    if (!this.isDevelopment) return;
-
-    console.log("Middleware: Processing request to", pathname);
-    console.log("Middleware: isProtectedRoute:", isProtected, "isAuthRoute:", isAuth, "accessToken:", hasToken);
-  }
+    if (process.env.NODE_ENV !== "development") return;
+    
+    console.log("🔒 Middleware:", {
+      pathname,
+      isProtected,
+      isAuth,
+      hasToken,
+    });
+  },
 
   /**
-   * Log redirect information
+   * Log redirect information (development only)
    */
   logRedirect(from: string, to: string, reason: string): void {
-    if (!this.isDevelopment) return;
-
-    console.log(`Middleware: ${reason} - Redirecting from ${from} to ${to}`);
-  }
-}
-
-/**
- * Main middleware handler
- * Orchestrates all services following Dependency Inversion Principle
- */
-export class MiddlewareHandler {
-  constructor(
-    private readonly routeMatcher: RouteMatcher,
-    private readonly authService: AuthService,
-    private readonly redirectService: RedirectService,
-    private readonly logger: LoggerService,
-  ) {}
-
-  /**
-   * Process incoming request
-   */
-  handle(request: NextRequest): NextResponse {
-    const { pathname } = request.nextUrl;
-    const isProtected = this.routeMatcher.isProtectedRoute(pathname);
-    const isAuth = this.routeMatcher.isAuthRoute(pathname);
-    const isAuthenticated = this.authService.isAuthenticated(request);
-
-    // Log request processing
-    this.logger.logRequest(pathname, isProtected, isAuth, isAuthenticated);
-
-    // Handle protected routes
-    if (isProtected && !isAuthenticated) {
-      this.logger.logRedirect(pathname, "/auth/login", "Protected route without auth");
-      return this.redirectService.createLoginRedirect(request, pathname);
-    }
-
-    // Handle auth routes for authenticated users
-    if (isAuth && isAuthenticated) {
-      const redirectUrl = request.nextUrl.searchParams.get("redirect") || "/";
-      
-      // Only redirect if not already on target page
-      if (pathname !== redirectUrl) {
-        this.logger.logRedirect(pathname, redirectUrl, "Authenticated user on auth route");
-        return this.redirectService.createAuthRedirect(request, redirectUrl);
-      } else {
-        this.logger.logRedirect(pathname, redirectUrl, "Already on target page, no redirect needed");
-      }
-    }
-
-    // Allow request to continue
-    return NextResponse.next();
-  }
-}
-
-/**
- * Factory function to create middleware handler with default dependencies
- * Follows Dependency Injection pattern
- */
-export function createMiddlewareHandler(config: RouteConfig = DEFAULT_ROUTE_CONFIG): MiddlewareHandler {
-  const routeMatcher = new RouteMatcher(config);
-  const authService = new AuthService();
-  const redirectService = new RedirectService();
-  const logger = new LoggerService();
-
-  return new MiddlewareHandler(routeMatcher, authService, redirectService, logger);
-}
+    if (process.env.NODE_ENV !== "development") return;
+    
+    console.log(`🔄 Middleware: ${reason}`, { from, to });
+  },
+};
 
 /**
  * Main middleware function
- * Clean, simple entry point
+ * Clean, simple, and easy to understand
+ * Follows SOLID principles with functional approach
  */
 export function middleware(request: NextRequest): NextResponse {
-  const handler = createMiddlewareHandler();
-  return handler.handle(request);
+  const { pathname } = request.nextUrl;
+  
+  // Determine route types
+  const isProtected = RouteMatcher.isProtectedRoute(pathname);
+  const isAuth = RouteMatcher.isAuthRoute(pathname);
+  const isAuthenticated = AuthUtils.isAuthenticated(request);
+
+  // Log request processing (development only)
+  Logger.logRequest(pathname, isProtected, isAuth, isAuthenticated);
+
+  // Handle protected routes - redirect to login if not authenticated
+  if (isProtected && !isAuthenticated) {
+    Logger.logRedirect(pathname, "/auth/login", "Protected route without auth");
+    return RedirectUtils.createLoginRedirect(request, pathname);
+  }
+
+  // Handle auth routes - redirect to home if already authenticated
+  if (isAuth && isAuthenticated) {
+    const redirectUrl = request.nextUrl.searchParams.get("redirect") || "/";
+    
+    // Only redirect if not already on target page
+    if (pathname !== redirectUrl) {
+      Logger.logRedirect(pathname, redirectUrl, "Authenticated user on auth route");
+      return RedirectUtils.createAuthRedirect(request, redirectUrl);
+    } else {
+      Logger.logRedirect(pathname, redirectUrl, "Already on target page, no redirect needed");
+    }
+  }
+
+  // Allow request to continue
+  return NextResponse.next();
 }
 
 /**
