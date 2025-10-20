@@ -92,6 +92,7 @@ When working with Next.js 15, AI SDK v5, or other rapidly evolving technologies,
 
 ### 💾 State & Data Management
 - **Jotai** — Atomic state management
+- **TanStack Query** — Server state management and data fetching
 - **Axios** — HTTP client with interceptors
 - **React Hook Form** — Form control
 - **Zod** — Schema validation
@@ -188,7 +189,8 @@ src/
 9. ⌛ **Skeleton Loading** — Placeholder states for async content with Skeletonize component.  
 10. 🔔 **Toast Notifications** — Rich toast system with Sonner integration.  
 11. 📝 **Form Validation** — Real-time Zod schema validation with React Hook Form.  
-12. 🎯 **Middleware Protection** — Route-based authentication middleware.
+12. 🎯 **Middleware Protection** — Route-based authentication middleware.  
+13. 🔄 **TanStack Query** — Advanced server state management with caching, background updates, and optimistic updates.
 
 ---
 
@@ -220,6 +222,7 @@ src/
 - **Hot Reloading** — Fast local iteration with Turbopack  
 - **HTTP Interceptors** — Automatic token refresh and error handling  
 - **Rate Limit Handling** — Client-side rate limit with event bus  
+- **TanStack Query** — Advanced server state management with caching and background updates
 - **Custom Hooks** — Reusable logic for auth, content, media, reactions  
 - **Theme Testing** — Multiple theme testing pages for development  
 
@@ -264,12 +267,13 @@ src/
 
 ## 🧾 Summary
 
-This project exemplifies a **modern, modular, frontend-only Next.js 15+ application**, integrating **shadcn/ui**, **TailwindCSS**, **TipTap**, **Firebase Auth**, and **Jotai** to deliver a premium editing and viewing experience.  
+This project exemplifies a **modern, modular, frontend-only Next.js 15+ application**, integrating **shadcn/ui**, **TailwindCSS**, **TipTap**, **Firebase Auth**, **TanStack Query**, and **Jotai** to deliver a premium editing and viewing experience.  
 
 **Key Highlights:**
 - **Advanced Theme System** — 12+ color variants with dark/light modes
 - **Rich Text Editor** — TipTap with syntax highlighting, Mermaid diagrams, and Markdown support
 - **Comprehensive Auth** — Firebase Auth with OAuth (Google, GitHub, Twitter) and custom state management
+- **TanStack Query** — Advanced server state management with caching, background updates, and optimistic updates
 - **Internationalization** — Full EN/VI support with 9 namespaces
 - **Rate Limiting** — Client-side rate limit handling with event bus system
 - **HTTP Management** — Axios interceptors with automatic token refresh
