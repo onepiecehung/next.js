@@ -5,7 +5,11 @@ import { toast } from "sonner";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { ArticleAPI } from "@/lib/api/article";
 import { ARTICLE_CONSTANTS } from "@/lib/constants";
-import type { CreateArticleRequest, UpdateArticleRequest } from "@/lib/types";
+import type {
+  AdvancedQueryParams,
+  CreateArticleDto,
+  UpdateArticleRequest,
+} from "@/lib/types";
 
 /**
  * Hook for fetching a single article by ID
@@ -25,13 +29,7 @@ export function useArticle(articleId: string) {
 /**
  * Hook for fetching articles list with pagination
  */
-export function useArticles(params?: {
-  page?: number;
-  limit?: number;
-  search?: string;
-  category?: string;
-  status?: string;
-}) {
+export function useArticles(params?: AdvancedQueryParams) {
   return useQuery({
     queryKey: ["articles", params],
     queryFn: () => ArticleAPI.getArticlesOffset(params),
@@ -50,7 +48,7 @@ export function useCreateArticle() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: CreateArticleRequest) => {
+    mutationFn: async (data: CreateArticleDto) => {
       // Auto-set visibility to PRIVATE for drafts only
       const finalData = {
         ...data,

@@ -1,4 +1,5 @@
 import type { Article } from "@/lib/interface";
+import type { ArticleContentFormat } from "@/lib/constants/article.constants";
 
 /**
  * Article Type Definitions
@@ -9,14 +10,14 @@ import type { Article } from "@/lib/interface";
  * Create article request payload
  * Extends Article interface but makes certain fields optional for creation
  */
-export interface CreateArticleRequest extends Partial<Article> {
+export interface CreateArticleDto extends Partial<Article> {
   title: string;
   content: string;
-  contentFormat: "html" | "markdown";
+  contentFormat: ArticleContentFormat;
   visibility: "public" | "unlisted" | "private";
   status: "draft" | "published" | "scheduled";
   userId?: string;
-  scheduledAt?: string; // ISO string for scheduled articles
+  scheduledAt?: Date; // ISO string for scheduled articles
 }
 
 /**
