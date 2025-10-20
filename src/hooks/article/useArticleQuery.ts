@@ -6,11 +6,100 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { ArticleAPI } from "@/lib/api/article";
 import { ARTICLE_CONSTANTS } from "@/lib/constants";
 import type {
+  Article,
   CreateArticleDto,
   UpdateArticleRequest,
 } from "@/lib/interface/article.interface";
 import type { AdvancedQueryParams } from "@/lib/types";
 import { queryKeys } from "@/lib/utils/query-keys";
+
+// Helper functions for layout formatting
+function getStatusColor(status: string): string {
+  switch (status) {
+    case ARTICLE_CONSTANTS.STATUS.PUBLISHED:
+      return "text-green-600 bg-green-50 border-green-200";
+    case ARTICLE_CONSTANTS.STATUS.DRAFT:
+      return "text-yellow-600 bg-yellow-50 border-yellow-200";
+    case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
+      return "text-blue-600 bg-blue-50 border-blue-200";
+    case ARTICLE_CONSTANTS.STATUS.ARCHIVED:
+      return "text-gray-600 bg-gray-50 border-gray-200";
+    default:
+      return "text-gray-600 bg-gray-50 border-gray-200";
+  }
+}
+
+function getVisibilityIcon(visibility: string): string {
+  switch (visibility) {
+    case ARTICLE_CONSTANTS.VISIBILITY.PUBLIC:
+      return "🌐";
+    case ARTICLE_CONSTANTS.VISIBILITY.UNLISTED:
+      return "🔗";
+    case ARTICLE_CONSTANTS.VISIBILITY.PRIVATE:
+      return "🔒";
+    default:
+      return "❓";
+  }
+}
+
+function getStatusBadge(status: string): { text: string; color: string } {
+  switch (status) {
+    case ARTICLE_CONSTANTS.STATUS.PUBLISHED:
+      return { text: "Published", color: "bg-green-100 text-green-800" };
+    case ARTICLE_CONSTANTS.STATUS.DRAFT:
+      return { text: "Draft", color: "bg-yellow-100 text-yellow-800" };
+    case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
+      return { text: "Scheduled", color: "bg-blue-100 text-blue-800" };
+    case ARTICLE_CONSTANTS.STATUS.ARCHIVED:
+      return { text: "Archived", color: "bg-gray-100 text-gray-800" };
+    default:
+      return { text: "Unknown", color: "bg-gray-100 text-gray-800" };
+  }
+}
+
+function getVisibilityBadge(visibility: string): {
+  text: string;
+  color: string;
+} {
+  switch (visibility) {
+    case ARTICLE_CONSTANTS.VISIBILITY.PUBLIC:
+      return { text: "Public", color: "bg-green-100 text-green-800" };
+    case ARTICLE_CONSTANTS.VISIBILITY.UNLISTED:
+      return { text: "Unlisted", color: "bg-blue-100 text-blue-800" };
+    case ARTICLE_CONSTANTS.VISIBILITY.PRIVATE:
+      return { text: "Private", color: "bg-red-100 text-red-800" };
+    default:
+      return { text: "Unknown", color: "bg-gray-100 text-gray-800" };
+  }
+}
+
+function getStatusText(status: string): string {
+  switch (status) {
+    case ARTICLE_CONSTANTS.STATUS.PUBLISHED:
+      return "Published";
+    case ARTICLE_CONSTANTS.STATUS.DRAFT:
+      return "Draft";
+    case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
+      return "Scheduled";
+    case ARTICLE_CONSTANTS.STATUS.ARCHIVED:
+      return "Archived";
+    default:
+      return "Unknown";
+  }
+}
+
+function getVisibilityText(visibility: string): string {
+  switch (visibility) {
+    case ARTICLE_CONSTANTS.VISIBILITY.PUBLIC:
+      return "Public";
+    case ARTICLE_CONSTANTS.VISIBILITY.UNLISTED:
+      return "Unlisted";
+    case ARTICLE_CONSTANTS.VISIBILITY.PRIVATE:
+      return "Private";
+    default:
+      return "Unknown";
+  }
+}
 
 /**
  * Hook for fetching a single article by ID
@@ -40,15 +129,129 @@ export function useArticles(params?: AdvancedQueryParams) {
 }
 
 /**
- * Hook for fetching my articles list with pagination
+ * Hook for fetching my articles list with pagination and layout support
+ * Supports multiple layout types: grid, list, card
  */
 export function useMyArticles(userId: string, params?: AdvancedQueryParams) {
   return useQuery({
     queryKey: queryKeys.articles.myList(userId, params),
     queryFn: () => ArticleAPI.myArticlesOffset(params),
+    enabled: !!userId,
     staleTime: 2 * 60 * 1000, // 2 minutes
     placeholderData: (previousData) => previousData, // Keep previous data while fetching new
   });
+}
+
+/**
+ * Hook for managing user articles with different layout types
+ * Provides layout-specific data formatting and management
+ */
+export function useUserArticlesLayout(
+  userId: string,
+  layout: "grid" | "list" | "card" = "grid",
+  params?: AdvancedQueryParams,
+) {
+  const { data, isLoading, error, refetch } = useMyArticles(userId, params);
+
+  // Format articles data based on layout type
+  const formattedArticles =
+    data?.data?.result?.map((article: Article) => {
+      const baseArticle = {
+        id: article.id,
+        title: article.title,
+        content: article.content,
+        status: article.status,
+        visibility: article.visibility,
+        createdAt: article.createdAt,
+        updatedAt: article.updatedAt,
+        scheduledAt: article.scheduledAt,
+        tags: article.tags || [],
+        author: article.user,
+        coverImage: article.coverImage,
+        slug: article.slug,
+      };
+
+      // Add layout-specific properties
+      switch (layout) {
+        case "grid":
+          return {
+            ...baseArticle,
+            // Grid-specific formatting
+            excerpt: article.content?.substring(0, 150) + "...",
+            readTime: Math.max(
+              1,
+              Math.ceil((article.content?.split(/\s+/).length || 0) / 200),
+            ),
+            formattedDate: new Date(article.createdAt).toLocaleDateString(),
+            statusColor: getStatusColor(article.status),
+            visibilityIcon: getVisibilityIcon(article.visibility),
+          };
+
+        case "list":
+          return {
+            ...baseArticle,
+            // List-specific formatting
+            excerpt: article.content?.substring(0, 200) + "...",
+            readTime: Math.max(
+              1,
+              Math.ceil((article.content?.split(/\s+/).length || 0) / 200),
+            ),
+            formattedDate: new Date(article.createdAt).toLocaleDateString(),
+            statusBadge: getStatusBadge(article.status),
+            visibilityBadge: getVisibilityBadge(article.visibility),
+          };
+
+        case "card":
+          return {
+            ...baseArticle,
+            // Card-specific formatting
+            excerpt: article.content?.substring(0, 100) + "...",
+            readTime: Math.max(
+              1,
+              Math.ceil((article.content?.split(/\s+/).length || 0) / 200),
+            ),
+            formattedDate: new Date(article.createdAt).toLocaleDateString(),
+            statusText: getStatusText(article.status),
+            visibilityText: getVisibilityText(article.visibility),
+          };
+
+        default:
+          return baseArticle;
+      }
+    }) || [];
+
+  // Layout-specific configuration
+  const layoutConfig = {
+    grid: {
+      containerClass: "grid gap-6 sm:grid-cols-2 lg:grid-cols-3",
+      itemClass: "w-full",
+    },
+    list: {
+      containerClass: "space-y-4",
+      itemClass: "w-full",
+    },
+    card: {
+      containerClass: "space-y-6",
+      itemClass: "w-full",
+    },
+  };
+
+  return {
+    articles: formattedArticles,
+    isLoading,
+    error,
+    refetch,
+    layoutConfig: layoutConfig[layout],
+    totalCount: data?.data?.metaData?.totalRecords || 0,
+    hasMore: data?.data?.metaData?.hasNextPage || false,
+    // Layout-specific helpers
+    getStatusColor,
+    getVisibilityIcon,
+    getStatusBadge,
+    getVisibilityBadge,
+    getStatusText,
+    getVisibilityText,
+  };
 }
 
 /**
@@ -92,7 +295,10 @@ export function useCreateArticle() {
           queryClient.invalidateQueries({ queryKey: queryKeys.articles.all() });
 
           // Add the new article to cache
-          queryClient.setQueryData(queryKeys.articles.detail(article.id), article);
+          queryClient.setQueryData(
+            queryKeys.articles.detail(article.id),
+            article,
+          );
 
           // Handle different success scenarios with appropriate messages
           switch (article.status) {
@@ -153,7 +359,10 @@ export function useUpdateArticle() {
         loading: t("schedule.updating", "article") || "Updating article...",
         success: (article) => {
           // Update the article in cache
-          queryClient.setQueryData(queryKeys.articles.detail(article.id), article);
+          queryClient.setQueryData(
+            queryKeys.articles.detail(article.id),
+            article,
+          );
 
           // Invalidate articles list to refetch
           queryClient.invalidateQueries({ queryKey: queryKeys.articles.all() });
@@ -197,7 +406,9 @@ export function useDeleteArticle() {
         loading: t("schedule.deleting", "article") || "Deleting article...",
         success: () => {
           // Remove article from cache
-          queryClient.removeQueries({ queryKey: queryKeys.articles.detail(id) });
+          queryClient.removeQueries({
+            queryKey: queryKeys.articles.detail(id),
+          });
 
           // Invalidate articles list
           queryClient.invalidateQueries({ queryKey: queryKeys.articles.all() });

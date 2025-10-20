@@ -12,6 +12,7 @@ import {
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
+import { UserArticlesLayout } from "@/components/features/article/user-articles-layout";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { useIsMounted } from "@/components/providers/no-ssr";
 import { Skeletonize } from "@/components/shared";
@@ -240,62 +241,11 @@ export default function ProfilePage() {
       {/* Content Area */}
       <div className="mx-auto max-w-4xl px-4 py-6 sm:py-8">
         {activeTab === "articles" && (
-          <Skeletonize loading={isLoading}>
-            <div className="space-y-6">
-              {/* Article Card 1 */}
-              <div className="bg-card border border-border rounded-lg p-4 sm:p-6 hover:border-primary/30 transition-colors group">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 mb-3">
-                  {t("categoriesTech", "profile")}
-                </span>
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
-                  Building a Modern Next.js Application with TypeScript and
-                  Tailwind CSS
-                </h3>
-                <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                  <span>2 {t("contentDaysAgo", "profile")}</span>
-                  <span className="flex items-center gap-1">
-                    <Heart className="h-4 w-4 text-chart-1" />6
-                  </span>
-                  <span>8 {t("contentReadTime", "profile")}</span>
-                </div>
-              </div>
-
-              {/* Article Card 2 */}
-              <div className="bg-card border border-border rounded-lg p-4 sm:p-6 hover:border-primary/30 transition-colors group">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-chart-2/10 text-chart-2 border border-chart-2/20 mb-3">
-                  {t("categoriesTutorial", "profile")}
-                </span>
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
-                  Complete Guide to Authentication with Next.js and JWT
-                </h3>
-                <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                  <span>1 {t("contentWeeksAgo", "profile")}</span>
-                  <span className="flex items-center gap-1">
-                    <Heart className="h-4 w-4 text-chart-1" />
-                    12
-                  </span>
-                  <span>12 {t("contentReadTime", "profile")}</span>
-                </div>
-              </div>
-
-              {/* Article Card 3 */}
-              <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/30 transition-colors group">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-chart-4/10 text-chart-4 border border-chart-4/20 mb-3">
-                  {t("categoriesInsights", "profile")}
-                </span>
-                <h3 className="text-xl font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
-                  State Management Best Practices in React Applications
-                </h3>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>2 {t("contentWeeksAgo", "profile")}</span>
-                  <span className="flex items-center gap-1">
-                    <Heart className="h-4 w-4 text-chart-1" />8
-                  </span>
-                  <span>6 {t("contentReadTime", "profile")}</span>
-                </div>
-              </div>
-            </div>
-          </Skeletonize>
+          <UserArticlesLayout
+            userId={userId}
+            initialLayout="grid"
+            className="mt-6"
+          />
         )}
 
         {activeTab === "scraps" && (

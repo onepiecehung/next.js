@@ -77,7 +77,10 @@ export class ArticleAPI {
   static async myArticlesOffset(
     params?: AdvancedQueryParams,
   ): Promise<ApiResponseOffset<Article>> {
-    const response = await http.get<ApiResponseOffset<Article>>(`${this.BASE_URL}/my`, { params });
+    const response = await http.get<ApiResponseOffset<Article>>(
+      `${this.BASE_URL}/my`,
+      { params },
+    );
     return response.data;
   }
 
