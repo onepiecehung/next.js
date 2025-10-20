@@ -1,7 +1,7 @@
 /**
  * Query Key Factory for TanStack Query
  * Centralizes all query keys to prevent typos and ensure consistency
- * 
+ *
  * @see https://tkdodo.eu/blog/effective-react-query-keys
  */
 
@@ -16,12 +16,14 @@ export const queryKeys = {
   articles: {
     all: () => ["articles"] as const,
     lists: () => ["articles", "list"] as const,
-    list: (params?: Record<string, unknown>) => ["articles", "list", params] as const,
+    list: (params?: Record<string, unknown>) =>
+      ["articles", "list", params] as const,
     details: () => ["articles", "detail"] as const,
     detail: (id: string) => ["articles", "detail", id] as const,
     byUser: (userId: string) => ["articles", "user", userId] as const,
     byTag: (tag: string) => ["articles", "tag", tag] as const,
-    byCategory: (category: string) => ["articles", "category", category] as const,
+    byCategory: (category: string) =>
+      ["articles", "category", category] as const,
   },
 
   // Settings related queries
@@ -33,7 +35,8 @@ export const queryKeys = {
   // Reactions related queries
   reactions: {
     all: () => ["reactions"] as const,
-    byArticle: (articleId: string) => ["reactions", "article", articleId] as const,
+    byArticle: (articleId: string) =>
+      ["reactions", "article", articleId] as const,
     byUser: (userId: string) => ["reactions", "user", userId] as const,
   },
 

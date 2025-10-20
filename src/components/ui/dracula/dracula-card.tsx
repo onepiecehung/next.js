@@ -76,6 +76,10 @@ const DraculaCardFooter = React.forwardRef<
 DraculaCardFooter.displayName = "DraculaCardFooter";
 
 export {
-  DraculaCard, DraculaCardContent, DraculaCardDescription, DraculaCardFooter, DraculaCardHeader, DraculaCardTitle
+  DraculaCard,
+  DraculaCardContent,
+  DraculaCardDescription,
+  DraculaCardFooter,
+  DraculaCardHeader,
+  DraculaCardTitle,
 };
-

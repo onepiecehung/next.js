@@ -18,28 +18,28 @@ export interface RouteConfig {
 export const ROUTE_CONFIG: RouteConfig = {
   // 🔒 Protected routes - require authentication
   protected: [
-    "/write",           // Article writing
-    "/user",           // User management
+    "/write", // Article writing
+    "/user", // User management
     // Add more protected routes here:
     // "/admin",         // Admin panel
     // "/dashboard",     // User dashboard
     // "/settings",      // User settings
   ],
-  
+
   // 🔐 Auth routes - redirect if already authenticated
   auth: [
-    "/auth/login",      // Login page
-    "/auth/register",   // Registration page
+    "/auth/login", // Login page
+    "/auth/register", // Registration page
     // Add more auth routes here:
     // "/auth/forgot",   // Password reset
     // "/auth/signup",   // Alternative signup
   ],
-  
+
   // 🌐 Public routes - accessible to everyone
   public: [
-    "/",                // Home page
-    "/demo",            // Demo pages
-    "/demo/theming",    // Theme demo
+    "/", // Home page
+    "/demo", // Demo pages
+    "/demo/theming", // Theme demo
     // Add more public routes here:
     // "/about",         // About page
     // "/contact",       // Contact page
@@ -55,7 +55,10 @@ export const RouteMatcher = {
   /**
    * Check if pathname matches any protected routes
    */
-  isProtectedRoute(pathname: string, config: RouteConfig = ROUTE_CONFIG): boolean {
+  isProtectedRoute(
+    pathname: string,
+    config: RouteConfig = ROUTE_CONFIG,
+  ): boolean {
     return config.protected.some((route) => pathname.startsWith(route));
   },
 
@@ -111,8 +114,12 @@ export const RedirectUtils = {
   /**
    * Create authenticated user redirect
    */
-  createAuthRedirect(request: NextRequest, redirectPath?: string): NextResponse {
-    const redirectUrl = redirectPath || request.nextUrl.searchParams.get("redirect") || "/";
+  createAuthRedirect(
+    request: NextRequest,
+    redirectPath?: string,
+  ): NextResponse {
+    const redirectUrl =
+      redirectPath || request.nextUrl.searchParams.get("redirect") || "/";
     return NextResponse.redirect(new URL(redirectUrl, request.url));
   },
 };
@@ -125,9 +132,14 @@ export const Logger = {
   /**
    * Log middleware processing information (development only)
    */
-  logRequest(pathname: string, isProtected: boolean, isAuth: boolean, hasToken: boolean): void {
+  logRequest(
+    pathname: string,
+    isProtected: boolean,
+    isAuth: boolean,
+    hasToken: boolean,
+  ): void {
     if (process.env.NODE_ENV !== "development") return;
-    
+
     console.log("🔒 Middleware:", {
       pathname,
       isProtected,
@@ -141,7 +153,7 @@ export const Logger = {
    */
   logRedirect(from: string, to: string, reason: string): void {
     if (process.env.NODE_ENV !== "development") return;
-    
+
     console.log(`🔄 Middleware: ${reason}`, { from, to });
   },
 };
@@ -153,7 +165,7 @@ export const Logger = {
  */
 export function middleware(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl;
-  
+
   // Determine route types
   const isProtected = RouteMatcher.isProtectedRoute(pathname);
   const isAuth = RouteMatcher.isAuthRoute(pathname);
@@ -171,13 +183,21 @@ export function middleware(request: NextRequest): NextResponse {
   // Handle auth routes - redirect to home if already authenticated
   if (isAuth && isAuthenticated) {
     const redirectUrl = request.nextUrl.searchParams.get("redirect") || "/";
-    
+
     // Only redirect if not already on target page
     if (pathname !== redirectUrl) {
-      Logger.logRedirect(pathname, redirectUrl, "Authenticated user on auth route");
+      Logger.logRedirect(
+        pathname,
+        redirectUrl,
+        "Authenticated user on auth route",
+      );
       return RedirectUtils.createAuthRedirect(request, redirectUrl);
     } else {
-      Logger.logRedirect(pathname, redirectUrl, "Already on target page, no redirect needed");
+      Logger.logRedirect(
+        pathname,
+        redirectUrl,
+        "Already on target page, no redirect needed",
+      );
     }
   }
 

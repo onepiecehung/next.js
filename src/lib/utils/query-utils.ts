@@ -12,14 +12,18 @@ import { useI18n } from "@/components/providers/i18n-provider";
  * Standard error handler for mutations
  * Provides consistent error handling across all mutations
  */
-export const createMutationErrorHandler = (t: ReturnType<typeof useI18n>["t"]) => {
+export const createMutationErrorHandler = (
+  t: ReturnType<typeof useI18n>["t"],
+) => {
   return (error: unknown, context?: { namespace?: string }) => {
     console.error("Mutation error:", error);
-    
-    const errorMessage = error instanceof Error 
-      ? error.message 
-      : t("error.generic", context?.namespace || "common") || "An error occurred";
-    
+
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : t("error.generic", context?.namespace || "common") ||
+          "An error occurred";
+
     toast.error(errorMessage);
   };
 };
@@ -28,9 +32,12 @@ export const createMutationErrorHandler = (t: ReturnType<typeof useI18n>["t"]) =
  * Standard success handler for mutations
  * Provides consistent success handling across all mutations
  */
-export const createMutationSuccessHandler = (t: ReturnType<typeof useI18n>["t"]) => {
+export const createMutationSuccessHandler = (
+  t: ReturnType<typeof useI18n>["t"],
+) => {
   return (messageKey: string, context?: { namespace?: string }) => {
-    const successMessage = t(messageKey, context?.namespace || "common") || "Operation successful";
+    const successMessage =
+      t(messageKey, context?.namespace || "common") || "Operation successful";
     toast.success(successMessage);
   };
 };
@@ -42,7 +49,7 @@ export const createMutationSuccessHandler = (t: ReturnType<typeof useI18n>["t"])
 export const createOptimisticUpdate = <T>(
   queryClient: QueryClient,
   queryKey: unknown[],
-  updater: (oldData: T | undefined) => T
+  updater: (oldData: T | undefined) => T,
 ) => {
   return {
     onMutate: async (variables: unknown) => {
@@ -58,7 +65,11 @@ export const createOptimisticUpdate = <T>(
       // Return a context object with the snapshotted value
       return { previousData };
     },
-    onError: (err: unknown, variables: unknown, context: { previousData?: T }) => {
+    onError: (
+      err: unknown,
+      variables: unknown,
+      context: { previousData?: T },
+    ) => {
       // If the mutation fails, use the context returned from onMutate to roll back
       if (context?.previousData) {
         queryClient.setQueryData(queryKey, context.previousData);
@@ -81,7 +92,7 @@ export const createInfiniteQueryConfig = <T>(
     staleTime?: number;
     gcTime?: number;
     retry?: number;
-  }
+  },
 ) => ({
   queryFn: ({ pageParam }: { pageParam: unknown }) => queryFn(pageParam),
   getNextPageParam: (lastPage: T, allPages: T[]) => {
@@ -114,7 +125,9 @@ export const queryInvalidation = {
   // Invalidate all article-related queries
   invalidateArticleQueries: (queryClient: QueryClient, articleId?: string) => {
     if (articleId) {
-      queryClient.invalidateQueries({ queryKey: ["articles", "detail", articleId] });
+      queryClient.invalidateQueries({
+        queryKey: ["articles", "detail", articleId],
+      });
     }
     queryClient.invalidateQueries({ queryKey: ["articles", "list"] });
   },

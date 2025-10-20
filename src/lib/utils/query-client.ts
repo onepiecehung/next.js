@@ -10,13 +10,12 @@ export const createQueryClient = () =>
       queries: {
         // Stale time: 5 minutes
         staleTime: 5 * 60 * 1000,
-        // Cache time: 10 minutes  
+        // Cache time: 10 minutes
         gcTime: 10 * 60 * 1000,
         // Retry failed requests 3 times
         retry: 3,
         // Retry delay with exponential backoff
-        retryDelay: (attemptIndex) =>
-          Math.min(1000 * 2 ** attemptIndex, 30000),
+        retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
         // Disable refetch on window focus to prevent double queries
         refetchOnWindowFocus: false,
         // Refetch on reconnect
