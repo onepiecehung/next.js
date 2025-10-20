@@ -11,95 +11,8 @@ import type {
   UpdateArticleRequest,
 } from "@/lib/interface/article.interface";
 import type { AdvancedQueryParams } from "@/lib/types";
+import { formatArticle } from "@/lib/utils/article-utils";
 import { queryKeys } from "@/lib/utils/query-keys";
-
-// Helper functions for layout formatting
-function getStatusColor(status: string): string {
-  switch (status) {
-    case ARTICLE_CONSTANTS.STATUS.PUBLISHED:
-      return "text-green-600 bg-green-50 border-green-200";
-    case ARTICLE_CONSTANTS.STATUS.DRAFT:
-      return "text-yellow-600 bg-yellow-50 border-yellow-200";
-    case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
-      return "text-blue-600 bg-blue-50 border-blue-200";
-    case ARTICLE_CONSTANTS.STATUS.ARCHIVED:
-      return "text-gray-600 bg-gray-50 border-gray-200";
-    default:
-      return "text-gray-600 bg-gray-50 border-gray-200";
-  }
-}
-
-function getVisibilityIcon(visibility: string): string {
-  switch (visibility) {
-    case ARTICLE_CONSTANTS.VISIBILITY.PUBLIC:
-      return "🌐";
-    case ARTICLE_CONSTANTS.VISIBILITY.UNLISTED:
-      return "🔗";
-    case ARTICLE_CONSTANTS.VISIBILITY.PRIVATE:
-      return "🔒";
-    default:
-      return "❓";
-  }
-}
-
-function getStatusBadge(status: string): { text: string; color: string } {
-  switch (status) {
-    case ARTICLE_CONSTANTS.STATUS.PUBLISHED:
-      return { text: "Published", color: "bg-green-100 text-green-800" };
-    case ARTICLE_CONSTANTS.STATUS.DRAFT:
-      return { text: "Draft", color: "bg-yellow-100 text-yellow-800" };
-    case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
-      return { text: "Scheduled", color: "bg-blue-100 text-blue-800" };
-    case ARTICLE_CONSTANTS.STATUS.ARCHIVED:
-      return { text: "Archived", color: "bg-gray-100 text-gray-800" };
-    default:
-      return { text: "Unknown", color: "bg-gray-100 text-gray-800" };
-  }
-}
-
-function getVisibilityBadge(visibility: string): {
-  text: string;
-  color: string;
-} {
-  switch (visibility) {
-    case ARTICLE_CONSTANTS.VISIBILITY.PUBLIC:
-      return { text: "Public", color: "bg-green-100 text-green-800" };
-    case ARTICLE_CONSTANTS.VISIBILITY.UNLISTED:
-      return { text: "Unlisted", color: "bg-blue-100 text-blue-800" };
-    case ARTICLE_CONSTANTS.VISIBILITY.PRIVATE:
-      return { text: "Private", color: "bg-red-100 text-red-800" };
-    default:
-      return { text: "Unknown", color: "bg-gray-100 text-gray-800" };
-  }
-}
-
-function getStatusText(status: string): string {
-  switch (status) {
-    case ARTICLE_CONSTANTS.STATUS.PUBLISHED:
-      return "Published";
-    case ARTICLE_CONSTANTS.STATUS.DRAFT:
-      return "Draft";
-    case ARTICLE_CONSTANTS.STATUS.SCHEDULED:
-      return "Scheduled";
-    case ARTICLE_CONSTANTS.STATUS.ARCHIVED:
-      return "Archived";
-    default:
-      return "Unknown";
-  }
-}
-
-function getVisibilityText(visibility: string): string {
-  switch (visibility) {
-    case ARTICLE_CONSTANTS.VISIBILITY.PUBLIC:
-      return "Public";
-    case ARTICLE_CONSTANTS.VISIBILITY.UNLISTED:
-      return "Unlisted";
-    case ARTICLE_CONSTANTS.VISIBILITY.PRIVATE:
-      return "Private";
-    default:
-      return "Unknown";
-  }
-}
 
 /**
  * Hook for fetching a single article by ID
@@ -144,7 +57,7 @@ export function useMyArticles(userId: string, params?: AdvancedQueryParams) {
 
 /**
  * Hook for managing user articles with different layout types
- * Provides layout-specific data formatting and management
+ * Simplified version using reusable utilities
  */
 export function useUserArticlesLayout(
   userId: string,
@@ -153,133 +66,22 @@ export function useUserArticlesLayout(
 ) {
   const { data, isLoading, error, refetch } = useMyArticles(userId, params);
 
-  // Format articles data based on layout type
+  // Format articles using reusable utility
   const formattedArticles =
-    data?.data?.result?.map((article: Article) => {
-      const baseArticle = {
-        id: article.id,
-        title: article.title,
-        content: article.content,
-        status: article.status,
-        visibility: article.visibility,
-        createdAt: article.createdAt,
-        updatedAt: article.updatedAt,
-        scheduledAt: article.scheduledAt,
-        tags: article.tags || [],
-        author: article.user,
-        coverImage: article.coverImage,
-        slug: article.slug,
-      };
-
-      // Add layout-specific properties
-      switch (layout) {
-        case "grid":
-          return {
-            ...baseArticle,
-            // Grid-specific formatting
-            readTime: Math.max(
-              1,
-              Math.ceil((article.content?.split(/\s+/).length || 0) / 200),
-            ),
-            formattedDate: new Date(article.createdAt).toLocaleDateString(),
-            statusColor: getStatusColor(article.status),
-            visibilityIcon: getVisibilityIcon(article.visibility),
-            statusText: getStatusText(article.status),
-            visibilityText: getVisibilityText(article.visibility),
-            // Format cover image data
-            coverImage: article.coverImage
-              ? {
-                  url: article.coverImage.url,
-                  thumbnailUrl: article.coverImage.thumbnailUrl,
-                  altText: article.coverImage.altText || article.title,
-                }
-              : undefined,
-          };
-
-        case "list":
-          return {
-            ...baseArticle,
-            // List-specific formatting
-            readTime: Math.max(
-              1,
-              Math.ceil((article.content?.split(/\s+/).length || 0) / 200),
-            ),
-            formattedDate: new Date(article.createdAt).toLocaleDateString(),
-            statusBadge: getStatusBadge(article.status),
-            visibilityBadge: getVisibilityBadge(article.visibility),
-            // Format cover image data
-            coverImage: article.coverImage
-              ? {
-                  url: article.coverImage.url,
-                  thumbnailUrl: article.coverImage.thumbnailUrl,
-                  altText: article.coverImage.altText || article.title,
-                }
-              : undefined,
-          };
-
-        case "card":
-          return {
-            ...baseArticle,
-            // Card-specific formatting
-            readTime: Math.max(
-              1,
-              Math.ceil((article.content?.split(/\s+/).length || 0) / 200),
-            ),
-            formattedDate: new Date(article.createdAt).toLocaleDateString(),
-            statusText: getStatusText(article.status),
-            visibilityText: getVisibilityText(article.visibility),
-            // Format cover image data
-            coverImage: article.coverImage
-              ? {
-                  url: article.coverImage.url,
-                  thumbnailUrl: article.coverImage.thumbnailUrl,
-                  altText: article.coverImage.altText || article.title,
-                }
-              : undefined,
-          };
-
-        default:
-          return baseArticle;
-      }
-    }) || [];
-
-  // Layout-specific configuration
-  const layoutConfig = {
-    grid: {
-      containerClass: "grid gap-6 sm:grid-cols-2",
-      itemClass: "w-full",
-    },
-    list: {
-      containerClass: "space-y-4",
-      itemClass: "w-full",
-    },
-    card: {
-      containerClass: "space-y-6",
-      itemClass: "w-full",
-    },
-  };
+    data?.data?.result?.map((article: Article) => formatArticle(article)) || [];
 
   return {
     articles: formattedArticles,
     isLoading,
     error,
     refetch,
-    layoutConfig: layoutConfig[layout],
     totalCount: data?.data?.metaData?.totalRecords || 0,
     hasMore: data?.data?.metaData?.hasNextPage || false,
-    // Pagination info
     currentPage: data?.data?.metaData?.currentPage || 1,
     totalPages: data?.data?.metaData?.totalPages || 1,
     pageSize: data?.data?.metaData?.pageSize || 10,
     hasNextPage: data?.data?.metaData?.hasNextPage || false,
     hasPreviousPage: (data?.data?.metaData?.currentPage || 1) > 1,
-    // Layout-specific helpers
-    getStatusColor,
-    getVisibilityIcon,
-    getStatusBadge,
-    getVisibilityBadge,
-    getStatusText,
-    getVisibilityText,
   };
 }
 
@@ -461,7 +263,7 @@ export function useDeleteArticle() {
 
 /**
  * Hook for managing article form state
- * Provides form state management for creating/editing articles
+ * Simplified version using reusable form hooks
  */
 export function useArticleFormState() {
   const [coverImage, setCoverImage] = useState<File | null>(null);
@@ -472,24 +274,16 @@ export function useArticleFormState() {
     ARTICLE_CONSTANTS.VISIBILITY.PUBLIC,
   );
   const [scheduledPublish, setScheduledPublish] = useState<Date | null>(null);
-  const [showValidationErrors, setShowValidationErrors] = useState(false);
 
   // Calculate word count and read time
   const wordCount = content
     ? content.split(/\s+/).filter((word) => word.length > 0).length
     : 0;
-  const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200)); // 200 words per minute
+  const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
 
   const validateForm = () => {
-    if (!title.trim()) {
-      setShowValidationErrors(true);
-      return false;
-    }
-    if (!content.trim()) {
-      setShowValidationErrors(true);
-      return false;
-    }
-    setShowValidationErrors(false);
+    if (!title.trim()) return false;
+    if (!content.trim() || content.trim() === "<p></p>") return false;
     return true;
   };
 
@@ -500,7 +294,6 @@ export function useArticleFormState() {
     setTags([]);
     setVisibility(ARTICLE_CONSTANTS.VISIBILITY.PUBLIC);
     setScheduledPublish(null);
-    setShowValidationErrors(false);
   };
 
   return {
@@ -518,7 +311,6 @@ export function useArticleFormState() {
     setScheduledPublish,
     validateForm,
     resetForm,
-    showValidationErrors,
     wordCount,
     readTimeMinutes,
   };
