@@ -23,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
 import { SyntaxHighlightedContent } from "@/hooks/content";
-import { useMultipleImageUpload } from "@/hooks/media/useMediaQuery";
+import { useMultipleImageUpload } from "@/hooks/media";
 import type { UploadedMedia } from "@/lib/api/media";
 import "highlight.js/styles/github.css";
 import { createLowlight } from "lowlight";
