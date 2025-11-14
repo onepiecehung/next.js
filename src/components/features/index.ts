@@ -10,6 +10,9 @@ export { ScheduledCountdownDialog } from "./article/scheduled-countdown-dialog";
 // Auth feature
 export * from "./auth";
 
+// Media feature
+export * from "./media";
+
 // Navigation feature
 export * from "./navigation";
 

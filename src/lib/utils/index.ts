@@ -11,6 +11,13 @@ export {
   extractErrorMessage,
 } from "./error-extractor";
 
+// Re-export image scrambler utilities
+export {
+  base64UrlToUint8Array,
+  createRngFromSeed,
+  generatePermutation,
+} from "./image-scrambler";
+
 // Re-export query utilities
 export { createQueryClient, queryClient } from "./query-client";
 export { queryKeys } from "./query-keys";
