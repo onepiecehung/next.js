@@ -3,11 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Badge } from "@/components/ui/core/badge";
-import { Button } from "@/components/ui/core/button";
 import { useI18n } from "@/components/providers/i18n-provider";
+import { Button } from "@/components/ui/core/button";
 import type { LatestUpdateItem } from "@/lib/interface/series.interface";
-import { cn } from "@/lib/utils";
 
 /**
  * Language flag mapping
@@ -32,7 +30,7 @@ function formatRelativeTime(
 ): string {
   // Convert to Date object if it's a string
   const dateObj = typeof date === "string" ? new Date(date) : date;
-  
+
   // Validate date
   if (isNaN(dateObj.getTime())) {
     return t("justNow", "series");
@@ -97,46 +95,59 @@ export function LatestUpdatesList({
             </Link>
 
             {/* Content */}
-            <div className="flex flex-1 flex-col gap-1">
-              <Link
-                href={`/series/${item.id}`}
-                className="font-semibold text-foreground hover:text-primary"
-              >
-                {item.title}
-              </Link>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span className="text-xs">
-                  {languageFlags[item.chapter.language] ||
-                    `[${item.chapter.language.toUpperCase()}]`}
-                </span>
-                <span>
-                  {t("chapter", "series")} {item.chapter.number} -{" "}
-                  {item.chapter.title}
-                </span>
+            <div className="flex flex-1 flex-col gap-1 min-w-0">
+              {/* Title and metadata - inline on mobile, stacked on desktop */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0">
+                <Link
+                  href={`/series/${item.id}`}
+                  className="font-semibold text-foreground hover:text-primary truncate sm:flex-1 min-w-0"
+                >
+                  {item.title}
+                </Link>
+                <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground flex-shrink-0">
+                  <span className="text-xs flex-shrink-0">
+                    {languageFlags[item.chapter.language] ||
+                      `[${item.chapter.language.toUpperCase()}]`}
+                  </span>
+                  <span className="truncate">
+                    {t("chapter", "series")} {item.chapter.number}
+                    {item.chapter.title && ` - ${item.chapter.title}`}
+                  </span>
+                </div>
               </div>
-              <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                <span>{t("by", "series")}</span>
-                {item.groups.map((group, index) => (
-                  <Link
-                    key={group.id}
-                    href={group.url}
-                    className="text-primary hover:underline"
-                  >
-                    {group.name}
-                    {index < item.groups.length - 1 && ", "}
-                  </Link>
-                ))}
-              </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <span>{formatRelativeTime(item.timestamp, t)}</span>
+
+              {/* Groups and timestamp - inline */}
+              {/* <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-muted-foreground min-w-0">
+                <div className="flex items-center gap-1 min-w-0 flex-1">
+                  {item.groups.slice(0, 2).map((group, index) => (
+                    <Link
+                      key={group.id}
+                      href={group.url}
+                      className="text-primary hover:underline truncate"
+                    >
+                      {group.name}
+                    </Link>
+                  ))}
+                  {item.groups.length > 2 && (
+                    <span className="text-muted-foreground truncate">
+                      +{item.groups.length - 2}
+                    </span>
+                  )}
+                </div>
+                <span className="flex-shrink-0 ml-auto sm:ml-0">
+                  {formatRelativeTime(item.timestamp, t)}
+                </span>
                 {item.commentCount !== undefined && item.commentCount > 0 && (
-                  <Badge variant="outline" className="text-xs">
-                    {item.commentCount}{" "}
-                    {item.commentCount === 1
-                      ? t("comment", "series")
-                      : t("comments", "series")}
+                  <Badge variant="outline" className="text-xs flex-shrink-0">
+                    {item.commentCount}
                   </Badge>
                 )}
+              </div> */}
+
+              <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground flex-shrink-0">
+                <span className="text-xs flex-shrink-0">
+                  {formatRelativeTime(item.timestamp, t)}
+                </span>
               </div>
             </div>
           </div>

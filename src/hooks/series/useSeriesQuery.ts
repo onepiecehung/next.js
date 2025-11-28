@@ -68,9 +68,7 @@ export function useLatestUpdates() {
       return backendSeries.map((series) => {
         // Convert date string to Date object
         const timestampStr = series.updatedAt || series.createdAt;
-        const timestamp = timestampStr
-          ? new Date(timestampStr)
-          : new Date();
+        const timestamp = timestampStr ? new Date(timestampStr) : new Date();
 
         return {
           id: series.id,

@@ -56,8 +56,8 @@ export default function SiteNav() {
             href="/"
             className="font-semibold text-lg md:text-xl text-foreground shrink-0"
           >
-          {t("appName", "common")}
-        </Link>
+            {t("appName", "common")}
+          </Link>
 
           {/* Search Bar - Center */}
           <div className="flex-1 max-w-xl lg:max-w-2xl hidden md:block mx-4">
@@ -68,25 +68,28 @@ export default function SiteNav() {
           <div className="flex items-center gap-2 md:gap-3 shrink-0">
             {/* Mobile search - show on small screens */}
             <div className="md:hidden">
-              <SearchBar className="w-48 sm:w-64" showKeyboardShortcut={false} />
+              <SearchBar
+                className="w-48 sm:w-64"
+                showKeyboardShortcut={false}
+              />
             </div>
-          <LanguageSwitcher />
-          <ThemeSelector variant="compact" />
-          {(() => {
-            if (authLoading)
-              return (
-                <div className="h-8 w-20 animate-pulse bg-muted rounded" />
-              );
-            if (user?.id)
-              return (
-                <UserDropdown
-                  user={user as User & { id: string }}
-                  onLogout={handleLogout}
-                  isLoggingOut={isLoggingOut}
-                />
-              );
-            return <LoginDialog />;
-          })()}
+            <LanguageSwitcher />
+            <ThemeSelector variant="compact" />
+            {(() => {
+              if (authLoading)
+                return (
+                  <div className="h-8 w-20 animate-pulse bg-muted rounded" />
+                );
+              if (user?.id)
+                return (
+                  <UserDropdown
+                    user={user as User & { id: string }}
+                    onLogout={handleLogout}
+                    isLoggingOut={isLoggingOut}
+                  />
+                );
+              return <LoginDialog />;
+            })()}
           </div>
         </div>
       </div>

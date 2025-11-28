@@ -5,4 +5,3 @@ export * from "./series-card";
 export * from "./series-carousel";
 export * from "./series-carousel-item";
 export * from "./series-hero-carousel";
-

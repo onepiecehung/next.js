@@ -34,7 +34,7 @@ function extractCoverUrl(backendSeries: BackendSeries): string {
   if (backendSeries.coverImage?.url) {
     return backendSeries.coverImage.url;
   }
-  
+
   // Second priority: coverImageUrls object (from AniList API)
   if (backendSeries.coverImageUrls) {
     // Try different sizes in order of preference
@@ -62,7 +62,7 @@ function extractCoverUrl(backendSeries: BackendSeries): string {
       return extraLarge;
     }
   }
-  
+
   // Default placeholder
   return "/default-article-cover.jpg";
 }
@@ -76,12 +76,12 @@ function extractBannerUrl(backendSeries: BackendSeries): string | undefined {
   if (backendSeries.bannerImage?.url) {
     return backendSeries.bannerImage.url;
   }
-  
+
   // Second priority: bannerImageUrl field
   if (backendSeries.bannerImageUrl) {
     return backendSeries.bannerImageUrl;
   }
-  
+
   // Return undefined if no banner available
   return undefined;
 }

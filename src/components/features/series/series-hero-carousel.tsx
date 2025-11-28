@@ -97,10 +97,11 @@ export function SeriesHeroCarousel({
               </div>
 
               {/* Gradient overlay from bottom (dark/opaque) to top (transparent) - MangaDex style */}
-              <div 
+              <div
                 className="absolute inset-0 -top-[80px] z-[1]"
                 style={{
-                  background: 'linear-gradient(to top, rgba(0, 0, 0, 0.35) 0%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.05) 85%, transparent 100%)'
+                  background:
+                    "linear-gradient(to top, rgba(0, 0, 0, 0.35) 0%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.05) 85%, transparent 100%)",
                 }}
               />
 
@@ -206,9 +207,7 @@ export function SeriesHeroCarousel({
                 onClick={() => emblaApi?.scrollTo(index)}
                 className={cn(
                   "h-1.5 w-1.5 rounded-full transition-all",
-                  isActive
-                    ? "bg-white w-6"
-                    : "bg-white/40 hover:bg-white/60",
+                  isActive ? "bg-white w-6" : "bg-white/40 hover:bg-white/60",
                 )}
                 aria-label={`Go to slide ${index + 1}`}
               />
@@ -219,4 +218,3 @@ export function SeriesHeroCarousel({
     </div>
   );
 }
-

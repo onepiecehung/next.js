@@ -99,4 +99,3 @@ export type SeriesSeason =
 
 export type SeriesStatus =
   (typeof SERIES_CONSTANTS.STATUS)[keyof typeof SERIES_CONSTANTS.STATUS];
-

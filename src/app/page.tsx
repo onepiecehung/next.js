@@ -53,13 +53,15 @@ export default function HomePage() {
         <Skeletonize loading={isLoadingPopular}>
           {popularSeries && popularSeries.length > 0 && (
             <SeriesHeroCarousel
-              items={popularSeries.map((series: PopularSeries): FeaturedSeries => ({
-                id: series.id,
-                title: series.title,
-                description: series.description || "",
-                tags: series.tags || [],
-                coverUrl: series.coverUrl,
-              }))}
+              items={popularSeries.map(
+                (series: PopularSeries): FeaturedSeries => ({
+                  id: series.id,
+                  title: series.title,
+                  description: series.description || "",
+                  tags: series.tags || [],
+                  coverUrl: series.coverUrl,
+                }),
+              )}
               className="h-[25vh] sm:h-[30vh] lg:h-[45vh] max-h-[700px]"
             />
           )}
@@ -204,11 +206,7 @@ export default function HomePage() {
             {recentlyAdded && recentlyAdded.length > 0 && (
               <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-10">
                 {recentlyAdded.slice(0, 10).map((series) => (
-                  <SeriesCard
-                    key={series.id}
-                    series={series}
-                    variant="tiny"
-                  />
+                  <SeriesCard key={series.id} series={series} variant="tiny" />
                 ))}
               </div>
             )}
