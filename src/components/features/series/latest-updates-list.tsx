@@ -62,12 +62,12 @@ export function LatestUpdatesList({
 
   return (
     <div className={className}>
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+      <div className="mb-3 sm:mb-4 flex items-center justify-between">
+        <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
           {t("latestUpdates", "series")}
         </h2>
-        <Button asChild variant="ghost" size="sm">
-          <Link href="/series/latest">
+        <Button asChild variant="ghost" size="sm" className="hidden sm:flex">
+          <Link href="/series/latest" className="text-xs sm:text-sm">
             {t("viewLastUpdatedTitles", "series")}
             <span className="ml-2">→</span>
           </Link>
