@@ -1,6 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { SeriesAPI } from "@/lib/api/series";
+import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
+import type {
+  SeriesType,
+  SeriesFormat,
+  SeriesSeason,
+} from "@/lib/constants/series.constants";
 import type {
   LatestUpdateItem,
   Series,
@@ -27,7 +33,7 @@ export function usePopularSeries() {
         limit: 10,
         sortBy: "popularity",
         order: "DESC",
-        type: "MANGA", // For homepage, show series
+        type: SERIES_CONSTANTS.TYPE.MANGA, // For homepage, show series
       });
       const backendSeries = response.data.result as BackendSeries[];
       return backendSeries.map(transformToPopularSeries);
@@ -52,27 +58,35 @@ export function useLatestUpdates() {
         limit: 10,
         sortBy: "updatedAt",
         order: "DESC",
-        type: "MANGA",
+        type: SERIES_CONSTANTS.TYPE.MANGA,
       });
       const backendSeries = response.data.result as BackendSeries[];
 
       // Transform to LatestUpdateItem format
       // Note: This is a simplified transformation
       // Real implementation would need chapter/group data from backend
-      return backendSeries.map((series) => ({
-        id: series.id,
-        title: transformBackendSeries(series).title,
-        coverUrl: transformBackendSeries(series).coverUrl,
-        chapter: {
-          number: "1",
-          title: "Chapter 1",
-          language: "en",
-          url: `/series/${series.id}`,
-        },
-        groups: [],
-        timestamp: series.updatedAt || series.createdAt || new Date(),
-        commentCount: 0,
-      }));
+      return backendSeries.map((series) => {
+        // Convert date string to Date object
+        const timestampStr = series.updatedAt || series.createdAt;
+        const timestamp = timestampStr
+          ? new Date(timestampStr)
+          : new Date();
+
+        return {
+          id: series.id,
+          title: transformBackendSeries(series).title,
+          coverUrl: transformBackendSeries(series).coverUrl,
+          chapter: {
+            number: "1",
+            title: "Chapter 1",
+            language: "en",
+            url: `/series/${series.id}`,
+          },
+          groups: [],
+          timestamp,
+          commentCount: 0,
+        };
+      });
     },
     staleTime: 2 * 60 * 1000, // 2 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
@@ -92,7 +106,7 @@ export function useRecommendedSeries() {
         limit: 12,
         sortBy: "averageScore",
         order: "DESC",
-        type: "MANGA",
+        type: SERIES_CONSTANTS.TYPE.MANGA,
         minScore: 70, // Minimum score of 70
       });
       const backendSeries = response.data.result as BackendSeries[];
@@ -116,7 +130,7 @@ export function useSelfPublishedSeries() {
         limit: 12,
         sortBy: "createdAt",
         order: "DESC",
-        type: "MANGA",
+        type: SERIES_CONSTANTS.TYPE.MANGA,
         isLicensed: false,
       });
       const backendSeries = response.data.result as BackendSeries[];
@@ -140,7 +154,7 @@ export function useFeaturedSeries() {
         limit: 3,
         sortBy: "trending",
         order: "DESC",
-        type: "MANGA",
+        type: SERIES_CONSTANTS.TYPE.MANGA,
       });
       const backendSeries = response.data.result as BackendSeries[];
       return transformBackendSeriesList(backendSeries);
@@ -161,10 +175,13 @@ export function useSeasonalSeries() {
 
   // Determine current season
   let season: string;
-  if (currentMonth >= 2 && currentMonth <= 4) season = "SPRING";
-  else if (currentMonth >= 5 && currentMonth <= 7) season = "SUMMER";
-  else if (currentMonth >= 8 && currentMonth <= 10) season = "FALL";
-  else season = "WINTER";
+  if (currentMonth >= 2 && currentMonth <= 4)
+    season = SERIES_CONSTANTS.SEASON.SPRING;
+  else if (currentMonth >= 5 && currentMonth <= 7)
+    season = SERIES_CONSTANTS.SEASON.SUMMER;
+  else if (currentMonth >= 8 && currentMonth <= 10)
+    season = SERIES_CONSTANTS.SEASON.FALL;
+  else season = SERIES_CONSTANTS.SEASON.WINTER;
 
   return useQuery<Series[]>({
     queryKey: queryKeys.series.seasonal(season, currentYear),
@@ -174,7 +191,7 @@ export function useSeasonalSeries() {
         limit: 20,
         sortBy: "popularity",
         order: "DESC",
-        type: "MANGA",
+        type: SERIES_CONSTANTS.TYPE.MANGA,
         season,
         seasonYear: currentYear,
       });
@@ -199,7 +216,7 @@ export function useRecentlyAddedSeries() {
         limit: 10,
         sortBy: "createdAt",
         order: "DESC",
-        type: "MANGA",
+        type: SERIES_CONSTANTS.TYPE.MANGA,
       });
       const backendSeries = response.data.result as BackendSeries[];
       return transformBackendSeriesList(backendSeries);
@@ -234,9 +251,9 @@ export function useSeriesList(params?: {
   limit?: number;
   sortBy?: string;
   order?: "ASC" | "DESC";
-  type?: string;
-  format?: string;
-  season?: string;
+  type?: SeriesType;
+  format?: SeriesFormat;
+  season?: SeriesSeason;
   seasonYear?: number;
   genres?: string[];
   minScore?: number;

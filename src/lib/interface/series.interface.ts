@@ -179,6 +179,7 @@ export interface Series {
 /**
  * Latest update item interface
  * Used for the "Latest Updates" section
+ * timestamp can be Date object or ISO date string
  */
 export interface LatestUpdateItem {
   id: string;
@@ -186,7 +187,7 @@ export interface LatestUpdateItem {
   coverUrl: string;
   chapter: SeriesChapter;
   groups: ScanlationGroup[];
-  timestamp: Date;
+  timestamp: Date | string;
   commentCount?: number;
 }
 

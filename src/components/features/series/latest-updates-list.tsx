@@ -24,12 +24,21 @@ const languageFlags: Record<string, string> = {
 
 /**
  * Format relative time
+ * Handles both Date objects and date strings (ISO format)
  */
 function formatRelativeTime(
-  date: Date,
+  date: Date | string,
   t: (key: string, ns?: string) => string,
 ): string {
-  const minutes = Math.floor((Date.now() - date.getTime()) / 60000);
+  // Convert to Date object if it's a string
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+  
+  // Validate date
+  if (isNaN(dateObj.getTime())) {
+    return t("justNow", "series");
+  }
+
+  const minutes = Math.floor((Date.now() - dateObj.getTime()) / 60000);
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
 

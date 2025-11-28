@@ -7,6 +7,14 @@ import type {
   QueryParamsWithCursor,
 } from "@/lib/types";
 import type { Series } from "@/lib/interface/series.interface";
+import type {
+  SeriesType,
+  SeriesFormat,
+  SeriesSeason,
+  SeriesSource,
+  SeriesReleasingStatus,
+  SeriesStatus,
+} from "@/lib/constants/series.constants";
 
 /**
  * Create Series DTO
@@ -21,13 +29,13 @@ export interface CreateSeriesDto {
     native?: string;
     userPreferred?: string;
   };
-  type: string; // ANIME or MANGA
-  format?: string;
-  status?: string;
+  type: SeriesType;
+  format?: SeriesFormat;
+  status?: SeriesReleasingStatus;
   description?: string;
   startDate?: Date;
   endDate?: Date;
-  season?: string;
+  season?: SeriesSeason;
   seasonYear?: number;
   seasonInt?: number;
   episodes?: number;
@@ -36,7 +44,7 @@ export interface CreateSeriesDto {
   volumes?: number;
   countryOfOrigin?: string;
   isLicensed?: boolean;
-  source?: string;
+  source?: SeriesSource;
   coverImageId?: string;
   bannerImageId?: string;
   genreIds?: string[];
@@ -52,7 +60,7 @@ export interface CreateSeriesDto {
   isRecommendationBlocked?: boolean;
   isReviewBlocked?: boolean;
   notes?: string;
-  releasingStatus?: string;
+  releasingStatus?: SeriesReleasingStatus;
   externalLinks?: Record<string, string>;
   streamingEpisodes?: Record<string, string>;
   metadata?: Record<string, unknown>;
@@ -69,11 +77,11 @@ export type UpdateSeriesDto = Partial<CreateSeriesDto>;
  * Based on backend QuerySeriesDto
  */
 export interface QuerySeriesDto extends AdvancedQueryParams {
-  type?: string; // ANIME or MANGA
-  format?: string;
-  season?: string;
+  type?: SeriesType;
+  format?: SeriesFormat;
+  season?: SeriesSeason;
   seasonYear?: number;
-  source?: string;
+  source?: SeriesSource;
   genres?: string[];
   isNsfw?: boolean;
   isLicensed?: boolean;
@@ -81,7 +89,7 @@ export interface QuerySeriesDto extends AdvancedQueryParams {
   maxScore?: number;
   minPopularity?: number;
   maxPopularity?: number;
-  seriesStatus?: string;
+  seriesStatus?: SeriesStatus;
 }
 
 /**
@@ -219,7 +227,7 @@ export class SeriesAPI {
    * Trigger AniList crawl job
    */
   static async triggerAniListCrawl(
-    type?: "ANIME" | "MANGA",
+    type?: SeriesType,
   ): Promise<ApiResponse<{ jobId: string; type: string }>> {
     const params = type ? { type } : {};
     const response = await http.get<
