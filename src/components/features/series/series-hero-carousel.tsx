@@ -105,53 +105,54 @@ export function SeriesHeroCarousel({
               />
 
               {/* Slide container */}
-              <div className="relative px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 lg:pt-8 pb-4 sm:pb-6 lg:pb-8 h-full flex items-center z-10">
-                <div className="relative z-10 w-full grid gap-3 sm:grid-cols-2 sm:gap-4 lg:gap-6 items-center">
-                  {/* Info section - Left */}
-                  <div className="flex flex-col justify-center space-y-2 sm:space-y-3 lg:space-y-4">
+              <div className="relative px-3 sm:px-6 lg:px-8 pt-3 sm:pt-6 lg:pt-8 pb-3 sm:pb-6 lg:pb-8 h-full flex items-center z-10">
+                <div className="relative z-10 w-full flex flex-row sm:grid sm:grid-cols-2 gap-3 sm:gap-4 lg:gap-6 items-center">
+                  {/* Cover image - Mobile: Left, Desktop: Right */}
+                  <div className="flex items-center justify-center flex-shrink-0 sm:order-2 sm:mx-0 sm:w-auto">
+                    <div className="relative aspect-[2/3] overflow-hidden rounded-lg shadow-lg w-[100px] sm:min-w-[150px] md:min-w-[180px] lg:min-w-[220px] h-full max-h-[180px] sm:max-h-[calc(100%-3rem)] lg:max-h-[calc(100%-4rem)]">
+                      <Image
+                        src={item.coverUrl}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100px, (max-width: 768px) 150px, (max-width: 1024px) 180px, 220px"
+                        priority
+                      />
+                    </div>
+                  </div>
+
+                  {/* Info section - Mobile: Right, Desktop: Left */}
+                  <div className="flex flex-col justify-center space-y-1 sm:space-y-2 lg:space-y-3 flex-1 min-w-0 sm:order-1 text-left">
                     {/* Title */}
-                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white line-clamp-2">
+                    <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white line-clamp-2 leading-tight">
                       {item.title}
                     </h2>
 
                     {/* Alt title */}
                     {item.altTitle && (
-                      <p className="text-sm text-neutral-200 line-clamp-1">
+                      <p className="text-xs sm:text-sm text-neutral-200 line-clamp-1 mt-0.5">
                         {item.altTitle}
                       </p>
                     )}
 
                     {/* Description */}
-                    <p className="text-xs sm:text-sm text-neutral-200 line-clamp-2 sm:line-clamp-3 lg:line-clamp-4">
+                    <p className="text-xs sm:text-sm text-neutral-200/90 line-clamp-2 sm:line-clamp-3 lg:line-clamp-4 leading-relaxed mt-1">
                       {item.description}
                     </p>
 
                     {/* Tags */}
                     {item.tags && item.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {item.tags.map((tag, index) => (
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-start mt-1 sm:mt-2">
+                        {item.tags.slice(0, 3).map((tag, index) => (
                           <span
                             key={index}
-                            className="rounded-full bg-white/5 border border-white/10 px-3 py-1 text-xs uppercase tracking-wide text-white"
+                            className="rounded-full bg-white/10 border border-white/20 px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs uppercase tracking-wide text-white"
                           >
                             {tag}
                           </span>
                         ))}
                       </div>
                     )}
-                  </div>
-
-                  {/* Cover image - Right */}
-                  <div className="mx-auto flex items-center justify-center">
-                    <div className="relative w-auto aspect-[2/3] overflow-hidden rounded-lg shadow-lg min-w-[120px] sm:min-w-[150px] md:min-w-[180px] lg:min-w-[220px] max-h-[calc(100%-2rem)] sm:max-h-[calc(100%-3rem)] lg:max-h-[calc(100%-4rem)]">
-                      <Image
-                        src={item.coverUrl}
-                        alt={item.title}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 640px) 120px, (max-width: 768px) 150px, (max-width: 1024px) 180px, 220px"
-                      />
-                    </div>
                   </div>
                 </div>
               </div>
@@ -160,36 +161,60 @@ export function SeriesHeroCarousel({
         </div>
       </div>
 
-      {/* Navigation arrows - visible on desktop (sm+) */}
+      {/* Navigation arrows - reduced opacity on mobile */}
       {items.length > 1 && (
         <>
           <Button
             variant="outline"
             size="icon"
             className={cn(
-              "absolute left-2 top-1/2 -translate-y-1/2 z-30 h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background hidden sm:flex",
-              !canScrollPrev && "opacity-50 cursor-not-allowed",
+              "absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 z-30 h-9 w-9 sm:h-8 sm:w-8 rounded-full bg-background/90 backdrop-blur-sm hover:bg-background border-2 sm:border shadow-lg",
+              "opacity-20 sm:opacity-100 active:opacity-100",
+              !canScrollPrev && "opacity-10 sm:opacity-50 cursor-not-allowed",
             )}
             onClick={scrollPrev}
             disabled={!canScrollPrev}
             aria-label="Previous slide"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="h-5 w-5 sm:h-4 sm:w-4" />
           </Button>
           <Button
             variant="outline"
             size="icon"
             className={cn(
-              "absolute right-2 top-1/2 -translate-y-1/2 z-30 h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background hidden sm:flex",
-              !canScrollNext && "opacity-50 cursor-not-allowed",
+              "absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 z-30 h-9 w-9 sm:h-8 sm:w-8 rounded-full bg-background/90 backdrop-blur-sm hover:bg-background border-2 sm:border shadow-lg",
+              "opacity-20 sm:opacity-100 active:opacity-100",
+              !canScrollNext && "opacity-10 sm:opacity-50 cursor-not-allowed",
             )}
             onClick={scrollNext}
             disabled={!canScrollNext}
             aria-label="Next slide"
           >
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-5 w-5 sm:h-4 sm:w-4" />
           </Button>
         </>
+      )}
+
+      {/* Dots indicator - mobile only */}
+      {items.length > 1 && (
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-30 flex gap-1.5 sm:hidden">
+          {items.map((_, index) => {
+            const isActive = emblaApi?.selectedScrollSnap() === index;
+            return (
+              <button
+                key={index}
+                onClick={() => emblaApi?.scrollTo(index)}
+                className={cn(
+                  "h-1.5 w-1.5 rounded-full transition-all",
+                  isActive
+                    ? "bg-white w-6"
+                    : "bg-white/40 hover:bg-white/60",
+                )}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            );
+          })}
+        </div>
       )}
     </div>
   );

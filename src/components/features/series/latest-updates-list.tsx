@@ -76,11 +76,11 @@ export function LatestUpdatesList({
         </Button>
       </div>
 
-      <div className="space-y-0 divide-y divide-border rounded-lg border border-border bg-card">
+      <div className="grid gap-4 sm:grid-cols-2">
         {items.map((item) => (
           <div
             key={item.id}
-            className="flex gap-4 p-4 transition-colors hover:bg-accent/50"
+            className="flex gap-4 p-4 rounded-lg border border-border bg-card transition-colors hover:bg-accent/50"
           >
             {/* Cover */}
             <Link
