@@ -30,7 +30,7 @@ function formatRelativeTime(
 ): string {
   // Convert to Date object if it's a string
   const dateObj = typeof date === "string" ? new Date(date) : date;
-
+  
   // Validate date
   if (isNaN(dateObj.getTime())) {
     return t("justNow", "series");
@@ -41,9 +41,9 @@ function formatRelativeTime(
   const days = Math.floor(hours / 24);
 
   if (minutes < 1) return t("justNow", "series");
-  if (minutes < 60) return t("minutesAgo", "series", { value: minutes });
-  if (hours < 24) return t("hoursAgo", "series", { value: hours });
-  return t("daysAgo", "series", { value: days });
+  if (minutes < 60) return t("minutesAgo", "series").replace("{{value}}", minutes.toString());
+  if (hours < 24) return t("hoursAgo", "series").replace("{{value}}", hours.toString());
+  return t("daysAgo", "series").replace("{{value}}", days.toString());
 }
 
 /**
@@ -116,6 +116,8 @@ export function LatestUpdatesList({
                 </div>
               </div>
 
+
+
               {/* Groups and timestamp - inline */}
               {/* <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-muted-foreground min-w-0">
                 <div className="flex items-center gap-1 min-w-0 flex-1">
@@ -144,11 +146,13 @@ export function LatestUpdatesList({
                 )}
               </div> */}
 
+
+
               <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground flex-shrink-0">
-                <span className="text-xs flex-shrink-0">
+                  <span className="text-xs flex-shrink-0">
                   {formatRelativeTime(item.timestamp, t)}
-                </span>
-              </div>
+                  </span>
+                </div>
             </div>
           </div>
         ))}
