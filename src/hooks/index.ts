@@ -15,6 +15,9 @@ export * from "./content";
 // Media hooks
 export * from "./media";
 
+// Series hooks
+export * from "./series";
+
 // Reaction hooks
 export * from "./reactions";
 

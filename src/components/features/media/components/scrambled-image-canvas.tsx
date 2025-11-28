@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { MediaAPI } from '@/lib/api/media';
-import { cn, generatePermutation } from '@/lib/utils';
-import { useEffect, useRef, useState } from 'react';
+import { MediaAPI } from "@/lib/api/media";
+import { cn, generatePermutation } from "@/lib/utils";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * Props for the ScrambledImageCanvas component
@@ -94,11 +94,16 @@ export function ScrambledImageCanvas({
 
         // Verify canvas ref is available
         if (!canvasRef.current) {
-          throw new Error('Canvas element not mounted after retries. Please ensure the component is properly rendered.');
+          throw new Error(
+            "Canvas element not mounted after retries. Please ensure the component is properly rendered.",
+          );
         }
 
         // Additional check: ensure canvas has valid dimensions
-        if (canvasRef.current && (canvasRef.current.width === 0 || canvasRef.current.height === 0)) {
+        if (
+          canvasRef.current &&
+          (canvasRef.current.width === 0 || canvasRef.current.height === 0)
+        ) {
           // Wait a bit more for canvas to be properly initialized
           await new Promise((resolve) => setTimeout(resolve, 500));
         }
@@ -110,56 +115,58 @@ export function ScrambledImageCanvas({
 
         if (!scrambleKeyResponse.success) {
           throw new Error(
-            scrambleKeyResponse.message || 'Failed to fetch scramble key'
+            scrambleKeyResponse.message || "Failed to fetch scramble key",
           );
         }
 
-        const { permutationSeed, tileRows, tileCols } = scrambleKeyResponse.data;
+        const { permutationSeed, tileRows, tileCols } =
+          scrambleKeyResponse.data;
 
-        console.log('🔑 Scramble Key Data:', {
-          permutationSeed: permutationSeed.substring(0, 20) + '...',
+        console.log("🔑 Scramble Key Data:", {
+          permutationSeed: permutationSeed.substring(0, 20) + "...",
           tileRows,
           tileCols,
-          totalTiles: tileRows * tileCols
+          totalTiles: tileRows * tileCols,
         });
 
         // Step 2: Generate permutation mapping
         const { inversePermutation } = generatePermutation(
           permutationSeed,
           tileRows,
-          tileCols
+          tileCols,
         );
 
-        console.log('🔀 Permutation generated:', {
+        console.log("🔀 Permutation generated:", {
           length: inversePermutation.length,
           firstFew: inversePermutation.slice(0, 5),
-          lastFew: inversePermutation.slice(-5)
+          lastFew: inversePermutation.slice(-5),
         });
 
         // Step 3: Load the scrambled image
-        console.log('Loading scrambled image from:', src);
+        console.log("Loading scrambled image from:", src);
 
         // Get current frontend origin
-        const currentOrigin = typeof window !== 'undefined' ? window.location.origin : '';
-        const isLocalhost3000 = currentOrigin === 'http://localhost:3000';
-        const isLocalhost3001 = currentOrigin === 'http://localhost:3001';
+        const currentOrigin =
+          typeof window !== "undefined" ? window.location.origin : "";
+        const isLocalhost3000 = currentOrigin === "http://localhost:3000";
+        const isLocalhost3001 = currentOrigin === "http://localhost:3001";
         const isAllowedOrigin = isLocalhost3000 || isLocalhost3001;
-        const isHttps = src.startsWith('https://');
+        const isHttps = src.startsWith("https://");
 
-        console.log('CORS Analysis:', {
+        console.log("CORS Analysis:", {
           imageUrl: src,
           frontendOrigin: currentOrigin,
           isLocalhost3000,
           isLocalhost3001,
           isAllowedOrigin,
           isHttps,
-          needsCORS: isHttps && !src.includes('localhost')
+          needsCORS: isHttps && !src.includes("localhost"),
         });
 
         // Test CORS configuration first (non-blocking)
         // This is just for diagnostics - we'll still try to load the image even if test fails
-        if (isHttps && !src.includes('localhost')) {
-          console.log('🔍 Testing CORS configuration...');
+        if (isHttps && !src.includes("localhost")) {
+          console.log("🔍 Testing CORS configuration...");
           try {
             // Add delay before CORS test to ensure preflight can complete
             // This is critical when DevTools is closed
@@ -170,58 +177,82 @@ export function ScrambledImageCanvas({
             });
 
             const corsTestResponse = await fetch(src, {
-              method: 'HEAD',
-              mode: 'cors'
+              method: "HEAD",
+              mode: "cors",
             });
             const corsHeaders = {
-              'Access-Control-Allow-Origin': corsTestResponse.headers.get('Access-Control-Allow-Origin'),
-              'Access-Control-Allow-Methods': corsTestResponse.headers.get('Access-Control-Allow-Methods'),
-              'Access-Control-Allow-Headers': corsTestResponse.headers.get('Access-Control-Allow-Headers'),
-              'Access-Control-Max-Age': corsTestResponse.headers.get('Access-Control-Max-Age'),
+              "Access-Control-Allow-Origin": corsTestResponse.headers.get(
+                "Access-Control-Allow-Origin",
+              ),
+              "Access-Control-Allow-Methods": corsTestResponse.headers.get(
+                "Access-Control-Allow-Methods",
+              ),
+              "Access-Control-Allow-Headers": corsTestResponse.headers.get(
+                "Access-Control-Allow-Headers",
+              ),
+              "Access-Control-Max-Age": corsTestResponse.headers.get(
+                "Access-Control-Max-Age",
+              ),
             };
-            console.log('📋 CORS Test Response Headers:', corsHeaders);
-            
+            console.log("📋 CORS Test Response Headers:", corsHeaders);
+
             // Validate CORS configuration
-            if (!corsHeaders['Access-Control-Allow-Origin']) {
-              console.warn('⚠️ No CORS headers detected in test!');
-              console.warn('   → CDN CORS may not be configured or not yet propagated.');
-              console.warn('   → Will still attempt to load image...');
-            } else if (corsHeaders['Access-Control-Allow-Origin'] !== currentOrigin && corsHeaders['Access-Control-Allow-Origin'] !== '*') {
-              console.warn('⚠️ CORS origin mismatch:', {
+            if (!corsHeaders["Access-Control-Allow-Origin"]) {
+              console.warn("⚠️ No CORS headers detected in test!");
+              console.warn(
+                "   → CDN CORS may not be configured or not yet propagated.",
+              );
+              console.warn("   → Will still attempt to load image...");
+            } else if (
+              corsHeaders["Access-Control-Allow-Origin"] !== currentOrigin &&
+              corsHeaders["Access-Control-Allow-Origin"] !== "*"
+            ) {
+              console.warn("⚠️ CORS origin mismatch:", {
                 expected: currentOrigin,
-                received: corsHeaders['Access-Control-Allow-Origin'],
-                suggestion: `Add "${currentOrigin}" to AllowedOrigins in R2 CORS config`
+                received: corsHeaders["Access-Control-Allow-Origin"],
+                suggestion: `Add "${currentOrigin}" to AllowedOrigins in R2 CORS config`,
               });
             } else {
-              console.log('✅ CORS origin matches:', corsHeaders['Access-Control-Allow-Origin']);
+              console.log(
+                "✅ CORS origin matches:",
+                corsHeaders["Access-Control-Allow-Origin"],
+              );
             }
 
             // Check for OPTIONS method
-            const allowedMethods = corsHeaders['Access-Control-Allow-Methods']?.toUpperCase() || '';
-            if (!allowedMethods.includes('OPTIONS')) {
-              console.warn('⚠️ OPTIONS method not found in AllowedMethods!');
-              console.warn('   → Browser preflight requests may fail.');
+            const allowedMethods =
+              corsHeaders["Access-Control-Allow-Methods"]?.toUpperCase() || "";
+            if (!allowedMethods.includes("OPTIONS")) {
+              console.warn("⚠️ OPTIONS method not found in AllowedMethods!");
+              console.warn("   → Browser preflight requests may fail.");
             } else {
-              console.log('✅ OPTIONS method is allowed');
+              console.log("✅ OPTIONS method is allowed");
             }
 
             // Check for headers
-            const allowedHeaders = corsHeaders['Access-Control-Allow-Headers'] || '';
-            if (!allowedHeaders || allowedHeaders === '') {
-              console.warn('⚠️ AllowedHeaders is empty.');
+            const allowedHeaders =
+              corsHeaders["Access-Control-Allow-Headers"] || "";
+            if (!allowedHeaders || allowedHeaders === "") {
+              console.warn("⚠️ AllowedHeaders is empty.");
             } else {
-              console.log('✅ AllowedHeaders configured:', allowedHeaders);
+              console.log("✅ AllowedHeaders configured:", allowedHeaders);
             }
 
             // Check Max-Age
-            if (corsHeaders['Access-Control-Max-Age']) {
-              console.log('✅ CORS Max-Age:', corsHeaders['Access-Control-Max-Age'], 'seconds');
+            if (corsHeaders["Access-Control-Max-Age"]) {
+              console.log(
+                "✅ CORS Max-Age:",
+                corsHeaders["Access-Control-Max-Age"],
+                "seconds",
+              );
             }
           } catch (corsTestError) {
             const error = corsTestError as Error;
-            console.warn('⚠️ CORS test failed (non-blocking):', error.message);
-            console.warn('   → Will still attempt to load image...');
-            console.warn('   → If image load fails, check R2 CORS configuration.');
+            console.warn("⚠️ CORS test failed (non-blocking):", error.message);
+            console.warn("   → Will still attempt to load image...");
+            console.warn(
+              "   → If image load fails, check R2 CORS configuration.",
+            );
           }
         }
 
@@ -233,55 +264,73 @@ export function ScrambledImageCanvas({
         let imageBlobUrl: string | null = null;
         let useDirectLoad = false;
 
-        if (isHttps && !src.includes('localhost')) {
+        if (isHttps && !src.includes("localhost")) {
           // External HTTPS URL - try fetch() first, fallback to direct load if it fails
           corsAttempted = true;
-          console.log('🌐 Attempting to load image via fetch() for better CORS handling...');
-          console.log('   CDN should allow CORS from:', currentOrigin);
-          console.log('   Image URL:', src);
-          
+          console.log(
+            "🌐 Attempting to load image via fetch() for better CORS handling...",
+          );
+          console.log("   CDN should allow CORS from:", currentOrigin);
+          console.log("   Image URL:", src);
+
           // CRITICAL: Pre-warm CORS before first fetch attempt
           // This is essential when DevTools is closed (code runs faster)
           // We need to ensure CORS preflight completes before actual fetch
-          console.log('⏳ Pre-warming CORS before fetch...');
-          
+          console.log("⏳ Pre-warming CORS before fetch...");
+
           // Strategy: Use a small test fetch to trigger and wait for CORS preflight
           // This ensures the browser has processed CORS before we do the actual fetch
           let preflightReady = false;
           let preflightAttempts = 0;
           const maxPreflightAttempts = 5;
-          
+
           while (!preflightReady && preflightAttempts < maxPreflightAttempts) {
             preflightAttempts++;
-            console.log(`🔄 Pre-warming CORS (attempt ${preflightAttempts}/${maxPreflightAttempts})...`);
-            
+            console.log(
+              `🔄 Pre-warming CORS (attempt ${preflightAttempts}/${maxPreflightAttempts})...`,
+            );
+
             try {
               // Make a small HEAD request to trigger CORS preflight
               const preflightStartTime = performance.now();
               const preflightResponse = await fetch(src, {
-                method: 'HEAD',
-                mode: 'cors',
-                credentials: 'omit',
-                cache: 'no-cache' // Force fresh request
+                method: "HEAD",
+                mode: "cors",
+                credentials: "omit",
+                cache: "no-cache", // Force fresh request
               });
               const preflightDuration = performance.now() - preflightStartTime;
-              
+
               // Check if we got CORS headers
-              const corsHeader = preflightResponse.headers.get('access-control-allow-origin');
+              const corsHeader = preflightResponse.headers.get(
+                "access-control-allow-origin",
+              );
               if (corsHeader) {
-                console.log(`✅ CORS preflight completed (${preflightDuration.toFixed(2)}ms) - Headers present`);
+                console.log(
+                  `✅ CORS preflight completed (${preflightDuration.toFixed(2)}ms) - Headers present`,
+                );
                 preflightReady = true;
               } else {
-                console.warn(`⚠️ CORS preflight response received but no CORS headers (${preflightDuration.toFixed(2)}ms)`);
+                console.warn(
+                  `⚠️ CORS preflight response received but no CORS headers (${preflightDuration.toFixed(2)}ms)`,
+                );
                 // Wait a bit and retry
-                await new Promise((resolve) => setTimeout(resolve, 200 * preflightAttempts));
+                await new Promise((resolve) =>
+                  setTimeout(resolve, 200 * preflightAttempts),
+                );
               }
             } catch (preflightError) {
               const error = preflightError as Error;
-              console.warn(`⚠️ CORS preflight attempt ${preflightAttempts} failed:`, error.message);
-              
+              console.warn(
+                `⚠️ CORS preflight attempt ${preflightAttempts} failed:`,
+                error.message,
+              );
+
               // If it's a CORS error, wait and retry - the preflight might still be processing
-              if (error.message.includes('CORS') || error.message.includes('Failed to fetch')) {
+              if (
+                error.message.includes("CORS") ||
+                error.message.includes("Failed to fetch")
+              ) {
                 // Wait longer between retries to give browser time to process
                 await new Promise((resolve) => {
                   requestAnimationFrame(() => {
@@ -298,11 +347,11 @@ export function ScrambledImageCanvas({
               }
             }
           }
-          
+
           // Additional delay to ensure preflight is fully processed by browser
           // This is critical when DevTools is closed (code runs faster)
           // Multiple animation frames + timeout to ensure browser processes CORS
-          console.log('⏳ Final delay to ensure CORS is fully processed...');
+          console.log("⏳ Final delay to ensure CORS is fully processed...");
           await new Promise((resolve) => {
             requestAnimationFrame(() => {
               requestAnimationFrame(() => {
@@ -316,46 +365,57 @@ export function ScrambledImageCanvas({
               });
             });
           });
-          console.log('✅ Ready to fetch image...');
-          
+          console.log("✅ Ready to fetch image...");
+
           let fetchAttempts = 0;
           const maxFetchAttempts = 3;
           let fetchSuccess = false;
 
           while (!fetchSuccess && fetchAttempts < maxFetchAttempts) {
             fetchAttempts++;
-            
+
             if (fetchAttempts > 1) {
-              console.log(`🔄 Retrying fetch (attempt ${fetchAttempts}/${maxFetchAttempts})...`);
+              console.log(
+                `🔄 Retrying fetch (attempt ${fetchAttempts}/${maxFetchAttempts})...`,
+              );
               // Increase delay between retries
-              await new Promise((resolve) => setTimeout(resolve, 1000 * fetchAttempts));
+              await new Promise((resolve) =>
+                setTimeout(resolve, 1000 * fetchAttempts),
+              );
             }
 
             try {
               console.log(`📡 Fetching image (attempt ${fetchAttempts})...`);
               const fetchStartTime = performance.now();
-              
+
               const response = await fetch(src, {
-                method: 'GET',
-                mode: 'cors',
-                credentials: 'omit', // Don't send cookies
-                cache: 'default'
+                method: "GET",
+                mode: "cors",
+                credentials: "omit", // Don't send cookies
+                cache: "default",
               });
 
               const fetchDuration = performance.now() - fetchStartTime;
-              console.log(`📥 Fetch response received (${fetchDuration.toFixed(2)}ms):`, {
-                status: response.status,
-                statusText: response.statusText,
-                ok: response.ok,
-                headers: {
-                  'content-type': response.headers.get('content-type'),
-                  'content-length': response.headers.get('content-length'),
-                  'access-control-allow-origin': response.headers.get('access-control-allow-origin'),
-                }
-              });
+              console.log(
+                `📥 Fetch response received (${fetchDuration.toFixed(2)}ms):`,
+                {
+                  status: response.status,
+                  statusText: response.statusText,
+                  ok: response.ok,
+                  headers: {
+                    "content-type": response.headers.get("content-type"),
+                    "content-length": response.headers.get("content-length"),
+                    "access-control-allow-origin": response.headers.get(
+                      "access-control-allow-origin",
+                    ),
+                  },
+                },
+              );
 
               if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                throw new Error(
+                  `HTTP ${response.status}: ${response.statusText}`,
+                );
               }
 
               const blobStartTime = performance.now();
@@ -363,62 +423,75 @@ export function ScrambledImageCanvas({
               const blobDuration = performance.now() - blobStartTime;
               console.log(`📦 Blob created (${blobDuration.toFixed(2)}ms):`, {
                 size: blob.size,
-                type: blob.type
+                type: blob.type,
               });
 
               imageBlobUrl = URL.createObjectURL(blob);
               blobUrlRef.current = imageBlobUrl; // Store for cleanup
-              console.log(`✅ Image fetched successfully (attempt ${fetchAttempts})`);
-              console.log(`   Blob URL created: ${imageBlobUrl.substring(0, 50)}...`);
+              console.log(
+                `✅ Image fetched successfully (attempt ${fetchAttempts})`,
+              );
+              console.log(
+                `   Blob URL created: ${imageBlobUrl.substring(0, 50)}...`,
+              );
               fetchSuccess = true;
             } catch (fetchError) {
               const error = fetchError as Error;
               console.error(`❌ Fetch attempt ${fetchAttempts} failed:`, {
                 message: error.message,
                 name: error.name,
-                stack: error.stack?.split('\n').slice(0, 3).join('\n')
+                stack: error.stack?.split("\n").slice(0, 3).join("\n"),
               });
-              
+
               if (fetchAttempts >= maxFetchAttempts) {
-                console.warn('⚠️ All fetch attempts failed, will fallback to direct image load');
-                console.warn('   Last error:', error.message);
+                console.warn(
+                  "⚠️ All fetch attempts failed, will fallback to direct image load",
+                );
+                console.warn("   Last error:", error.message);
                 useDirectLoad = true;
                 break; // Exit loop, will use direct load
               }
             }
           }
         } else {
-          console.log('No CORS needed - localhost or HTTP URL, using direct load');
+          console.log(
+            "No CORS needed - localhost or HTTP URL, using direct load",
+          );
           useDirectLoad = true;
         }
 
         // Load image into Image element
         // If we used fetch(), use the blob URL; otherwise use original src with crossOrigin
         const imageSrc = imageBlobUrl || src;
-        
-        if (useDirectLoad && isHttps && !src.includes('localhost')) {
+
+        if (useDirectLoad && isHttps && !src.includes("localhost")) {
           // For direct load, we need crossOrigin set BEFORE src
           // CRITICAL: When DevTools is closed, code runs faster and CORS preflight
           // may not complete before image load. We need to ensure preflight completes.
-          console.log('🖼️ Using direct image load with crossOrigin="anonymous"');
-          img.crossOrigin = 'anonymous';
-          
+          console.log(
+            '🖼️ Using direct image load with crossOrigin="anonymous"',
+          );
+          img.crossOrigin = "anonymous";
+
           // CRITICAL FIX: Pre-warm CORS by making a preflight request
           // This ensures CORS preflight completes before we set img.src
           // This is essential when DevTools is closed (code runs faster)
-          console.log('⏳ Pre-warming CORS preflight for direct image load...');
+          console.log("⏳ Pre-warming CORS preflight for direct image load...");
           try {
             // Make a HEAD request to trigger CORS preflight
             await fetch(src, {
-              method: 'HEAD',
-              mode: 'cors',
-              credentials: 'omit'
+              method: "HEAD",
+              mode: "cors",
+              credentials: "omit",
             });
-            console.log('✅ CORS preflight completed');
+            console.log("✅ CORS preflight completed");
           } catch (preflightError) {
-            console.warn('⚠️ CORS preflight failed, but continuing...', preflightError);
+            console.warn(
+              "⚠️ CORS preflight failed, but continuing...",
+              preflightError,
+            );
           }
-          
+
           // Additional delay to ensure preflight is fully processed
           // Multiple animation frames + timeout to ensure browser processes CORS
           await new Promise((resolve) => {
@@ -433,13 +506,13 @@ export function ScrambledImageCanvas({
               });
             });
           });
-          console.log('⏳ Delay completed, ready to load image');
+          console.log("⏳ Delay completed, ready to load image");
         } else if (imageBlobUrl) {
-          console.log('🖼️ Using blob URL (no crossOrigin needed)');
+          console.log("🖼️ Using blob URL (no crossOrigin needed)");
         } else {
-          console.log('🖼️ Using direct image load (no CORS needed)');
+          console.log("🖼️ Using direct image load (no CORS needed)");
         }
-        
+
         await new Promise<void>((resolve, reject) => {
           const timeout = setTimeout(() => {
             if (imageBlobUrl) {
@@ -451,12 +524,12 @@ export function ScrambledImageCanvas({
 
           img.onload = () => {
             clearTimeout(timeout);
-            console.log('✅ Image loaded into Image element:', {
+            console.log("✅ Image loaded into Image element:", {
               width: img.naturalWidth,
               height: img.naturalHeight,
               complete: img.complete,
-              source: imageBlobUrl ? 'blob URL' : 'direct URL',
-              crossOrigin: img.crossOrigin || 'none'
+              source: imageBlobUrl ? "blob URL" : "direct URL",
+              crossOrigin: img.crossOrigin || "none",
             });
             // Small delay to ensure image is fully decoded
             // This is especially important when DevTools is closed
@@ -471,13 +544,16 @@ export function ScrambledImageCanvas({
               URL.revokeObjectURL(imageBlobUrl);
               blobUrlRef.current = null;
             }
-            console.error('❌ Image load error:', e);
-            console.error('Failed URL:', src);
-            console.error('Image source:', imageBlobUrl ? 'blob URL' : 'direct URL');
-            console.error('crossOrigin:', img.crossOrigin || 'none');
-            console.error('useDirectLoad:', useDirectLoad);
-            
-            let corsMessage = '';
+            console.error("❌ Image load error:", e);
+            console.error("Failed URL:", src);
+            console.error(
+              "Image source:",
+              imageBlobUrl ? "blob URL" : "direct URL",
+            );
+            console.error("crossOrigin:", img.crossOrigin || "none");
+            console.error("useDirectLoad:", useDirectLoad);
+
+            let corsMessage = "";
             if (corsAttempted && useDirectLoad) {
               corsMessage = `\n\n🔴 CORS CONFIGURATION REQUIRED:\n`;
               corsMessage += `\nThe CDN (R2) is NOT sending CORS headers. This is why the image cannot be loaded into canvas.\n`;
@@ -502,10 +578,16 @@ export function ScrambledImageCanvas({
               corsMessage += `   The R2 CORS config MUST be set correctly.\n`;
             }
 
-            reject(new Error(`Failed to load image into Image element from ${src}.${corsMessage}`));
+            reject(
+              new Error(
+                `Failed to load image into Image element from ${src}.${corsMessage}`,
+              ),
+            );
           };
 
-          console.log(`📸 Setting img.src to: ${imageBlobUrl ? 'blob URL' : src}`);
+          console.log(
+            `📸 Setting img.src to: ${imageBlobUrl ? "blob URL" : src}`,
+          );
           img.src = imageSrc;
         });
 
@@ -514,22 +596,26 @@ export function ScrambledImageCanvas({
         const scrambledWidth = img.naturalWidth;
         const scrambledHeight = img.naturalHeight;
 
-        console.log('📐 Image dimensions:', {
+        console.log("📐 Image dimensions:", {
           width: scrambledWidth,
           height: scrambledHeight,
           tileRows,
           tileCols,
           expectedTiles: tileRows * tileCols,
-          actualTiles: inversePermutation.length
+          actualTiles: inversePermutation.length,
         });
 
         // Validate dimensions
         if (scrambledWidth <= 0 || scrambledHeight <= 0) {
-          throw new Error(`Invalid image dimensions: ${scrambledWidth}x${scrambledHeight}`);
+          throw new Error(
+            `Invalid image dimensions: ${scrambledWidth}x${scrambledHeight}`,
+          );
         }
 
         if (tileRows <= 0 || tileCols <= 0) {
-          throw new Error(`Invalid tile configuration: ${tileRows} rows x ${tileCols} cols`);
+          throw new Error(
+            `Invalid tile configuration: ${tileRows} rows x ${tileCols} cols`,
+          );
         }
 
         // Step 4: Calculate tile dimensions
@@ -537,7 +623,7 @@ export function ScrambledImageCanvas({
         const tileWidth = Math.floor(scrambledWidth / tileCols);
         const tileHeight = Math.floor(scrambledHeight / tileRows);
 
-        console.log('🧩 Tile dimensions:', {
+        console.log("🧩 Tile dimensions:", {
           tileWidth,
           tileHeight,
           totalWidth: tileWidth * tileCols,
@@ -545,18 +631,25 @@ export function ScrambledImageCanvas({
           widthRemainder: scrambledWidth % tileCols,
           heightRemainder: scrambledHeight % tileRows,
           widthMatch: tileWidth * tileCols === scrambledWidth,
-          heightMatch: tileHeight * tileRows === scrambledHeight
+          heightMatch: tileHeight * tileRows === scrambledHeight,
         });
 
         // Warn if dimensions don't match exactly (may cause issues)
-        if (tileWidth * tileCols !== scrambledWidth || tileHeight * tileRows !== scrambledHeight) {
-          console.warn('⚠️ Image dimensions do not divide evenly by tiles. Some pixels may be lost.');
+        if (
+          tileWidth * tileCols !== scrambledWidth ||
+          tileHeight * tileRows !== scrambledHeight
+        ) {
+          console.warn(
+            "⚠️ Image dimensions do not divide evenly by tiles. Some pixels may be lost.",
+          );
         }
 
         // Step 5: Set up canvas for unscrambled image
         const canvas = canvasRef.current;
         if (!canvas) {
-          throw new Error('Canvas element was unmounted during image processing. Please try again.');
+          throw new Error(
+            "Canvas element was unmounted during image processing. Please try again.",
+          );
         }
 
         const canvasWidth = tileWidth * tileCols;
@@ -581,29 +674,29 @@ export function ScrambledImageCanvas({
         if (cancelled) return;
 
         // Step 6: Get canvas context and render unscrambled image
-        const ctx = canvas.getContext('2d', {
+        const ctx = canvas.getContext("2d", {
           willReadFrequently: false,
-          alpha: true
+          alpha: true,
         });
         if (!ctx) {
-          throw new Error('Canvas context not available');
+          throw new Error("Canvas context not available");
         }
 
         // Disable image smoothing for pixel-perfect tile rendering
         ctx.imageSmoothingEnabled = false;
-        ctx.imageSmoothingQuality = 'low';
+        ctx.imageSmoothingQuality = "low";
 
         // Clear canvas
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-        console.log('🎨 Starting to draw tiles...');
-        console.log('Canvas setup:', {
+        console.log("🎨 Starting to draw tiles...");
+        console.log("Canvas setup:", {
           canvasWidth,
           canvasHeight,
           totalTiles: inversePermutation.length,
           animate,
           animationDuration,
-          staggerDelay
+          staggerDelay,
         });
 
         // Prepare tile data for drawing
@@ -620,12 +713,18 @@ export function ScrambledImageCanvas({
         let tilesSkipped = 0;
 
         // Pre-calculate all tile positions
-        for (let scrambledIndex = 0; scrambledIndex < inversePermutation.length; scrambledIndex++) {
+        for (
+          let scrambledIndex = 0;
+          scrambledIndex < inversePermutation.length;
+          scrambledIndex++
+        ) {
           const originalIndex = inversePermutation[scrambledIndex];
 
           // Validate indices
           if (originalIndex < 0 || originalIndex >= inversePermutation.length) {
-            console.warn(`⚠️ Invalid originalIndex ${originalIndex} for scrambledIndex ${scrambledIndex}`);
+            console.warn(
+              `⚠️ Invalid originalIndex ${originalIndex} for scrambledIndex ${scrambledIndex}`,
+            );
             tilesSkipped++;
             continue;
           }
@@ -644,12 +743,22 @@ export function ScrambledImageCanvas({
           const dy = destRow * tileHeight;
 
           // Validate coordinates
-          if (sx < 0 || sy < 0 || sx + tileWidth > scrambledWidth || sy + tileHeight > scrambledHeight) {
+          if (
+            sx < 0 ||
+            sy < 0 ||
+            sx + tileWidth > scrambledWidth ||
+            sy + tileHeight > scrambledHeight
+          ) {
             tilesSkipped++;
             continue;
           }
 
-          if (dx < 0 || dy < 0 || dx + tileWidth > canvasWidth || dy + tileHeight > canvasHeight) {
+          if (
+            dx < 0 ||
+            dy < 0 ||
+            dx + tileWidth > canvasWidth ||
+            dy + tileHeight > canvasHeight
+          ) {
             tilesSkipped++;
             continue;
           }
@@ -664,7 +773,9 @@ export function ScrambledImageCanvas({
           });
         }
 
-        console.log(`Prepared ${tiles.length} tiles for drawing${tilesSkipped > 0 ? ` (${tilesSkipped} skipped)` : ''}`);
+        console.log(
+          `Prepared ${tiles.length} tiles for drawing${tilesSkipped > 0 ? ` (${tilesSkipped} skipped)` : ""}`,
+        );
 
         // Draw tiles with or without animation
         if (animate && tiles.length > 0) {
@@ -694,7 +805,7 @@ export function ScrambledImageCanvas({
             // Draw each tile with fade-in animation
             for (let i = 0; i < tiles.length; i++) {
               const tile = tiles[i];
-              
+
               // Calculate when this tile should start animating (staggered)
               const tileStartTime = i * staggerDelay;
               const tileElapsed = elapsed - tileStartTime;
@@ -712,24 +823,31 @@ export function ScrambledImageCanvas({
               if (opacity > 0) {
                 // Save context state
                 ctx.save();
-                
+
                 // Set global alpha for fade effect
                 ctx.globalAlpha = opacity;
-                
+
                 // Draw the tile
                 ctx.drawImage(
                   img,
-                  tile.sx, tile.sy, tileWidth, tileHeight, // Source rectangle
-                  tile.dx, tile.dy, tileWidth, tileHeight  // Destination rectangle
+                  tile.sx,
+                  tile.sy,
+                  tileWidth,
+                  tileHeight, // Source rectangle
+                  tile.dx,
+                  tile.dy,
+                  tileWidth,
+                  tileHeight, // Destination rectangle
                 );
-                
+
                 // Restore context state
                 ctx.restore();
               }
             }
 
             // Update animation progress
-            const totalDuration = tiles.length * staggerDelay + animationDuration;
+            const totalDuration =
+              tiles.length * staggerDelay + animationDuration;
             const progress = Math.min(1, elapsed / totalDuration);
             setAnimationProgress(progress);
 
@@ -741,8 +859,14 @@ export function ScrambledImageCanvas({
               for (const tile of tiles) {
                 ctx.drawImage(
                   img,
-                  tile.sx, tile.sy, tileWidth, tileHeight,
-                  tile.dx, tile.dy, tileWidth, tileHeight
+                  tile.sx,
+                  tile.sy,
+                  tileWidth,
+                  tileHeight,
+                  tile.dx,
+                  tile.dy,
+                  tileWidth,
+                  tileHeight,
                 );
               }
               setAnimationProgress(1);
@@ -759,34 +883,46 @@ export function ScrambledImageCanvas({
         } else {
           // Non-animated drawing (instant)
           const startTime = performance.now();
-          
+
           for (const tile of tiles) {
             ctx.drawImage(
               img,
-              tile.sx, tile.sy, tileWidth, tileHeight,
-              tile.dx, tile.dy, tileWidth, tileHeight
+              tile.sx,
+              tile.sy,
+              tileWidth,
+              tileHeight,
+              tile.dx,
+              tile.dy,
+              tileWidth,
+              tileHeight,
             );
           }
 
           const endTime = performance.now();
           const duration = endTime - startTime;
 
-          console.log(`✅ Successfully drew ${tiles.length} / ${inversePermutation.length} tiles in ${duration.toFixed(2)}ms`);
+          console.log(
+            `✅ Successfully drew ${tiles.length} / ${inversePermutation.length} tiles in ${duration.toFixed(2)}ms`,
+          );
           if (tilesSkipped > 0) {
-            console.warn(`⚠️ Skipped ${tilesSkipped} tiles due to out-of-bounds errors`);
+            console.warn(
+              `⚠️ Skipped ${tilesSkipped} tiles due to out-of-bounds errors`,
+            );
           }
 
           setLoading(false);
         }
       } catch (err) {
         const error = err as Error;
-        console.error('❌ Failed to unscramble image:', err);
-        console.error('Error details:', {
+        console.error("❌ Failed to unscramble image:", err);
+        console.error("Error details:", {
           message: error.message,
-          stack: error.stack
+          stack: error.stack,
         });
         if (!cancelled) {
-          setError(error?.message ?? 'Unknown error occurred while unscrambling image');
+          setError(
+            error?.message ?? "Unknown error occurred while unscrambling image",
+          );
           setLoading(false);
         }
       }
@@ -819,12 +955,12 @@ export function ScrambledImageCanvas({
     return (
       <div
         className={cn(
-          'flex items-center justify-center bg-muted/50 border border-destructive/20 rounded-md text-destructive text-sm p-4',
-          className
+          "flex items-center justify-center bg-muted/50 border border-destructive/20 rounded-md text-destructive text-sm p-4",
+          className,
         )}
         style={{
-          minHeight: '200px',
-          maxWidth: maxWidth || '100%',
+          minHeight: "200px",
+          maxWidth: maxWidth || "100%",
         }}
       >
         <div className="text-center">
@@ -845,7 +981,10 @@ export function ScrambledImageCanvas({
           <p className="text-xs mt-1 opacity-75 break-words">{error}</p>
           <div className="mt-2 text-xs opacity-60">
             <p>Check browser console for detailed error information.</p>
-            <p>Note: CDN is configured to allow CORS from localhost:3000 and localhost:3001 only.</p>
+            <p>
+              Note: CDN is configured to allow CORS from localhost:3000 and
+              localhost:3001 only.
+            </p>
           </div>
         </div>
       </div>
@@ -855,16 +994,16 @@ export function ScrambledImageCanvas({
   // Always render canvas (even when loading) so ref is available
   // Animation will handle the visual loading state
   return (
-    <div className={cn('relative overflow-hidden', className)}>
+    <div className={cn("relative overflow-hidden", className)}>
       <canvas
         ref={canvasRef}
         className="max-w-full h-auto"
         style={{
-          maxWidth: maxWidth || '100%',
-          maxHeight: maxHeight || 'auto',
-          backgroundColor: loading ? 'transparent' : undefined,
+          maxWidth: maxWidth || "100%",
+          maxHeight: maxHeight || "auto",
+          backgroundColor: loading ? "transparent" : undefined,
         }}
-        aria-label={alt ?? 'Unscrambled image'}
+        aria-label={alt ?? "Unscrambled image"}
         aria-busy={loading}
       />
       {loading && !animate && (

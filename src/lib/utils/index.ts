@@ -28,3 +28,10 @@ export {
   createOptimisticUpdate,
   queryInvalidation,
 } from "./query-utils";
+
+// Re-export series utilities
+export {
+  transformBackendSeries,
+  transformBackendSeriesList,
+  transformToPopularSeries,
+} from "./series-utils";

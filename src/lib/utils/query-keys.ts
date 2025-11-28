@@ -57,6 +57,25 @@ export const queryKeys = {
     profile: (userId: string) => ["users", "profile", userId] as const,
     search: (query: string) => ["users", "search", query] as const,
   },
+
+  // Series related queries
+  series: {
+    all: () => ["series"] as const,
+    lists: () => ["series", "list"] as const,
+    list: (params?: AdvancedQueryParams) => ["series", "list", params] as const,
+    details: () => ["series", "detail"] as const,
+    detail: (id: string) => ["series", "detail", id] as const,
+    popular: () => ["series", "popular"] as const,
+    latestUpdates: () => ["series", "latest-updates"] as const,
+    recommended: () => ["series", "recommended"] as const,
+    selfPublished: () => ["series", "self-published"] as const,
+    featured: () => ["series", "featured"] as const,
+    seasonal: (season?: string, year?: number) =>
+      ["series", "seasonal", season, year] as const,
+    recentlyAdded: () => ["series", "recently-added"] as const,
+    byType: (type: string) => ["series", "type", type] as const,
+    byGenre: (genre: string) => ["series", "genre", genre] as const,
+  },
 } as const;
 
 /**

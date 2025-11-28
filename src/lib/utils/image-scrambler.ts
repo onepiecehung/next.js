@@ -9,13 +9,13 @@
  */
 export function base64UrlToUint8Array(input: string): Uint8Array {
   // Replace base64url characters with base64 characters
-  let base64 = input.replace(/-/g, '+').replace(/_/g, '/');
+  let base64 = input.replace(/-/g, "+").replace(/_/g, "/");
 
   // Add padding if needed
   const pad = base64.length % 4;
-  if (pad === 2) base64 += '==';
-  else if (pad === 3) base64 += '=';
-  else if (pad !== 0) throw new Error('Invalid base64url string');
+  if (pad === 2) base64 += "==";
+  else if (pad === 3) base64 += "=";
+  else if (pad !== 0) throw new Error("Invalid base64url string");
 
   // Decode base64 string to binary
   const binary = atob(base64);
@@ -36,7 +36,7 @@ export function base64UrlToUint8Array(input: string): Uint8Array {
 export function createRngFromSeed(seedBytes: Uint8Array): () => number {
   // Ensure we have at least 4 bytes for the seed
   if (seedBytes.length < 4) {
-    throw new Error('Seed must be at least 4 bytes');
+    throw new Error("Seed must be at least 4 bytes");
   }
 
   // Initialize state with first 4 bytes as 32-bit integer

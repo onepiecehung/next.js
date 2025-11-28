@@ -79,7 +79,9 @@ export class MediaAPI {
    * Fetch scramble key for unscrambling an image
    * Used for image scrambler feature to reconstruct original image from scrambled tiles
    */
-  static async getScrambleKey(mediaId: string): Promise<ApiResponse<ScrambleKeyResponse>> {
+  static async getScrambleKey(
+    mediaId: string,
+  ): Promise<ApiResponse<ScrambleKeyResponse>> {
     const response = await http.get<ApiResponse<ScrambleKeyResponse>>(
       `${this.BASE_URL}/${mediaId}/scramble-key`,
     );

@@ -1,4 +1,4 @@
-import { ImageScramblerDemo } from '@/components/features/media/components/image-scrambler-demo';
+import { ImageScramblerDemo } from "@/components/features/media/components/image-scrambler-demo";
 
 /**
  * Image Scrambler Demo Page
