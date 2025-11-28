@@ -27,20 +27,63 @@ function extractTitle(backendSeries: BackendSeries): string {
 
 /**
  * Extract cover URL from backend series
+ * Priority: coverImage.url > coverImageUrls.large > coverImageUrls.medium > coverImageUrls.small > default
  */
 function extractCoverUrl(backendSeries: BackendSeries): string {
-  // Priority: coverImage.url > coverImageUrls.large > coverImageUrls.medium > default
+  // First priority: coverImage relation (Media entity)
   if (backendSeries.coverImage?.url) {
     return backendSeries.coverImage.url;
   }
-  if (backendSeries.coverImageUrls?.large) {
-    return backendSeries.coverImageUrls.large;
+  
+  // Second priority: coverImageUrls object (from AniList API)
+  if (backendSeries.coverImageUrls) {
+    // Try different sizes in order of preference
+    if (backendSeries.coverImageUrls.large) {
+      return backendSeries.coverImageUrls.large;
+    }
+    if (backendSeries.coverImageUrls.medium) {
+      return backendSeries.coverImageUrls.medium;
+    }
+    if (backendSeries.coverImageUrls.small) {
+      return backendSeries.coverImageUrls.small;
+    }
+    // If there's any URL in the object, use the first one
+    const firstUrl = Object.values(backendSeries.coverImageUrls)[0];
+    if (firstUrl) {
+      return firstUrl;
+    }
   }
-  if (backendSeries.coverImageUrls?.medium) {
-    return backendSeries.coverImageUrls.medium;
+
+  if (backendSeries.metadata) {
+    const metadata = backendSeries.metadata as Record<string, unknown>;
+    const coverImage = metadata["coverImage"] as Record<string, unknown>;
+    const extraLarge = coverImage["extraLarge"] as string;
+    if (extraLarge) {
+      return extraLarge;
+    }
   }
+  
   // Default placeholder
   return "/default-article-cover.jpg";
+}
+
+/**
+ * Extract banner URL from backend series
+ * Priority: bannerImage.url > bannerImageUrl > default
+ */
+function extractBannerUrl(backendSeries: BackendSeries): string | undefined {
+  // First priority: bannerImage relation (Media entity)
+  if (backendSeries.bannerImage?.url) {
+    return backendSeries.bannerImage.url;
+  }
+  
+  // Second priority: bannerImageUrl field
+  if (backendSeries.bannerImageUrl) {
+    return backendSeries.bannerImageUrl;
+  }
+  
+  // Return undefined if no banner available
+  return undefined;
 }
 
 /**
@@ -118,6 +161,7 @@ export function transformBackendSeries(backendSeries: BackendSeries): Series {
     id: backendSeries.id,
     title: extractTitle(backendSeries),
     coverUrl: extractCoverUrl(backendSeries),
+    bannerUrl: extractBannerUrl(backendSeries),
     language: extractLanguage(backendSeries),
     tags: extractTags(backendSeries),
     description: backendSeries.description || "",

@@ -7,6 +7,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { LoginDialog } from "@/components/features/auth";
+import { SearchBar } from "@/components/features/series";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { ThemeSelector, UserDropdown } from "@/components/ui";
 import { LanguageSwitcher } from "@/components/ui/navigation";
@@ -47,13 +48,28 @@ export default function SiteNav() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
-      <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
-        <Link href="/" className="font-semibold text-xl text-foreground">
+    <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/50 shadow-sm">
+      <div className="container mx-auto px-4 py-3.5 md:px-6 md:py-4">
+        <div className="flex items-center justify-between gap-3 md:gap-4">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="font-semibold text-lg md:text-xl text-foreground shrink-0"
+          >
           {t("appName", "common")}
         </Link>
 
-        <div className="flex items-center gap-3">
+          {/* Search Bar - Center */}
+          <div className="flex-1 max-w-xl lg:max-w-2xl hidden md:block mx-4">
+            <SearchBar className="w-full" />
+          </div>
+
+          {/* Right side actions */}
+          <div className="flex items-center gap-2 md:gap-3 shrink-0">
+            {/* Mobile search - show on small screens */}
+            <div className="md:hidden">
+              <SearchBar className="w-48 sm:w-64" showKeyboardShortcut={false} />
+            </div>
           <LanguageSwitcher />
           <ThemeSelector variant="compact" />
           {(() => {
@@ -71,6 +87,7 @@ export default function SiteNav() {
               );
             return <LoginDialog />;
           })()}
+          </div>
         </div>
       </div>
     </header>

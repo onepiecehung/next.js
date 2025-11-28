@@ -54,5 +54,8 @@
   "discord": "Discord",
   "twitter": "Twitter",
   "reddit": "Reddit",
-  "systemStatus": "Trạng Thái Hệ Thống"
+  "systemStatus": "Trạng Thái Hệ Thống",
+  "type": "Loại",
+  "format": "Định Dạng",
+  "score": "Điểm"
 }

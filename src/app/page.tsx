@@ -1,18 +1,19 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 import {
   LatestUpdatesList,
-  SeriesCarousel,
   RecommendedGrid,
-  SearchBar,
 } from "@/components/features/series";
 import { SeriesCard } from "@/components/features/series/series-card";
+import {
+  SeriesHeroCarousel,
+  type FeaturedSeries,
+} from "@/components/features/series/series-hero-carousel";
+import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared/skeletonize";
 import { Button } from "@/components/ui/core/button";
-import { useI18n } from "@/components/providers/i18n-provider";
 import {
   useFeaturedSeries,
   useLatestUpdates,
@@ -22,6 +23,7 @@ import {
   useSeasonalSeries,
   useSelfPublishedSeries,
 } from "@/hooks/series";
+import type { PopularSeries } from "@/lib/interface/series.interface";
 
 /**
  * MangaDex-style Homepage
@@ -46,33 +48,26 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section with Search */}
-      <section className="border-b border-border bg-card py-6 md:py-8">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="mx-auto max-w-2xl">
-            <SearchBar className="w-full" />
-          </div>
-        </div>
-      </section>
-
-      {/* Popular New Titles Carousel */}
-      <section className="border-b border-border py-6 md:py-8">
-        <div className="container mx-auto px-4 md:px-6">
-          <Skeletonize loading={isLoadingPopular}>
-            {popularSeries && popularSeries.length > 0 && (
-              <SeriesCarousel
-                series={popularSeries}
-                title={t("popularNewTitles", "series")}
-                autoPlay={true}
-                showIndicators={true}
-              />
-            )}
-          </Skeletonize>
-        </div>
+      {/* Popular New Titles Hero Carousel - Full width with navigation overlay */}
+      <section className="relative -mt-20 pt-20 pb-0 border-b border-border">
+        <Skeletonize loading={isLoadingPopular}>
+          {popularSeries && popularSeries.length > 0 && (
+            <SeriesHeroCarousel
+              items={popularSeries.map((series: PopularSeries): FeaturedSeries => ({
+                id: series.id,
+                title: series.title,
+                description: series.description || "",
+                tags: series.tags || [],
+                coverUrl: series.coverUrl,
+              }))}
+              className="h-[25vh] sm:h-[30vh] lg:h-[45vh] max-h-[700px]"
+            />
+          )}
+        </Skeletonize>
       </section>
 
       {/* Banner Ad */}
-      <section className="border-b border-border py-4 md:py-6">
+      {/* <section className="border-b border-border py-4 md:py-6">
         <div className="container mx-auto px-4 md:px-6">
           <Link
             href="/advertise"
@@ -86,7 +81,7 @@ export default function HomePage() {
             </p>
           </Link>
         </div>
-      </section>
+      </section> */}
 
       {/* Latest Updates */}
       <section className="border-b border-border py-6 md:py-8">
@@ -147,14 +142,12 @@ export default function HomePage() {
           </div>
           <Skeletonize loading={isLoadingFeatured}>
             {featured && featured.length > 0 && (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {featured.map((series) => (
+              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+                {featured.slice(0, 6).map((series) => (
                   <SeriesCard
                     key={series.id}
                     series={series}
                     variant="featured"
-                    showDescription={true}
-                    showReadButton={true}
                   />
                 ))}
               </div>
@@ -185,8 +178,6 @@ export default function HomePage() {
                     key={series.id}
                     series={series}
                     variant="compact"
-                    showDescription={false}
-                    showReadButton={false}
                   />
                 ))}
               </div>
@@ -217,8 +208,6 @@ export default function HomePage() {
                     key={series.id}
                     series={series}
                     variant="tiny"
-                    showDescription={false}
-                    showReadButton={false}
                   />
                 ))}
               </div>

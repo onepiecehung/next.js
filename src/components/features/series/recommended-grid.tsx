@@ -58,8 +58,6 @@ export function RecommendedGrid({
             key={series.id}
             series={series}
             variant={isCompact ? "compact" : "default"}
-            showDescription={!isCompact}
-            showReadButton={!isCompact}
           />
         ))}
       </div>

@@ -108,22 +108,31 @@ export function Carousel({
 
       {/* Indicators */}
       {showIndicators && totalItems > 1 && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-          {items.map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              className={cn(
-                "h-2 rounded-full transition-all",
-                index === currentIndex
-                  ? "w-8 bg-primary"
-                  : "w-2 bg-muted-foreground/50 hover:bg-muted-foreground/75",
-              )}
-              onClick={() => handleIndicatorClick(index)}
-              aria-label={`Go to item ${index + 1}`}
-            />
-          ))}
-        </div>
+        <>
+          {/* Dot indicators - center bottom */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {items.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                className={cn(
+                  "h-2 rounded-full transition-all",
+                  index === currentIndex
+                    ? "w-8 bg-primary"
+                    : "w-2 bg-muted-foreground/50 hover:bg-muted-foreground/75",
+                )}
+                onClick={() => handleIndicatorClick(index)}
+                aria-label={`Go to item ${index + 1}`}
+              />
+            ))}
+          </div>
+          {/* Slide number - bottom right (MangaDex style) */}
+          <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
+            <span className="text-sm font-medium text-foreground">
+              NO. {currentIndex + 1}
+            </span>
+          </div>
+        </>
       )}
     </div>
   );

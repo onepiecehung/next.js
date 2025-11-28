@@ -155,6 +155,7 @@ export interface Series {
   id: string;
   title: string; // Extracted from title.userPreferred or title.romaji
   coverUrl: string; // Extracted from coverImage.url or coverImageUrls
+  bannerUrl?: string; // Extracted from bannerImage.url or bannerImageUrl
   language: SeriesLanguage; // Extracted from countryOfOrigin or default
   tags: string[]; // Extracted from tags array
   description: string;

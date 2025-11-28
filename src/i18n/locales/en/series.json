@@ -54,5 +54,8 @@
   "discord": "Discord",
   "twitter": "Twitter",
   "reddit": "Reddit",
-  "systemStatus": "System Status"
+  "systemStatus": "System Status",
+  "type": "Type",
+  "format": "Format",
+  "score": "Score"
 }
