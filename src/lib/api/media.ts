@@ -4,9 +4,22 @@ import type { ApiResponse } from "../types";
 export type UploadedMedia = {
   id: string;
   url: string;
-  filename: string;
+  name?: string;
+  originalName?: string;
   mimeType: string;
   size: number;
+  type?: string;
+  metadata?: string; // JSON string for scramble metadata
+};
+
+/**
+ * Scramble key response type for image unscrambling
+ */
+export type ScrambleKeyResponse = {
+  permutationSeed: string; // base64url encoded seed
+  tileRows: number;
+  tileCols: number;
+  version: number;
 };
 
 /**
@@ -22,7 +35,7 @@ export class MediaAPI {
     if (!files || files.length === 0) {
       return {
         success: false,
-        data: [],
+        data: [] as UploadedMedia[],
         message: "No files provided",
         metadata: { messageKey: "no_files_provided", messageArgs: {} },
       };
@@ -34,10 +47,8 @@ export class MediaAPI {
     }
 
     const form = new FormData();
-    for (const file of files) {
-      form.append("files", file);
-    }
-
+    // Backend expects single file with field name "file"
+    form.append("files", files[0]);
     const response = await http.post<ApiResponse<UploadedMedia[]>>(
       this.BASE_URL,
       form,
@@ -60,6 +71,19 @@ export class MediaAPI {
   static async delete(mediaId: string): Promise<ApiResponse<void>> {
     const response = await http.delete<ApiResponse<void>>(
       `${this.BASE_URL}/${mediaId}`,
+    );
+    return response.data;
+  }
+
+  /**
+   * Fetch scramble key for unscrambling an image
+   * Used for image scrambler feature to reconstruct original image from scrambled tiles
+   */
+  static async getScrambleKey(
+    mediaId: string,
+  ): Promise<ApiResponse<ScrambleKeyResponse>> {
+    const response = await http.get<ApiResponse<ScrambleKeyResponse>>(
+      `${this.BASE_URL}/${mediaId}/scramble-key`,
     );
     return response.data;
   }

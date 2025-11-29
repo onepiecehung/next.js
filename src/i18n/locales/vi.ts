@@ -3,6 +3,7 @@ import auth from "./vi/auth.json";
 import common from "./vi/common.json";
 import demo from "./vi/demo.json";
 import home from "./vi/home.json";
+import series from "./vi/series.json";
 import profile from "./vi/profile.json";
 import toast from "./vi/toast.json";
 import user from "./vi/user.json";
@@ -18,6 +19,7 @@ const viMessages = {
   article,
   write,
   demo,
+  series,
 };
 
 export default viMessages;

@@ -55,7 +55,7 @@ src/
 > - ✅ Network via `src/lib/http/client.ts`
 
 ## Core Stack
-Next.js 15+, React 19, TypeScript 5, TailwindCSS 4, shadcn/ui, Jotai, Zod, RHF, next-intl, Jest, ESLint, Prettier, TipTap, Firebase Auth, Axios, Sonner, Mermaid, React Query.
+Next.js 15+, React 19, TypeScript 5, TailwindCSS 4, shadcn/ui, Jotai, Zod, RHF, next-intl, Jest, ESLint, Prettier, TipTap, Firebase Auth, Axios, Sonner, Mermaid, TanStack Query.
 
 ## Yarn scripts
 ```bash

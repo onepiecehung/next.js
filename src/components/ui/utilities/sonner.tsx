@@ -1,15 +1,38 @@
 "use client";
 
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import { Toaster as Sonner, ToasterProps } from "sonner";
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme();
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   return (
     <Sonner
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
+      position={isMobile ? "top-center" : "top-center"}
+      offset={isMobile ? "1rem" : "1.5rem"}
+      toastOptions={{
+        className: "toast-mobile-optimized",
+        style: {
+          maxWidth: isMobile ? "calc(100vw - 2rem)" : "420px",
+          width: isMobile ? "calc(100vw - 2rem)" : "auto",
+          fontSize: isMobile ? "0.875rem" : "0.9375rem",
+          padding: isMobile ? "0.75rem 1rem" : "1rem 1.25rem",
+        },
+      }}
       style={
         {
           "--normal-bg": "var(--popover)",

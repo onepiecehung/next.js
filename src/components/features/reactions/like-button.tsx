@@ -2,10 +2,7 @@
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button } from "@/components/ui";
-import {
-  useReactions,
-  useToggleReaction,
-} from "@/hooks/reactions/useReactionQuery";
+import { useReactions, useToggleReaction } from "@/hooks/reactions";
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
 

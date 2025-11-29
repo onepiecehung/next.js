@@ -1,13 +1,15 @@
 import { http } from "@/lib/http";
-import { Article } from "@/lib/interface";
+import {
+  Article,
+  CreateArticleDto,
+  UpdateArticleRequest,
+} from "@/lib/interface";
 import type {
   AdvancedQueryParams,
   ApiResponse,
   ApiResponseCursor,
   ApiResponseOffset,
-  CreateArticleRequest,
   QueryParamsWithCursor,
-  UpdateArticleRequest,
 } from "@/lib/types";
 
 /**
@@ -20,7 +22,7 @@ export class ArticleAPI {
   /**
    * Create a new article
    */
-  static async createArticle(data: CreateArticleRequest): Promise<Article> {
+  static async createArticle(data: CreateArticleDto): Promise<Article> {
     const response = await http.post<ApiResponse<Article>>(this.BASE_URL, data);
     return response.data.data;
   }
@@ -64,6 +66,19 @@ export class ArticleAPI {
   ): Promise<ApiResponseOffset<Article>> {
     const response = await http.get<ApiResponseOffset<Article>>(
       `${this.BASE_URL}`,
+      { params },
+    );
+    return response.data;
+  }
+
+  /**
+   * Get articles list with offset pagination
+   */
+  static async myArticlesOffset(
+    params?: AdvancedQueryParams,
+  ): Promise<ApiResponseOffset<Article>> {
+    const response = await http.get<ApiResponseOffset<Article>>(
+      `${this.BASE_URL}/my`,
       { params },
     );
     return response.data;
