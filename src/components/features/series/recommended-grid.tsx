@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowRight, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/core/button";
 import { useI18n } from "@/components/providers/i18n-provider";
@@ -33,24 +34,49 @@ export function RecommendedGrid({
 
   return (
     <div className={className}>
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-foreground md:text-3xl">
-          {t(titleI18nKey, "series")}
-        </h2>
-        <Button asChild variant="ghost" size="sm">
-          <Link href={viewAllHref}>
-            {t(viewAllI18nKey, "series")}
-            <span className="ml-2">→</span>
+      <div className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
+            {t(titleI18nKey, "series")}
+          </h2>
+          {/* Arrow icon - visible on mobile only, inline with heading */}
+          <Link 
+            href={viewAllHref}
+            className="sm:hidden flex items-center justify-center"
+            aria-label={t(viewAllI18nKey, "series")}
+          >
+            <ChevronRight className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
+          </Link>
+        </div>
+        {/* Button with text - visible on desktop only */}
+        <Button 
+          asChild 
+          variant="ghost" 
+          size="sm" 
+          className="text-xs sm:text-sm hidden sm:flex"
+        >
+          <Link href={viewAllHref} className="flex items-center gap-1.5 sm:gap-2">
+            <span>{t(viewAllI18nKey, "series")}</span>
+            <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
           </Link>
         </Button>
       </div>
 
       <div
         className={cn(
-          "grid gap-4",
+          "grid",
+          // Gap spacing - optimized for each breakpoint
+          // 320px: gap-2 (8px), 375px: gap-2 (8px), 425px: gap-2.5 (10px)
+          // 768px: gap-3 (12px), 1024px: gap-3 (12px), 1280px: gap-4 (16px), 1536px: gap-4 (16px)
+          "gap-2 sm:gap-2.5 md:gap-3 lg:gap-3 xl:gap-4",
+          // Grid columns - optimized for specific breakpoints
           isCompact
-            ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6"
-            : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6",
+            ? // Compact variant: vertical cards - more columns
+              // 320px: 2 cols, 375px: 2 cols, 425px: 2 cols, 768px: 3 cols, 1024px: 4 cols, 1280px: 5 cols, 1536px: 6 cols
+              "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+            : // Default variant: horizontal cards - 2 cols on mobile for better space utilization
+              // 320px: 2 cols, 375px: 2 cols, 425px: 2 cols, 768px: 2 cols, 1024px: 2 cols, 1280px: 2 cols, 1536px: 3 cols
+              "grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3",
         )}
       >
         {series.map((series) => (

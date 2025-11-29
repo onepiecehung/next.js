@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { ChevronRight, ArrowRight } from "lucide-react";
 
 import {
   LatestUpdatesList,
   RecommendedGrid,
 } from "@/components/features/series";
+import { SearchBar } from "@/components/features/series";
 import { SeriesCard } from "@/components/features/series/series-card";
 import {
   SeriesHeroCarousel,
@@ -32,22 +34,38 @@ import type { PopularSeries } from "@/lib/interface/series.interface";
 export default function HomePage() {
   const { t } = useI18n();
 
-  // Fetch all series data
-  const { data: popularSeries, isLoading: isLoadingPopular } =
-    usePopularSeries();
-  const { data: latestUpdates, isLoading: isLoadingUpdates } =
-    useLatestUpdates();
-  const { data: recommended, isLoading: isLoadingRecommended } =
-    useRecommendedSeries();
-  const { data: selfPublished, isLoading: isLoadingSelfPublished } =
-    useSelfPublishedSeries();
-  const { data: featured, isLoading: isLoadingFeatured } = useFeaturedSeries();
-  const { data: seasonal, isLoading: isLoadingSeasonal } = useSeasonalSeries();
+  // Fetch all series data sequentially from top to bottom
+  // Each section loads only after the previous one completes successfully
+  const { data: popularSeries, isLoading: isLoadingPopular, isSuccess: isPopularSuccess } =
+    usePopularSeries(true); // First section - always enabled
+  
+  const { data: latestUpdates, isLoading: isLoadingUpdates, isSuccess: isLatestUpdatesSuccess } =
+    useLatestUpdates(isPopularSuccess); // Enabled after popular series loads
+  
+  const { data: recommended, isLoading: isLoadingRecommended, isSuccess: isRecommendedSuccess } =
+    useRecommendedSeries(isLatestUpdatesSuccess); // Enabled after latest updates loads
+  
+  const { data: selfPublished, isLoading: isLoadingSelfPublished, isSuccess: isSelfPublishedSuccess } =
+    useSelfPublishedSeries(isRecommendedSuccess); // Enabled after recommended loads
+  
+  const { data: featured, isLoading: isLoadingFeatured, isSuccess: isFeaturedSuccess } = 
+    useFeaturedSeries(isSelfPublishedSuccess); // Enabled after self-published loads
+  
+  const { data: seasonal, isLoading: isLoadingSeasonal, isSuccess: isSeasonalSuccess } = 
+    useSeasonalSeries(isFeaturedSuccess); // Enabled after featured loads
+  
   const { data: recentlyAdded, isLoading: isLoadingRecentlyAdded } =
-    useRecentlyAddedSeries();
+    useRecentlyAddedSeries(isSeasonalSuccess); // Enabled after seasonal loads
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Mobile Search Bar - Only visible on mobile */}
+      <section className="border-b border-border bg-background md:hidden">
+        <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-3">
+          <SearchBar className="w-full" showKeyboardShortcut={false} />
+        </div>
+      </section>
+
       {/* Popular New Titles Hero Carousel - Full width with navigation overlay */}
       <section className="relative -mt-20 pt-20 pb-0 border-b border-border">
         <Skeletonize loading={isLoadingPopular}>
@@ -62,7 +80,7 @@ export default function HomePage() {
                   coverUrl: series.coverUrl,
                 }),
               )}
-              className="h-[25vh] sm:h-[30vh] lg:h-[45vh] max-h-[700px]"
+              className="h-[20vh] min-h-[180px] sm:h-[25vh] sm:min-h-[220px] md:h-[30vh] md:min-h-[280px] lg:h-[40vh] lg:min-h-[400px] xl:h-[45vh] xl:max-h-[700px]"
             />
           )}
         </Skeletonize>
@@ -86,8 +104,8 @@ export default function HomePage() {
       </section> */}
 
       {/* Latest Updates */}
-      <section className="border-b border-border py-6 md:py-8">
-        <div className="container mx-auto px-4 md:px-6">
+      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
+        <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
           <Skeletonize loading={isLoadingUpdates}>
             {latestUpdates && latestUpdates.length > 0 && (
               <LatestUpdatesList items={latestUpdates} />
@@ -97,8 +115,8 @@ export default function HomePage() {
       </section>
 
       {/* Recommended */}
-      <section className="border-b border-border py-6 md:py-8">
-        <div className="container mx-auto px-4 md:px-6">
+      <section className="border-b border-border py-3 sm:py-4 md:py-5 lg:py-6 xl:py-8">
+        <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6 xl:px-8">
           <Skeletonize loading={isLoadingRecommended}>
             {recommended && recommended.length > 0 && (
               <RecommendedGrid
@@ -113,8 +131,8 @@ export default function HomePage() {
       </section>
 
       {/* Self-Published */}
-      <section className="border-b border-border py-6 md:py-8">
-        <div className="container mx-auto px-4 md:px-6">
+      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
+        <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
           <Skeletonize loading={isLoadingSelfPublished}>
             {selfPublished && selfPublished.length > 0 && (
               <RecommendedGrid
@@ -129,22 +147,33 @@ export default function HomePage() {
       </section>
 
       {/* Featured */}
-      <section className="border-b border-border py-6 md:py-8">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-foreground md:text-3xl">
-              {t("featured", "series")}
-            </h2>
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/series/featured">
-                {t("viewFeaturedList", "series")}
-                <span className="ml-2">→</span>
+      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
+        <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
+          <div className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
+                {t("featured", "series")}
+              </h2>
+              {/* Arrow icon - visible on mobile only, inline with heading */}
+              <Link 
+                href="/series/featured"
+                className="sm:hidden flex items-center justify-center"
+                aria-label={t("viewFeaturedList", "series")}
+              >
+                <ChevronRight className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
+              </Link>
+            </div>
+            {/* Button with text - visible on desktop only */}
+            <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
+              <Link href="/series/featured" className="flex items-center gap-1.5 sm:gap-2">
+                <span>{t("viewFeaturedList", "series")}</span>
+                <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
               </Link>
             </Button>
           </div>
           <Skeletonize loading={isLoadingFeatured}>
             {featured && featured.length > 0 && (
-              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+              <div className="grid gap-2 sm:gap-3 md:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
                 {featured.slice(0, 6).map((series) => (
                   <SeriesCard
                     key={series.id}
@@ -159,22 +188,33 @@ export default function HomePage() {
       </section>
 
       {/* Seasonal: Fall 2025 */}
-      <section className="border-b border-border py-6 md:py-8">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-foreground md:text-3xl">
-              {t("seasonalFall2025", "series")}
-            </h2>
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/series/seasonal">
-                {t("openListSeasonal", "series")}
-                <span className="ml-2">→</span>
+      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
+        <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
+          <div className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
+                {t("seasonalFall2025", "series")}
+              </h2>
+              {/* Arrow icon - visible on mobile only, inline with heading */}
+              <Link 
+                href="/series/seasonal"
+                className="sm:hidden flex items-center justify-center"
+                aria-label={t("openListSeasonal", "series")}
+              >
+                <ChevronRight className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
+              </Link>
+            </div>
+            {/* Button with text - visible on desktop only */}
+            <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
+              <Link href="/series/seasonal" className="flex items-center gap-1.5 sm:gap-2">
+                <span>{t("openListSeasonal", "series")}</span>
+                <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
               </Link>
             </Button>
           </div>
           <Skeletonize loading={isLoadingSeasonal}>
             {seasonal && seasonal.length > 0 && (
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
                 {seasonal.map((series) => (
                   <SeriesCard
                     key={series.id}
@@ -189,22 +229,33 @@ export default function HomePage() {
       </section>
 
       {/* Recently Added */}
-      <section className="border-b border-border py-6 md:py-8">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-foreground md:text-3xl">
-              {t("recentlyAdded", "series")}
-            </h2>
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/series/recently-added">
-                {t("viewRecentlyAdded", "series")}
-                <span className="ml-2">→</span>
+      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
+        <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
+          <div className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
+                {t("recentlyAdded", "series")}
+              </h2>
+              {/* Arrow icon - visible on mobile only, inline with heading */}
+              <Link 
+                href="/series/recently-added"
+                className="sm:hidden flex items-center justify-center"
+                aria-label={t("viewRecentlyAdded", "series")}
+              >
+                <ChevronRight className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
+              </Link>
+            </div>
+            {/* Button with text - visible on desktop only */}
+            <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
+              <Link href="/series/recently-added" className="flex items-center gap-1.5 sm:gap-2">
+                <span>{t("viewRecentlyAdded", "series")}</span>
+                <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
               </Link>
             </Button>
           </div>
           <Skeletonize loading={isLoadingRecentlyAdded}>
             {recentlyAdded && recentlyAdded.length > 0 && (
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-10">
+              <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-1.5 sm:gap-2 md:gap-2.5">
                 {recentlyAdded.slice(0, 10).map((series) => (
                   <SeriesCard key={series.id} series={series} variant="tiny" />
                 ))}
@@ -215,9 +266,9 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card py-8 md:py-12">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <footer className="border-t border-border bg-card py-6 sm:py-8 md:py-10 lg:py-12">
+        <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
+          <div className="grid gap-4 sm:gap-5 md:gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
             {/* Social Links */}
             <div>
               <h3 className="mb-4 font-semibold text-foreground">

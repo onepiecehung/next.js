@@ -23,8 +23,9 @@ import { queryKeys } from "@/lib/utils/query-keys";
 /**
  * Hook for fetching popular series titles
  * Sorted by popularity or trending
+ * @param enabled - Optional flag to control when the query should run
  */
-export function usePopularSeries() {
+export function usePopularSeries(enabled?: boolean) {
   return useQuery<PopularSeries[]>({
     queryKey: queryKeys.series.popular(),
     queryFn: async () => {
@@ -38,6 +39,7 @@ export function usePopularSeries() {
       const backendSeries = response.data.result as BackendSeries[];
       return backendSeries.map(transformToPopularSeries);
     },
+    enabled: enabled !== undefined ? enabled : true,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
@@ -46,8 +48,9 @@ export function usePopularSeries() {
 /**
  * Hook for fetching latest updates
  * Note: This is a placeholder - backend may need a separate endpoint for latest updates
+ * @param enabled - Optional flag to control when the query should run
  */
-export function useLatestUpdates() {
+export function useLatestUpdates(enabled?: boolean) {
   return useQuery<LatestUpdateItem[]>({
     queryKey: queryKeys.series.latestUpdates(),
     queryFn: async () => {
@@ -86,6 +89,7 @@ export function useLatestUpdates() {
         };
       });
     },
+    enabled: enabled !== undefined ? enabled : true,
     staleTime: 2 * 60 * 1000, // 2 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
@@ -94,8 +98,9 @@ export function useLatestUpdates() {
 /**
  * Hook for fetching recommended series
  * Sorted by average score
+ * @param enabled - Optional flag to control when the query should run
  */
-export function useRecommendedSeries() {
+export function useRecommendedSeries(enabled?: boolean) {
   return useQuery<Series[]>({
     queryKey: queryKeys.series.recommended(),
     queryFn: async () => {
@@ -110,6 +115,7 @@ export function useRecommendedSeries() {
       const backendSeries = response.data.result as BackendSeries[];
       return transformBackendSeriesList(backendSeries);
     },
+    enabled: enabled !== undefined ? enabled : true,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
@@ -118,8 +124,9 @@ export function useRecommendedSeries() {
 /**
  * Hook for fetching self-published series
  * Filtered by isLicensed: false
+ * @param enabled - Optional flag to control when the query should run
  */
-export function useSelfPublishedSeries() {
+export function useSelfPublishedSeries(enabled?: boolean) {
   return useQuery<Series[]>({
     queryKey: queryKeys.series.selfPublished(),
     queryFn: async () => {
@@ -134,6 +141,7 @@ export function useSelfPublishedSeries() {
       const backendSeries = response.data.result as BackendSeries[];
       return transformBackendSeriesList(backendSeries);
     },
+    enabled: enabled !== undefined ? enabled : true,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
@@ -142,8 +150,9 @@ export function useSelfPublishedSeries() {
 /**
  * Hook for fetching featured series
  * Sorted by trending
+ * @param enabled - Optional flag to control when the query should run
  */
-export function useFeaturedSeries() {
+export function useFeaturedSeries(enabled?: boolean) {
   return useQuery<Series[]>({
     queryKey: queryKeys.series.featured(),
     queryFn: async () => {
@@ -157,6 +166,7 @@ export function useFeaturedSeries() {
       const backendSeries = response.data.result as BackendSeries[];
       return transformBackendSeriesList(backendSeries);
     },
+    enabled: enabled !== undefined ? enabled : true,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
@@ -165,8 +175,9 @@ export function useFeaturedSeries() {
 /**
  * Hook for fetching seasonal series
  * Filtered by season and seasonYear
+ * @param enabled - Optional flag to control when the query should run
  */
-export function useSeasonalSeries() {
+export function useSeasonalSeries(enabled?: boolean) {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth();
@@ -196,6 +207,7 @@ export function useSeasonalSeries() {
       const backendSeries = response.data.result as BackendSeries[];
       return transformBackendSeriesList(backendSeries);
     },
+    enabled: enabled !== undefined ? enabled : true,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
@@ -204,8 +216,9 @@ export function useSeasonalSeries() {
 /**
  * Hook for fetching recently added series
  * Sorted by creation date
+ * @param enabled - Optional flag to control when the query should run
  */
-export function useRecentlyAddedSeries() {
+export function useRecentlyAddedSeries(enabled?: boolean) {
   return useQuery<Series[]>({
     queryKey: queryKeys.series.recentlyAdded(),
     queryFn: async () => {
@@ -219,6 +232,7 @@ export function useRecentlyAddedSeries() {
       const backendSeries = response.data.result as BackendSeries[];
       return transformBackendSeriesList(backendSeries);
     },
+    enabled: enabled !== undefined ? enabled : true,
     staleTime: 2 * 60 * 1000, // 2 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });

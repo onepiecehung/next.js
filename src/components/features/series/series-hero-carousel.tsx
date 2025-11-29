@@ -106,48 +106,48 @@ export function SeriesHeroCarousel({
               />
 
               {/* Slide container */}
-              <div className="relative px-3 sm:px-6 lg:px-8 pt-3 sm:pt-6 lg:pt-8 pb-3 sm:pb-6 lg:pb-8 h-full flex items-center z-10">
-                <div className="relative z-10 w-full flex flex-row sm:grid sm:grid-cols-2 gap-3 sm:gap-4 lg:gap-6 items-center">
+              <div className="relative px-2.5 sm:px-4 md:px-6 lg:px-8 pt-2.5 sm:pt-4 md:pt-6 lg:pt-8 pb-2.5 sm:pb-4 md:pb-6 lg:pb-8 h-full flex items-center z-10">
+                <div className="relative z-10 w-full flex flex-row sm:grid sm:grid-cols-2 gap-2 sm:gap-3 md:gap-4 lg:gap-6 items-center">
                   {/* Cover image - Mobile: Left, Desktop: Right */}
                   <div className="flex items-center justify-center flex-shrink-0 sm:order-2 sm:mx-0 sm:w-auto">
-                    <div className="relative aspect-[2/3] overflow-hidden rounded-lg shadow-lg w-[100px] sm:min-w-[150px] md:min-w-[180px] lg:min-w-[220px] h-full max-h-[180px] sm:max-h-[calc(100%-3rem)] lg:max-h-[calc(100%-4rem)]">
+                    <div className="relative aspect-[2/3] overflow-hidden rounded-lg shadow-lg w-[80px] sm:w-[120px] md:min-w-[150px] lg:min-w-[180px] xl:min-w-[220px] h-full max-h-[140px] sm:max-h-[200px] md:max-h-[calc(100%-3rem)] lg:max-h-[calc(100%-4rem)]">
                       <Image
                         src={item.coverUrl}
                         alt={item.title}
                         fill
                         className="object-cover"
-                        sizes="(max-width: 640px) 100px, (max-width: 768px) 150px, (max-width: 1024px) 180px, 220px"
+                        sizes="(max-width: 375px) 80px, (max-width: 640px) 100px, (max-width: 768px) 120px, (max-width: 1024px) 150px, (max-width: 1280px) 180px, 220px"
                         priority
                       />
                     </div>
                   </div>
 
                   {/* Info section - Mobile: Right, Desktop: Left */}
-                  <div className="flex flex-col justify-center space-y-1 sm:space-y-2 lg:space-y-3 flex-1 min-w-0 sm:order-1 text-left">
+                  <div className="flex flex-col justify-center space-y-0.5 sm:space-y-1 md:space-y-2 lg:space-y-3 flex-1 min-w-0 sm:order-1 text-left">
                     {/* Title */}
-                    <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white line-clamp-2 leading-tight">
+                    <h2 className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold text-white line-clamp-2 leading-tight">
                       {item.title}
                     </h2>
 
                     {/* Alt title */}
                     {item.altTitle && (
-                      <p className="text-xs sm:text-sm text-neutral-200 line-clamp-1 mt-0.5">
+                      <p className="text-[10px] sm:text-xs md:text-sm text-neutral-200 line-clamp-1 mt-0.5">
                         {item.altTitle}
                       </p>
                     )}
 
                     {/* Description */}
-                    <p className="text-xs sm:text-sm text-neutral-200/90 line-clamp-2 sm:line-clamp-3 lg:line-clamp-4 leading-relaxed mt-1">
+                    <p className="text-[10px] sm:text-xs md:text-sm text-neutral-200/90 line-clamp-2 sm:line-clamp-2 md:line-clamp-3 lg:line-clamp-4 leading-relaxed mt-0.5 sm:mt-1">
                       {item.description}
                     </p>
 
                     {/* Tags */}
                     {item.tags && item.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-start mt-1 sm:mt-2">
+                      <div className="flex flex-wrap gap-1 sm:gap-1.5 md:gap-2 justify-start mt-0.5 sm:mt-1 md:mt-2">
                         {item.tags.slice(0, 3).map((tag, index) => (
                           <span
                             key={index}
-                            className="rounded-full bg-white/10 border border-white/20 px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs uppercase tracking-wide text-white"
+                            className="rounded-full bg-white/10 border border-white/20 px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-wide text-white"
                           >
                             {tag}
                           </span>

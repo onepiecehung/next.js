@@ -144,14 +144,6 @@ export default function SiteNav() {
 
             {/* Content area */}
             <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4">
-            {/* Search Bar */}
-            <div className="w-full">
-              <SearchBar
-                className="w-full"
-                showKeyboardShortcut={false}
-              />
-            </div>
-
             {/* Language Switcher */}
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Language</span>

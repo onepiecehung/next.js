@@ -74,85 +74,60 @@ export function LatestUpdatesList({
         </Button>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-2 sm:gap-4 sm:grid-cols-2">
         {items.map((item) => (
           <div
             key={item.id}
-            className="flex gap-4 p-4 rounded-lg border border-border bg-card transition-colors hover:bg-accent/50"
+            className="flex gap-2 sm:gap-4 p-2 sm:p-4 rounded-lg border border-border bg-card transition-colors hover:bg-accent/50"
           >
-            {/* Cover */}
+            {/* Cover - Smaller on mobile for better space utilization */}
             <Link
               href={`/series/${item.id}`}
-              className="relative h-20 w-16 flex-shrink-0 overflow-hidden rounded bg-muted"
+              className="relative h-16 w-12 sm:h-20 sm:w-16 flex-shrink-0 overflow-hidden rounded bg-muted"
             >
               <Image
                 src={item.coverUrl}
                 alt={item.title}
                 fill
                 className="object-cover"
-                sizes="64px"
+                sizes="(max-width: 640px) 48px, 64px"
               />
             </Link>
 
             {/* Content */}
-            <div className="flex flex-1 flex-col gap-1 min-w-0">
-              {/* Title and metadata - inline on mobile, stacked on desktop */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0">
-                <Link
-                  href={`/series/${item.id}`}
-                  className="font-semibold text-foreground hover:text-primary truncate sm:flex-1 min-w-0"
-                >
-                  {item.title}
-                </Link>
-                <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground flex-shrink-0">
-                  <span className="text-xs flex-shrink-0">
+            <div className="flex flex-1 flex-col gap-0.5 sm:gap-1 min-w-0">
+              {/* Title - Full width on mobile for better readability */}
+              <Link
+                href={`/series/${item.id}`}
+                className="font-semibold text-sm sm:text-base text-foreground hover:text-primary line-clamp-2 sm:line-clamp-1 min-w-0"
+              >
+                {item.title}
+              </Link>
+
+              {/* Chapter info - Stacked on mobile, inline on desktop */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-1.5 min-w-0">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs text-muted-foreground flex-shrink-0">
+                  <span className="text-[10px] sm:text-xs flex-shrink-0">
                     {languageFlags[item.chapter.language] ||
                       `[${item.chapter.language.toUpperCase()}]`}
                   </span>
                   <span className="truncate">
                     {t("chapter", "series")} {item.chapter.number}
-                    {item.chapter.title && ` - ${item.chapter.title}`}
+                    {item.chapter.title && (
+                      <span className="hidden sm:inline">
+                        {` - ${item.chapter.title}`}
+                      </span>
+                    )}
+                  </span>
+                </div>
+                
+                {/* Timestamp - Separate line on mobile for clarity */}
+                <div className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground">
+                  <span className="flex-shrink-0">
+                    {formatRelativeTime(item.timestamp, t)}
                   </span>
                 </div>
               </div>
-
-
-
-              {/* Groups and timestamp - inline */}
-              {/* <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-muted-foreground min-w-0">
-                <div className="flex items-center gap-1 min-w-0 flex-1">
-                  {item.groups.slice(0, 2).map((group, index) => (
-                    <Link
-                      key={group.id}
-                      href={group.url}
-                      className="text-primary hover:underline truncate"
-                    >
-                      {group.name}
-                    </Link>
-                  ))}
-                  {item.groups.length > 2 && (
-                    <span className="text-muted-foreground truncate">
-                      +{item.groups.length - 2}
-                    </span>
-                  )}
-                </div>
-                <span className="flex-shrink-0 ml-auto sm:ml-0">
-                  {formatRelativeTime(item.timestamp, t)}
-                </span>
-                {item.commentCount !== undefined && item.commentCount > 0 && (
-                  <Badge variant="outline" className="text-xs flex-shrink-0">
-                    {item.commentCount}
-                  </Badge>
-                )}
-              </div> */}
-
-
-
-              <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground flex-shrink-0">
-                  <span className="text-xs flex-shrink-0">
-                  {formatRelativeTime(item.timestamp, t)}
-                  </span>
-                </div>
             </div>
           </div>
         ))}
