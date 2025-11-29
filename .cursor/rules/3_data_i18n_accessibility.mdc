@@ -7,14 +7,18 @@ alwaysApply: true
 ## Data Fetching
 - All API via `src/lib/http/client.ts`
 - Base URL: `process.env.NEXT_PUBLIC_API_BASE_URL`
-- **React Query** for all client-side data fetching
+- **TanStack Query** for all client-side data fetching
 - **HTTP Interceptors** for token management and error handling
 - **Rate limiting** with event bus system
 - Public-safe RSC only:
 ```ts
 fetch(url, { next: { revalidate: 60, tags: ['posts'] } })
 ```
-- Client hooks: `useQuery()` and `useMutation()` from React Query
+- Client hooks: `useQuery()` and `useMutation()` from TanStack Query
+- **Query Configuration**: 5min staleTime, 10min gcTime, 3 retries with exponential backoff
+- **Provider Setup**: `ReactQueryProvider` with devtools in development
+- **Query Keys**: Structured keys like `["article", articleId]`, `["settings", userId]`
+- **Error Handling**: Automatic retry with toast notifications via Sonner
 
 ## Forms
 - `react-hook-form` + `zod` + shadcn `<Form />`

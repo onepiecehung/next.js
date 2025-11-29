@@ -1,7 +1,12 @@
 /**
  * Authentication hooks
- * Provides login functionality and auth redirects
+ * All auth functionality consolidated in useAuthQuery.ts
  */
 
-export { useAuthRedirect, useRequireAuth } from "./useAuthRedirect";
-export { useLogin } from "./useLogin";
+export {
+  useAuthRedirect,
+  useCurrentUser,
+  useLogin,
+  useLogout,
+  useRequireAuth,
+} from "./useAuthQuery";

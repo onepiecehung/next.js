@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { toast } from "sonner";
 
 import { ProtectedRoute } from "@/components/features/auth";
 import { TipTapEditor } from "@/components/features/text-editor";
@@ -24,13 +23,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
 import { TagsInputComponent } from "@/components/ui/layout/tags-input";
-import {
-  useArticleFormState,
-  useCreateArticle,
-} from "@/hooks/article/useArticleQuery";
+import { useArticleFormState, useCreateArticle } from "@/hooks/article";
+import { useToast } from "@/hooks/ui/useSimpleHooks";
 import { MediaAPI } from "@/lib/api/media";
 import { currentUserAtom } from "@/lib/auth";
 import { ARTICLE_CONSTANTS } from "@/lib/constants";
+import { validateArticleForm } from "@/lib/utils/article-utils";
 
 /**
  * Internationalized Write Page Component
@@ -81,7 +79,9 @@ export default function WritePage() {
       contentFormat: "html" as const,
       status: articleData.status as "draft" | "published" | "scheduled",
       visibility: articleData.visibility as "public" | "unlisted" | "private",
-      scheduledAt: articleData.scheduledAt,
+      scheduledAt: articleData.scheduledAt
+        ? new Date(articleData.scheduledAt)
+        : undefined,
     };
 
     createArticle(createRequest, {
@@ -126,15 +126,15 @@ export default function WritePage() {
     };
   };
 
+  const { error: showError } = useToast();
+
   // Helper function to validate required fields
   const validateRequiredFields = () => {
-    if (!title.trim()) {
-      toast.error(t("validation.titleEmpty", "write"));
-      return false;
-    }
+    const validation = validateArticleForm({ title, content, tags });
 
-    if (!content.trim() || content.trim() === "<p></p>") {
-      toast.error(t("validation.contentEmpty", "write"));
+    if (!validation.isValid) {
+      const firstError = Object.values(validation.errors)[0];
+      showError(firstError);
       return false;
     }
 

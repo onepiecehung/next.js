@@ -62,6 +62,49 @@ It leverages the latest ecosystem tools to deliver **a beautiful UI, responsive 
 ### Knowledge Updates
 When working with Next.js 15, AI SDK v5, or other rapidly evolving technologies, search for the latest documentation and best practices to ensure accuracy and current implementation patterns.
 
+### MCP Tools Usage (MANDATORY)
+**⚠️ CRITICAL: Always use MCP (Model Context Protocol) tools when available for tasks. This is MANDATORY.**
+
+When performing any development task, you MUST prioritize using MCP tools over manual implementations or assumptions:
+
+#### Available MCP Servers:
+1. **shadcn MCP** — For adding/managing shadcn/ui components
+   - Use `mcp_shadcn_*` tools to search, view, and add components
+   - Always check available components before creating custom ones
+   - Use `mcp_shadcn_get_add_command_for_items` to get installation commands
+   - Use `mcp_shadcn_get_item_examples_from_registries` for usage examples
+
+2. **GitHub MCP** — For repository management and GitHub operations
+   - Use for creating issues, PRs, searching code, managing branches
+   - Use `mcp_github_*` tools for all GitHub-related operations
+
+3. **Next.js DevTools MCP** — For Next.js-specific operations
+   - Use `mcp_next-devtools_*` tools for Next.js documentation and diagnostics
+   - Use `mcp_next-devtools_nextjs_index` to discover running dev servers
+   - Use `mcp_next-devtools_nextjs_call` for runtime diagnostics
+
+4. **NX MCP** — For Nx workspace operations (if applicable)
+   - Use `mcp_extension-nx-mcp_*` tools for Nx documentation and plugins
+
+5. **Browser Extension MCP** — For browser automation and testing
+   - Use `mcp_cursor-browser-extension_*` tools for browser interactions
+
+#### MCP Usage Rules:
+- **Before creating components**: Check shadcn MCP for existing components
+- **Before adding UI primitives**: Use `mcp_shadcn_search_items_in_registries` to find available components
+- **Before implementing features**: Check Next.js MCP for official documentation
+- **When working with GitHub**: Use GitHub MCP tools instead of manual git operations
+- **Always prefer MCP tools** over manual implementations when equivalent functionality exists
+
+#### Example Workflow:
+1. User requests: "Add a hover card component"
+2. **MUST DO**: Use `mcp_shadcn_search_items_in_registries` to find hover-card
+3. **MUST DO**: Use `mcp_shadcn_get_add_command_for_items` to get installation command
+4. **MUST DO**: Use `mcp_shadcn_get_item_examples_from_registries` for usage examples
+5. Then implement using the MCP-provided component
+
+**Failure to use MCP tools when available will result in incomplete or incorrect implementations.**
+
 ---
 
 ## 🛠️ Core Technologies
@@ -92,6 +135,7 @@ When working with Next.js 15, AI SDK v5, or other rapidly evolving technologies,
 
 ### 💾 State & Data Management
 - **Jotai** — Atomic state management
+- **TanStack Query** — Server state management and data fetching
 - **Axios** — HTTP client with interceptors
 - **React Hook Form** — Form control
 - **Zod** — Schema validation
@@ -188,7 +232,8 @@ src/
 9. ⌛ **Skeleton Loading** — Placeholder states for async content with Skeletonize component.  
 10. 🔔 **Toast Notifications** — Rich toast system with Sonner integration.  
 11. 📝 **Form Validation** — Real-time Zod schema validation with React Hook Form.  
-12. 🎯 **Middleware Protection** — Route-based authentication middleware.
+12. 🎯 **Middleware Protection** — Route-based authentication middleware.  
+13. 🔄 **TanStack Query** — Advanced server state management with caching, background updates, and optimistic updates.
 
 ---
 
@@ -220,6 +265,7 @@ src/
 - **Hot Reloading** — Fast local iteration with Turbopack  
 - **HTTP Interceptors** — Automatic token refresh and error handling  
 - **Rate Limit Handling** — Client-side rate limit with event bus  
+- **TanStack Query** — Advanced server state management with caching and background updates
 - **Custom Hooks** — Reusable logic for auth, content, media, reactions  
 - **Theme Testing** — Multiple theme testing pages for development  
 
@@ -227,6 +273,7 @@ src/
 
 ## 🧭 Development Guidelines
 
+- **MCP Tools First (MANDATORY)** — Always use available MCP tools before manual implementations. Check shadcn MCP for components, Next.js MCP for documentation, GitHub MCP for repository operations.
 - **Frontend-only architecture** — No backend logic or database SDKs included.  
 - **Centralized HTTP** — All API calls go through `src/lib/http/client.ts`.  
 - **Environment variables** — Only use `NEXT_PUBLIC_*` environment variables.  
@@ -244,6 +291,7 @@ src/
 
 | Checkpoint | Required |
 |-------------|-----------|
+| MCP tools used when available | ✅ |
 | No ESLint/TS warnings | ✅ |
 | Theme supports dark/light + color variants | ✅ |
 | Fully responsive (mobile-first) | ✅ |
@@ -264,12 +312,13 @@ src/
 
 ## 🧾 Summary
 
-This project exemplifies a **modern, modular, frontend-only Next.js 15+ application**, integrating **shadcn/ui**, **TailwindCSS**, **TipTap**, **Firebase Auth**, and **Jotai** to deliver a premium editing and viewing experience.  
+This project exemplifies a **modern, modular, frontend-only Next.js 15+ application**, integrating **shadcn/ui**, **TailwindCSS**, **TipTap**, **Firebase Auth**, **TanStack Query**, and **Jotai** to deliver a premium editing and viewing experience.  
 
 **Key Highlights:**
 - **Advanced Theme System** — 12+ color variants with dark/light modes
 - **Rich Text Editor** — TipTap with syntax highlighting, Mermaid diagrams, and Markdown support
 - **Comprehensive Auth** — Firebase Auth with OAuth (Google, GitHub, Twitter) and custom state management
+- **TanStack Query** — Advanced server state management with caching, background updates, and optimistic updates
 - **Internationalization** — Full EN/VI support with 9 namespaces
 - **Rate Limiting** — Client-side rate limit handling with event bus system
 - **HTTP Management** — Axios interceptors with automatic token refresh

@@ -12,7 +12,7 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
 import { Button } from "@/components/ui";
 import { ContentRenderer } from "@/components/ui/utilities/content-renderer";
-import { useArticle } from "@/hooks/article/useArticleQuery";
+import { useArticle } from "@/hooks/article";
 import { useReactions } from "@/hooks/reactions";
 import { ARTICLE_CONSTANTS } from "@/lib/constants";
 import { cn } from "@/lib/utils";

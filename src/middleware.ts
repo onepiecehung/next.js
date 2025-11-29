@@ -1,74 +1,213 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
-// Define protected routes that require authentication
-const protectedRoutes = ["/write", "/users", "/demo/editor"];
+/**
+ * Route configuration interface
+ * Follows Open/Closed Principle - easy to extend
+ */
+export interface RouteConfig {
+  readonly protected: readonly string[];
+  readonly auth: readonly string[];
+  readonly public: readonly string[];
+}
 
-// Define auth routes that should redirect if user is already authenticated
-const authRoutes = ["/auth/login", "/auth/register"];
+/**
+ * Route configuration - Direct Edit approach
+ * Easy to modify and extend following SOLID principles
+ */
+export const ROUTE_CONFIG: RouteConfig = {
+  // 🔒 Protected routes - require authentication
+  protected: [
+    "/write", // Article writing
+    "/user", // User management
+    // Add more protected routes here:
+    // "/admin",         // Admin panel
+    // "/dashboard",     // User dashboard
+    // "/settings",      // User settings
+  ],
 
-// Define public routes that don't require authentication
-// const publicRoutes = ["/", "/demo", "/demo/theming"];
+  // 🔐 Auth routes - redirect if already authenticated
+  auth: [
+    "/auth/login", // Login page
+    "/auth/register", // Registration page
+    // Add more auth routes here:
+    // "/auth/forgot",   // Password reset
+    // "/auth/signup",   // Alternative signup
+  ],
 
-export function middleware(request: NextRequest) {
+  // 🌐 Public routes - accessible to everyone
+  public: [
+    "/", // Home page
+    "/demo", // Demo pages
+    "/demo/theming", // Theme demo
+    // Add more public routes here:
+    // "/about",         // About page
+    // "/contact",       // Contact page
+    // "/help",          // Help center
+  ],
+} as const;
+
+/**
+ * Route matcher utility functions
+ * Simple, functional approach following Single Responsibility Principle
+ */
+export const RouteMatcher = {
+  /**
+   * Check if pathname matches any protected routes
+   */
+  isProtectedRoute(
+    pathname: string,
+    config: RouteConfig = ROUTE_CONFIG,
+  ): boolean {
+    return config.protected.some((route) => pathname.startsWith(route));
+  },
+
+  /**
+   * Check if pathname matches any auth routes
+   */
+  isAuthRoute(pathname: string, config: RouteConfig = ROUTE_CONFIG): boolean {
+    return config.auth.some((route) => pathname.startsWith(route));
+  },
+
+  /**
+   * Check if pathname matches any public routes
+   */
+  isPublicRoute(pathname: string, config: RouteConfig = ROUTE_CONFIG): boolean {
+    return config.public.some((route) => pathname.startsWith(route));
+  },
+};
+
+/**
+ * Authentication utility functions
+ * Simple, functional approach following Single Responsibility Principle
+ */
+export const AuthUtils = {
+  /**
+   * Extract access token from request cookies
+   */
+  getAccessToken(request: NextRequest): string | null {
+    return request.cookies.get("accessToken")?.value || null;
+  },
+
+  /**
+   * Check if user is authenticated
+   */
+  isAuthenticated(request: NextRequest): boolean {
+    return !!AuthUtils.getAccessToken(request);
+  },
+};
+
+/**
+ * Redirect utility functions
+ * Simple, functional approach following Single Responsibility Principle
+ */
+export const RedirectUtils = {
+  /**
+   * Create login redirect URL with return path
+   */
+  createLoginRedirect(request: NextRequest, returnPath: string): NextResponse {
+    const loginUrl = new URL("/auth/login", request.url);
+    loginUrl.searchParams.set("redirect", returnPath);
+    return NextResponse.redirect(loginUrl);
+  },
+
+  /**
+   * Create authenticated user redirect
+   */
+  createAuthRedirect(
+    request: NextRequest,
+    redirectPath?: string,
+  ): NextResponse {
+    const redirectUrl =
+      redirectPath || request.nextUrl.searchParams.get("redirect") || "/";
+    return NextResponse.redirect(new URL(redirectUrl, request.url));
+  },
+};
+
+/**
+ * Logger utility functions
+ * Simple logging with development-only output
+ */
+export const Logger = {
+  /**
+   * Log middleware processing information (development only)
+   */
+  logRequest(
+    pathname: string,
+    isProtected: boolean,
+    isAuth: boolean,
+    hasToken: boolean,
+  ): void {
+    if (process.env.NODE_ENV !== "development") return;
+
+    console.log("🔒 Middleware:", {
+      pathname,
+      isProtected,
+      isAuth,
+      hasToken,
+    });
+  },
+
+  /**
+   * Log redirect information (development only)
+   */
+  logRedirect(from: string, to: string, reason: string): void {
+    if (process.env.NODE_ENV !== "development") return;
+
+    console.log(`🔄 Middleware: ${reason}`, { from, to });
+  },
+};
+
+/**
+ * Main middleware function
+ * Clean, simple, and easy to understand
+ * Follows SOLID principles with functional approach
+ */
+export function middleware(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl;
 
-  console.log("Middleware: Processing request to", pathname);
+  // Determine route types
+  const isProtected = RouteMatcher.isProtectedRoute(pathname);
+  const isAuth = RouteMatcher.isAuthRoute(pathname);
+  const isAuthenticated = AuthUtils.isAuthenticated(request);
 
-  // Check if the current path is a protected route
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    pathname.startsWith(route),
-  );
+  // Log request processing (development only)
+  Logger.logRequest(pathname, isProtected, isAuth, isAuthenticated);
 
-  // Check if the current path is an auth route
-  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
-
-  // Check if the current path is a public route
-  // const isPublicRoute = publicRoutes.some(route =>
-  //   pathname.startsWith(route)
-  // )
-
-  // Get the access token from cookies
-  const accessToken = request.cookies.get("accessToken")?.value;
-
-  console.log(
-    "Middleware: isProtectedRoute:",
-    isProtectedRoute,
-    "isAuthRoute:",
-    isAuthRoute,
-    "accessToken:",
-    !!accessToken,
-  );
-
-  // If accessing a protected route without authentication
-  if (isProtectedRoute && !accessToken) {
-    // Redirect to login page with return URL
-    const loginUrl = new URL("/auth/login", request.url);
-    loginUrl.searchParams.set("redirect", pathname);
-    return NextResponse.redirect(loginUrl);
+  // Handle protected routes - redirect to login if not authenticated
+  if (isProtected && !isAuthenticated) {
+    Logger.logRedirect(pathname, "/auth/login", "Protected route without auth");
+    return RedirectUtils.createLoginRedirect(request, pathname);
   }
 
-  // If accessing auth routes while authenticated
-  if (isAuthRoute && accessToken) {
-    // Get the redirect URL from query params or default to home
+  // Handle auth routes - redirect to home if already authenticated
+  if (isAuth && isAuthenticated) {
     const redirectUrl = request.nextUrl.searchParams.get("redirect") || "/";
-    console.log(
-      "Middleware: User authenticated on auth route, redirect to:",
-      redirectUrl,
-    );
-    // Only redirect if we're not already on the target page
+
+    // Only redirect if not already on target page
     if (pathname !== redirectUrl) {
-      console.log("Middleware: Redirecting from", pathname, "to", redirectUrl);
-      return NextResponse.redirect(new URL(redirectUrl, request.url));
+      Logger.logRedirect(
+        pathname,
+        redirectUrl,
+        "Authenticated user on auth route",
+      );
+      return RedirectUtils.createAuthRedirect(request, redirectUrl);
     } else {
-      console.log("Middleware: Already on target page, no redirect needed");
+      Logger.logRedirect(
+        pathname,
+        redirectUrl,
+        "Already on target page, no redirect needed",
+      );
     }
   }
 
-  // Allow the request to continue
+  // Allow request to continue
   return NextResponse.next();
 }
 
+/**
+ * Middleware configuration
+ */
 export const config = {
   matcher: [
     /*

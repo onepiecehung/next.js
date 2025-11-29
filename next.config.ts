@@ -11,6 +11,26 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'cdn.calumma.cc',
       },
+      {
+        protocol: 'https',
+        hostname: 's4.anilist.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 's3.anilist.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 's2.anilist.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 's1.anilist.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'anilist.co',
+      },
     ],
     // Enable image optimization
     unoptimized: false,

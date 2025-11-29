@@ -139,15 +139,6 @@ export interface PaginationMeta {
   totalPages: number;
 }
 
-/**
- * Legacy paginated response structure (deprecated)
- * @deprecated Use PaginationOffset or PaginationCursor instead
- */
-export interface PaginatedResponse<T> {
-  items: T[];
-  pagination: PaginationMeta;
-}
-
 // ============================================================================
 // Common Response Types
 // ============================================================================

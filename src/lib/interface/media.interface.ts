@@ -1,6 +1,18 @@
 import { BaseEntityCustom } from "./base.interface";
 import { User } from "./user.interface";
 
+/**
+ * Image scrambler metadata for scrambled images
+ * Contains information needed to unscramble images on the client side
+ */
+export interface ImageScramblerMetadata {
+  enabled: boolean;
+  version: number;
+  salt: string;
+  tileRows: number;
+  tileCols: number;
+}
+
 export interface Media extends BaseEntityCustom {
   status?: string;
   name?: string;

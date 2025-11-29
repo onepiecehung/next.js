@@ -103,7 +103,7 @@ export function UserDropdown({
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link href={`/users/${user.id}`} className="cursor-pointer">
+          <Link href={`/user/${user.id}`} className="cursor-pointer">
             <UserIcon className="mr-2 h-4 w-4" />
             <span>{t("userDropdownProfile", "user")}</span>
           </Link>

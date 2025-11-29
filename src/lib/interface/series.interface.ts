@@ -1,0 +1,203 @@
+/**
+ * Series-related TypeScript interfaces
+ * Defines types for series data structures used throughout the application
+ */
+
+/**
+ * Supported language codes for series
+ */
+export type SeriesLanguage = "ja" | "en" | "vi" | "zh" | "ko" | "pt" | "fr";
+
+/**
+ * Series title structure from backend
+ * Based on AniList API MediaTitle object
+ */
+export interface SeriesTitle {
+  romaji?: string;
+  english?: string;
+  native?: string;
+  userPreferred?: string;
+}
+
+/**
+ * Series chapter information
+ */
+export interface SeriesChapter {
+  number: string;
+  title: string;
+  language: string;
+  url: string;
+}
+
+/**
+ * Scanlation group information
+ */
+export interface ScanlationGroup {
+  id: string;
+  name: string;
+  url: string;
+}
+
+/**
+ * Additional link for series (e.g., official website, social media)
+ */
+export interface SeriesLink {
+  label: string;
+  url: string;
+}
+
+/**
+ * Media entity (for cover/banner images)
+ */
+export interface SeriesMedia {
+  id: string;
+  url: string;
+  type?: string;
+}
+
+/**
+ * Genre information
+ */
+export interface SeriesGenre {
+  id: string;
+  slug: string;
+  name: string;
+  icon?: string;
+  color?: string;
+}
+
+/**
+ * Author information
+ */
+export interface SeriesAuthor {
+  id: string;
+  name: string;
+}
+
+/**
+ * Tag information
+ */
+export interface SeriesTag {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+/**
+ * Backend Series Entity (full structure from API)
+ * Matches backend/src/series/entities/series.entity.ts
+ */
+export interface BackendSeries {
+  id: string;
+  myAnimeListId?: string;
+  aniListId?: string;
+  title?: SeriesTitle;
+  type: string; // ANIME or MANGA
+  format?: string;
+  status?: string;
+  description?: string;
+  startDate?: Date;
+  endDate?: Date;
+  season?: string;
+  seasonYear?: number;
+  seasonInt?: number;
+  episodes?: number;
+  duration?: number;
+  chapters?: number;
+  volumes?: number;
+  countryOfOrigin?: string;
+  isLicensed?: boolean;
+  source?: string;
+  coverImageUrls?: Record<string, string>;
+  coverImageId?: string;
+  coverImage?: SeriesMedia;
+  bannerImageUrl?: string;
+  bannerImageId?: string;
+  bannerImage?: SeriesMedia;
+  genres?: Array<{
+    id: string;
+    sortOrder?: number;
+    isPrimary?: boolean;
+    genre?: SeriesGenre;
+  }>;
+  tags?: SeriesTag[];
+  synonyms?: string[];
+  averageScore?: number;
+  meanScore?: number;
+  popularity?: number;
+  favoriteCount?: number;
+  isLocked?: boolean;
+  trending?: number;
+  isNsfw?: boolean;
+  autoCreateForumThread?: boolean;
+  isRecommendationBlocked?: boolean;
+  isReviewBlocked?: boolean;
+  notes?: string;
+  releasingStatus?: string;
+  externalLinks?: Record<string, string>;
+  streamingEpisodes?: Record<string, string>;
+  metadata?: Record<string, unknown>;
+  authorRoles?: Array<{
+    id: string;
+    role?: string;
+    isMain?: boolean;
+    author?: SeriesAuthor;
+  }>;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+/**
+ * Frontend Series interface (simplified for UI)
+ * Used in components and homepage
+ */
+export interface Series {
+  id: string;
+  title: string; // Extracted from title.userPreferred or title.romaji
+  coverUrl: string; // Extracted from coverImage.url or coverImageUrls
+  bannerUrl?: string; // Extracted from bannerImage.url or bannerImageUrl
+  language: SeriesLanguage; // Extracted from countryOfOrigin or default
+  tags: string[]; // Extracted from tags array
+  description: string;
+  author: string; // Extracted from authorRoles
+  additionalLinks?: SeriesLink[]; // Extracted from externalLinks
+  chapter?: SeriesChapter;
+  groups?: ScanlationGroup[];
+  timestamp?: Date;
+  // Additional fields from backend
+  type?: string; // ANIME or MANGA
+  format?: string;
+  status?: string;
+  averageScore?: number;
+  popularity?: number;
+  trending?: number;
+  isNsfw?: boolean;
+  isLicensed?: boolean;
+  season?: string;
+  seasonYear?: number;
+}
+
+/**
+ * Latest update item interface
+ * Used for the "Latest Updates" section
+ * timestamp can be Date object or ISO date string
+ */
+export interface LatestUpdateItem {
+  id: string;
+  title: string;
+  coverUrl: string;
+  chapter: SeriesChapter;
+  groups: ScanlationGroup[];
+  timestamp: Date | string;
+  commentCount?: number;
+}
+
+/**
+ * Popular series interface
+ * Extends base Series with popularity metrics
+ */
+export interface PopularSeries extends Series {
+  views?: number;
+  likes?: number;
+  rating?: number;
+}

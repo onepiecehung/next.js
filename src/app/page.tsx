@@ -1,195 +1,326 @@
 "use client";
 
-import { Button } from "@/components/ui";
 import Link from "next/link";
+
 import {
-  BookOpen,
-  PenTool,
-  User,
-  Sparkles,
-  Palette,
-  Edit3,
-} from "lucide-react";
+  LatestUpdatesList,
+  RecommendedGrid,
+} from "@/components/features/series";
+import { SeriesCard } from "@/components/features/series/series-card";
+import {
+  SeriesHeroCarousel,
+  type FeaturedSeries,
+} from "@/components/features/series/series-hero-carousel";
 import { useI18n } from "@/components/providers/i18n-provider";
+import { Skeletonize } from "@/components/shared/skeletonize";
+import { Button } from "@/components/ui/core/button";
+import {
+  useFeaturedSeries,
+  useLatestUpdates,
+  usePopularSeries,
+  useRecentlyAddedSeries,
+  useRecommendedSeries,
+  useSeasonalSeries,
+  useSelfPublishedSeries,
+} from "@/hooks/series";
+import type { PopularSeries } from "@/lib/interface/series.interface";
 
 /**
- * Internationalized Home Page Component
- * Welcome page with navigation to main features
- * Uses custom i18n hook for multi-language support
+ * MangaDex-style Homepage
+ * Main landing page with all series sections
  */
 export default function HomePage() {
   const { t } = useI18n();
 
+  // Fetch all series data
+  const { data: popularSeries, isLoading: isLoadingPopular } =
+    usePopularSeries();
+  const { data: latestUpdates, isLoading: isLoadingUpdates } =
+    useLatestUpdates();
+  const { data: recommended, isLoading: isLoadingRecommended } =
+    useRecommendedSeries();
+  const { data: selfPublished, isLoading: isLoadingSelfPublished } =
+    useSelfPublishedSeries();
+  const { data: featured, isLoading: isLoadingFeatured } = useFeaturedSeries();
+  const { data: seasonal, isLoading: isLoadingSeasonal } = useSeasonalSeries();
+  const { data: recentlyAdded, isLoading: isLoadingRecentlyAdded } =
+    useRecentlyAddedSeries();
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <div className="border-b border-border bg-card">
-        <div className="mx-auto max-w-4xl px-4 py-8 sm:py-16 text-center">
-          <div className="mb-6 sm:mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 sm:mb-6">
-              {t("heroTitle", "home")}
-            </h1>
-            <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              {t("heroDescription", "home")}
-            </p>
-          </div>
+      {/* Popular New Titles Hero Carousel - Full width with navigation overlay */}
+      <section className="relative -mt-20 pt-20 pb-0 border-b border-border">
+        <Skeletonize loading={isLoadingPopular}>
+          {popularSeries && popularSeries.length > 0 && (
+            <SeriesHeroCarousel
+              items={popularSeries.map(
+                (series: PopularSeries): FeaturedSeries => ({
+                  id: series.id,
+                  title: series.title,
+                  description: series.description || "",
+                  tags: series.tags || [],
+                  coverUrl: series.coverUrl,
+                }),
+              )}
+              className="h-[25vh] sm:h-[30vh] lg:h-[45vh] max-h-[700px]"
+            />
+          )}
+        </Skeletonize>
+      </section>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-            <Link href="/profile">
-              <Button size="lg" className="px-6 sm:px-8 w-full sm:w-auto">
-                <User className="mr-2 h-5 w-5" />
-                {t("heroViewProfile", "home")}
-              </Button>
-            </Link>
-            <Link href="/write">
-              <Button
-                variant="outline"
-                size="lg"
-                className="px-6 sm:px-8 w-full sm:w-auto"
-              >
-                <PenTool className="mr-2 h-5 w-5" />
-                {t("heroStartWriting", "home")}
-              </Button>
-            </Link>
-          </div>
+      {/* Banner Ad */}
+      {/* <section className="border-b border-border py-4 md:py-6">
+        <div className="container mx-auto px-4 md:px-6">
+          <Link
+            href="/advertise"
+            className="block w-full overflow-hidden rounded-lg bg-gradient-to-r from-primary/20 to-primary/10 p-8 text-center transition-all hover:from-primary/30 hover:to-primary/20"
+          >
+            <h3 className="text-lg font-semibold text-foreground md:text-xl">
+              {t("advertise", "series")}
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {t("advertise", "series")} - {t("advertiseNav", "series")}
+            </p>
+          </Link>
         </div>
-      </div>
+      </section> */}
 
-      {/* Features Section */}
-      <div className="mx-auto max-w-4xl px-4 py-8 sm:py-16">
-        <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-            {t("featuresTitle", "home")}
-          </h2>
-          <p className="text-base sm:text-lg text-muted-foreground">
-            {t("featuresSubtitle", "home")}
-          </p>
+      {/* Latest Updates */}
+      <section className="border-b border-border py-6 md:py-8">
+        <div className="container mx-auto px-4 md:px-6">
+          <Skeletonize loading={isLoadingUpdates}>
+            {latestUpdates && latestUpdates.length > 0 && (
+              <LatestUpdatesList items={latestUpdates} />
+            )}
+          </Skeletonize>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-          {/* Feature 1: Write */}
-          <div className="bg-card border border-border rounded-lg p-4 sm:p-6 text-center hover:border-primary/30 transition-colors">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <PenTool className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold text-foreground mb-3">
-              {t("writeTitle", "home")}
-            </h3>
-            <p className="text-muted-foreground mb-4">
-              {t("writeDescription", "home")}
-            </p>
-            <Link href="/write">
-              <Button variant="outline" size="sm">
-                {t("writeButton", "home")}
-              </Button>
-            </Link>
-          </div>
-
-          {/* Feature 2: Profile */}
-          <div className="bg-card border border-border rounded-lg p-4 sm:p-6 text-center hover:border-primary/30 transition-colors">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <User className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold text-foreground mb-3">
-              {t("profileTitle", "home")}
-            </h3>
-            <p className="text-muted-foreground mb-4">
-              {t("profileDescription", "home")}
-            </p>
-            <Link href="/profile">
-              <Button variant="outline" size="sm">
-                {t("profileButton", "home")}
-              </Button>
-            </Link>
-          </div>
-
-          {/* Feature 3: Theming */}
-          <div className="bg-card border border-border rounded-lg p-4 sm:p-6 text-center hover:border-primary/30 transition-colors">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Palette className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold text-foreground mb-3">
-              Theming System
-            </h3>
-            <p className="text-muted-foreground mb-4">
-              Explore multiple themes and color schemes
-            </p>
-            <Link href="/demo/theming">
-              <Button variant="outline" size="sm">
-                View Themes
-              </Button>
-            </Link>
-          </div>
-
-          {/* Feature 4: Rich Text Editor */}
-          <div className="bg-card border border-border rounded-lg p-4 sm:p-6 text-center hover:border-primary/30 transition-colors">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Edit3 className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold text-foreground mb-3">
-              Rich Text Editor
-            </h3>
-            <p className="text-muted-foreground mb-4">
-              Modern TipTap editor with advanced features
-            </p>
-            <Link href="/demo/editor">
-              <Button variant="outline" size="sm">
-                Try Editor
-              </Button>
-            </Link>
-          </div>
-
-          {/* Feature 4: Discover */}
-          <div className="bg-card border border-border rounded-lg p-4 sm:p-6 text-center hover:border-primary/30 transition-colors">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <BookOpen className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold text-foreground mb-3">
-              {t("discoverTitle", "home")}
-            </h3>
-            <p className="text-muted-foreground mb-4">
-              {t("discoverDescription", "home")}
-            </p>
-            <Link href="/demo">
-              <Button variant="outline" size="sm">
-                {t("discoverButton", "home")}
-              </Button>
-            </Link>
-          </div>
+      {/* Recommended */}
+      <section className="border-b border-border py-6 md:py-8">
+        <div className="container mx-auto px-4 md:px-6">
+          <Skeletonize loading={isLoadingRecommended}>
+            {recommended && recommended.length > 0 && (
+              <RecommendedGrid
+                series={recommended}
+                titleI18nKey="recommended"
+                viewAllI18nKey="viewRecommendedList"
+                viewAllHref="/series/recommended"
+              />
+            )}
+          </Skeletonize>
         </div>
-      </div>
+      </section>
 
-      {/* CTA Section */}
-      <div className="border-t border-border bg-card">
-        <div className="mx-auto max-w-4xl px-4 py-8 sm:py-16 text-center">
-          <div className="mb-6 sm:mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-              {t("ctaTitle", "home")}
+      {/* Self-Published */}
+      <section className="border-b border-border py-6 md:py-8">
+        <div className="container mx-auto px-4 md:px-6">
+          <Skeletonize loading={isLoadingSelfPublished}>
+            {selfPublished && selfPublished.length > 0 && (
+              <RecommendedGrid
+                series={selfPublished}
+                titleI18nKey="selfPublished"
+                viewAllI18nKey="viewSelfPublishedList"
+                viewAllHref="/series/self-published"
+              />
+            )}
+          </Skeletonize>
+        </div>
+      </section>
+
+      {/* Featured */}
+      <section className="border-b border-border py-6 md:py-8">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+              {t("featured", "series")}
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground">
-              {t("ctaSubtitle", "home")}
-            </p>
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/series/featured">
+                {t("viewFeaturedList", "series")}
+                <span className="ml-2">→</span>
+              </Link>
+            </Button>
           </div>
+          <Skeletonize loading={isLoadingFeatured}>
+            {featured && featured.length > 0 && (
+              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+                {featured.slice(0, 6).map((series) => (
+                  <SeriesCard
+                    key={series.id}
+                    series={series}
+                    variant="featured"
+                  />
+                ))}
+              </div>
+            )}
+          </Skeletonize>
+        </div>
+      </section>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-            <Link href="/profile">
-              <Button size="lg" className="px-6 sm:px-8 w-full sm:w-auto">
-                <Sparkles className="mr-2 h-5 w-5" />
-                {t("ctaGetStarted", "home")}
-              </Button>
-            </Link>
-            <Link href="/demo">
-              <Button
-                variant="outline"
-                size="lg"
-                className="px-6 sm:px-8 w-full sm:w-auto"
-              >
-                {t("ctaLearnMore", "home")}
-              </Button>
-            </Link>
+      {/* Seasonal: Fall 2025 */}
+      <section className="border-b border-border py-6 md:py-8">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+              {t("seasonalFall2025", "series")}
+            </h2>
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/series/seasonal">
+                {t("openListSeasonal", "series")}
+                <span className="ml-2">→</span>
+              </Link>
+            </Button>
+          </div>
+          <Skeletonize loading={isLoadingSeasonal}>
+            {seasonal && seasonal.length > 0 && (
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+                {seasonal.map((series) => (
+                  <SeriesCard
+                    key={series.id}
+                    series={series}
+                    variant="compact"
+                  />
+                ))}
+              </div>
+            )}
+          </Skeletonize>
+        </div>
+      </section>
+
+      {/* Recently Added */}
+      <section className="border-b border-border py-6 md:py-8">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+              {t("recentlyAdded", "series")}
+            </h2>
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/series/recently-added">
+                {t("viewRecentlyAdded", "series")}
+                <span className="ml-2">→</span>
+              </Link>
+            </Button>
+          </div>
+          <Skeletonize loading={isLoadingRecentlyAdded}>
+            {recentlyAdded && recentlyAdded.length > 0 && (
+              <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-10">
+                {recentlyAdded.slice(0, 10).map((series) => (
+                  <SeriesCard key={series.id} series={series} variant="tiny" />
+                ))}
+              </div>
+            )}
+          </Skeletonize>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-border bg-card py-8 md:py-12">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {/* Social Links */}
+            <div>
+              <h3 className="mb-4 font-semibold text-foreground">
+                {t("community", "series")}
+              </h3>
+              <div className="flex flex-col gap-2">
+                <Link
+                  href="https://discord.gg/mangadex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-muted-foreground hover:text-primary"
+                >
+                  {t("discord", "series")}
+                </Link>
+                <Link
+                  href="https://twitter.com/mangadex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-muted-foreground hover:text-primary"
+                >
+                  {t("twitter", "series")}
+                </Link>
+                <Link
+                  href="https://reddit.com/r/mangadex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-muted-foreground hover:text-primary"
+                >
+                  {t("reddit", "series")}
+                </Link>
+                <Link
+                  href="/status"
+                  className="text-sm text-muted-foreground hover:text-primary"
+                >
+                  {t("systemStatus", "series")}
+                </Link>
+              </div>
+            </div>
+
+            {/* Policies */}
+            <div>
+              <h3 className="mb-4 font-semibold text-foreground">
+                {t("mangadex", "series")}
+              </h3>
+              <div className="flex flex-col gap-2">
+                <Link
+                  href="/guidelines"
+                  className="text-sm text-muted-foreground hover:text-primary"
+                >
+                  {t("communityGuidelines", "series")}
+                </Link>
+                <Link
+                  href="/announcements"
+                  className="text-sm text-muted-foreground hover:text-primary"
+                >
+                  {t("announcements", "series")}
+                </Link>
+                <Link
+                  href="/about"
+                  className="text-sm text-muted-foreground hover:text-primary"
+                >
+                  {t("aboutUs", "series")}
+                </Link>
+                <Link
+                  href="/contact"
+                  className="text-sm text-muted-foreground hover:text-primary"
+                >
+                  {t("contact", "series")}
+                </Link>
+              </div>
+            </div>
+
+            {/* Legal */}
+            <div>
+              <h3 className="mb-4 font-semibold text-foreground">
+                {t("termsAndPolicies", "series")}
+              </h3>
+              <div className="flex flex-col gap-2">
+                <Link
+                  href="/terms"
+                  className="text-sm text-muted-foreground hover:text-primary"
+                >
+                  {t("termsAndPolicies", "series")}
+                </Link>
+                <Link
+                  href="/privacy"
+                  className="text-sm text-muted-foreground hover:text-primary"
+                >
+                  {t("privacy", "series")}
+                </Link>
+              </div>
+            </div>
+
+            {/* Version Info */}
+            <div>
+              <h3 className="mb-4 font-semibold text-foreground">
+                {t("version", "series")}
+              </h3>
+              <p className="text-sm text-muted-foreground">v2025.11.26</p>
+            </div>
           </div>
         </div>
-      </div>
+      </footer>
     </div>
   );
 }

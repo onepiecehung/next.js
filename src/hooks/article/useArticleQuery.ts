@@ -5,7 +5,14 @@ import { toast } from "sonner";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { ArticleAPI } from "@/lib/api/article";
 import { ARTICLE_CONSTANTS } from "@/lib/constants";
-import type { CreateArticleRequest, UpdateArticleRequest } from "@/lib/types";
+import type {
+  Article,
+  CreateArticleDto,
+  UpdateArticleRequest,
+} from "@/lib/interface/article.interface";
+import type { AdvancedQueryParams } from "@/lib/types";
+import { formatArticle } from "@/lib/utils/article-utils";
+import { queryKeys } from "@/lib/utils/query-keys";
 
 /**
  * Hook for fetching a single article by ID
@@ -13,7 +20,7 @@ import type { CreateArticleRequest, UpdateArticleRequest } from "@/lib/types";
  */
 export function useArticle(articleId: string) {
   return useQuery({
-    queryKey: ["article", articleId],
+    queryKey: queryKeys.articles.detail(articleId),
     queryFn: () => ArticleAPI.getArticle(articleId),
     enabled: !!articleId && articleId !== "undefined" && articleId !== "null",
     // staleTime: 5 * 60 * 1000, // 5 minutes
@@ -25,19 +32,57 @@ export function useArticle(articleId: string) {
 /**
  * Hook for fetching articles list with pagination
  */
-export function useArticles(params?: {
-  page?: number;
-  limit?: number;
-  search?: string;
-  category?: string;
-  status?: string;
-}) {
+export function useArticles(params?: AdvancedQueryParams) {
   return useQuery({
-    queryKey: ["articles", params],
+    queryKey: queryKeys.articles.list(params),
     queryFn: () => ArticleAPI.getArticlesOffset(params),
     staleTime: 2 * 60 * 1000, // 2 minutes
     placeholderData: (previousData) => previousData, // Keep previous data while fetching new
   });
+}
+
+/**
+ * Hook for fetching my articles list with pagination and layout support
+ * Supports multiple layout types: grid, list, card
+ */
+export function useMyArticles(userId: string, params?: AdvancedQueryParams) {
+  return useQuery({
+    queryKey: queryKeys.articles.myList(userId, params),
+    queryFn: () => ArticleAPI.myArticlesOffset(params),
+    enabled: !!userId,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    placeholderData: (previousData) => previousData, // Keep previous data while fetching new
+  });
+}
+
+/**
+ * Hook for managing user articles with different layout types
+ * Simplified version using reusable utilities
+ */
+export function useUserArticlesLayout(
+  userId: string,
+  layout: "grid" | "list" | "card" = "grid",
+  params?: AdvancedQueryParams,
+) {
+  const { data, isLoading, error, refetch } = useMyArticles(userId, params);
+
+  // Format articles using reusable utility
+  const formattedArticles =
+    data?.data?.result?.map((article: Article) => formatArticle(article)) || [];
+
+  return {
+    articles: formattedArticles,
+    isLoading,
+    error,
+    refetch,
+    totalCount: data?.data?.metaData?.totalRecords || 0,
+    hasMore: data?.data?.metaData?.hasNextPage || false,
+    currentPage: data?.data?.metaData?.currentPage || 1,
+    totalPages: data?.data?.metaData?.totalPages || 1,
+    pageSize: data?.data?.metaData?.pageSize || 10,
+    hasNextPage: data?.data?.metaData?.hasNextPage || false,
+    hasPreviousPage: (data?.data?.metaData?.currentPage || 1) > 1,
+  };
 }
 
 /**
@@ -50,7 +95,7 @@ export function useCreateArticle() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: CreateArticleRequest) => {
+    mutationFn: async (data: CreateArticleDto) => {
       // Auto-set visibility to PRIVATE for drafts only
       const finalData = {
         ...data,
@@ -78,10 +123,13 @@ export function useCreateArticle() {
         loading: t("schedule.creating", "article") || "Creating article...",
         success: (article) => {
           // Invalidate and refetch articles list
-          queryClient.invalidateQueries({ queryKey: ["articles"] });
+          queryClient.invalidateQueries({ queryKey: queryKeys.articles.all() });
 
           // Add the new article to cache
-          queryClient.setQueryData(["article", article.id], article);
+          queryClient.setQueryData(
+            queryKeys.articles.detail(article.id),
+            article,
+          );
 
           // Handle different success scenarios with appropriate messages
           switch (article.status) {
@@ -142,10 +190,13 @@ export function useUpdateArticle() {
         loading: t("schedule.updating", "article") || "Updating article...",
         success: (article) => {
           // Update the article in cache
-          queryClient.setQueryData(["article", article.id], article);
+          queryClient.setQueryData(
+            queryKeys.articles.detail(article.id),
+            article,
+          );
 
           // Invalidate articles list to refetch
-          queryClient.invalidateQueries({ queryKey: ["articles"] });
+          queryClient.invalidateQueries({ queryKey: queryKeys.articles.all() });
 
           return (
             t("status.published", "article") +
@@ -186,10 +237,12 @@ export function useDeleteArticle() {
         loading: t("schedule.deleting", "article") || "Deleting article...",
         success: () => {
           // Remove article from cache
-          queryClient.removeQueries({ queryKey: ["article", id] });
+          queryClient.removeQueries({
+            queryKey: queryKeys.articles.detail(id),
+          });
 
           // Invalidate articles list
-          queryClient.invalidateQueries({ queryKey: ["articles"] });
+          queryClient.invalidateQueries({ queryKey: queryKeys.articles.all() });
 
           return (
             t("status.archived", "article") +
@@ -210,7 +263,7 @@ export function useDeleteArticle() {
 
 /**
  * Hook for managing article form state
- * Provides form state management for creating/editing articles
+ * Simplified version using reusable form hooks
  */
 export function useArticleFormState() {
   const [coverImage, setCoverImage] = useState<File | null>(null);
@@ -221,24 +274,16 @@ export function useArticleFormState() {
     ARTICLE_CONSTANTS.VISIBILITY.PUBLIC,
   );
   const [scheduledPublish, setScheduledPublish] = useState<Date | null>(null);
-  const [showValidationErrors, setShowValidationErrors] = useState(false);
 
   // Calculate word count and read time
   const wordCount = content
     ? content.split(/\s+/).filter((word) => word.length > 0).length
     : 0;
-  const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200)); // 200 words per minute
+  const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
 
   const validateForm = () => {
-    if (!title.trim()) {
-      setShowValidationErrors(true);
-      return false;
-    }
-    if (!content.trim()) {
-      setShowValidationErrors(true);
-      return false;
-    }
-    setShowValidationErrors(false);
+    if (!title.trim()) return false;
+    if (!content.trim() || content.trim() === "<p></p>") return false;
     return true;
   };
 
@@ -249,7 +294,6 @@ export function useArticleFormState() {
     setTags([]);
     setVisibility(ARTICLE_CONSTANTS.VISIBILITY.PUBLIC);
     setScheduledPublish(null);
-    setShowValidationErrors(false);
   };
 
   return {
@@ -267,7 +311,6 @@ export function useArticleFormState() {
     setScheduledPublish,
     validateForm,
     resetForm,
-    showValidationErrors,
     wordCount,
     readTimeMinutes,
   };

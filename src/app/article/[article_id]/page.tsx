@@ -2,7 +2,7 @@
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button } from "@/components/ui";
-import { useArticle } from "@/hooks/article/useArticleQuery";
+import { useArticle } from "@/hooks/article";
 import { FileText, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";

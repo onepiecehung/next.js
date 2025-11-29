@@ -9,6 +9,7 @@ export * from "./media.constants";
 export * from "./notification.constants";
 export * from "./qr.constants";
 export * from "./report.constants";
+export * from "./series.constants";
 export * from "./share.constants";
 export * from "./sticker.constants";
 export * from "./user.constants";

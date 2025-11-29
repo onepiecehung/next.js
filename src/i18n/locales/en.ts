@@ -3,6 +3,7 @@ import auth from "./en/auth.json";
 import common from "./en/common.json";
 import demo from "./en/demo.json";
 import home from "./en/home.json";
+import series from "./en/series.json";
 import profile from "./en/profile.json";
 import toast from "./en/toast.json";
 import user from "./en/user.json";
@@ -18,6 +19,7 @@ const enMessages = {
   article,
   write,
   demo,
+  series,
 };
 
 export default enMessages;
