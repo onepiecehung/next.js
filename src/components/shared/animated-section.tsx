@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, type HTMLMotionProps, type Variants } from "framer-motion";
 import { sectionVariants } from "@/lib/utils/animations";
 
@@ -37,6 +38,7 @@ interface AnimatedSectionProps extends HTMLMotionProps<"section"> {
  * AnimatedSection Component
  * Wrapper for page sections with automatic animation based on loading state
  * Prevents animation conflicts with Skeletonize component
+ * Animation triggers after skeleton disappears
  *
  * @example
  * ```tsx
@@ -56,13 +58,29 @@ export function AnimatedSection({
   ...props
 }: AnimatedSectionProps) {
   const shouldShow = !loading && (data !== undefined ? !!data : true);
-  const animateState = shouldShow ? "visible" : "hidden";
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+
+  // Delay animation until skeleton is completely gone
+  useEffect(() => {
+    if (shouldShow && !loading) {
+      // Small delay to ensure skeleton has been removed from DOM
+      const timer = setTimeout(() => {
+        setShouldAnimate(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    } else {
+      setShouldAnimate(false);
+    }
+  }, [shouldShow, loading]);
+
+  const animateState = shouldAnimate ? "visible" : "hidden";
 
   if (scrollTriggered) {
     return (
       <motion.section
+        key={shouldAnimate ? "visible" : "hidden"}
         initial="hidden"
-        whileInView={shouldShow ? "visible" : "hidden"}
+        whileInView={shouldAnimate ? "visible" : "hidden"}
         viewport={viewport}
         variants={variants}
         className={className}
@@ -75,6 +93,7 @@ export function AnimatedSection({
 
   return (
     <motion.section
+      key={shouldAnimate ? "visible" : "hidden"}
       initial="hidden"
       animate={animateState}
       variants={variants}

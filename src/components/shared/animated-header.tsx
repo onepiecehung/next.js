@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, type HTMLMotionProps, type Variants } from "framer-motion";
 import { headerVariants, shouldAnimate } from "@/lib/utils/animations";
 
@@ -37,6 +38,7 @@ interface AnimatedHeaderProps extends HTMLMotionProps<"div"> {
  * AnimatedHeader Component
  * Wrapper for section headers with fade + slide down animation
  * Prevents animation conflicts with Skeletonize component
+ * Animation triggers after skeleton disappears
  *
  * @example
  * ```tsx
@@ -56,13 +58,29 @@ export function AnimatedHeader({
   ...props
 }: AnimatedHeaderProps) {
   const shouldShow = shouldAnimate(loading, data);
-  const animateState = shouldShow ? "visible" : "hidden";
+  const [shouldAnimateState, setShouldAnimateState] = useState(false);
+
+  // Delay animation until skeleton is completely gone
+  useEffect(() => {
+    if (shouldShow && !loading) {
+      // Small delay to ensure skeleton has been removed from DOM
+      const timer = setTimeout(() => {
+        setShouldAnimateState(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    } else {
+      setShouldAnimateState(false);
+    }
+  }, [shouldShow, loading]);
+
+  const animateState = shouldAnimateState ? "visible" : "hidden";
 
   if (scrollTriggered) {
     return (
       <motion.div
+        key={shouldAnimateState ? "visible" : "hidden"}
         initial="hidden"
-        whileInView={shouldShow ? "visible" : "hidden"}
+        whileInView={shouldAnimateState ? "visible" : "hidden"}
         viewport={viewport}
         variants={variants}
         className={className}
@@ -75,6 +93,7 @@ export function AnimatedHeader({
 
   return (
     <motion.div
+      key={shouldAnimateState ? "visible" : "hidden"}
       initial="hidden"
       animate={animateState}
       variants={variants}

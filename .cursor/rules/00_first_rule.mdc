@@ -6,53 +6,36 @@ Always build mobile-first, responsive layouts in Next.js using TailwindCSS with 
 
 ## Breakpoints
 
-Use ONLY these breakpoints:
+Use Tailwind CSS default breakpoints (mobile-first):
 
-- `xs`: 320px (extra small phones)
-- `sm`: 375px (small phones)
-- `md`: 425px (medium phones)
-- `lg`: 768px (tablets)
-- `xl`: 1024px (small laptops)
-- `2xl`: 1280px (desktops)
-- `3xl`: 1536px (large screens)
+- `sm`: ≥ 640px (small tablets, large phones)
+- `md`: ≥ 768px (tablets)
+- `lg`: ≥ 1024px (small laptops, desktops)
+- `xl`: ≥ 1280px (large desktops)
+- `2xl`: ≥ 1536px (extra large screens)
 
-In `tailwind.config.js`, the screens MUST be:
-
-```js
-theme: {
-  screens: {
-    xs: "320px",
-    sm: "375px",
-    md: "425px",
-    lg: "768px",
-    xl: "1024px",
-    "2xl": "1280px",
-    "3xl": "1536px",
-  },
-}
-````
-
-Cursor must assume this config is present and use these exact keys.
+**Note:** Project may also use `xs` and `3xl` breakpoints in some components, but standard Tailwind breakpoints (sm, md, lg, xl, 2xl) are preferred.
 
 ## General Rules
 
 1. **Mobile-first only**
 
-   * Base styles = mobile (320–425px).
-   * Add styles progressively with `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`.
+   * Base styles = mobile (< 640px).
+   * Add styles progressively with `sm`, `md`, `lg`, `xl`, `2xl`.
 
 2. **Use min-width media queries (Tailwind prefixes)**
 
    * DO NOT use `@media (max-width: ...)`.
-   * Use Tailwind’s min-width prefixes: `xs:`, `sm:`, `md:`, `lg:`, `xl:`, `2xl:`, `3xl:`.
+   * Use Tailwind's min-width prefixes: `sm:`, `md:`, `lg:`, `xl:`, `2xl:`.
 
 3. **Default behavior per breakpoint**
 
-   * `base/xs/sm/md` (320–425): single-column layouts, full-width elements, small typography and spacing.
-   * `lg` (768): start using 2-column layouts (e.g. main + sidebar), increase spacing.
-   * `xl` (1024): desktop layout, clearer hierarchy, larger typography.
-   * `2xl` (1280): wider desktop, use `max-w` and center content, more white space.
-   * `3xl` (1536): content still centered, do NOT stretch everything full width.
+   * `base` (< 640px): single-column layouts, full-width elements, small typography and spacing.
+   * `sm` (≥ 640px): small tablets, slightly larger spacing.
+   * `md` (≥ 768px): tablets, start using 2-column layouts, increase spacing.
+   * `lg` (≥ 1024px): desktop layout, clearer hierarchy, larger typography.
+   * `xl` (≥ 1280px): large desktop, use `max-w` and center content, more white space.
+   * `2xl` (≥ 1536px): extra large screens, content still centered, do NOT stretch everything full width.
 
 4. **Layout patterns Cursor should prefer**
 
@@ -102,8 +85,8 @@ Cursor must assume this config is present and use these exact keys.
 * Always:
 
   * Start from mobile layout (no breakpoint prefix).
-  * Add at least a `lg:` breakpoint for tablets.
-  * Add at least an `xl:` breakpoint for desktop if the component is layout-related.
+  * Add at least a `md:` breakpoint for tablets.
+  * Add at least an `lg:` breakpoint for desktop if the component is layout-related.
 * Prefer using Tailwind utility classes over custom CSS for responsiveness.
 * Avoid hard-coded pixel widths in components when Tailwind responsive utilities are enough.
 * Keep these breakpoints consistent across the whole codebase.

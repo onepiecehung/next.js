@@ -14,12 +14,7 @@ import {
   type FeaturedSeries,
 } from "@/components/features/series/series-hero-carousel";
 import { useI18n } from "@/components/providers/i18n-provider";
-import {
-  AnimatedGrid,
-  AnimatedHeader,
-  AnimatedSection,
-  Skeletonize,
-} from "@/components/shared";
+import { Skeletonize } from "@/components/shared";
 import { Button } from "@/components/ui/core/button";
 import {
   useFeaturedSeries,
@@ -67,18 +62,14 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Mobile Search Bar - Only visible on mobile */}
-      <AnimatedSection className="border-b border-border bg-background md:hidden">
+      <section className="border-b border-border bg-background md:hidden">
         <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-3">
           <SearchBar className="w-full" showKeyboardShortcut={false} />
         </div>
-      </AnimatedSection>
+      </section>
 
       {/* Popular New Titles Hero Carousel - Full width with navigation overlay */}
-      <AnimatedSection 
-        loading={isLoadingPopular}
-        data={popularSeries}
-        className="relative -mt-20 pt-20 pb-0 border-b border-border"
-      >
+      <section className="relative -mt-20 pt-20 pb-0 border-b border-border">
         <Skeletonize loading={isLoadingPopular}>
           {popularSeries && popularSeries.length > 0 ? (
             <SeriesHeroCarousel
@@ -97,7 +88,7 @@ export default function HomePage() {
             <div className="h-[20vh] min-h-[180px] sm:h-[25vh] sm:min-h-[220px] md:h-[30vh] md:min-h-[280px] lg:h-[40vh] lg:min-h-[400px] xl:h-[45vh] xl:max-h-[700px] w-full rounded" />
           )}
         </Skeletonize>
-      </AnimatedSection>
+      </section>
 
       {/* Banner Ad */}
       {/* <section className="border-b border-border py-4 md:py-6">
@@ -117,11 +108,7 @@ export default function HomePage() {
       </section> */}
 
       {/* Latest Updates */}
-      <AnimatedSection
-        loading={isLoadingUpdates}
-        data={latestUpdates}
-        className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8"
-      >
+      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
         <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
           <Skeletonize loading={isLoadingUpdates}>
             {latestUpdates && latestUpdates.length > 0 ? (
@@ -138,19 +125,15 @@ export default function HomePage() {
             )}
           </Skeletonize>
         </div>
-      </AnimatedSection>
+      </section>
 
       {/* Recommended */}
-      <AnimatedSection
-        loading={isLoadingRecommended}
-        data={recommended}
-        className="border-b border-border py-3 sm:py-4 md:py-5 lg:py-6 xl:py-8"
-      >
+      <section className="border-b border-border py-3 sm:py-4 md:py-5 lg:py-6 xl:py-8">
         <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6 xl:px-8">
           <Skeletonize loading={isLoadingRecommended}>
             {recommended && recommended.length > 0 ? (
               <RecommendedGrid
-                series={recommended}
+                series={recommended.slice(0, 6)}
                 titleI18nKey="recommended"
                 viewAllI18nKey="viewRecommendedList"
                 viewAllHref="/series/recommended"
@@ -167,19 +150,15 @@ export default function HomePage() {
             )}
           </Skeletonize>
         </div>
-      </AnimatedSection>
+      </section>
 
       {/* Self-Published */}
-      <AnimatedSection
-        loading={isLoadingSelfPublished}
-        data={selfPublished}
-        className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8"
-      >
+      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
         <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
           <Skeletonize loading={isLoadingSelfPublished}>
             {selfPublished && selfPublished.length > 0 ? (
               <RecommendedGrid
-                series={selfPublished}
+                series={selfPublished.slice(0, 6)}
                 titleI18nKey="selfPublished"
                 viewAllI18nKey="viewSelfPublishedList"
                 viewAllHref="/series/self-published"
@@ -196,168 +175,159 @@ export default function HomePage() {
             )}
           </Skeletonize>
         </div>
-      </AnimatedSection>
+      </section>
 
       {/* Featured */}
-      <AnimatedSection
-        loading={isLoadingFeatured}
-        data={featured}
-        className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8"
-      >
+      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
         <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
-          <AnimatedHeader loading={isLoadingFeatured} data={featured} className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
-                {t("featured", "series")}
-              </h2>
-              {/* Arrow icon - visible on mobile only, inline with heading */}
-              <Link 
-                href="/series/featured"
-                className="sm:hidden flex items-center justify-center"
-                aria-label={t("viewFeaturedList", "series")}
-              >
-                <ChevronRight className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
-              </Link>
-            </div>
-            {/* Button with text - visible on desktop only */}
-            <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
-              <Link href="/series/featured" className="flex items-center gap-1.5 sm:gap-2">
-                <span>{t("viewFeaturedList", "series")}</span>
-                <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
-              </Link>
-            </Button>
-          </AnimatedHeader>
           <Skeletonize loading={isLoadingFeatured}>
             {featured && featured.length > 0 ? (
-              <AnimatedGrid
-                loading={isLoadingFeatured}
-                data={featured}
-                className="grid gap-2 sm:gap-3 md:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
-              >
-                {featured.slice(0, 6).map((series) => (
-                  <SeriesCard
-                    key={series.id}
-                    series={series}
-                    variant="featured"
-                  />
-                ))}
-              </AnimatedGrid>
+              <>
+                <div className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
+                      {t("featured", "series")}
+                    </h2>
+                    {/* Arrow icon - visible on mobile only, inline with heading */}
+                    <Link 
+                      href="/series/featured"
+                      className="sm:hidden flex items-center justify-center"
+                      aria-label={t("viewFeaturedList", "series")}
+                    >
+                      <ChevronRight className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
+                    </Link>
+                  </div>
+                  {/* Button with text - visible on desktop only */}
+                  <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
+                    <Link href="/series/featured" className="flex items-center gap-1.5 sm:gap-2">
+                      <span>{t("viewFeaturedList", "series")}</span>
+                      <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    </Link>
+                  </Button>
+                </div>
+                <div className="grid gap-2 sm:gap-3 md:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+                  {featured.slice(0, 6).map((series) => (
+                    <SeriesCard
+                      key={series.id}
+                      series={series}
+                      variant="featured"
+                    />
+                  ))}
+                </div>
+              </>
             ) : (
-              <div className="grid gap-2 sm:gap-3 md:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div key={i} className="aspect-[2/3] rounded" />
-                ))}
+              <div className="space-y-4">
+                <div className="h-8 w-48 rounded" />
+                <div className="grid gap-2 sm:gap-3 md:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <div key={i} className="aspect-[2/3] rounded" />
+                  ))}
+                </div>
               </div>
             )}
           </Skeletonize>
         </div>
-      </AnimatedSection>
+      </section>
 
       {/* Seasonal: Fall 2025 */}
-      <AnimatedSection
-        loading={isLoadingSeasonal}
-        data={seasonal}
-        className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8"
-      >
+      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
         <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
-          <AnimatedHeader loading={isLoadingSeasonal} data={seasonal} className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
-                {t("seasonalFall2025", "series")}
-              </h2>
-              {/* Arrow icon - visible on mobile only, inline with heading */}
-              <Link 
-                href="/series/seasonal"
-                className="sm:hidden flex items-center justify-center"
-                aria-label={t("openListSeasonal", "series")}
-              >
-                <ChevronRight className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
-              </Link>
-            </div>
-            {/* Button with text - visible on desktop only */}
-            <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
-              <Link href="/series/seasonal" className="flex items-center gap-1.5 sm:gap-2">
-                <span>{t("openListSeasonal", "series")}</span>
-                <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
-              </Link>
-            </Button>
-          </AnimatedHeader>
           <Skeletonize loading={isLoadingSeasonal}>
             {seasonal && seasonal.length > 0 ? (
-              <AnimatedGrid
-                loading={isLoadingSeasonal}
-                data={seasonal}
-                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4"
-              >
-                {seasonal.map((series) => (
-                  <SeriesCard
-                    key={series.id}
-                    series={series}
-                    variant="compact"
-                  />
-                ))}
-              </AnimatedGrid>
+              <>
+                <div className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
+                      {t("seasonalFall2025", "series")}
+                    </h2>
+                    {/* Arrow icon - visible on mobile only, inline with heading */}
+                    <Link 
+                      href="/series/seasonal"
+                      className="sm:hidden flex items-center justify-center"
+                      aria-label={t("openListSeasonal", "series")}
+                    >
+                      <ChevronRight className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
+                    </Link>
+                  </div>
+                  {/* Button with text - visible on desktop only */}
+                  <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
+                    <Link href="/series/seasonal" className="flex items-center gap-1.5 sm:gap-2">
+                      <span>{t("openListSeasonal", "series")}</span>
+                      <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    </Link>
+                  </Button>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
+                  {seasonal.map((series) => (
+                    <SeriesCard
+                      key={series.id}
+                      series={series}
+                      variant="compact"
+                    />
+                  ))}
+                </div>
+              </>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-                  <div key={i} className="aspect-[2/3] rounded" />
-                ))}
+              <div className="space-y-4">
+                <div className="h-8 w-48 rounded" />
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+                    <div key={i} className="aspect-[2/3] rounded" />
+                  ))}
+                </div>
               </div>
             )}
           </Skeletonize>
         </div>
-      </AnimatedSection>
+      </section>
 
       {/* Recently Added */}
-      <AnimatedSection
-        loading={isLoadingRecentlyAdded}
-        data={recentlyAdded}
-        className="border-b border-border py-3 sm:py-4 md:py-5 lg:py-6 xl:py-8"
-      >
-        <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6 xl:px-8 2xl:max-w-[1280px] 2xl:mx-auto 3xl:max-w-[1536px]">
-          <AnimatedHeader loading={isLoadingRecentlyAdded} data={recentlyAdded} className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground">
-                {t("recentlyAdded", "series")}
-              </h2>
-              {/* Arrow icon - visible on mobile only, inline with heading */}
-              <Link 
-                href="/series/recently-added"
-                className="sm:hidden flex items-center justify-center"
-                aria-label={t("viewRecentlyAdded", "series")}
-              >
-                <ChevronRight className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
-              </Link>
-            </div>
-            {/* Button with text - visible on desktop only */}
-            <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
-              <Link href="/series/recently-added" className="flex items-center gap-1.5 sm:gap-2">
-                <span>{t("viewRecentlyAdded", "series")}</span>
-                <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
-              </Link>
-            </Button>
-          </AnimatedHeader>
+      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
+        <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
           <Skeletonize loading={isLoadingRecentlyAdded}>
             {recentlyAdded && recentlyAdded.length > 0 ? (
-              <AnimatedGrid
-                loading={isLoadingRecentlyAdded}
-                data={recentlyAdded}
-                className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3"
-              >
-                {recentlyAdded.slice(0, 10).map((series) => (
-                  <SeriesCard key={series.id} series={series} variant="tiny" />
-                ))}
-              </AnimatedGrid>
+              <>
+                <div className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
+                      {t("recentlyAdded", "series")}
+                    </h2>
+                    {/* Arrow icon - visible on mobile only, inline with heading */}
+                    <Link 
+                      href="/series/recently-added"
+                      className="sm:hidden flex items-center justify-center"
+                      aria-label={t("viewRecentlyAdded", "series")}
+                    >
+                      <ChevronRight className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
+                    </Link>
+                  </div>
+                  {/* Button with text - visible on desktop only */}
+                  <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
+                    <Link href="/series/recently-added" className="flex items-center gap-1.5 sm:gap-2">
+                      <span>{t("viewRecentlyAdded", "series")}</span>
+                      <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    </Link>
+                  </Button>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3">
+                  {recentlyAdded.slice(0, 12).map((series) => (
+                    <SeriesCard key={series.id} series={series} variant="tiny" />
+                  ))}
+                </div>
+              </>
             ) : (
-              <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-                  <div key={i} className="aspect-[2/3] rounded" />
-                ))}
+              <div className="space-y-4">
+                <div className="h-8 w-48 rounded" />
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3">
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
+                    <div key={i} className="aspect-[2/3] rounded" />
+                  ))}
+                </div>
               </div>
             )}
           </Skeletonize>
         </div>
-      </AnimatedSection>
+      </section>
     </div>
   );
 }

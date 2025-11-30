@@ -74,9 +74,9 @@ export function RecommendedGrid({
             ? // Compact variant: vertical cards - more columns
               // 320px: 2 cols, 375px: 2 cols, 425px: 2 cols, 768px: 3 cols, 1024px: 4 cols, 1280px: 5 cols, 1536px: 6 cols
               "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
-            : // Default variant: horizontal cards - 2 cols on mobile for better space utilization
-              // 320px: 2 cols, 375px: 2 cols, 425px: 2 cols, 768px: 2 cols, 1024px: 2 cols, 1280px: 2 cols, 1536px: 3 cols
-              "grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3",
+            : // Default variant: horizontal cards - 2 cols on mobile, 3 cols on tablet, 6 cols on large screens
+              // 320px: 2 cols, 375px: 2 cols, 425px: 2 cols, 768px: 2 cols, 1024px: 3 cols, 1280px: 6 cols, 1536px: 6 cols
+              "grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 2xl:grid-cols-6",
         )}
       >
         {series.map((series) => (

@@ -27,7 +27,7 @@ src/
 │   │   ├── reactions/ (like/reaction)
 │   │   └── text-editor/ (TipTap editor)
 │   ├── providers/ (context providers)
-│   └── shared/ (skeletons, utilities)
+│   └── shared/ (skeletons, utilities, animations)
 ├── hooks/ (custom React hooks)
 │   ├── auth/ (auth hooks)
 │   ├── article/ (article hooks)
@@ -55,7 +55,7 @@ src/
 > - ✅ Network via `src/lib/http/client.ts`
 
 ## Core Stack
-Next.js 15+, React 19, TypeScript 5, TailwindCSS 4, shadcn/ui, Jotai, Zod, RHF, next-intl, Jest, ESLint, Prettier, TipTap, Firebase Auth, Axios, Sonner, Mermaid, TanStack Query.
+Next.js 15+, React 19, TypeScript 5, TailwindCSS 4, shadcn/ui, Jotai, Zod, RHF, next-intl, Jest, ESLint, Prettier, TipTap, Firebase Auth, Axios, Sonner, Mermaid, TanStack Query, framer-motion.
 
 ## Yarn scripts
 ```bash

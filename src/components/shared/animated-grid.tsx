@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion, type HTMLMotionProps, type Variants } from "framer-motion";
 import {
   containerVariants,
@@ -52,6 +52,7 @@ interface AnimatedGridProps extends HTMLMotionProps<"div"> {
  * Wrapper for grid layouts with stagger animations
  * Automatically wraps children with motion.div and applies item variants
  * Prevents animation conflicts with Skeletonize component
+ * Animation triggers after skeleton disappears
  *
  * @example
  * ```tsx
@@ -74,7 +75,22 @@ export function AnimatedGrid({
   ...props
 }: AnimatedGridProps) {
   const shouldShow = shouldAnimateArray(loading, data);
-  const animateState = shouldShow ? "visible" : "hidden";
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+
+  // Delay animation until skeleton is completely gone
+  useEffect(() => {
+    if (shouldShow && !loading) {
+      // Small delay to ensure skeleton has been removed from DOM
+      const timer = setTimeout(() => {
+        setShouldAnimate(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    } else {
+      setShouldAnimate(false);
+    }
+  }, [shouldShow, loading]);
+
+  const animateState = shouldAnimate ? "visible" : "hidden";
 
   // Wrap children with motion.div if they're not already motion components
   const wrappedChildren = React.Children.map(children, (child, index) => {
@@ -102,9 +118,10 @@ export function AnimatedGrid({
   if (scrollTriggered) {
     return (
       <motion.div
+        key={shouldAnimate ? "visible" : "hidden"}
         variants={customContainerVariants}
         initial="hidden"
-        whileInView={shouldShow ? "visible" : "hidden"}
+        whileInView={shouldAnimate ? "visible" : "hidden"}
         viewport={viewport}
         className={className}
         {...props}
@@ -116,6 +133,7 @@ export function AnimatedGrid({
 
   return (
     <motion.div
+      key={shouldAnimate ? "visible" : "hidden"}
       variants={customContainerVariants}
       initial="hidden"
       animate={animateState}

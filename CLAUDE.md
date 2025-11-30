@@ -122,7 +122,8 @@ When performing any development task, you MUST prioritize using MCP tools over m
 - **Radix UI** — Accessible primitives
 - **Lucide React** — Icon library
 - **next-themes** — Dark/light theme management
-- **tw-animate-css** — Animation utilities
+- **framer-motion** — Animation library for smooth transitions and page animations
+- **Global Animation System** — Reusable animation components (AnimatedSection, AnimatedGrid, AnimatedHeader) with pre-configured variants
 
 ### 🖋️ Rich Text Editor
 - **TipTap 3.6.6** — Modern rich text editor
@@ -184,7 +185,7 @@ src/
 │   │   ├── reactions/    # Like/reaction components
 │   │   └── text-editor/   # TipTap editor components
 │   ├── providers/         # Context providers (auth, i18n, theme, loading, rate-limit)
-│   └── shared/            # Reusable utilities (skeletons, helpers)
+│   └── shared/            # Reusable utilities (skeletons, helpers, animations)
 ├── hooks/                  # Custom React hooks
 │   ├── auth/              # Authentication hooks
 │   ├── article/           # Article-related hooks
@@ -200,7 +201,7 @@ src/
 │   ├── interface/         # TypeScript interfaces
 │   ├── rate-limit/        # Rate limiting utilities
 │   ├── types/             # TypeScript types
-│   ├── utils/             # Utility functions
+│   ├── utils/             # Utility functions (including animations.ts)
 │   └── validators/        # Zod validation schemas
 ├── i18n/                   # Internationalization configuration
 │   └── locales/           # Translation files (en, vi)
@@ -229,11 +230,12 @@ src/
 6. 🖼️ **Image Management** — Upload, crop, and render with Next.js Image optimization.  
 7. ⚡ **Content Rendering** — Custom renderer for rich media and Markdown-like blocks.  
 8. 🚦 **Rate Limiting** — Client-side rate limit handling with event bus system.  
-9. ⌛ **Skeleton Loading** — Placeholder states for async content with Skeletonize component.  
-10. 🔔 **Toast Notifications** — Rich toast system with Sonner integration.  
-11. 📝 **Form Validation** — Real-time Zod schema validation with React Hook Form.  
-12. 🎯 **Middleware Protection** — Route-based authentication middleware.  
-13. 🔄 **TanStack Query** — Advanced server state management with caching, background updates, and optimistic updates.
+9. ⌛ **Skeleton Loading** — Placeholder states for async content with Skeletonize component and CSS shimmer animations.  
+10. 🎬 **Animation System** — Global animation system with framer-motion (AnimatedSection, AnimatedGrid, AnimatedHeader) for consistent page transitions.  
+11. 🔔 **Toast Notifications** — Rich toast system with Sonner integration.  
+12. 📝 **Form Validation** — Real-time Zod schema validation with React Hook Form.  
+13. 🎯 **Middleware Protection** — Route-based authentication middleware.  
+14. 🔄 **TanStack Query** — Advanced server state management with caching, background updates, and optimistic updates.
 
 ---
 
@@ -244,7 +246,8 @@ src/
 | 🌗 Dark/Light Mode | Theme toggle with `next-themes` + multiple color variants |
 | 📱 Responsive Design | Mobile-first + adaptive layouts with TailwindCSS |
 | ♿ Accessibility | WCAG 2.1 compliance via Radix primitives |
-| ⏳ Skeleton Loading | Smooth loading transitions with Skeletonize component |
+| ⏳ Skeleton Loading | Smooth loading transitions with Skeletonize component and CSS shimmer animations |
+| 🎬 Page Animations | Global animation system with framer-motion (AnimatedSection/Grid/Header) |
 | 🔔 Toast Notifications | Rich toast system with Sonner (success, error, info) |
 | ✅ Form Validation | Real-time Zod schema validation with error messages |
 | 🖼️ Image Optimization | Next.js `Image` with crop functionality |
@@ -266,6 +269,8 @@ src/
 - **HTTP Interceptors** — Automatic token refresh and error handling  
 - **Rate Limit Handling** — Client-side rate limit with event bus  
 - **TanStack Query** — Advanced server state management with caching and background updates
+- **Animation System** — Global animation components with framer-motion for consistent page transitions
+- **Skeleton Loading** — CSS-based shimmer animations with Skeletonize component
 - **Custom Hooks** — Reusable logic for auth, content, media, reactions  
 - **Theme Testing** — Multiple theme testing pages for development  
 
@@ -284,6 +289,8 @@ src/
 - **Type safety** — Use Zod for validation, TypeScript interfaces for data structures.  
 - **State management** — Use Jotai atoms for reactive state, avoid prop drilling.  
 - **Error handling** — Implement proper error boundaries and user feedback.
+- **Animations** — Use global animation components (AnimatedSection, AnimatedGrid, AnimatedHeader) from `@/components/shared` instead of custom animation code.
+- **Skeleton loading** — Always provide placeholder divs with dimension classes (`h-*`, `w-*`, `aspect-*`) when using Skeletonize.
 
 ---
 
@@ -307,6 +314,9 @@ src/
 | Custom hooks for reusable logic | ✅ |
 | TypeScript interfaces defined | ✅ |
 | Loading states implemented | ✅ |
+| Animation components used (AnimatedSection/Grid/Header) | ✅ |
+| Skeletonize with placeholder divs | ✅ |
+| No animation conflicts with skeleton | ✅ |
 
 ---
 

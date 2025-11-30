@@ -224,7 +224,7 @@ export function useRecentlyAddedSeries(enabled?: boolean) {
     queryFn: async () => {
       const response = await SeriesAPI.getSeriesOffset({
         page: 1,
-        limit: 10,
+        limit: 12,
         sortBy: "createdAt",
         order: "DESC",
         type: SERIES_CONSTANTS.TYPE.MANGA,
