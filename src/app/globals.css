@@ -244,6 +244,25 @@
   min-height: 1rem;
 }
 
+/* Dark mode text elements */
+.dark .skeletonize p,
+.dark .skeletonize h1,
+.dark .skeletonize h2,
+.dark .skeletonize h3,
+.dark .skeletonize h4,
+.dark .skeletonize h5,
+.dark .skeletonize h6,
+.dark .skeletonize li,
+.dark .skeletonize dt,
+.dark .skeletonize dd,
+.dark .skeletonize span,
+.dark .skeletonize div:empty,
+.dark .skeletonize section:empty,
+.dark .skeletonize article:empty {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background-size: 400px 100%;
+}
+
 /* Specific text element heights */
 .skeletonize h1 {
   height: 2rem;
@@ -388,6 +407,27 @@
   background-size: 400px 100%;
   animation: skeleton-shimmer 1.4s ease-in-out infinite;
   border-radius: 0.375rem;
+}
+
+/* Non-empty divs with specific dimensions - for skeleton placeholders */
+.skeletonize div[class*="aspect-"],
+.skeletonize div[class*="h-"],
+.skeletonize div[class*="w-"] {
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 400px 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  border-radius: 0.375rem;
+}
+
+/* Dark mode skeleton colors */
+.dark .skeletonize div:empty,
+.dark .skeletonize section:empty,
+.dark .skeletonize article:empty,
+.dark .skeletonize div[class*="aspect-"],
+.dark .skeletonize div[class*="h-"],
+.dark .skeletonize div[class*="w-"] {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background-size: 400px 100%;
 }
 
 /* Navigation and header elements */

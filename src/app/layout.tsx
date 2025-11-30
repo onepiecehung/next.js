@@ -1,4 +1,4 @@
-import { SiteNav } from "@/components/features/navigation";
+import { SiteNav, SiteFooter } from "@/components/features/navigation";
 import AuthProvider from "@/components/providers/auth-provider";
 import { I18nProvider } from "@/components/providers/i18n-provider";
 import { LoadingProvider } from "@/components/providers/loading-provider";
@@ -46,6 +46,7 @@ export default function RootLayout({
                     <RateLimitProvider>
                       <SiteNav />
                       {children}
+                      <SiteFooter />
                     </RateLimitProvider>
                   </LoadingProvider>
                 </AuthProvider>

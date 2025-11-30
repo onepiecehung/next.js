@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
 
 import { LoginDialog } from "@/components/features/auth";
 import { SearchBar } from "@/components/features/series";
@@ -116,18 +117,35 @@ export default function SiteNav() {
         </div>
       </header>
 
-      {/* Mobile Sidebar - Full Screen */}
+      {/* Mobile Sidebar - Full Screen with Smooth Animation */}
       <Dialog open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
         <DialogContent
-          className="!fixed !inset-0 !h-screen !w-screen !max-w-none !translate-x-0 !translate-y-0 !rounded-none !border-0 !p-0 data-[state=closed]:!slide-out-to-right data-[state=open]:!slide-in-from-right md:!hidden"
+          className="!fixed !inset-0 !h-screen !w-screen !max-w-none !translate-x-0 !translate-y-0 !rounded-none !border-0 !p-0 md:!hidden"
           showCloseButton={false}
         >
           <VisuallyHidden>
             <DialogTitle>{t("appName", "common")} - Menu</DialogTitle>
           </VisuallyHidden>
-          <div className="flex h-full flex-col bg-background">
+          
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{
+              type: "spring",
+              damping: 25,
+              stiffness: 200,
+              mass: 0.5,
+            }}
+            className="flex h-full w-full flex-col bg-background"
+          >
             {/* Header with close button */}
-            <div className="flex items-center justify-between border-b border-border bg-background p-4">
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.2 }}
+              className="flex items-center justify-between border-b border-border bg-background p-4"
+            >
               <h2 className="text-lg font-semibold text-foreground">
                 {t("appName", "common")}
               </h2>
@@ -140,52 +158,162 @@ export default function SiteNav() {
               >
                 <X className="h-6 w-6" />
               </Button>
-            </div>
+            </motion.div>
 
-            {/* Content area */}
-            <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4">
-            {/* Language Switcher */}
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Language</span>
-              <LanguageSwitcher />
-            </div>
+            {/* Content area with stagger animation */}
+            <motion.div
+              initial="closed"
+              animate="open"
+              variants={{
+                open: {
+                  transition: {
+                    staggerChildren: 0.05,
+                    delayChildren: 0.15,
+                  },
+                },
+                closed: {
+                  transition: {
+                    staggerChildren: 0.03,
+                    staggerDirection: -1,
+                  },
+                },
+              }}
+              className="flex flex-1 flex-col gap-4 sm:gap-5 overflow-y-auto p-4 sm:p-5"
+            >
+              {/* Language Switcher */}
+              <motion.div
+                variants={{
+                  open: {
+                    opacity: 1,
+                    x: 0,
+                    transition: {
+                      type: "spring",
+                      damping: 20,
+                      stiffness: 300,
+                    },
+                  },
+                  closed: {
+                    opacity: 0,
+                    x: 20,
+                    transition: {
+                      duration: 0.2,
+                    },
+                  },
+                }}
+                className="flex flex-col gap-2 sm:gap-3"
+              >
+                <label className="text-sm font-medium text-foreground">
+                  {t("nav.language", "common")}
+                </label>
+                <div className="w-full">
+                  <LanguageSwitcher 
+                    variant="full" 
+                    size="default" 
+                    className="w-full justify-start"
+                  />
+                </div>
+              </motion.div>
 
-            {/* Theme Selector */}
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Theme</span>
-              <ThemeSelector variant="compact" />
-            </div>
+              {/* Theme Selector */}
+              <motion.div
+                variants={{
+                  open: {
+                    opacity: 1,
+                    x: 0,
+                    transition: {
+                      type: "spring",
+                      damping: 20,
+                      stiffness: 300,
+                    },
+                  },
+                  closed: {
+                    opacity: 0,
+                    x: 20,
+                    transition: {
+                      duration: 0.2,
+                    },
+                  },
+                }}
+                className="flex flex-col gap-2 sm:gap-3"
+              >
+                <label className="text-sm font-medium text-foreground">
+                  {t("nav.theme", "common")}
+                </label>
+                <div className="w-full">
+                  <ThemeSelector 
+                    variant="full" 
+                    size="default" 
+                    className="w-full justify-start"
+                  />
+                </div>
+              </motion.div>
 
-            {/* Divider */}
-            <div className="border-t border-border" />
+              {/* Divider */}
+              <motion.div
+                variants={{
+                  open: {
+                    opacity: 1,
+                    scaleX: 1,
+                    transition: {
+                      delay: 0.2,
+                      duration: 0.3,
+                    },
+                  },
+                  closed: {
+                    opacity: 0,
+                    scaleX: 0,
+                    transition: {
+                      duration: 0.2,
+                    },
+                  },
+                }}
+                className="border-t border-border my-1 origin-left"
+              />
 
-            {/* Auth Section */}
-            <div className="flex flex-col gap-3">
-              {authLoading ? (
-                <div className="h-10 w-full animate-pulse bg-muted rounded" />
-              ) : user?.id ? (
-                <div className="flex flex-col gap-2">
-                  <div className="text-sm font-medium">Account</div>
+              {/* Auth Section */}
+              <motion.div
+                variants={{
+                  open: {
+                    opacity: 1,
+                    x: 0,
+                    transition: {
+                      type: "spring",
+                      damping: 20,
+                      stiffness: 300,
+                    },
+                  },
+                  closed: {
+                    opacity: 0,
+                    x: 20,
+                    transition: {
+                      duration: 0.2,
+                    },
+                  },
+                }}
+                className="flex flex-col gap-2 sm:gap-3"
+              >
+                <label className="text-sm font-medium text-foreground">
+                  {t("nav.account", "common")}
+                </label>
+                {authLoading ? (
+                  <div className="h-10 w-full animate-pulse bg-muted rounded" />
+                ) : user?.id ? (
                   <UserDropdown
                     user={user as User & { id: string }}
                     onLogout={handleLogout}
                     isLoggingOut={isLoggingOut}
                   />
-                </div>
-              ) : (
-                <div className="flex flex-col gap-2">
-                  <div className="text-sm font-medium">Account</div>
+                ) : (
                   <Button
                     className="w-full"
                     onClick={handleLoginClick}
                   >
-                    {t("login.title", "auth") || "Login"}
+                    {t("login.button", "auth") || "Login"}
                   </Button>
-                </div>
-              )}
-            </div>
-          </div>
-          </div>
+                )}
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </DialogContent>
       </Dialog>
     </>

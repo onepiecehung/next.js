@@ -233,10 +233,10 @@ export function SeriesCard({
           className={cn(
             "font-semibold text-foreground line-clamp-2",
             isTiny
-              ? "text-[9px] sm:text-[10px]"
+              ? "text-[11px] xs:text-xs sm:text-sm md:text-base lg:text-lg"
               : isCompact
-                ? "text-[11px] sm:text-xs"
-                : "text-xs sm:text-sm md:text-base",
+                ? "text-xs sm:text-sm md:text-base lg:text-lg"
+                : "text-sm sm:text-base md:text-lg lg:text-xl",
           )}
         >
           {series.title}

@@ -14,7 +14,12 @@ import {
   type FeaturedSeries,
 } from "@/components/features/series/series-hero-carousel";
 import { useI18n } from "@/components/providers/i18n-provider";
-import { Skeletonize } from "@/components/shared/skeletonize";
+import {
+  AnimatedGrid,
+  AnimatedHeader,
+  AnimatedSection,
+  Skeletonize,
+} from "@/components/shared";
 import { Button } from "@/components/ui/core/button";
 import {
   useFeaturedSeries,
@@ -36,40 +41,46 @@ export default function HomePage() {
 
   // Fetch all series data sequentially from top to bottom
   // Each section loads only after the previous one completes successfully
-  const { data: popularSeries, isLoading: isLoadingPopular, isSuccess: isPopularSuccess } =
+  // Use isFetched to ensure previous query has actually completed, not just succeeded
+  const { data: popularSeries, isLoading: isLoadingPopular, isFetched: isPopularFetched } =
     usePopularSeries(true); // First section - always enabled
   
-  const { data: latestUpdates, isLoading: isLoadingUpdates, isSuccess: isLatestUpdatesSuccess } =
-    useLatestUpdates(isPopularSuccess); // Enabled after popular series loads
+  // Only enable when previous query has been fetched (completed)
+  const { data: latestUpdates, isLoading: isLoadingUpdates, isFetched: isLatestUpdatesFetched } =
+    useLatestUpdates(isPopularFetched && !isLoadingPopular); // Enabled after popular series completes
   
-  const { data: recommended, isLoading: isLoadingRecommended, isSuccess: isRecommendedSuccess } =
-    useRecommendedSeries(isLatestUpdatesSuccess); // Enabled after latest updates loads
+  const { data: recommended, isLoading: isLoadingRecommended, isFetched: isRecommendedFetched } =
+    useRecommendedSeries(isLatestUpdatesFetched && !isLoadingUpdates); // Enabled after latest updates completes
   
-  const { data: selfPublished, isLoading: isLoadingSelfPublished, isSuccess: isSelfPublishedSuccess } =
-    useSelfPublishedSeries(isRecommendedSuccess); // Enabled after recommended loads
+  const { data: selfPublished, isLoading: isLoadingSelfPublished, isFetched: isSelfPublishedFetched } =
+    useSelfPublishedSeries(isRecommendedFetched && !isLoadingRecommended); // Enabled after recommended completes
   
-  const { data: featured, isLoading: isLoadingFeatured, isSuccess: isFeaturedSuccess } = 
-    useFeaturedSeries(isSelfPublishedSuccess); // Enabled after self-published loads
+  const { data: featured, isLoading: isLoadingFeatured, isFetched: isFeaturedFetched } = 
+    useFeaturedSeries(isSelfPublishedFetched && !isLoadingSelfPublished); // Enabled after self-published completes
   
-  const { data: seasonal, isLoading: isLoadingSeasonal, isSuccess: isSeasonalSuccess } = 
-    useSeasonalSeries(isFeaturedSuccess); // Enabled after featured loads
+  const { data: seasonal, isLoading: isLoadingSeasonal, isFetched: isSeasonalFetched } = 
+    useSeasonalSeries(isFeaturedFetched && !isLoadingFeatured); // Enabled after featured completes
   
   const { data: recentlyAdded, isLoading: isLoadingRecentlyAdded } =
-    useRecentlyAddedSeries(isSeasonalSuccess); // Enabled after seasonal loads
+    useRecentlyAddedSeries(isSeasonalFetched && !isLoadingSeasonal); // Enabled after seasonal completes
 
   return (
     <div className="min-h-screen bg-background">
       {/* Mobile Search Bar - Only visible on mobile */}
-      <section className="border-b border-border bg-background md:hidden">
+      <AnimatedSection className="border-b border-border bg-background md:hidden">
         <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-3">
           <SearchBar className="w-full" showKeyboardShortcut={false} />
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Popular New Titles Hero Carousel - Full width with navigation overlay */}
-      <section className="relative -mt-20 pt-20 pb-0 border-b border-border">
+      <AnimatedSection 
+        loading={isLoadingPopular}
+        data={popularSeries}
+        className="relative -mt-20 pt-20 pb-0 border-b border-border"
+      >
         <Skeletonize loading={isLoadingPopular}>
-          {popularSeries && popularSeries.length > 0 && (
+          {popularSeries && popularSeries.length > 0 ? (
             <SeriesHeroCarousel
               items={popularSeries.map(
                 (series: PopularSeries): FeaturedSeries => ({
@@ -82,9 +93,11 @@ export default function HomePage() {
               )}
               className="h-[20vh] min-h-[180px] sm:h-[25vh] sm:min-h-[220px] md:h-[30vh] md:min-h-[280px] lg:h-[40vh] lg:min-h-[400px] xl:h-[45vh] xl:max-h-[700px]"
             />
+          ) : (
+            <div className="h-[20vh] min-h-[180px] sm:h-[25vh] sm:min-h-[220px] md:h-[30vh] md:min-h-[280px] lg:h-[40vh] lg:min-h-[400px] xl:h-[45vh] xl:max-h-[700px] w-full rounded" />
           )}
         </Skeletonize>
-      </section>
+      </AnimatedSection>
 
       {/* Banner Ad */}
       {/* <section className="border-b border-border py-4 md:py-6">
@@ -104,52 +117,95 @@ export default function HomePage() {
       </section> */}
 
       {/* Latest Updates */}
-      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
+      <AnimatedSection
+        loading={isLoadingUpdates}
+        data={latestUpdates}
+        className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8"
+      >
         <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
           <Skeletonize loading={isLoadingUpdates}>
-            {latestUpdates && latestUpdates.length > 0 && (
+            {latestUpdates && latestUpdates.length > 0 ? (
               <LatestUpdatesList items={latestUpdates} />
+            ) : (
+              <div className="space-y-4">
+                <div className="h-8 w-48 rounded" />
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-32 rounded" />
+                  ))}
+                </div>
+              </div>
             )}
           </Skeletonize>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Recommended */}
-      <section className="border-b border-border py-3 sm:py-4 md:py-5 lg:py-6 xl:py-8">
+      <AnimatedSection
+        loading={isLoadingRecommended}
+        data={recommended}
+        className="border-b border-border py-3 sm:py-4 md:py-5 lg:py-6 xl:py-8"
+      >
         <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6 xl:px-8">
           <Skeletonize loading={isLoadingRecommended}>
-            {recommended && recommended.length > 0 && (
+            {recommended && recommended.length > 0 ? (
               <RecommendedGrid
                 series={recommended}
                 titleI18nKey="recommended"
                 viewAllI18nKey="viewRecommendedList"
                 viewAllHref="/series/recommended"
               />
+            ) : (
+              <div className="space-y-4">
+                <div className="h-8 w-48 rounded" />
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <div key={i} className="aspect-[2/3] rounded" />
+                  ))}
+                </div>
+              </div>
             )}
           </Skeletonize>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Self-Published */}
-      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
+      <AnimatedSection
+        loading={isLoadingSelfPublished}
+        data={selfPublished}
+        className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8"
+      >
         <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
           <Skeletonize loading={isLoadingSelfPublished}>
-            {selfPublished && selfPublished.length > 0 && (
+            {selfPublished && selfPublished.length > 0 ? (
               <RecommendedGrid
                 series={selfPublished}
                 titleI18nKey="selfPublished"
                 viewAllI18nKey="viewSelfPublishedList"
                 viewAllHref="/series/self-published"
               />
+            ) : (
+              <div className="space-y-4">
+                <div className="h-8 w-48 rounded" />
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <div key={i} className="aspect-[2/3] rounded" />
+                  ))}
+                </div>
+              </div>
             )}
           </Skeletonize>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Featured */}
-      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
+      <AnimatedSection
+        loading={isLoadingFeatured}
+        data={featured}
+        className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8"
+      >
         <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
-          <div className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
+          <AnimatedHeader loading={isLoadingFeatured} data={featured} className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
                 {t("featured", "series")}
@@ -170,10 +226,14 @@ export default function HomePage() {
                 <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
               </Link>
             </Button>
-          </div>
+          </AnimatedHeader>
           <Skeletonize loading={isLoadingFeatured}>
-            {featured && featured.length > 0 && (
-              <div className="grid gap-2 sm:gap-3 md:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+            {featured && featured.length > 0 ? (
+              <AnimatedGrid
+                loading={isLoadingFeatured}
+                data={featured}
+                className="grid gap-2 sm:gap-3 md:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+              >
                 {featured.slice(0, 6).map((series) => (
                   <SeriesCard
                     key={series.id}
@@ -181,16 +241,26 @@ export default function HomePage() {
                     variant="featured"
                   />
                 ))}
+              </AnimatedGrid>
+            ) : (
+              <div className="grid gap-2 sm:gap-3 md:gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="aspect-[2/3] rounded" />
+                ))}
               </div>
             )}
           </Skeletonize>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Seasonal: Fall 2025 */}
-      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
+      <AnimatedSection
+        loading={isLoadingSeasonal}
+        data={seasonal}
+        className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8"
+      >
         <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
-          <div className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
+          <AnimatedHeader loading={isLoadingSeasonal} data={seasonal} className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
                 {t("seasonalFall2025", "series")}
@@ -211,10 +281,14 @@ export default function HomePage() {
                 <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
               </Link>
             </Button>
-          </div>
+          </AnimatedHeader>
           <Skeletonize loading={isLoadingSeasonal}>
-            {seasonal && seasonal.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
+            {seasonal && seasonal.length > 0 ? (
+              <AnimatedGrid
+                loading={isLoadingSeasonal}
+                data={seasonal}
+                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4"
+              >
                 {seasonal.map((series) => (
                   <SeriesCard
                     key={series.id}
@@ -222,18 +296,28 @@ export default function HomePage() {
                     variant="compact"
                   />
                 ))}
+              </AnimatedGrid>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+                  <div key={i} className="aspect-[2/3] rounded" />
+                ))}
               </div>
             )}
           </Skeletonize>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Recently Added */}
-      <section className="border-b border-border py-4 sm:py-5 md:py-6 lg:py-8">
-        <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
-          <div className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
+      <AnimatedSection
+        loading={isLoadingRecentlyAdded}
+        data={recentlyAdded}
+        className="border-b border-border py-3 sm:py-4 md:py-5 lg:py-6 xl:py-8"
+      >
+        <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6 xl:px-8 2xl:max-w-[1280px] 2xl:mx-auto 3xl:max-w-[1536px]">
+          <AnimatedHeader loading={isLoadingRecentlyAdded} data={recentlyAdded} className="mb-3 sm:mb-4 flex flex-row items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
+              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground">
                 {t("recentlyAdded", "series")}
               </h2>
               {/* Arrow icon - visible on mobile only, inline with heading */}
@@ -252,126 +336,28 @@ export default function HomePage() {
                 <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
               </Link>
             </Button>
-          </div>
+          </AnimatedHeader>
           <Skeletonize loading={isLoadingRecentlyAdded}>
-            {recentlyAdded && recentlyAdded.length > 0 && (
-              <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-1.5 sm:gap-2 md:gap-2.5">
+            {recentlyAdded && recentlyAdded.length > 0 ? (
+              <AnimatedGrid
+                loading={isLoadingRecentlyAdded}
+                data={recentlyAdded}
+                className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3"
+              >
                 {recentlyAdded.slice(0, 10).map((series) => (
                   <SeriesCard key={series.id} series={series} variant="tiny" />
+                ))}
+              </AnimatedGrid>
+            ) : (
+              <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+                  <div key={i} className="aspect-[2/3] rounded" />
                 ))}
               </div>
             )}
           </Skeletonize>
         </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border bg-card py-6 sm:py-8 md:py-10 lg:py-12">
-        <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
-          <div className="grid gap-4 sm:gap-5 md:gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
-            {/* Social Links */}
-            <div>
-              <h3 className="mb-4 font-semibold text-foreground">
-                {t("community", "series")}
-              </h3>
-              <div className="flex flex-col gap-2">
-                <Link
-                  href="https://discord.gg/mangadex"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-primary"
-                >
-                  {t("discord", "series")}
-                </Link>
-                <Link
-                  href="https://twitter.com/mangadex"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-primary"
-                >
-                  {t("twitter", "series")}
-                </Link>
-                <Link
-                  href="https://reddit.com/r/mangadex"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-primary"
-                >
-                  {t("reddit", "series")}
-                </Link>
-                <Link
-                  href="/status"
-                  className="text-sm text-muted-foreground hover:text-primary"
-                >
-                  {t("systemStatus", "series")}
-                </Link>
-              </div>
-            </div>
-
-            {/* Policies */}
-            <div>
-              <h3 className="mb-4 font-semibold text-foreground">
-                {t("mangadex", "series")}
-              </h3>
-              <div className="flex flex-col gap-2">
-                <Link
-                  href="/guidelines"
-                  className="text-sm text-muted-foreground hover:text-primary"
-                >
-                  {t("communityGuidelines", "series")}
-                </Link>
-                <Link
-                  href="/announcements"
-                  className="text-sm text-muted-foreground hover:text-primary"
-                >
-                  {t("announcements", "series")}
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-sm text-muted-foreground hover:text-primary"
-                >
-                  {t("aboutUs", "series")}
-                </Link>
-                <Link
-                  href="/contact"
-                  className="text-sm text-muted-foreground hover:text-primary"
-                >
-                  {t("contact", "series")}
-                </Link>
-              </div>
-            </div>
-
-            {/* Legal */}
-            <div>
-              <h3 className="mb-4 font-semibold text-foreground">
-                {t("termsAndPolicies", "series")}
-              </h3>
-              <div className="flex flex-col gap-2">
-                <Link
-                  href="/terms"
-                  className="text-sm text-muted-foreground hover:text-primary"
-                >
-                  {t("termsAndPolicies", "series")}
-                </Link>
-                <Link
-                  href="/privacy"
-                  className="text-sm text-muted-foreground hover:text-primary"
-                >
-                  {t("privacy", "series")}
-                </Link>
-              </div>
-            </div>
-
-            {/* Version Info */}
-            <div>
-              <h3 className="mb-4 font-semibold text-foreground">
-                {t("version", "series")}
-              </h3>
-              <p className="text-sm text-muted-foreground">v2025.11.26</p>
-            </div>
-          </div>
-        </div>
-      </footer>
+      </AnimatedSection>
     </div>
   );
 }

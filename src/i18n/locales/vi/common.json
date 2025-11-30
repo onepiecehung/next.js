@@ -830,7 +830,10 @@
     "profile": "Hồ sơ",
     "settings": "Cài đặt",
     "logout": "Đăng xuất",
-    "loggingOut": "Đang đăng xuất..."
+    "loggingOut": "Đang đăng xuất...",
+    "language": "Ngôn ngữ",
+    "theme": "Giao diện",
+    "account": "Tài khoản"
   },
   "theme": {
     "light": "Sáng",

@@ -52,3 +52,6 @@ alwaysApply: true
 | Rich text editor functionality | ✅ |
 | Authentication flows complete | ✅ |
 | Middleware protection active | ✅ |
+| Animation components used (AnimatedSection/Grid/Header) | ✅ |
+| Skeletonize with placeholder divs | ✅ |
+| No animation conflicts with skeleton | ✅ |

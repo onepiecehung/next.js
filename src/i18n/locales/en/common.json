@@ -830,7 +830,10 @@
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Logout",
-    "loggingOut": "Logging out..."
+    "loggingOut": "Logging out...",
+    "language": "Language",
+    "theme": "Theme",
+    "account": "Account"
   },
   "theme": {
     "light": "Light",

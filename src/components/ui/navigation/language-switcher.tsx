@@ -81,7 +81,7 @@ export function LanguageSwitcher({
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="border-primary/30 bg-card/95 backdrop-blur-sm min-w-32"
+          className="border-primary/30 bg-card/95 backdrop-blur-sm min-w-32 sm:min-w-40 max-w-[calc(100vw-2rem)]"
         >
           {/* Current Selection Display */}
           <div className="px-3 py-2 border-b border-border">
@@ -133,7 +133,7 @@ export function LanguageSwitcher({
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="border-primary/30 bg-card/95 backdrop-blur-sm min-w-32"
+          className="border-primary/30 bg-card/95 backdrop-blur-sm min-w-32 sm:min-w-40 max-w-[calc(100vw-2rem)]"
         >
           {languages.map((language) => (
             <DropdownMenuItem
