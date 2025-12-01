@@ -57,5 +57,80 @@
   "systemStatus": "Trạng Thái Hệ Thống",
   "type": "Loại",
   "format": "Định Dạng",
-  "score": "Điểm"
+  "score": "Điểm",
+  "actions": {
+    "read": "Đọc",
+    "follow": "Theo Dõi",
+    "share": "Chia Sẻ"
+  },
+  "metadata": {
+    "status": "Trạng Thái",
+    "type": "Loại",
+    "format": "Định Dạng",
+    "chapters": "Chương",
+    "volumes": "Tập",
+    "episodes": "Tập Phim",
+    "score": "Điểm",
+    "popularity": "Độ Phổ Biến",
+    "author": "Tác Giả",
+    "authors": "Tác Giả",
+    "genres": "Thể Loại",
+    "tags": "Thẻ",
+    "links": "Liên Kết",
+    "startDate": "Ngày Bắt Đầu",
+    "endDate": "Ngày Kết Thúc",
+    "season": "Mùa",
+    "source": "Nguồn",
+    "country": "Quốc Gia",
+    "licensed": "Có Bản Quyền",
+    "nsfw": "Nội Dung NSFW",
+    "main": "Chính",
+    "yes": "Có",
+    "no": "Không",
+    "unknown": "Không Rõ"
+  },
+  "status": {
+    "finished": "Hoàn Thành",
+    "releasing": "Đang Phát Hành",
+    "ongoing": "Đang Tiếp Diễn",
+    "comingSoon": "Sắp Ra Mắt",
+    "completed": "Đã Hoàn Thành",
+    "notYetReleased": "Chưa Phát Hành",
+    "cancelled": "Đã Hủy",
+    "hiatus": "Tạm Dừng",
+    "unknown": "Không Rõ"
+  },
+  "type": {
+    "anime": "Anime",
+    "manga": "Manga",
+    "lightNovel": "Light Novel",
+    "visualNovel": "Visual Novel",
+    "videoGame": "Video Game",
+    "doujinshi": "Doujinshi",
+    "webNovel": "Web Novel"
+  },
+  "format": {
+    "tv": "TV",
+    "tvShort": "TV Ngắn",
+    "movie": "Phim",
+    "special": "Đặc Biệt",
+    "ova": "OVA",
+    "ona": "ONA",
+    "music": "Nhạc",
+    "manga": "Manga",
+    "novel": "Tiểu Thuyết",
+    "oneShot": "One Shot"
+  },
+  "description": {
+    "title": "Mô Tả"
+  },
+  "chapters": {
+    "title": "Chương",
+    "comingSoon": "Danh sách chương sắp có"
+  },
+  "error": {
+    "title": "Không Tìm Thấy Truyện",
+    "message": "Truyện bạn đang tìm không tồn tại hoặc đã bị xóa.",
+    "backToHome": "Về Trang Chủ"
+  }
 }

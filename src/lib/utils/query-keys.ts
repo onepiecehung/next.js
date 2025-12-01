@@ -76,6 +76,115 @@ export const queryKeys = {
     byType: (type: string) => ["series", "type", type] as const,
     byGenre: (genre: string) => ["series", "genre", genre] as const,
   },
+
+  // Comments related queries
+  comments: {
+    all: () => ["comments"] as const,
+    list: (params?: AdvancedQueryParams) =>
+      ["comments", "list", params] as const,
+    detail: (id: string, options?: unknown) =>
+      ["comments", "detail", id, options] as const,
+    replies: (id: string, params?: AdvancedQueryParams) =>
+      ["comments", "replies", id, params] as const,
+    stats: (subjectType: string, subjectId: string) =>
+      ["comments", "stats", subjectType, subjectId] as const,
+    batch: (data: unknown) => ["comments", "batch", data] as const,
+  },
+
+  // Bookmarks related queries
+  bookmarks: {
+    all: () => ["bookmarks"] as const,
+    list: (params?: AdvancedQueryParams) =>
+      ["bookmarks", "list", params] as const,
+    detail: (id: string) => ["bookmarks", "detail", id] as const,
+    stats: () => ["bookmarks", "stats"] as const,
+    folders: {
+      all: () => ["bookmarks", "folders"] as const,
+      list: (params?: AdvancedQueryParams) =>
+        ["bookmarks", "folders", "list", params] as const,
+      detail: (id: string) => ["bookmarks", "folders", "detail", id] as const,
+    },
+  },
+
+  // Follow related queries
+  follow: {
+    status: (followerId: string, followeeId: string) =>
+      ["follow", "status", followerId, followeeId] as const,
+    following: (userId: string, params?: unknown) =>
+      ["follow", "following", userId, params] as const,
+    followers: (userId: string, params?: unknown) =>
+      ["follow", "followers", userId, params] as const,
+    mutuals: (userA: string, userB: string) =>
+      ["follow", "mutuals", userA, userB] as const,
+    suggestions: (userId: string, params?: unknown) =>
+      ["follow", "suggestions", userId, params] as const,
+    counters: (userId: string) => ["follow", "counters", userId] as const,
+    feed: (userId: string, params?: unknown) =>
+      ["follow", "feed", userId, params] as const,
+    trending: () => ["follow", "trending"] as const,
+    recommendations: (userId: string) =>
+      ["follow", "recommendations", userId] as const,
+    feedStats: (userId: string) => ["follow", "feedStats", userId] as const,
+  },
+
+  // Notifications related queries
+  notifications: {
+    all: () => ["notifications"] as const,
+    list: (params?: AdvancedQueryParams) =>
+      ["notifications", "list", params] as const,
+    detail: (id: string) => ["notifications", "detail", id] as const,
+    stats: () => ["notifications", "stats"] as const,
+    preferences: {
+      all: () => ["notifications", "preferences"] as const,
+      detail: (id: string) =>
+        ["notifications", "preferences", "detail", id] as const,
+    },
+  },
+
+  // Tags related queries
+  tags: {
+    all: () => ["tags"] as const,
+    list: (params?: AdvancedQueryParams) => ["tags", "list", params] as const,
+    detail: (id: string) => ["tags", "detail", id] as const,
+    bySlug: (slug: string) => ["tags", "slug", slug] as const,
+    popular: () => ["tags", "popular"] as const,
+    trending: () => ["tags", "trending"] as const,
+    featured: () => ["tags", "featured"] as const,
+    suggestions: (content: string) =>
+      ["tags", "suggestions", content] as const,
+    stats: () => ["tags", "stats"] as const,
+  },
+
+  // Share related queries
+  share: {
+    links: (contentType: string, contentId: string) =>
+      ["share", "links", contentType, contentId] as const,
+    metrics: (code: string, params?: unknown) =>
+      ["share", "metrics", code, params] as const,
+    count: (contentType: string, contentId: string) =>
+      ["share", "count", contentType, contentId] as const,
+  },
+
+  // Reports related queries
+  reports: {
+    all: () => ["reports"] as const,
+    list: (params?: AdvancedQueryParams) =>
+      ["reports", "list", params] as const,
+    detail: (id: string) => ["reports", "detail", id] as const,
+    stats: (params?: AdvancedQueryParams) =>
+      ["reports", "stats", params] as const,
+    my: (params?: AdvancedQueryParams) => ["reports", "my", params] as const,
+    assigned: (params?: AdvancedQueryParams) =>
+      ["reports", "assigned", params] as const,
+    pending: (params?: AdvancedQueryParams) =>
+      ["reports", "pending", params] as const,
+    urgent: (params?: AdvancedQueryParams) =>
+      ["reports", "urgent", params] as const,
+    forContent: (type: string, id: string) =>
+      ["reports", "content", type, id] as const,
+    duplicates: (type: string, id: string) =>
+      ["reports", "duplicates", type, id] as const,
+  },
 } as const;
 
 /**

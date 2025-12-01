@@ -1,5 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
+import { useI18n } from "@/components/providers/i18n-provider";
 import { SeriesAPI } from "@/lib/api/series";
 import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
 import type {
@@ -256,6 +258,24 @@ export function useSeries(seriesId: string) {
 }
 
 /**
+ * Hook for fetching a single series by ID with full backend data
+ * Returns BackendSeries instead of transformed Series
+ */
+export function useSeriesFull(seriesId: string) {
+  return useQuery<BackendSeries>({
+    queryKey: [...queryKeys.series.detail(seriesId), "full"],
+    queryFn: async () => {
+      const backendSeries = await SeriesAPI.getSeries(seriesId);
+      return backendSeries as BackendSeries;
+    },
+    enabled: !!seriesId && seriesId !== "undefined" && seriesId !== "null",
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+  });
+}
+
+/**
  * Hook for fetching series list with filters
  */
 export function useSeriesList(params?: {
@@ -284,5 +304,200 @@ export function useSeriesList(params?: {
     },
     staleTime: 2 * 60 * 1000, // 2 minutes
     placeholderData: (previousData) => previousData,
+  });
+}
+
+/**
+ * Hook for creating a series
+ */
+export function useCreateSeries() {
+  const { t } = useI18n();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: import("@/lib/api/series").CreateSeriesDto) => {
+      const result = await SeriesAPI.createSeries(data);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      return result;
+    },
+    onSuccess: (series) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.series.all(),
+      });
+      queryClient.setQueryData(
+        queryKeys.series.detail(series.id),
+        series,
+      );
+      toast.success(
+        t("seriesCreated", "series") || "Series created successfully",
+      );
+    },
+    onError: (error) => {
+      console.error("Create series error:", error);
+      toast.error(
+        t("seriesCreateError", "series") || "Failed to create series",
+      );
+    },
+  });
+}
+
+/**
+ * Hook for updating a series
+ */
+export function useUpdateSeries() {
+  const { t } = useI18n();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: import("@/lib/api/series").UpdateSeriesDto;
+    }) => {
+      const result = await SeriesAPI.updateSeries(id, data);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      return result;
+    },
+    onSuccess: (series, variables) => {
+      queryClient.setQueryData(
+        queryKeys.series.detail(variables.id),
+        series,
+      );
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.series.all(),
+      });
+      toast.success(
+        t("seriesUpdated", "series") || "Series updated successfully",
+      );
+    },
+    onError: (error) => {
+      console.error("Update series error:", error);
+      toast.error(
+        t("seriesUpdateError", "series") || "Failed to update series",
+      );
+    },
+  });
+}
+
+/**
+ * Hook for deleting a series
+ */
+export function useDeleteSeries() {
+  const { t } = useI18n();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await SeriesAPI.deleteSeries(id);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+    },
+    onSuccess: (_, id) => {
+      queryClient.removeQueries({
+        queryKey: queryKeys.series.detail(id),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.series.all(),
+      });
+      toast.success(
+        t("seriesDeleted", "series") || "Series deleted successfully",
+      );
+    },
+    onError: (error) => {
+      console.error("Delete series error:", error);
+      toast.error(
+        t("seriesDeleteError", "series") || "Failed to delete series",
+      );
+    },
+  });
+}
+
+/**
+ * Hook for fetching AniList media list
+ */
+export function useAniListMediaList(page?: number, perPage?: number) {
+  return useQuery({
+    queryKey: ["anilist", "media", "list", page, perPage],
+    queryFn: () => SeriesAPI.getAniListMediaList(page, perPage),
+    staleTime: 10 * 60 * 1000, // 10 minutes
+  });
+}
+
+/**
+ * Hook for fetching AniList media by ID
+ */
+export function useAniListMediaById(anilistId: number) {
+  return useQuery({
+    queryKey: ["anilist", "media", anilistId],
+    queryFn: () => SeriesAPI.getAniListMediaById(anilistId),
+    enabled: !!anilistId,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+  });
+}
+
+/**
+ * Hook for saving AniList media by ID
+ */
+export function useSaveAniListMedia() {
+  const { t } = useI18n();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (anilistId: number) => {
+      const result = await SeriesAPI.saveAniListMediaById(anilistId);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      return result;
+    },
+    onSuccess: (response) => {
+      if (response.data) {
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.series.all(),
+        });
+        queryClient.setQueryData(
+          queryKeys.series.detail(response.data.id),
+          response.data,
+        );
+      }
+      toast.success(
+        t("anilistMediaSaved", "series") ||
+          "AniList media saved successfully",
+      );
+    },
+    onError: (error) => {
+      console.error("Save AniList media error:", error);
+      toast.error(
+        t("anilistMediaSaveError", "series") ||
+          "Failed to save AniList media",
+      );
+    },
+  });
+}
+
+/**
+ * Hook for triggering AniList crawl job
+ */
+export function useAniListCrawl() {
+  const { t } = useI18n();
+
+  return useMutation({
+    mutationFn: async (type?: import("@/lib/constants/series.constants").SeriesType) => {
+      const result = await SeriesAPI.triggerAniListCrawl(type);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return result;
+    },
+    onSuccess: (response) => {
+      toast.success(
+        t("anilistCrawlTriggered", "series") ||
+          `Crawl job queued successfully. Job ID: ${response.data.jobId}`,
+      );
+    },
+    onError: (error) => {
+      console.error("Trigger AniList crawl error:", error);
+      toast.error(
+        t("anilistCrawlError", "series") ||
+          "Failed to trigger AniList crawl",
+      );
+    },
   });
 }

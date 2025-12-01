@@ -1,13 +1,14 @@
 "use client";
 
+import { Frown, Heart, Plus, Smile } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Plus, Smile, Frown } from "lucide-react";
 import { useMemo } from "react";
 
 import { useI18n } from "@/components/providers/i18n-provider";
-import { Card } from "@/components/ui/core/card";
 import { Button } from "@/components/ui/core/button";
+import { Card } from "@/components/ui/core/card";
+import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
 import type { Series } from "@/lib/interface/series.interface";
 import { cn } from "@/lib/utils";
 
@@ -36,11 +37,15 @@ function formatAiringTime(targetDate: Date | string): string {
 
 /**
  * Series card component with different variants
- * Horizontal layout: cover image on left, content on right
+ * - anichart: AniChart-style vertical poster with gradient overlay
+ * - default: Horizontal layout with cover image on left, content on right
+ * - compact: Vertical compact card
+ * - featured: Vertical card with featured badge
+ * - tiny: Smallest vertical card variant
  */
 interface SeriesCardProps {
   series: Series;
-  variant?: "default" | "compact" | "featured" | "tiny";
+  variant?: "default" | "compact" | "featured" | "tiny" | "anichart";
   className?: string;
   // Optional props for detailed view
   currentEpisode?: number;
@@ -48,6 +53,10 @@ interface SeriesCardProps {
   nextAiringDate?: Date | string;
   rank?: number;
   studio?: string;
+  // Optional props for AniChart variant
+  romajiTitle?: string; // Reserved for future use
+  startDate?: Date | string;
+  genres?: string[];
 }
 
 export function SeriesCard({
@@ -59,6 +68,9 @@ export function SeriesCard({
   nextAiringDate,
   rank,
   studio,
+  startDate,
+  genres,
+  // romajiTitle reserved for future use
 }: SeriesCardProps) {
   const { t } = useI18n();
 
@@ -66,6 +78,7 @@ export function SeriesCard({
   const isTiny = variant === "tiny";
   const isFeatured = variant === "featured";
   const isDefault = variant === "default";
+  const isAniChart = variant === "anichart";
 
   // Calculate rating percentage from averageScore (0-100 scale)
   const rating = series.averageScore ? Math.round(series.averageScore / 10) : null;
@@ -84,6 +97,140 @@ export function SeriesCard({
     const airingText = nextAiringDate ? formatAiringTime(nextAiringDate) : "Airing";
     return `Ep ${currentEpisode} of ${totalEpisodes} airing in ${airingText}`;
   }, [currentEpisode, totalEpisodes, nextAiringDate]);
+
+
+  // Format airing date for AniChart variant
+  const formatAiringDate = useMemo(() => {
+    if (startDate) {
+      const date = typeof startDate === "string" ? new Date(startDate) : startDate;
+      return date.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+    }
+    if (series.season && series.seasonYear) {
+      // If no specific date, show "Airing in [Month] [Year]"
+      const monthMap: Record<string, string> = {
+        winter: "January",
+        spring: "April",
+        summer: "July",
+        fall: "October",
+      };
+      return `${monthMap[series.season] || series.season} ${series.seasonYear}`;
+    }
+    return null;
+  }, [startDate, series.season, series.seasonYear]);
+
+  // Get genres for AniChart variant (use provided genres or fallback to tags)
+  const displayGenres = useMemo(() => {
+    return genres || series.tags || [];
+  }, [genres, series.tags]);
+
+  // AniChart-style variant: horizontal layout with cover image on left, info panel on right
+  if (isAniChart) {
+    return (
+      <Card
+        className={cn(
+          "group flex flex-row h-full overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-md p-0",
+          className,
+        )}
+      >
+        {/* Left Section: Cover Image */}
+        <Link
+          href={`/series/${series.id}`}
+          className="relative w-24 sm:w-28 md:w-32 lg:w-36 flex-shrink-0 h-full overflow-hidden bg-muted"
+        >
+          <div className="relative w-full h-full">
+            <Image
+              src={series.coverUrl}
+              alt={series.title}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, (max-width: 1024px) 128px, 144px"
+            />
+            
+            {/* Dark Gradient Overlay at Bottom with Title and Studio */}
+            <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/95 via-black/80 to-transparent pt-8 pb-2 px-2 sm:px-3">
+              <h3 className="text-white font-semibold text-xs sm:text-sm line-clamp-2 mb-1 drop-shadow-lg leading-tight">
+                {series.title}
+              </h3>
+              {studio && (
+                <p className="text-blue-300 text-[10px] sm:text-xs line-clamp-1 drop-shadow-md">
+                  {studio}
+                </p>
+              )}
+            </div>
+          </div>
+        </Link>
+
+        {/* Right Section: Information Panel */}
+        <div className="flex flex-1 flex-col p-3 sm:p-4 min-w-0">
+          {/* Top Row: Airing Date and Ranking */}
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="text-[10px] sm:text-xs text-muted-foreground">Airing on</span>
+                {formatAiringDate && (
+                  <span className="text-sm sm:text-base font-semibold text-foreground">
+                    {formatAiringDate}
+                  </span>
+                )}
+              </div>
+              {/* Sequel/Source Info */}
+              {(series.status === SERIES_CONSTANTS.RELEASING_STATUS.COMING_SOON || series.source) && (
+                <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-1">
+                  {series.status === SERIES_CONSTANTS.RELEASING_STATUS.COMING_SOON
+                    ? `Sequel to ${series.title}`
+                    : series.source
+                    ? `Source • ${series.source.replace(/_/g, " ")}`
+                    : null}
+                </p>
+              )}
+            </div>
+            {/* Ranking Badge */}
+            {rank && (
+              <div className="flex items-center gap-1 text-pink-500 flex-shrink-0">
+                <Heart className="h-3 w-3 sm:h-4 sm:w-4 fill-current" />
+                <span className="text-sm sm:text-base font-semibold">#{rank}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Synopsis/Description */}
+          {series.description && (
+            <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 sm:line-clamp-4 leading-relaxed mb-3 flex-1">
+              {series.description}
+            </p>
+          )}
+
+          {/* Bottom: Genre Pills */}
+          {displayGenres.length > 0 && (
+            <div className="flex items-center gap-1.5 sm:gap-2 mt-auto pt-2">
+              <div className="flex flex-wrap gap-1 sm:gap-1.5 flex-1">
+                {displayGenres.slice(0, 4).map((genre, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-md text-[10px] sm:text-xs font-medium bg-amber-600 text-white border-0"
+                  >
+                    {genre}
+                  </span>
+                ))}
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0"
+                aria-label="Add to list"
+              >
+                <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
+              </Button>
+            </div>
+          )}
+        </div>
+      </Card>
+    );
+  }
 
   // Show horizontal layout only for default variant
   if (isDefault && (episodeInfo || rank || studio)) {

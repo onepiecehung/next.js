@@ -57,5 +57,80 @@
   "systemStatus": "System Status",
   "type": "Type",
   "format": "Format",
-  "score": "Score"
+  "score": "Score",
+  "actions": {
+    "read": "Read",
+    "follow": "Follow",
+    "share": "Share"
+  },
+  "metadata": {
+    "status": "Status",
+    "type": "Type",
+    "format": "Format",
+    "chapters": "Chapters",
+    "volumes": "Volumes",
+    "episodes": "Episodes",
+    "score": "Score",
+    "popularity": "Popularity",
+    "author": "Author",
+    "authors": "Authors",
+    "genres": "Genres",
+    "tags": "Tags",
+    "links": "Links",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "season": "Season",
+    "source": "Source",
+    "country": "Country",
+    "licensed": "Licensed",
+    "nsfw": "NSFW Content",
+    "main": "Main",
+    "yes": "Yes",
+    "no": "No",
+    "unknown": "Unknown"
+  },
+  "status": {
+    "finished": "Finished",
+    "releasing": "Releasing",
+    "ongoing": "Ongoing",
+    "comingSoon": "Coming Soon",
+    "completed": "Completed",
+    "notYetReleased": "Not Yet Released",
+    "cancelled": "Cancelled",
+    "hiatus": "Hiatus",
+    "unknown": "Unknown"
+  },
+  "type": {
+    "anime": "Anime",
+    "manga": "Manga",
+    "lightNovel": "Light Novel",
+    "visualNovel": "Visual Novel",
+    "videoGame": "Video Game",
+    "doujinshi": "Doujinshi",
+    "webNovel": "Web Novel"
+  },
+  "format": {
+    "tv": "TV",
+    "tvShort": "TV Short",
+    "movie": "Movie",
+    "special": "Special",
+    "ova": "OVA",
+    "ona": "ONA",
+    "music": "Music",
+    "manga": "Manga",
+    "novel": "Novel",
+    "oneShot": "One Shot"
+  },
+  "description": {
+    "title": "Description"
+  },
+  "chapters": {
+    "title": "Chapters",
+    "comingSoon": "Chapters list coming soon"
+  },
+  "error": {
+    "title": "Series Not Found",
+    "message": "The series you're looking for doesn't exist or has been removed.",
+    "backToHome": "Back to Home"
+  }
 }

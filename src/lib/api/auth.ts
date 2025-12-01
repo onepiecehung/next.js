@@ -7,7 +7,10 @@ import {
 } from "../auth/firebase";
 import { http, publicHttp } from "../http";
 import type {
+  AdvancedQueryParams,
   ApiResponse,
+  ApiResponseCursor,
+  ApiResponseOffset,
   ChangePasswordRequest,
   ChangePasswordResponse,
   FirebaseLoginRequest,
@@ -20,6 +23,7 @@ import type {
   OTPRequestResponseData,
   OTPVerifyRequest,
   OTPVerifyResponseData,
+  QueryParamsWithCursor,
   RefreshTokenRequest,
   RefreshTokenResponse,
   ResendVerificationEmailRequest,
@@ -137,10 +141,10 @@ export class AuthAPI {
    * Refresh access token
    */
   static async refreshToken(
-    data: RefreshTokenRequest,
+    data?: RefreshTokenRequest,
   ): Promise<RefreshTokenResponse> {
     const response = await http.post<ApiResponse<RefreshTokenResponse>>(
-      `${this.BASE_URL}/refresh`,
+      `${this.BASE_URL}/refresh-token`,
       data,
     );
 
@@ -167,21 +171,122 @@ export class AuthAPI {
   }
 
   /**
-   * Change password
+   * Logout all sessions
    */
-  static async changePassword(
+  static async logoutAll(): Promise<LogoutResponse> {
+    const response = await http.post<ApiResponse<LogoutResponse>>(
+      `${this.BASE_URL}/logout-all`,
+    );
+
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Logout all failed");
+    }
+
+    return response.data.data;
+  }
+
+  /**
+   * Create device token
+   */
+  static async createDeviceToken(data: {
+    deviceId: string;
+    deviceName?: string;
+    deviceType?: string;
+    fcmToken?: string;
+  }): Promise<ApiResponse<{ id: string; deviceId: string }>> {
+    const response = await http.post<
+      ApiResponse<{ id: string; deviceId: string }>
+    >(`${this.BASE_URL}/device-token`, data);
+
+    if (!response.data.success) {
+      throw new Error(
+        response.data.message || "Failed to create device token",
+      );
+    }
+
+    return response.data;
+  }
+
+  /**
+   * Get user sessions with offset pagination
+   */
+  static async getSessions(
+    params?: AdvancedQueryParams,
+  ): Promise<ApiResponseOffset<unknown>> {
+    const response = await http.get<ApiResponseOffset<unknown>>(
+      `${this.BASE_URL}/sessions`,
+      { params },
+    );
+
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Failed to fetch sessions");
+    }
+
+    return response.data;
+  }
+
+  /**
+   * Get user sessions with cursor pagination
+   */
+  static async getSessionsCursor(
+    params?: QueryParamsWithCursor,
+  ): Promise<ApiResponseCursor<unknown>> {
+    const response = await http.get<ApiResponseCursor<unknown>>(
+      `${this.BASE_URL}/sessions-cursor`,
+      { params },
+    );
+
+    if (!response.data.success) {
+      throw new Error(
+        response.data.message || "Failed to fetch sessions",
+      );
+    }
+
+    return response.data;
+  }
+
+  /**
+   * Get session by ID
+   */
+  static async getSessionById(
+    sessionId: string,
+  ): Promise<ApiResponse<unknown>> {
+    const response = await http.get<ApiResponse<unknown>>(
+      `${this.BASE_URL}/sessions/${sessionId}`,
+    );
+
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Failed to fetch session");
+    }
+
+    return response.data;
+  }
+
+  /**
+   * Update password (PUT method)
+   */
+  static async updatePassword(
     data: ChangePasswordRequest,
   ): Promise<ChangePasswordResponse> {
-    const response = await http.post<ApiResponse<ChangePasswordResponse>>(
-      `${this.BASE_URL}/change-password`,
+    const response = await http.put<ApiResponse<ChangePasswordResponse>>(
+      `${this.BASE_URL}/update-password`,
       data,
     );
 
     if (!response.data.success) {
-      throw new Error(response.data.message || "Password change failed");
+      throw new Error(response.data.message || "Password update failed");
     }
 
     return response.data.data;
+  }
+
+  /**
+   * Change password (legacy POST method)
+   */
+  static async changePassword(
+    data: ChangePasswordRequest,
+  ): Promise<ChangePasswordResponse> {
+    return this.updatePassword(data);
   }
 
   /**

@@ -168,6 +168,10 @@ export interface Series {
   type?: string; // ANIME or MANGA
   format?: string;
   status?: string;
+  source?: string; // Source material (Manga, Light Novel, etc.)
+  startDate?: Date | string; // Start date of the series
+  episodes?: number; // Number of episodes (for anime)
+  genres?: string[]; // Genres extracted from genres array
   averageScore?: number;
   popularity?: number;
   trending?: number;
