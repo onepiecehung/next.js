@@ -75,10 +75,11 @@ export function useLatestUpdates(enabled?: boolean) {
         const timestampStr = series.updatedAt || series.createdAt;
         const timestamp = timestampStr ? new Date(timestampStr) : new Date();
 
+        const transformedSeries = transformBackendSeries(series);
         return {
           id: series.id,
-          title: transformBackendSeries(series).title,
-          coverUrl: transformBackendSeries(series).coverUrl,
+          title: transformedSeries.title,
+          coverUrl: transformedSeries.coverUrl,
           chapter: {
             number: "1",
             title: "Chapter 1",
@@ -88,6 +89,9 @@ export function useLatestUpdates(enabled?: boolean) {
           groups: [],
           timestamp,
           commentCount: 0,
+          isNsfw: series.isNsfw || transformedSeries.isNsfw,
+          genres: transformedSeries.genres || [],
+          tags: transformedSeries.tags || [],
         };
       });
     },

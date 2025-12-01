@@ -70,11 +70,28 @@ export function useUserArticlesLayout(
   const formattedArticles =
     data?.data?.result?.map((article: Article) => formatArticle(article)) || [];
 
+  // Layout configuration based on layout type
+  const layoutConfig = {
+    grid: {
+      containerClass: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6",
+      itemClass: "",
+    },
+    list: {
+      containerClass: "space-y-4 sm:space-y-6",
+      itemClass: "",
+    },
+    card: {
+      containerClass: "grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6",
+      itemClass: "",
+    },
+  };
+
   return {
     articles: formattedArticles,
     isLoading,
     error,
     refetch,
+    layoutConfig: layoutConfig[layout] || layoutConfig.grid,
     totalCount: data?.data?.metaData?.totalRecords || 0,
     hasMore: data?.data?.metaData?.hasNextPage || false,
     currentPage: data?.data?.metaData?.currentPage || 1,

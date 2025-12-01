@@ -4,6 +4,7 @@
   "userNotFoundTitle": "User Not Found",
   "userNotFoundDescription": "The requested user profile could not be found.",
   "userActionsFollow": "Follow",
+  "userActionsUnfollow": "Unfollow",
   "userActionsMessage": "Message",
   "userJoined": "Joined",
   "userStatsArticles": "Articles",

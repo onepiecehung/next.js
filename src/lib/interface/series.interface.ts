@@ -194,6 +194,9 @@ export interface LatestUpdateItem {
   groups: ScanlationGroup[];
   timestamp: Date | string;
   commentCount?: number;
+  isNsfw?: boolean;
+  genres?: string[];
+  tags?: string[];
 }
 
 /**
