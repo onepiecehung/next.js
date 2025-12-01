@@ -5,7 +5,7 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { useAuthRedirect } from "@/hooks/auth/useAuthQuery";
 import { authLoadingAtom, currentUserAtom } from "@/lib/auth";
 import { useAtom } from "jotai";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 /**
@@ -15,6 +15,7 @@ import { useState } from "react";
 export default function LoginPage() {
   const { t } = useI18n();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [user] = useAtom(currentUserAtom);
   const [authLoading] = useAtom(authLoadingAtom);
   const [loginMode, setLoginMode] = useState<"password" | "otp">("password");
@@ -44,7 +45,14 @@ export default function LoginPage() {
   }
 
   const handleLoginSuccess = () => {
-    // Redirect will be handled by useAuthRedirect hook
+    // Get redirect URL from query params or use home page as fallback
+    const redirectUrl = searchParams.get("redirect") || "/";
+    
+    // Delay to ensure user state is updated before redirect
+    // useAuthRedirect will also handle redirect, but this ensures immediate redirect
+    setTimeout(() => {
+      router.replace(redirectUrl);
+    }, 200);
   };
 
   const handleForgotPassword = () => {

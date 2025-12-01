@@ -1,13 +1,13 @@
 "use client";
 
 import type { User } from "@/lib/interface";
+import { motion } from "framer-motion";
 import { useAtom } from "jotai";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { motion } from "framer-motion";
 
 import { LoginDialog } from "@/components/features/auth";
 import { SearchBar } from "@/components/features/series";
@@ -40,10 +40,16 @@ export default function SiteNav() {
   const [authLoading] = useAtom(authLoadingAtom);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
 
   const handleLoginClick = () => {
     router.push("/auth/login");
-    setIsMobileMenuOpen(false);
+    handleCloseMenu();
+  };
+
+  const handleCloseMenu = () => {
+    setIsAnimatingOut(true);
+    // Dialog will be closed when animation completes (via onAnimationComplete)
   };
 
   const handleLogout = async () => {
@@ -118,32 +124,64 @@ export default function SiteNav() {
       </header>
 
       {/* Mobile Sidebar - Full Screen with Smooth Animation */}
-      <Dialog open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+      <Dialog 
+        open={isMobileMenuOpen || isAnimatingOut} 
+        onOpenChange={(open) => {
+          if (!open && !isAnimatingOut) {
+            // Only handle close if not already animating out
+            handleCloseMenu();
+          } else if (open) {
+            setIsMobileMenuOpen(true);
+            setIsAnimatingOut(false);
+          }
+        }}
+      >
         <DialogContent
-          className="!fixed !inset-0 !h-screen !w-screen !max-w-none !translate-x-0 !translate-y-0 !rounded-none !border-0 !p-0 md:!hidden"
+          className="!fixed !inset-0 !h-screen !w-screen !max-w-none !translate-x-0 !translate-y-0 !rounded-none !border-0 !p-0 md:!hidden !animate-none data-[state=open]:!animate-none data-[state=closed]:!animate-none [&>div[data-slot='dialog-overlay']]:!animate-none [&>div[data-slot='dialog-overlay']]:data-[state=open]:!animate-none [&>div[data-slot='dialog-overlay']]:data-[state=closed]:!animate-none"
           showCloseButton={false}
         >
           <VisuallyHidden>
             <DialogTitle>{t("appName", "common")} - Menu</DialogTitle>
           </VisuallyHidden>
           
+          {/* Custom overlay with synchronized animation - replaces default overlay */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={isAnimatingOut ? { opacity: 0 } : { opacity: 1 }}
+            transition={{ 
+              duration: 0.3,
+              ease: "easeInOut"
+            }}
+            className="fixed inset-0 z-40 bg-black/50"
+            style={{ pointerEvents: isAnimatingOut ? "none" : "auto" }}
+            onClick={handleCloseMenu}
+          />
+          
           <motion.div
             initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
+            animate={isAnimatingOut ? { x: "100%" } : { x: 0 }}
             transition={{
               type: "spring",
-              damping: 25,
-              stiffness: 200,
-              mass: 0.5,
+              damping: 30,
+              stiffness: 300,
+              mass: 0.4,
             }}
-            className="flex h-full w-full flex-col bg-background"
+            onAnimationComplete={() => {
+              if (isAnimatingOut) {
+                // Small delay to ensure smooth transition before unmounting
+                setTimeout(() => {
+                  setIsMobileMenuOpen(false);
+                  setIsAnimatingOut(false);
+                }, 100);
+              }
+            }}
+            className="relative z-50 flex h-full w-full flex-col bg-background"
           >
             {/* Header with close button */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.2 }}
+              animate={isAnimatingOut ? { opacity: 0, y: -10 } : { opacity: 1, y: 0 }}
+              transition={{ delay: isAnimatingOut ? 0 : 0.1, duration: 0.2 }}
               className="flex items-center justify-between border-b border-border bg-background p-4"
             >
               <h2 className="text-lg font-semibold text-foreground">
@@ -152,7 +190,7 @@ export default function SiteNav() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={handleCloseMenu}
                 aria-label="Close menu"
                 className="h-10 w-10 shrink-0"
               >
@@ -163,7 +201,7 @@ export default function SiteNav() {
             {/* Content area with stagger animation */}
             <motion.div
               initial="closed"
-              animate="open"
+              animate={isAnimatingOut ? "closed" : "open"}
               variants={{
                 open: {
                   transition: {
