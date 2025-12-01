@@ -15,7 +15,7 @@
   "viewRecentlyAdded": "View most recently added titles",
   "openListSeasonal": "Open list Seasonal: Fall 2025",
   "searchPlaceholder": "Enter a manga title...",
-  "searchShortcut": "⌘K",
+  "searchShortcut": "⌘ + K",
   "minutesAgo": "{{value}} minutes ago",
   "hoursAgo": "{{value}} hours ago",
   "daysAgo": "{{value}} days ago",
