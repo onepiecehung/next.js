@@ -200,9 +200,9 @@ export function SeriesCard({
         </Link>
 
         {/* Right Section: Information Panel - Match height with image */}
-        <div className="flex flex-1 flex-col p-3 sm:p-4 min-w-0 h-full">
+        <div className="flex flex-1 flex-col p-3 sm:p-4 min-w-0 h-full min-h-[160px] sm:min-h-[180px]">
           {/* Top Row: Airing Date and Ranking */}
-          <div className="flex items-start justify-between gap-2 mb-2">
+          <div className="flex items-start justify-between gap-2 mb-2 flex-shrink-0">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5 mb-1">
                 <span className="text-[10px] sm:text-xs text-muted-foreground">Airing on</span>
@@ -232,16 +232,22 @@ export function SeriesCard({
             )}
           </div>
 
-          {/* Synopsis/Description */}
-          {series.description && (
-            <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 sm:line-clamp-4 leading-relaxed mb-3 flex-1">
-              {series.description}
-            </p>
-          )}
+          {/* Synopsis/Description - Always reserve space for consistent card height */}
+          <div className="flex-1 min-h-[60px] sm:min-h-[72px] mb-3">
+            {series.description ? (
+              <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 sm:line-clamp-4 leading-relaxed h-full">
+                {series.description}
+              </p>
+            ) : (
+              <p className="text-xs sm:text-sm text-muted-foreground/50 italic line-clamp-3 sm:line-clamp-4 leading-relaxed h-full">
+                <i>No description available.</i>
+              </p>
+            )}
+          </div>
 
           {/* Bottom: Genre Pills */}
           {displayGenres.length > 0 && (
-            <div className="flex items-center gap-1.5 sm:gap-2 mt-auto pt-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 mt-auto pt-2 flex-shrink-0">
               <div className="flex flex-wrap gap-1 sm:gap-1.5 flex-1">
                 {displayGenres.slice(0, 4).map((genre, index) => (
                   <span
@@ -298,9 +304,9 @@ export function SeriesCard({
         </Link>
 
         {/* Content - Right side */}
-        <div className="flex flex-1 flex-col gap-1 sm:gap-1.5 md:gap-2 min-w-0">
+        <div className="flex flex-1 flex-col gap-1 sm:gap-1.5 md:gap-2 min-w-0 min-h-[120px] sm:min-h-[140px]">
           {/* Header: Episode info, Rating, Rank */}
-          <div className="flex flex-wrap items-center gap-1 sm:gap-2 md:gap-3 text-[9px] sm:text-[10px] md:text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-1 sm:gap-2 md:gap-3 text-[9px] sm:text-[10px] md:text-xs text-muted-foreground flex-shrink-0">
             {episodeInfo && (
               <span className="truncate">{episodeInfo}</span>
             )}
@@ -321,14 +327,14 @@ export function SeriesCard({
           {/* Title */}
           <Link
             href={`/series/${series.id}`}
-            className="font-semibold text-xs sm:text-sm md:text-base lg:text-lg text-foreground hover:text-primary line-clamp-2 leading-tight"
+            className="font-semibold text-xs sm:text-sm md:text-base lg:text-lg text-foreground hover:text-primary line-clamp-2 leading-tight flex-shrink-0"
           >
             {series.title}
           </Link>
 
           {/* Subtitle/Source */}
           {series.season && series.seasonYear && (
-            <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground">
+            <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground flex-shrink-0">
               {series.season} {series.seasonYear}
               {series.source && (
                 <span className="hidden sm:inline">
@@ -338,23 +344,29 @@ export function SeriesCard({
             </p>
           )}
 
-          {/* Description */}
-          {series.description && (
-            <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground line-clamp-1 sm:line-clamp-2 md:line-clamp-3 leading-relaxed">
-              {series.description}
-            </p>
-          )}
+          {/* Description - Reserve space for consistent layout */}
+          <div className="flex-1 min-h-[40px] sm:min-h-[48px]">
+            {series.description ? (
+              <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground line-clamp-1 sm:line-clamp-2 md:line-clamp-3 leading-relaxed">
+                {series.description}
+              </p>
+            ) : (
+              <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground/50 italic line-clamp-1 sm:line-clamp-2 md:line-clamp-3 leading-relaxed">
+                <i>No description available.</i>
+              </p>
+            )}
+          </div>
 
           {/* Studio/Source */}
           {studio && (
-            <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground">
+            <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground flex-shrink-0">
               {studio}
             </p>
           )}
 
           {/* Genre Tags */}
           {series.tags && series.tags.length > 0 && (
-            <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 mt-auto pt-0.5 sm:pt-1">
+            <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 mt-auto pt-0.5 sm:pt-1 flex-shrink-0">
               <div className="flex flex-wrap gap-0.5 sm:gap-1 md:gap-1.5 flex-1">
                 {series.tags.slice(0, 2).map((tag, index) => (
                   <span

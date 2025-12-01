@@ -180,25 +180,20 @@ export function middleware(request: NextRequest): NextResponse {
     return RedirectUtils.createLoginRedirect(request, pathname);
   }
 
-  // Handle auth routes - redirect to home if already authenticated
+  // Handle auth routes - let client-side handle redirect after token validation
+  // Middleware only checks for cookie existence, but doesn't validate token
+  // Client-side (useAuthRedirect hook) will validate token and redirect if needed
+  // This prevents redirect loops when cookie exists but token is invalid/expired
   if (isAuth && isAuthenticated) {
-    const redirectUrl = request.nextUrl.searchParams.get("redirect") || "/";
-
-    // Only redirect if not already on target page
-    if (pathname !== redirectUrl) {
-      Logger.logRedirect(
-        pathname,
-        redirectUrl,
-        "Authenticated user on auth route",
-      );
-      return RedirectUtils.createAuthRedirect(request, redirectUrl);
-    } else {
-      Logger.logRedirect(
-        pathname,
-        redirectUrl,
-        "Already on target page, no redirect needed",
-      );
-    }
+    // Log that we found a cookie, but let client-side handle the redirect
+    // This allows client-side to validate the token first before redirecting
+    Logger.logRedirect(
+      pathname,
+      "client-side",
+      "Cookie found, letting client-side validate and redirect",
+    );
+    // Don't redirect here - let client-side validate token first
+    // The useAuthRedirect hook in the login page will handle redirect after validation
   }
 
   // Allow request to continue
