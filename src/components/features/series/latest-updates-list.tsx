@@ -66,10 +66,10 @@ function LatestUpdateItemCard({ item, t }: LatestUpdateItemCardProps) {
   return (
     <Link
       href={`/series/${item.id}`}
-      className="flex gap-2 sm:gap-4 p-2 sm:p-4 rounded-lg border border-border bg-card transition-colors hover:bg-accent/50 cursor-pointer group"
+      className="flex gap-2 sm:gap-4 p-2 sm:p-4 rounded-lg border border-border bg-card transition-colors hover:bg-accent/50 cursor-pointer group h-full"
     >
-      {/* Cover - Smaller on mobile for better space utilization */}
-      <div className="relative h-16 w-12 sm:h-20 sm:w-16 flex-shrink-0 overflow-hidden rounded bg-muted">
+      {/* Cover - Full height of card */}
+      <div className="relative w-12 sm:w-16 md:w-20 h-full min-h-[80px] sm:min-h-[100px] flex-shrink-0 overflow-hidden rounded bg-muted">
         <Image
           src={item.coverUrl}
           alt={item.title}
@@ -78,7 +78,7 @@ function LatestUpdateItemCard({ item, t }: LatestUpdateItemCardProps) {
             "object-cover transition-transform duration-300 group-hover:scale-105",
             isNsfw && !isNsfwRevealed && "blur-md"
           )}
-          sizes="(max-width: 640px) 48px, 64px"
+          sizes="(max-width: 640px) 48px, (max-width: 768px) 64px, 80px"
         />
         {/* NSFW Overlay */}
         {isNsfw && !isNsfwRevealed && (
