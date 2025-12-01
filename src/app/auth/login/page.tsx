@@ -6,7 +6,7 @@ import { useAuthRedirect } from "@/hooks/auth/useAuthQuery";
 import { authLoadingAtom, currentUserAtom } from "@/lib/auth";
 import { useAtom } from "jotai";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Login Page Component
@@ -15,10 +15,16 @@ import { useState } from "react";
 export default function LoginPage() {
   const { t } = useI18n();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [user] = useAtom(currentUserAtom);
   const [authLoading] = useAtom(authLoadingAtom);
   const [loginMode, setLoginMode] = useState<"password" | "otp">("password");
+  const [isMounted, setIsMounted] = useState(false);
+  const searchParams = useSearchParams();
+
+  // Hydration protection: only access searchParams after mount
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Redirect if already authenticated
   useAuthRedirect();
@@ -45,14 +51,9 @@ export default function LoginPage() {
   }
 
   const handleLoginSuccess = () => {
-    // Get redirect URL from query params or use home page as fallback
-    const redirectUrl = searchParams.get("redirect") || "/";
-    
-    // Delay to ensure user state is updated before redirect
-    // useAuthRedirect will also handle redirect, but this ensures immediate redirect
-    setTimeout(() => {
-      router.replace(redirectUrl);
-    }, 200);
+    // Let useAuthRedirect handle the redirect to avoid race conditions
+    // The hook will automatically redirect when user state is updated
+    // No manual redirect needed here
   };
 
   const handleForgotPassword = () => {

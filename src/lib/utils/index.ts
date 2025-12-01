@@ -35,3 +35,6 @@ export {
   transformBackendSeriesList,
   transformToPopularSeries,
 } from "./series-utils";
+
+// Re-export device utilities
+export { isMobileDevice, isPopupLikelyBlocked } from "./device";

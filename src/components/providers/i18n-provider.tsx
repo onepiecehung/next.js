@@ -1,7 +1,7 @@
 "use client";
 
 import { defaultLocale, locales, type Locale } from "@/i18n/config";
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 interface I18nContextType {
   locale: Locale;
@@ -40,6 +40,8 @@ export function I18nProvider({ children }: I18nProviderProps) {
     Record<string, string>
   > | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  // Use ref to track fallbackMessagesCache to avoid stale closure in t callback
+  const fallbackMessagesRef = useRef<Record<string, Record<string, string>> | null>(null);
 
   // Preload default locale messages immediately (synchronous if possible)
   useEffect(() => {
@@ -51,12 +53,16 @@ export function I18nProvider({ children }: I18nProviderProps) {
             `@/i18n/locales/${defaultLocale}.ts`
           );
           fallbackMessagesCache = fallbackMessages.default;
+          fallbackMessagesRef.current = fallbackMessages.default;
         } catch (error) {
           console.error(
             `Failed to load fallback messages for locale: ${defaultLocale}`,
             error,
           );
         }
+      } else {
+        // Sync ref with existing cache
+        fallbackMessagesRef.current = fallbackMessagesCache;
       }
     };
 
@@ -76,6 +82,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
         // Fallback to cached default locale messages
         if (fallbackMessagesCache) {
           setMessages(fallbackMessagesCache);
+          fallbackMessagesRef.current = fallbackMessagesCache;
           setLocaleState(defaultLocale);
         } else {
           // If fallback cache is not ready, try to load it
@@ -84,6 +91,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
               `@/i18n/locales/${defaultLocale}.ts`
             );
             fallbackMessagesCache = fallbackMessages.default;
+            fallbackMessagesRef.current = fallbackMessages.default;
             setMessages(fallbackMessages.default);
             setLocaleState(defaultLocale);
           } catch (fallbackError) {
@@ -130,11 +138,12 @@ export function I18nProvider({ children }: I18nProviderProps) {
     ) => {
       // If messages are not loaded yet, use fallback text or key
       if (!messages || Object.keys(messages).length === 0) {
-        // Try to use cached fallback messages
-        if (fallbackMessagesCache) {
+        // Try to use cached fallback messages from ref (always current)
+        const currentFallbackCache = fallbackMessagesRef.current;
+        if (currentFallbackCache) {
           const keys = key.split(".");
           let value: string | Record<string, string> | undefined =
-            fallbackMessagesCache[namespace];
+            currentFallbackCache[namespace];
 
           for (const k of keys) {
             if (value && typeof value === "object" && k in value) {
@@ -160,10 +169,11 @@ export function I18nProvider({ children }: I18nProviderProps) {
         if (value && typeof value === "object" && k in value) {
           value = value[k];
         } else {
-          // If translation not found, try fallback messages
-          if (fallbackMessagesCache && fallbackMessagesCache[namespace]) {
+          // If translation not found, try fallback messages from ref (always current)
+          const currentFallbackCache = fallbackMessagesRef.current;
+          if (currentFallbackCache && currentFallbackCache[namespace]) {
             let fallbackValue: string | Record<string, string> | undefined =
-              fallbackMessagesCache[namespace];
+              currentFallbackCache[namespace];
             for (const fk of keys) {
               if (
                 fallbackValue &&

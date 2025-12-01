@@ -6,7 +6,7 @@ import { useAtom } from "jotai";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { LoginDialog } from "@/components/features/auth";
@@ -41,6 +41,8 @@ export default function SiteNav() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
+  // Use ref to track animation state to avoid stale closure in onAnimationComplete
+  const isAnimatingOutRef = useRef(false);
 
   const handleLoginClick = () => {
     router.push("/auth/login");
@@ -48,8 +50,11 @@ export default function SiteNav() {
   };
 
   const handleCloseMenu = () => {
-    setIsAnimatingOut(true);
-    // Dialog will be closed when animation completes (via onAnimationComplete)
+    if (!isAnimatingOutRef.current) {
+      setIsAnimatingOut(true);
+      isAnimatingOutRef.current = true;
+      // Dialog will be closed when animation completes (via onAnimationComplete)
+    }
   };
 
   const handleLogout = async () => {
@@ -126,15 +131,16 @@ export default function SiteNav() {
       {/* Mobile Sidebar - Full Screen with Smooth Animation */}
       <Dialog 
         open={isMobileMenuOpen || isAnimatingOut} 
-        onOpenChange={(open) => {
-          if (!open && !isAnimatingOut) {
-            // Only handle close if not already animating out
-            handleCloseMenu();
-          } else if (open) {
-            setIsMobileMenuOpen(true);
-            setIsAnimatingOut(false);
-          }
-        }}
+              onOpenChange={(open) => {
+                if (!open && !isAnimatingOutRef.current) {
+                  // Only handle close if not already animating out
+                  handleCloseMenu();
+                } else if (open) {
+                  setIsMobileMenuOpen(true);
+                  setIsAnimatingOut(false);
+                  isAnimatingOutRef.current = false;
+                }
+              }}
       >
         <DialogContent
           className="!fixed !inset-0 !h-screen !w-screen !max-w-none !translate-x-0 !translate-y-0 !rounded-none !border-0 !p-0 md:!hidden !animate-none data-[state=open]:!animate-none data-[state=closed]:!animate-none [&>div[data-slot='dialog-overlay']]:!animate-none [&>div[data-slot='dialog-overlay']]:data-[state=open]:!animate-none [&>div[data-slot='dialog-overlay']]:data-[state=closed]:!animate-none"
@@ -167,11 +173,13 @@ export default function SiteNav() {
               mass: 0.4,
             }}
             onAnimationComplete={() => {
-              if (isAnimatingOut) {
+              // Use ref to check current state, avoiding stale closure
+              if (isAnimatingOutRef.current) {
                 // Small delay to ensure smooth transition before unmounting
                 setTimeout(() => {
                   setIsMobileMenuOpen(false);
                   setIsAnimatingOut(false);
+                  isAnimatingOutRef.current = false;
                 }, 100);
               }
             }}
