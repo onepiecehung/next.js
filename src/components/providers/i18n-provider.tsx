@@ -1,7 +1,7 @@
 "use client";
 
 import { defaultLocale, locales, type Locale } from "@/i18n/config";
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 interface I18nContextType {
   locale: Locale;
@@ -121,83 +121,86 @@ export function I18nProvider({ children }: I18nProviderProps) {
     }
   }, []);
 
-  const t = (
-    key: string,
-    namespace: string = "common",
-    variables?: Record<string, unknown>,
-    fallback?: string,
-  ) => {
-    // If messages are not loaded yet, use fallback text or key
-    if (!messages || Object.keys(messages).length === 0) {
-      // Try to use cached fallback messages
-      if (fallbackMessagesCache) {
-        const keys = key.split(".");
-        let value: string | Record<string, string> | undefined =
-          fallbackMessagesCache[namespace];
-
-        for (const k of keys) {
-          if (value && typeof value === "object" && k in value) {
-            value = value[k];
-          } else {
-            return fallback || key;
-          }
-        }
-
-        if (typeof value === "string") {
-          return value;
-        }
-      }
-      // Return fallback text if provided, otherwise return key
-      return fallback || key;
-    }
-
-    const keys = key.split(".");
-    let value: string | Record<string, string> | undefined =
-      messages[namespace];
-
-    for (const k of keys) {
-      if (value && typeof value === "object" && k in value) {
-        value = value[k];
-      } else {
-        // If translation not found, try fallback messages
-        if (fallbackMessagesCache && fallbackMessagesCache[namespace]) {
-          let fallbackValue: string | Record<string, string> | undefined =
+  const t = useCallback(
+    (
+      key: string,
+      namespace: string = "common",
+      variables?: Record<string, unknown>,
+      fallback?: string,
+    ) => {
+      // If messages are not loaded yet, use fallback text or key
+      if (!messages || Object.keys(messages).length === 0) {
+        // Try to use cached fallback messages
+        if (fallbackMessagesCache) {
+          const keys = key.split(".");
+          let value: string | Record<string, string> | undefined =
             fallbackMessagesCache[namespace];
-          for (const fk of keys) {
-            if (
-              fallbackValue &&
-              typeof fallbackValue === "object" &&
-              fk in fallbackValue
-            ) {
-              fallbackValue = fallbackValue[fk];
+
+          for (const k of keys) {
+            if (value && typeof value === "object" && k in value) {
+              value = value[k];
             } else {
               return fallback || key;
             }
           }
-          if (typeof fallbackValue === "string") {
-            value = fallbackValue;
-            break;
+
+          if (typeof value === "string") {
+            return value;
           }
         }
+        // Return fallback text if provided, otherwise return key
         return fallback || key;
       }
-    }
 
-    // If value is not a string, return fallback or key
-    if (typeof value !== "string") return fallback || key;
+      const keys = key.split(".");
+      let value: string | Record<string, string> | undefined =
+        messages[namespace];
 
-    // Replace placeholders with actual values
-    // Supports both {variable} and {{variable}} syntax
-    if (variables) {
-      return value.replace(/\{\{?(\w+)\}?\}/g, (match, varName) => {
-        return variables[varName] !== undefined
-          ? String(variables[varName])
-          : match;
-      });
-    }
+      for (const k of keys) {
+        if (value && typeof value === "object" && k in value) {
+          value = value[k];
+        } else {
+          // If translation not found, try fallback messages
+          if (fallbackMessagesCache && fallbackMessagesCache[namespace]) {
+            let fallbackValue: string | Record<string, string> | undefined =
+              fallbackMessagesCache[namespace];
+            for (const fk of keys) {
+              if (
+                fallbackValue &&
+                typeof fallbackValue === "object" &&
+                fk in fallbackValue
+              ) {
+                fallbackValue = fallbackValue[fk];
+              } else {
+                return fallback || key;
+              }
+            }
+            if (typeof fallbackValue === "string") {
+              value = fallbackValue;
+              break;
+            }
+          }
+          return fallback || key;
+        }
+      }
 
-    return value;
-  };
+      // If value is not a string, return fallback or key
+      if (typeof value !== "string") return fallback || key;
+
+      // Replace placeholders with actual values
+      // Supports both {variable} and {{variable}} syntax
+      if (variables) {
+        return value.replace(/\{\{?(\w+)\}?\}/g, (match, varName) => {
+          return variables[varName] !== undefined
+            ? String(variables[varName])
+            : match;
+        });
+      }
+
+      return value;
+    },
+    [messages], // Include messages in dependencies so t function updates when messages load
+  );
 
   const isReady = messages !== null && Object.keys(messages).length > 0;
 
@@ -209,7 +212,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
       isReady,
       t,
     }),
-    [locale, isLoading, isReady],
+    [locale, isLoading, isReady, t], // Include t in dependencies since it's now memoized
   );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
