@@ -12,7 +12,13 @@ import { toast } from "sonner";
 import { LoginDialog } from "@/components/features/auth";
 import { SearchBar } from "@/components/features/series";
 import { useI18n } from "@/components/providers/i18n-provider";
-import { ThemeSelector, UserDropdown } from "@/components/ui";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  ThemeSelector,
+  UserDropdown,
+} from "@/components/ui";
 import { Button } from "@/components/ui/core/button";
 import {
   Dialog,
@@ -27,6 +33,7 @@ import {
   currentUserAtom,
   logoutAction,
 } from "@/lib/auth";
+import { LogOut, PenTool, Settings, User as UserIcon } from "lucide-react";
 
 /**
  * Internationalized Site Navigation Component
@@ -43,6 +50,12 @@ export default function SiteNav() {
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   // Use ref to track animation state to avoid stale closure in onAnimationComplete
   const isAnimatingOutRef = useRef(false);
+
+  // Handle navigation inside the mobile menu and trigger closing animation
+  const handleNavigate = (path: string) => {
+    router.push(path);
+    handleCloseMenu();
+  };
 
   const handleLoginClick = () => {
     router.push("/auth/login");
@@ -344,11 +357,86 @@ export default function SiteNav() {
                 {authLoading ? (
                   <div className="h-10 w-full animate-pulse bg-muted rounded" />
                 ) : user?.id ? (
-                  <UserDropdown
-                    user={user as User & { id: string }}
-                    onLogout={handleLogout}
-                    isLoggingOut={isLoggingOut}
-                  />
+                  <div className="flex flex-col gap-3">
+                    {/* User summary card for mobile view */}
+                    <div className="flex items-center gap-3 rounded-lg border border-border bg-card px-3 py-2">
+                      <Avatar className="h-10 w-10">
+                        {user.avatar?.url && (
+                          <AvatarImage
+                            src={user.avatar.url}
+                            alt={`${user.name || user.username || user.email || "User"} avatar`}
+                            className="object-cover"
+                          />
+                        )}
+                        <AvatarFallback className="bg-purple-500/20 text-purple-600 dark:bg-purple-400/20 dark:text-purple-300">
+                          {(user.name ||
+                            user.username ||
+                            user.email?.split("@")[0] ||
+                            "US"
+                          )
+                            .slice(0, 2)
+                            .toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-foreground">
+                          {user.name ||
+                            user.username ||
+                            user.email?.split("@")[0] ||
+                            "User"}
+                        </span>
+                        {user.email && (
+                          <span className="text-xs text-muted-foreground">
+                            {user.email}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Primary account actions optimized for touch on mobile */}
+                    <div className="flex flex-col gap-2">
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start gap-2"
+                        onClick={() => handleNavigate("/write")}
+                      >
+                        <PenTool className="h-4 w-4" />
+                        <span>{t("userDropdownWrite", "user")}</span>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start gap-2"
+                        onClick={() => handleNavigate(`/user/${user.id}`)}
+                      >
+                        <UserIcon className="h-4 w-4" />
+                        <span>{t("userDropdownProfile", "user")}</span>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start gap-2"
+                        onClick={() => handleNavigate("/settings")}
+                      >
+                        <Settings className="h-4 w-4" />
+                        <span>{t("userDropdownSettings", "user")}</span>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start gap-2 text-red-600 hover:text-red-600 hover:bg-red-500/5 dark:text-red-400 dark:hover:text-red-400"
+                        onClick={() => {
+                          handleLogout();
+                          handleCloseMenu();
+                        }}
+                        disabled={isLoggingOut}
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <span>
+                          {isLoggingOut
+                            ? t("userDropdownLoggingOut", "user")
+                            : t("userDropdownLogout", "user")}
+                        </span>
+                      </Button>
+                    </div>
+                  </div>
                 ) : (
                   <Button
                     className="w-full"
