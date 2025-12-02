@@ -4,9 +4,7 @@ import {
   getAuth,
   GithubAuthProvider,
   GoogleAuthProvider,
-  getRedirectResult,
   signInWithPopup,
-  signInWithRedirect,
   signOut,
   TwitterAuthProvider,
 } from "firebase/auth";
@@ -50,62 +48,14 @@ xProvider.addScope("users.read");
 
 /**
  * Sign in with Google using Firebase Auth
- * Uses popup on desktop, redirect on mobile or when popup is blocked
+ * Uses popup flow only
  * @returns Promise<FirebaseUser> - The authenticated Firebase user
  */
 export const signInWithGoogle = async (): Promise<FirebaseUser> => {
-  // Check if we should use redirect (mobile or popup likely blocked)
-  const { isMobileDevice, isPopupLikelyBlocked } = await import(
-    "@/lib/utils/device"
-  );
-  const useRedirect = isMobileDevice() || isPopupLikelyBlocked();
-
-  if (useRedirect) {
-    // Use redirect flow for mobile devices
-    try {
-      await signInWithRedirect(auth, googleProvider);
-      // This will redirect the page, so we won't reach here
-      // The result will be handled in the callback page
-      throw new Error("Redirect initiated");
-    } catch (error) {
-      // If it's the redirect error, that's expected
-      if (error instanceof Error && error.message === "Redirect initiated") {
-        throw error;
-      }
-      console.error("Error signing in with Google (redirect):", error);
-      throw error;
-    }
-  }
-
-  // Use popup flow for desktop
   try {
     const result = await signInWithPopup(auth, googleProvider);
     return result.user;
   } catch (error: unknown) {
-    // If popup is blocked, fallback to redirect
-    if (
-      error &&
-      typeof error === "object" &&
-      "code" in error &&
-      (error.code === "auth/popup-blocked" ||
-        error.code === "auth/popup-closed-by-user")
-    ) {
-      console.log("Popup blocked or closed, falling back to redirect...");
-      try {
-        await signInWithRedirect(auth, googleProvider);
-        // This will redirect the page
-        throw new Error("Redirect initiated");
-      } catch (redirectError) {
-        if (
-          redirectError instanceof Error &&
-          redirectError.message === "Redirect initiated"
-        ) {
-          throw redirectError;
-        }
-        console.error("Error with redirect fallback:", redirectError);
-        throw redirectError;
-      }
-    }
     console.error("Error signing in with Google:", error);
     throw error;
   }
@@ -113,59 +63,14 @@ export const signInWithGoogle = async (): Promise<FirebaseUser> => {
 
 /**
  * Sign in with GitHub using Firebase Auth
- * Uses popup on desktop, redirect on mobile or when popup is blocked
+ * Uses popup flow only
  * @returns Promise<FirebaseUser> - The authenticated Firebase user
  */
 export const signInWithGithub = async (): Promise<FirebaseUser> => {
-  // Check if we should use redirect (mobile or popup likely blocked)
-  const { isMobileDevice, isPopupLikelyBlocked } = await import(
-    "@/lib/utils/device"
-  );
-  const useRedirect = isMobileDevice() || isPopupLikelyBlocked();
-
-  if (useRedirect) {
-    // Use redirect flow for mobile devices
-    try {
-      await signInWithRedirect(auth, githubProvider);
-      // This will redirect the page, so we won't reach here
-      throw new Error("Redirect initiated");
-    } catch (error) {
-      if (error instanceof Error && error.message === "Redirect initiated") {
-        throw error;
-      }
-      console.error("Error signing in with GitHub (redirect):", error);
-      throw error;
-    }
-  }
-
-  // Use popup flow for desktop
   try {
     const result = await signInWithPopup(auth, githubProvider);
     return result.user;
   } catch (error: unknown) {
-    // If popup is blocked, fallback to redirect
-    if (
-      error &&
-      typeof error === "object" &&
-      "code" in error &&
-      (error.code === "auth/popup-blocked" ||
-        error.code === "auth/popup-closed-by-user")
-    ) {
-      console.log("Popup blocked or closed, falling back to redirect...");
-      try {
-        await signInWithRedirect(auth, githubProvider);
-        throw new Error("Redirect initiated");
-      } catch (redirectError) {
-        if (
-          redirectError instanceof Error &&
-          redirectError.message === "Redirect initiated"
-        ) {
-          throw redirectError;
-        }
-        console.error("Error with redirect fallback:", redirectError);
-        throw redirectError;
-      }
-    }
     console.error("Error signing in with GitHub:", error);
     throw error;
   }
@@ -173,82 +78,18 @@ export const signInWithGithub = async (): Promise<FirebaseUser> => {
 
 /**
  * Sign in with X (Twitter) using Firebase Auth
- * Uses popup on desktop, redirect on mobile or when popup is blocked
+ * Uses popup flow only
  * @returns Promise<FirebaseUser> - The authenticated Firebase user
  */
 export const signInWithX = async (): Promise<FirebaseUser> => {
-  // Check if we should use redirect (mobile or popup likely blocked)
-  const { isMobileDevice, isPopupLikelyBlocked } = await import(
-    "@/lib/utils/device"
-  );
-  const useRedirect = isMobileDevice() || isPopupLikelyBlocked();
-
-  if (useRedirect) {
-    // Use redirect flow for mobile devices
-    try {
-      await signInWithRedirect(auth, xProvider);
-      // This will redirect the page, so we won't reach here
-      throw new Error("Redirect initiated");
-    } catch (error) {
-      if (error instanceof Error && error.message === "Redirect initiated") {
-        throw error;
-      }
-      console.error("Error signing in with X (redirect):", error);
-      throw error;
-    }
-  }
-
-  // Use popup flow for desktop
   try {
     const result = await signInWithPopup(auth, xProvider);
     return result.user;
   } catch (error: unknown) {
-    // If popup is blocked, fallback to redirect
-    if (
-      error &&
-      typeof error === "object" &&
-      "code" in error &&
-      (error.code === "auth/popup-blocked" ||
-        error.code === "auth/popup-closed-by-user")
-    ) {
-      console.log("Popup blocked or closed, falling back to redirect...");
-      try {
-        await signInWithRedirect(auth, xProvider);
-        throw new Error("Redirect initiated");
-      } catch (redirectError) {
-        if (
-          redirectError instanceof Error &&
-          redirectError.message === "Redirect initiated"
-        ) {
-          throw redirectError;
-        }
-        console.error("Error with redirect fallback:", redirectError);
-        throw redirectError;
-      }
-    }
     console.error("Error signing in with X:", error);
     throw error;
   }
 };
-
-/**
- * Get the result of a redirect-based sign-in
- * Call this on the OAuth callback page to complete the authentication
- * @returns Promise<FirebaseUser | null> - The authenticated Firebase user, or null if no redirect result
- */
-export const getOAuthRedirectResult =
-  async (): Promise<FirebaseUser | null> => {
-    try {
-      const result = await getRedirectResult(auth);
-      if (result) {
-        return result.user;
-      }
-      return null;
-    } catch (error) {
-      console.error("Error getting redirect result:", error);
-      throw error;
-    }
-  };
 
 /**
  * Sign out from Firebase Auth

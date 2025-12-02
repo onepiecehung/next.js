@@ -291,12 +291,6 @@ function handleOAuthError(
   provider: string,
   t: (key: string, ns?: string) => string,
 ) {
-  // Check if this is a redirect initiation (not an actual error)
-  if (error instanceof Error && error.message === "Redirect initiated") {
-    // Redirect was initiated - this is expected behavior, don't show error
-    return;
-  }
-
   if (error && typeof error === "object" && "code" in error) {
     const firebaseError = error as { code: string; message: string };
 
@@ -307,8 +301,10 @@ function handleOAuthError(
         return;
 
       case "auth/popup-blocked":
-        // Popup blocked - redirect flow will be used automatically
-        // Don't show error, redirect is already initiated
+        toast.error(
+          t("popupBlocked", "auth") ||
+            "Popup was blocked. Please allow popups and try again.",
+        );
         return;
 
       case "auth/unauthorized-domain":
