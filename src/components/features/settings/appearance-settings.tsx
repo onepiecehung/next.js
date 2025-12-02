@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
-
 import { useI18n } from "@/components/providers/i18n-provider";
-import { Button } from "@/components/ui/core/button";
 import {
   Card,
   CardContent,
@@ -15,7 +12,6 @@ import { Separator } from "@/components/ui/layout/separator";
 import { LanguageSwitcher } from "@/components/ui/navigation/language-switcher";
 import { ThemeSelector } from "@/components/ui/theme/theme-selector";
 import { ThemeToggle } from "@/components/ui/theme/theme-toggle";
-import { useAppearanceSettings } from "@/hooks/settings";
 
 /**
  * Appearance Settings Component
@@ -23,21 +19,6 @@ import { useAppearanceSettings } from "@/hooks/settings";
  */
 export function AppearanceSettings() {
   const { t } = useI18n();
-  const { appearance, updateAppearance, isUpdating } = useAppearanceSettings();
-  const [previewTheme, setPreviewTheme] = useState<string | null>(null);
-
-  const handleThemeConfirm = (theme: string) => {
-    updateAppearance({ theme });
-    setPreviewTheme(null);
-  };
-
-  const handleThemeCancel = () => {
-    // Revert to current theme
-    if (appearance?.theme) {
-      document.documentElement.setAttribute("data-theme", appearance.theme);
-    }
-    setPreviewTheme(null);
-  };
 
   return (
     <div className="space-y-6">
@@ -71,21 +52,6 @@ export function AppearanceSettings() {
               {t("appearanceThemeColor", "settings")}
             </h4>
             <ThemeSelector />
-
-            {previewTheme && previewTheme !== appearance?.theme && (
-              <div className="mt-4 flex gap-2">
-                <Button
-                  size="sm"
-                  onClick={() => handleThemeConfirm(previewTheme)}
-                  disabled={isUpdating}
-                >
-                  {t("appearanceApplyTheme", "settings")}
-                </Button>
-                <Button size="sm" variant="outline" onClick={handleThemeCancel}>
-                  {t("appearanceCancelTheme", "settings")}
-                </Button>
-              </div>
-            )}
           </div>
         </CardContent>
       </Card>
