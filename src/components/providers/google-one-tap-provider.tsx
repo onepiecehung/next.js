@@ -8,20 +8,20 @@ import { useEffect, useState } from "react";
 
 /**
  * Global Google One Tap Provider
- * 
+ *
  * Shows Google One Tap on DESKTOP ONLY, except:
  * - When user is already authenticated
  * - On auth pages (login, register) - to avoid duplicate prompts
  * - On mobile devices - FedCM API not fully supported, causes console errors
  * - On pages where it might be intrusive (optional)
- * 
+ *
  * Features:
  * - Auto-hide when user logs in
  * - Auto-show when user logs out
  * - Smart page detection
  * - Configurable excluded paths
  * - Mobile detection to prevent FedCM errors
- * 
+ *
  * Usage:
  * Add to app/layout.tsx inside providers:
  * ```tsx
@@ -40,9 +40,9 @@ export default function GoogleOneTapProvider() {
    * Customize this list based on your needs
    */
   const excludedPaths = [
-    "/auth/login",      // Login page already has One Tap
-    "/auth/register",   // Register page
-    "/auth/callback",   // OAuth callback
+    "/auth/login", // Login page already has One Tap
+    "/auth/register", // Register page
+    "/auth/callback", // OAuth callback
     // Add more paths as needed:
     // "/checkout",     // Don't interrupt checkout
     // "/payment",      // Don't interrupt payment
@@ -55,12 +55,16 @@ export default function GoogleOneTapProvider() {
   useEffect(() => {
     const checkMobile = () => {
       const userAgent = navigator.userAgent;
-      const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-      const isMobileDevice = mobileRegex.test(userAgent) || window.innerWidth < 768;
+      const mobileRegex =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+      const isMobileDevice =
+        mobileRegex.test(userAgent) || window.innerWidth < 768;
       setIsMobile(isMobileDevice);
-      
+
       if (isMobileDevice) {
-        console.log("Google One Tap: Mobile device detected - One Tap disabled to prevent FedCM errors");
+        console.log(
+          "Google One Tap: Mobile device detected - One Tap disabled to prevent FedCM errors",
+        );
       }
     };
 
@@ -84,9 +88,7 @@ export default function GoogleOneTapProvider() {
     }
 
     // Don't show on excluded paths
-    const isExcluded = excludedPaths.some((path) =>
-      pathname?.startsWith(path)
-    );
+    const isExcluded = excludedPaths.some((path) => pathname?.startsWith(path));
 
     if (isExcluded) {
       setShouldShow(false);
@@ -130,4 +132,3 @@ export default function GoogleOneTapProvider() {
     />
   );
 }
-

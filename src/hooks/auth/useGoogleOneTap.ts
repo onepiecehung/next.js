@@ -190,11 +190,11 @@ export function useGoogleOneTap({
       // Detect if on mobile device
       const isMobile =
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
+          navigator.userAgent,
         ) || window.innerWidth < 768;
 
       console.log(
-        `Google One Tap: Device type - ${isMobile ? "Mobile" : "Desktop"}`
+        `Google One Tap: Device type - ${isMobile ? "Mobile" : "Desktop"}`,
       );
 
       // Initialize Google One Tap with mobile-optimized settings
@@ -218,7 +218,10 @@ export function useGoogleOneTap({
         if (notification.isNotDisplayed()) {
           const reason = notification.getNotDisplayedReason();
           // Suppress common mobile/FedCM errors in console
-          if (reason !== "suppressed_by_user" && reason !== "opt_out_or_no_session") {
+          if (
+            reason !== "suppressed_by_user" &&
+            reason !== "opt_out_or_no_session"
+          ) {
             console.log("Google One Tap: Not displayed -", reason);
           }
         } else if (notification.isSkippedMoment()) {
@@ -235,11 +238,13 @@ export function useGoogleOneTap({
       });
     } catch (error) {
       // Suppress FedCM-related errors (common on mobile/unsupported browsers)
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      const isFedCMError = errorMessage.includes("FedCM") || 
-                           errorMessage.includes("AbortError") ||
-                           errorMessage.includes("signal is aborted");
-      
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      const isFedCMError =
+        errorMessage.includes("FedCM") ||
+        errorMessage.includes("AbortError") ||
+        errorMessage.includes("signal is aborted");
+
       if (!isFedCMError) {
         console.error("Google One Tap: Initialization failed", error);
         toast.error(
@@ -248,7 +253,9 @@ export function useGoogleOneTap({
         );
       } else {
         // Just log FedCM errors quietly (they're expected on mobile)
-        console.log("Google One Tap: FedCM not available (expected on mobile devices)");
+        console.log(
+          "Google One Tap: FedCM not available (expected on mobile devices)",
+        );
       }
     }
   }, [handleCredentialResponse, t]);

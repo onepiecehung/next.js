@@ -6,11 +6,11 @@ import { useEffect, useState } from "react";
 
 /**
  * Mobile One Tap Test Page
- * 
+ *
  * Use this page to debug Google One Tap on mobile devices
- * 
+ *
  * Access: /test-mobile-one-tap
- * 
+ *
  * Features:
  * - Device detection
  * - SDK status check
@@ -28,7 +28,10 @@ export default function TestMobileOneTapPage() {
     platform: "",
   });
 
-  const addLog = (message: string, type: "info" | "success" | "error" = "info") => {
+  const addLog = (
+    message: string,
+    type: "info" | "success" | "error" = "info",
+  ) => {
     const timestamp = new Date().toLocaleTimeString();
     const icon = type === "success" ? "✅" : type === "error" ? "❌" : "ℹ️";
     setLogs((prev) => [...prev, `[${timestamp}] ${icon} ${message}`]);
@@ -38,7 +41,7 @@ export default function TestMobileOneTapPage() {
     // Device detection
     const isMobile =
       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
+        navigator.userAgent,
       );
     const screenSize = `${window.innerWidth}x${window.innerHeight}`;
     const userAgent = navigator.userAgent;
@@ -102,7 +105,7 @@ export default function TestMobileOneTapPage() {
         } else if (notification.isDismissedMoment()) {
           addLog(
             `One Tap dismissed: ${notification.getDismissedReason()}`,
-            "info"
+            "info",
           );
         }
       });
@@ -121,9 +124,7 @@ export default function TestMobileOneTapPage() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-2">
-            📱 Mobile One Tap Test
-          </h1>
+          <h1 className="text-3xl font-bold mb-2">📱 Mobile One Tap Test</h1>
           <p className="text-muted-foreground">
             Debug Google One Tap on mobile devices
           </p>
@@ -148,9 +149,7 @@ export default function TestMobileOneTapPage() {
               <p className="font-mono">{deviceInfo.platform}</p>
             </div>
             <div className="md:col-span-2">
-              <span className="text-sm text-muted-foreground">
-                User Agent:
-              </span>
+              <span className="text-sm text-muted-foreground">User Agent:</span>
               <p className="font-mono text-xs break-all">
                 {deviceInfo.userAgent}
               </p>
@@ -272,4 +271,3 @@ export default function TestMobileOneTapPage() {
     </div>
   );
 }
-
