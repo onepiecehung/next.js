@@ -1,11 +1,14 @@
-import { SiteNav, SiteFooter } from "@/components/features/navigation";
-import AuthProvider from "@/components/providers/auth-provider";
-import { I18nProvider } from "@/components/providers/i18n-provider";
-import { LoadingProvider } from "@/components/providers/loading-provider";
-import { NoSSR } from "@/components/providers/no-ssr";
-import RateLimitProvider from "@/components/providers/rate-limit-provider";
-import { ReactQueryProvider } from "@/components/providers/react-query-provider";
-import { ThemeProvider } from "@/components/providers/theme-provider";
+import { SiteFooter, SiteNav } from "@/components/features/navigation";
+import {
+  AuthProvider,
+  GoogleOneTapProvider,
+  I18nProvider,
+  LoadingProvider,
+  NoSSR,
+  RateLimitProvider,
+  ReactQueryProvider,
+  ThemeProvider,
+} from "@/components/providers";
 import { Toaster } from "@/components/ui";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -33,6 +36,40 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
+      <head>
+        {/* Suppress FedCM experimental errors in console */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                if (typeof window === 'undefined') return;
+                const originalError = console.error;
+                const originalWarn = console.warn;
+                console.error = function(...args) {
+                  const msg = args[0]?.toString() || '';
+                  if (msg.includes('FedCM') || msg.includes('GSI_LOGGER') || msg.includes('AbortError: signal is aborted')) {
+                    return;
+                  }
+                  originalError.apply(console, args);
+                };
+                console.warn = function(...args) {
+                  const msg = args[0]?.toString() || '';
+                  if (msg.includes('FedCM') || msg.includes('GSI_LOGGER')) {
+                    return;
+                  }
+                  originalWarn.apply(console, args);
+                };
+              })();
+            `,
+          }}
+        />
+        {/* Google Identity Services - Required for Google One Tap */}
+        <script
+          src="https://accounts.google.com/gsi/client"
+          async
+          defer
+        ></script>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
         suppressHydrationWarning={true}
@@ -44,6 +81,8 @@ export default function RootLayout({
                 <AuthProvider>
                   <LoadingProvider>
                     <RateLimitProvider>
+                      {/* Global Google One Tap - Shows on all pages when not authenticated */}
+                      <GoogleOneTapProvider />
                       <SiteNav />
                       {children}
                       <SiteFooter />

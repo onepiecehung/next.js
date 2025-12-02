@@ -186,6 +186,21 @@ export async function loginWithGoogleAction(): Promise<User> {
 }
 
 /**
+ * Firebase Google One Tap login action
+ * Used when user authenticates via Google One Tap
+ * @param idToken - Firebase ID token from Google credential
+ */
+export async function loginWithGoogleOneTapAction(idToken: string): Promise<{
+  user: User;
+  token: { accessToken: string; refreshToken?: string };
+}> {
+  // Get user data and token from backend using Firebase ID token
+  const { user, token } = await AuthAPI.firebaseLogin({ idToken });
+
+  return { user, token };
+}
+
+/**
  * Firebase GitHub login action
  */
 export async function loginWithGithubAction(): Promise<User> {
