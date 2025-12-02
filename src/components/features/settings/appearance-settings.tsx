@@ -26,12 +26,6 @@ export function AppearanceSettings() {
   const { appearance, updateAppearance, isUpdating } = useAppearanceSettings();
   const [previewTheme, setPreviewTheme] = useState<string | null>(null);
 
-  const handleThemeChange = (theme: string) => {
-    setPreviewTheme(theme);
-    // Apply theme immediately for preview
-    document.documentElement.setAttribute("data-theme", theme);
-  };
-
   const handleThemeConfirm = (theme: string) => {
     updateAppearance({ theme });
     setPreviewTheme(null);

@@ -155,7 +155,8 @@ export default function OTPLoginForm({ onBack, onSuccess }: OTPLoginFormProps) {
       });
       return () => cancelAnimationFrame(timer);
     }
-  }, [otpCode, isLoggingIn, hasSubmitted]); // Remove otpForm and handleOTPSubmit from dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [otpCode, isLoggingIn, hasSubmitted]); // Intentionally exclude otpForm and handleOTPSubmit to avoid infinite re-renders
 
   // Handle email submission (Step 1)
   const handleEmailSubmit = async (values: EmailFormValues) => {

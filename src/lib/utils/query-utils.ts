@@ -52,7 +52,7 @@ export const createOptimisticUpdate = <T>(
   updater: (oldData: T | undefined) => T,
 ) => {
   return {
-    onMutate: async (variables: unknown) => {
+    onMutate: async () => {
       // Cancel any outgoing refetches
       await queryClient.cancelQueries({ queryKey });
 

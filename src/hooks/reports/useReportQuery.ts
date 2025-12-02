@@ -8,9 +8,6 @@ import type {
   QueryReportsDto,
   UpdateReportDto,
   ResolveReportDto,
-  AssignReportDto,
-  DismissReportDto,
-  EscalateReportDto,
   MergeReportsDto,
 } from "@/lib/api/reports";
 import { queryKeys } from "@/lib/utils/query-keys";
@@ -145,7 +142,7 @@ export function useCreateReport() {
         queryKey: queryKeys.reports.all(),
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.reports.my({}),
+        queryKey: queryKeys.reports.my(),
       });
       queryClient.invalidateQueries({
         queryKey: queryKeys.reports.forContent(
@@ -154,7 +151,7 @@ export function useCreateReport() {
         ),
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.reports.stats({}),
+        queryKey: queryKeys.reports.stats(),
       });
       toast.success(
         t("reportCreated", "reports") || "Report created successfully",
@@ -229,7 +226,7 @@ export function useAssignReport() {
         queryKey: queryKeys.reports.all(),
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.reports.assigned({}),
+        queryKey: queryKeys.reports.assigned(),
       });
       toast.success(
         t("reportAssigned", "reports") || "Report assigned successfully",
@@ -268,7 +265,7 @@ export function useResolveReport() {
         queryKey: queryKeys.reports.all(),
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.reports.stats({}),
+        queryKey: queryKeys.reports.stats(),
       });
       toast.success(
         t("reportResolved", "reports") || "Report resolved successfully",
@@ -302,7 +299,7 @@ export function useDismissReport() {
         queryKey: queryKeys.reports.all(),
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.reports.stats({}),
+        queryKey: queryKeys.reports.stats(),
       });
       toast.success(
         t("reportDismissed", "reports") || "Report dismissed successfully",
@@ -336,7 +333,7 @@ export function useEscalateReport() {
         queryKey: queryKeys.reports.all(),
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.reports.stats({}),
+        queryKey: queryKeys.reports.stats(),
       });
       toast.success(
         t("reportEscalated", "reports") || "Report escalated successfully",
@@ -366,7 +363,7 @@ export function useMergeReports() {
         queryKey: queryKeys.reports.all(),
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.reports.stats({}),
+        queryKey: queryKeys.reports.stats(),
       });
       toast.success(
         t("reportsMerged", "reports") || "Reports merged successfully",

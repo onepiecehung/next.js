@@ -2,25 +2,21 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { useI18n } from "@/components/providers/i18n-provider";
-import { SeriesAPI } from "@/lib/api/series";
+import { SeriesAPI, type QuerySeriesDto } from "@/lib/api/series";
+import type { SeriesSeason } from "@/lib/constants/series.constants";
 import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
 import type {
-  SeriesType,
-  SeriesFormat,
-  SeriesSeason,
-} from "@/lib/constants/series.constants";
-import type {
-  LatestUpdateItem,
-  Series,
-  PopularSeries,
   BackendSeries,
+  LatestUpdateItem,
+  PopularSeries,
+  Series,
 } from "@/lib/interface/series.interface";
+import { queryKeys } from "@/lib/utils/query-keys";
 import {
   transformBackendSeries,
   transformBackendSeriesList,
   transformToPopularSeries,
 } from "@/lib/utils/series-utils";
-import { queryKeys } from "@/lib/utils/query-keys";
 
 /**
  * Hook for fetching popular series titles
@@ -38,7 +34,7 @@ export function usePopularSeries(enabled?: boolean) {
         order: "DESC",
         type: SERIES_CONSTANTS.TYPE.MANGA, // For homepage, show series
       });
-      const backendSeries = response.data.result as BackendSeries[];
+      const backendSeries = response.data.result as unknown as BackendSeries[];
       return backendSeries.map(transformToPopularSeries);
     },
     enabled: enabled !== undefined ? enabled : true,
@@ -65,7 +61,7 @@ export function useLatestUpdates(enabled?: boolean) {
         order: "DESC",
         type: SERIES_CONSTANTS.TYPE.MANGA,
       });
-      const backendSeries = response.data.result as BackendSeries[];
+      const backendSeries = response.data.result as unknown as BackendSeries[];
 
       // Transform to LatestUpdateItem format
       // Note: This is a simplified transformation
@@ -118,7 +114,7 @@ export function useRecommendedSeries(enabled?: boolean) {
         type: SERIES_CONSTANTS.TYPE.MANGA,
         minScore: 70, // Minimum score of 70
       });
-      const backendSeries = response.data.result as BackendSeries[];
+      const backendSeries = response.data.result as unknown as BackendSeries[];
       return transformBackendSeriesList(backendSeries);
     },
     enabled: enabled !== undefined ? enabled : true,
@@ -144,7 +140,7 @@ export function useSelfPublishedSeries(enabled?: boolean) {
         type: SERIES_CONSTANTS.TYPE.MANGA,
         isLicensed: false,
       });
-      const backendSeries = response.data.result as BackendSeries[];
+      const backendSeries = response.data.result as unknown as BackendSeries[];
       return transformBackendSeriesList(backendSeries);
     },
     enabled: enabled !== undefined ? enabled : true,
@@ -169,7 +165,7 @@ export function useFeaturedSeries(enabled?: boolean) {
         order: "DESC",
         type: SERIES_CONSTANTS.TYPE.MANGA,
       });
-      const backendSeries = response.data.result as BackendSeries[];
+      const backendSeries = response.data.result as unknown as BackendSeries[];
       return transformBackendSeriesList(backendSeries);
     },
     enabled: enabled !== undefined ? enabled : true,
@@ -189,7 +185,7 @@ export function useSeasonalSeries(enabled?: boolean) {
   const currentMonth = currentDate.getMonth();
 
   // Determine current season
-  let season: string;
+  let season: SeriesSeason;
   if (currentMonth >= 2 && currentMonth <= 4)
     season = SERIES_CONSTANTS.SEASON.SPRING;
   else if (currentMonth >= 5 && currentMonth <= 7)
@@ -210,7 +206,7 @@ export function useSeasonalSeries(enabled?: boolean) {
         season,
         seasonYear: currentYear,
       });
-      const backendSeries = response.data.result as BackendSeries[];
+      const backendSeries = response.data.result as unknown as BackendSeries[];
       return transformBackendSeriesList(backendSeries);
     },
     enabled: enabled !== undefined ? enabled : true,
@@ -235,7 +231,7 @@ export function useRecentlyAddedSeries(enabled?: boolean) {
         order: "DESC",
         type: SERIES_CONSTANTS.TYPE.MANGA,
       });
-      const backendSeries = response.data.result as BackendSeries[];
+      const backendSeries = response.data.result as unknown as BackendSeries[];
       return transformBackendSeriesList(backendSeries);
     },
     enabled: enabled !== undefined ? enabled : true,
@@ -252,7 +248,7 @@ export function useSeries(seriesId: string) {
     queryKey: queryKeys.series.detail(seriesId),
     queryFn: async () => {
       const backendSeries = await SeriesAPI.getSeries(seriesId);
-      return transformBackendSeries(backendSeries as BackendSeries);
+      return transformBackendSeries(backendSeries as unknown as BackendSeries);
     },
     enabled: !!seriesId && seriesId !== "undefined" && seriesId !== "null",
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -270,7 +266,7 @@ export function useSeriesFull(seriesId: string) {
     queryKey: [...queryKeys.series.detail(seriesId), "full"],
     queryFn: async () => {
       const backendSeries = await SeriesAPI.getSeries(seriesId);
-      return backendSeries as BackendSeries;
+      return backendSeries as unknown as BackendSeries;
     },
     enabled: !!seriesId && seriesId !== "undefined" && seriesId !== "null",
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -282,25 +278,12 @@ export function useSeriesFull(seriesId: string) {
 /**
  * Hook for fetching series list with filters
  */
-export function useSeriesList(params?: {
-  page?: number;
-  limit?: number;
-  sortBy?: string;
-  order?: "ASC" | "DESC";
-  type?: SeriesType;
-  format?: SeriesFormat;
-  season?: SeriesSeason;
-  seasonYear?: number;
-  genres?: string[];
-  minScore?: number;
-  maxScore?: number;
-  query?: string;
-}) {
+export function useSeriesList(params?: QuerySeriesDto) {
   return useQuery({
     queryKey: queryKeys.series.list(params),
     queryFn: async () => {
       const response = await SeriesAPI.getSeriesOffset(params);
-      const backendSeries = response.data.result as BackendSeries[];
+      const backendSeries = response.data.result as unknown as BackendSeries[];
       return {
         series: transformBackendSeriesList(backendSeries),
         metaData: response.data.metaData,

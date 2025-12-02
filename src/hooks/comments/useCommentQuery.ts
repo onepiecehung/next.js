@@ -5,7 +5,6 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { CommentsAPI } from "@/lib/api/comments";
 import type {
   BatchCommentsDto,
-  Comment,
   CreateCommentDto,
   QueryCommentsDto,
   UpdateCommentDto,
@@ -78,7 +77,7 @@ export function useCommentsBatch(data: BatchCommentsDto) {
   return useQuery({
     queryKey: queryKeys.comments.batch(data),
     queryFn: () => CommentsAPI.getCommentsBatch(data),
-    enabled: data.requests.length > 0,
+    enabled: data.subjectIds.length > 0,
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 }
@@ -230,7 +229,7 @@ export function usePinComment() {
       });
 
       toast.success(
-        pinned
+        variables.pinned
           ? t("commentPinned", "comments") || "Comment pinned"
           : t("commentUnpinned", "comments") || "Comment unpinned",
       );

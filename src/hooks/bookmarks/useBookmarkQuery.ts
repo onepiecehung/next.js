@@ -4,8 +4,6 @@ import { toast } from "sonner";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { BookmarksAPI } from "@/lib/api/bookmarks";
 import type {
-  Bookmark,
-  BookmarkFolder,
   CreateBookmarkDto,
   CreateBookmarkFolderDto,
   QueryBookmarkFoldersDto,

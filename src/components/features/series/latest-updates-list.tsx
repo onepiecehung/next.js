@@ -120,8 +120,6 @@ function LatestUpdateItemCard({ item, t }: LatestUpdateItemCardProps) {
               : item.tags && item.tags.length > 0
                 ? item.tags
                 : [];
-          const totalCount =
-            (item.genres?.length || 0) + (item.tags?.length || 0);
 
           if (displayItems.length === 0) return null;
 

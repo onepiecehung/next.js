@@ -5,8 +5,8 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { useAuthRedirect } from "@/hooks/auth/useAuthQuery";
 import { authLoadingAtom, currentUserAtom } from "@/lib/auth";
 import { useAtom } from "jotai";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 /**
  * Login Page Component
@@ -18,13 +18,6 @@ export default function LoginPage() {
   const [user] = useAtom(currentUserAtom);
   const [authLoading] = useAtom(authLoadingAtom);
   const [loginMode, setLoginMode] = useState<"password" | "otp">("password");
-  const [isMounted, setIsMounted] = useState(false);
-  const searchParams = useSearchParams();
-
-  // Hydration protection: only access searchParams after mount
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   // Redirect if already authenticated
   useAuthRedirect();
