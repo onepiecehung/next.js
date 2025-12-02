@@ -54,7 +54,10 @@ export default function SiteNav() {
   };
 
   const handleLoginClick = () => {
-    router.push("/auth/login");
+    // Get current path to redirect back after login
+    const currentPath = window.location.pathname;
+    const loginUrl = `/auth/login?redirect=${encodeURIComponent(currentPath)}`;
+    router.push(loginUrl);
     handleCloseMenu();
   };
 
