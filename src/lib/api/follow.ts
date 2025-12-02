@@ -110,7 +110,9 @@ export class FollowAPI {
    */
   static async followUser(
     targetUserId: string,
-  ): Promise<ApiResponse<{ success: boolean; status: string; message: string }>> {
+  ): Promise<
+    ApiResponse<{ success: boolean; status: string; message: string }>
+  > {
     const response = await http.post<
       ApiResponse<{ success: boolean; status: string; message: string }>
     >(`${this.BASE_URL}/${targetUserId}`);
@@ -122,7 +124,9 @@ export class FollowAPI {
    */
   static async unfollowUser(
     targetUserId: string,
-  ): Promise<ApiResponse<{ success: boolean; status: string; message: string }>> {
+  ): Promise<
+    ApiResponse<{ success: boolean; status: string; message: string }>
+  > {
     const response = await http.delete<
       ApiResponse<{ success: boolean; status: string; message: string }>
     >(`${this.BASE_URL}/${targetUserId}`);
@@ -235,7 +239,9 @@ export class FollowAPI {
   static async importBitset(
     userId: string,
     data: BitsetImportDto,
-  ): Promise<ApiResponse<{ success: boolean; count: number; message: string }>> {
+  ): Promise<
+    ApiResponse<{ success: boolean; count: number; message: string }>
+  > {
     const response = await http.post<
       ApiResponse<{ success: boolean; count: number; message: string }>
     >(`${this.BASE_URL}/${userId}/import`, data);
@@ -248,7 +254,9 @@ export class FollowAPI {
   static async rebuildBitset(
     userId: string,
     data?: RebuildDto,
-  ): Promise<ApiResponse<{ success: boolean; count: number; message: string }>> {
+  ): Promise<
+    ApiResponse<{ success: boolean; count: number; message: string }>
+  > {
     const response = await http.post<
       ApiResponse<{ success: boolean; count: number; message: string }>
     >(`${this.BASE_URL}/${userId}/rebuild`, data);
@@ -312,4 +320,3 @@ export class FollowAPI {
     return response.data;
   }
 }
-

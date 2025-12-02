@@ -3,10 +3,7 @@
 import { ArrowRight, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-import {
-  LatestUpdatesList,
-  SearchBar,
-} from "@/components/features/series";
+import { LatestUpdatesList, SearchBar } from "@/components/features/series";
 import { SeriesCard } from "@/components/features/series/series-card";
 import {
   SeriesHeroCarousel,
@@ -36,25 +33,43 @@ export default function HomePage() {
   // Fetch all series data sequentially from top to bottom
   // Each section loads only after the previous one completes successfully
   // Use isFetched to ensure previous query has actually completed, not just succeeded
-  const { data: popularSeries, isLoading: isLoadingPopular, isFetched: isPopularFetched } =
-    usePopularSeries(true); // First section - always enabled
-  
+  const {
+    data: popularSeries,
+    isLoading: isLoadingPopular,
+    isFetched: isPopularFetched,
+  } = usePopularSeries(true); // First section - always enabled
+
   // Only enable when previous query has been fetched (completed)
-  const { data: latestUpdates, isLoading: isLoadingUpdates, isFetched: isLatestUpdatesFetched } =
-    useLatestUpdates(isPopularFetched && !isLoadingPopular); // Enabled after popular series completes
-  
-  const { data: recommended, isLoading: isLoadingRecommended, isFetched: isRecommendedFetched } =
-    useRecommendedSeries(isLatestUpdatesFetched && !isLoadingUpdates); // Enabled after latest updates completes
-  
-  const { data: selfPublished, isLoading: isLoadingSelfPublished, isFetched: isSelfPublishedFetched } =
-    useSelfPublishedSeries(isRecommendedFetched && !isLoadingRecommended); // Enabled after recommended completes
-  
-  const { data: featured, isLoading: isLoadingFeatured, isFetched: isFeaturedFetched } = 
-    useFeaturedSeries(isSelfPublishedFetched && !isLoadingSelfPublished); // Enabled after self-published completes
-  
-  const { data: seasonal, isLoading: isLoadingSeasonal, isFetched: isSeasonalFetched } = 
-    useSeasonalSeries(isFeaturedFetched && !isLoadingFeatured); // Enabled after featured completes
-  
+  const {
+    data: latestUpdates,
+    isLoading: isLoadingUpdates,
+    isFetched: isLatestUpdatesFetched,
+  } = useLatestUpdates(isPopularFetched && !isLoadingPopular); // Enabled after popular series completes
+
+  const {
+    data: recommended,
+    isLoading: isLoadingRecommended,
+    isFetched: isRecommendedFetched,
+  } = useRecommendedSeries(isLatestUpdatesFetched && !isLoadingUpdates); // Enabled after latest updates completes
+
+  const {
+    data: selfPublished,
+    isLoading: isLoadingSelfPublished,
+    isFetched: isSelfPublishedFetched,
+  } = useSelfPublishedSeries(isRecommendedFetched && !isLoadingRecommended); // Enabled after recommended completes
+
+  const {
+    data: featured,
+    isLoading: isLoadingFeatured,
+    isFetched: isFeaturedFetched,
+  } = useFeaturedSeries(isSelfPublishedFetched && !isLoadingSelfPublished); // Enabled after self-published completes
+
+  const {
+    data: seasonal,
+    isLoading: isLoadingSeasonal,
+    isFetched: isSeasonalFetched,
+  } = useSeasonalSeries(isFeaturedFetched && !isLoadingFeatured); // Enabled after featured completes
+
   const { data: recentlyAdded, isLoading: isLoadingRecentlyAdded } =
     useRecentlyAddedSeries(isSeasonalFetched && !isLoadingSeasonal); // Enabled after seasonal completes
 
@@ -138,7 +153,7 @@ export default function HomePage() {
                       {t("recommended", "series")}
                     </h2>
                     {/* Arrow icon - visible on mobile only, inline with heading */}
-                    <Link 
+                    <Link
                       href="/series/recommended"
                       className="sm:hidden flex items-center justify-center"
                       aria-label={t("viewRecommendedList", "series")}
@@ -147,8 +162,16 @@ export default function HomePage() {
                     </Link>
                   </div>
                   {/* Button with text - visible on desktop only */}
-                  <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
-                    <Link href="/series/recommended" className="flex items-center gap-1.5 sm:gap-2">
+                  <Button
+                    asChild
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs sm:text-sm hidden sm:flex"
+                  >
+                    <Link
+                      href="/series/recommended"
+                      className="flex items-center gap-1.5 sm:gap-2"
+                    >
                       <span>{t("viewRecommendedList", "series")}</span>
                       <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
                     </Link>
@@ -163,7 +186,11 @@ export default function HomePage() {
                       variant="anichart"
                       startDate={series.startDate}
                       totalEpisodes={series.episodes}
-                      genres={series.genres && series.genres.length > 0 ? series.genres : series.tags}
+                      genres={
+                        series.genres && series.genres.length > 0
+                          ? series.genres
+                          : series.tags
+                      }
                       rank={index + 1}
                       studio={undefined}
                     />
@@ -196,7 +223,7 @@ export default function HomePage() {
                       {t("selfPublished", "series")}
                     </h2>
                     {/* Arrow icon - visible on mobile only, inline with heading */}
-                    <Link 
+                    <Link
                       href="/series/self-published"
                       className="sm:hidden flex items-center justify-center"
                       aria-label={t("viewSelfPublishedList", "series")}
@@ -205,8 +232,16 @@ export default function HomePage() {
                     </Link>
                   </div>
                   {/* Button with text - visible on desktop only */}
-                  <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
-                    <Link href="/series/self-published" className="flex items-center gap-1.5 sm:gap-2">
+                  <Button
+                    asChild
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs sm:text-sm hidden sm:flex"
+                  >
+                    <Link
+                      href="/series/self-published"
+                      className="flex items-center gap-1.5 sm:gap-2"
+                    >
                       <span>{t("viewSelfPublishedList", "series")}</span>
                       <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
                     </Link>
@@ -221,7 +256,11 @@ export default function HomePage() {
                       variant="anichart"
                       startDate={series.startDate}
                       totalEpisodes={series.episodes}
-                      genres={series.genres && series.genres.length > 0 ? series.genres : series.tags}
+                      genres={
+                        series.genres && series.genres.length > 0
+                          ? series.genres
+                          : series.tags
+                      }
                       rank={index + 1}
                       studio={undefined}
                     />
@@ -254,7 +293,7 @@ export default function HomePage() {
                       {t("featured", "series")}
                     </h2>
                     {/* Arrow icon - visible on mobile only, inline with heading */}
-                    <Link 
+                    <Link
                       href="/series/featured"
                       className="sm:hidden flex items-center justify-center"
                       aria-label={t("viewFeaturedList", "series")}
@@ -263,8 +302,16 @@ export default function HomePage() {
                     </Link>
                   </div>
                   {/* Button with text - visible on desktop only */}
-                  <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
-                    <Link href="/series/featured" className="flex items-center gap-1.5 sm:gap-2">
+                  <Button
+                    asChild
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs sm:text-sm hidden sm:flex"
+                  >
+                    <Link
+                      href="/series/featured"
+                      className="flex items-center gap-1.5 sm:gap-2"
+                    >
                       <span>{t("viewFeaturedList", "series")}</span>
                       <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
                     </Link>
@@ -279,7 +326,11 @@ export default function HomePage() {
                       variant="anichart"
                       startDate={series.startDate}
                       totalEpisodes={series.episodes}
-                      genres={series.genres && series.genres.length > 0 ? series.genres : series.tags}
+                      genres={
+                        series.genres && series.genres.length > 0
+                          ? series.genres
+                          : series.tags
+                      }
                       rank={index + 1}
                       studio={undefined}
                     />
@@ -312,7 +363,7 @@ export default function HomePage() {
                       {t("seasonalFall2025", "series")}
                     </h2>
                     {/* Arrow icon - visible on mobile only, inline with heading */}
-                    <Link 
+                    <Link
                       href="/series/seasonal"
                       className="sm:hidden flex items-center justify-center"
                       aria-label={t("openListSeasonal", "series")}
@@ -321,8 +372,16 @@ export default function HomePage() {
                     </Link>
                   </div>
                   {/* Button with text - visible on desktop only */}
-                  <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
-                    <Link href="/series/seasonal" className="flex items-center gap-1.5 sm:gap-2">
+                  <Button
+                    asChild
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs sm:text-sm hidden sm:flex"
+                  >
+                    <Link
+                      href="/series/seasonal"
+                      className="flex items-center gap-1.5 sm:gap-2"
+                    >
                       <span>{t("openListSeasonal", "series")}</span>
                       <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
                     </Link>
@@ -337,7 +396,11 @@ export default function HomePage() {
                       variant="anichart"
                       startDate={series.startDate}
                       totalEpisodes={series.episodes}
-                      genres={series.genres && series.genres.length > 0 ? series.genres : series.tags}
+                      genres={
+                        series.genres && series.genres.length > 0
+                          ? series.genres
+                          : series.tags
+                      }
                       rank={index + 1}
                       studio={undefined}
                     />
@@ -370,7 +433,7 @@ export default function HomePage() {
                       {t("recentlyAdded", "series")}
                     </h2>
                     {/* Arrow icon - visible on mobile only, inline with heading */}
-                    <Link 
+                    <Link
                       href="/series/recently-added"
                       className="sm:hidden flex items-center justify-center"
                       aria-label={t("viewRecentlyAdded", "series")}
@@ -379,8 +442,16 @@ export default function HomePage() {
                     </Link>
                   </div>
                   {/* Button with text - visible on desktop only */}
-                  <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm hidden sm:flex">
-                    <Link href="/series/recently-added" className="flex items-center gap-1.5 sm:gap-2">
+                  <Button
+                    asChild
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs sm:text-sm hidden sm:flex"
+                  >
+                    <Link
+                      href="/series/recently-added"
+                      className="flex items-center gap-1.5 sm:gap-2"
+                    >
                       <span>{t("viewRecentlyAdded", "series")}</span>
                       <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
                     </Link>
@@ -388,7 +459,11 @@ export default function HomePage() {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3">
                   {recentlyAdded.slice(0, 12).map((series) => (
-                    <SeriesCard key={series.id} series={series} variant="tiny" />
+                    <SeriesCard
+                      key={series.id}
+                      series={series}
+                      variant="tiny"
+                    />
                   ))}
                 </div>
               </>

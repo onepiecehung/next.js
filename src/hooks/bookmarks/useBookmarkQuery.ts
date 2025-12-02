@@ -58,8 +58,7 @@ export function useCreateBookmark() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateBookmarkDto) =>
-      BookmarksAPI.createBookmark(data),
+    mutationFn: (data: CreateBookmarkDto) => BookmarksAPI.createBookmark(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.bookmarks.all(),
@@ -124,8 +123,7 @@ export function useDeleteBookmark() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (bookmarkId: string) =>
-      BookmarksAPI.removeBookmark(bookmarkId),
+    mutationFn: (bookmarkId: string) => BookmarksAPI.removeBookmark(bookmarkId),
     onSuccess: (_, bookmarkId) => {
       queryClient.removeQueries({
         queryKey: queryKeys.bookmarks.detail(bookmarkId),
@@ -265,4 +263,3 @@ export function useDeleteBookmarkFolder() {
     },
   });
 }
-

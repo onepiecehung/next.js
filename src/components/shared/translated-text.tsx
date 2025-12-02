@@ -30,7 +30,7 @@ function TextSkeleton({
 
 /**
  * Hook to get translated text with loading state
- * 
+ *
  * Returns the translation and a flag indicating if it's still loading.
  * Useful when you need more control over the loading state.
  */
@@ -42,7 +42,7 @@ export function useTranslatedText(
 ) {
   const { t, isLoading, isReady } = useI18n();
   const translation = t(i18nKey, namespace, variables, fallback);
-  
+
   // Consider still loading only when messages are not ready yet
   // Translation not found (translation === key) is NOT a loading state,
   // it's a missing translation error (which should show fallback or key)
@@ -56,34 +56,34 @@ export function useTranslatedText(
 
 /**
  * TranslatedText component with skeleton fallback
- * 
+ *
  * This component automatically shows a skeleton placeholder when translations
  * are still loading, instead of displaying the i18n key. This provides a better
  * UX on slow networks.
- * 
+ *
  * Best practices:
  * - Always provide a fallback text for critical UI elements
  * - Use skeleton for non-critical text that can wait
  * - Skeleton width should approximate the final text width
- * 
+ *
  * @example
  * ```tsx
  * // Basic usage
- * <TranslatedText 
- *   i18nKey="searchPlaceholder" 
+ * <TranslatedText
+ *   i18nKey="searchPlaceholder"
  *   namespace="series"
  * />
- * 
+ *
  * // With fallback text
- * <TranslatedText 
- *   i18nKey="searchPlaceholder" 
+ * <TranslatedText
+ *   i18nKey="searchPlaceholder"
  *   namespace="series"
  *   fallback="Search..."
  * />
- * 
+ *
  * // Custom skeleton width
- * <TranslatedText 
- *   i18nKey="title" 
+ * <TranslatedText
+ *   i18nKey="title"
  *   namespace="home"
  *   skeletonWidth="12ch"
  * />
@@ -149,4 +149,3 @@ export function TranslatedText({
 
   return <Component className={className}>{text}</Component>;
 }
-

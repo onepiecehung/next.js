@@ -126,4 +126,3 @@ export class ShareAPI {
     return response.data;
   }
 }
-

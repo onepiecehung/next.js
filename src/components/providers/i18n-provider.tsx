@@ -1,7 +1,15 @@
 "use client";
 
 import { defaultLocale, locales, type Locale } from "@/i18n/config";
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 interface I18nContextType {
   locale: Locale;
@@ -41,7 +49,10 @@ export function I18nProvider({ children }: I18nProviderProps) {
   > | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   // Use ref to track fallbackMessagesCache to avoid stale closure in t callback
-  const fallbackMessagesRef = useRef<Record<string, Record<string, string>> | null>(null);
+  const fallbackMessagesRef = useRef<Record<
+    string,
+    Record<string, string>
+  > | null>(null);
 
   // Preload default locale messages immediately (synchronous if possible)
   useEffect(() => {
@@ -95,9 +106,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
             setMessages(fallbackMessages.default);
             setLocaleState(defaultLocale);
           } catch (fallbackError) {
-            console.error(
-              `Failed to load fallback messages: ${fallbackError}`,
-            );
+            console.error(`Failed to load fallback messages: ${fallbackError}`);
             // Last resort: set empty messages to prevent crashes
             setMessages({});
           }

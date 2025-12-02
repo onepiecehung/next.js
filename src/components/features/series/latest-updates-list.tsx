@@ -34,7 +34,7 @@ function formatRelativeTime(
 ): string {
   // Convert to Date object if it's a string
   const dateObj = typeof date === "string" ? new Date(date) : date;
-  
+
   // Validate date
   if (isNaN(dateObj.getTime())) {
     return t("justNow", "series");
@@ -45,8 +45,10 @@ function formatRelativeTime(
   const days = Math.floor(hours / 24);
 
   if (minutes < 1) return t("justNow", "series");
-  if (minutes < 60) return t("minutesAgo", "series").replace("{{value}}", minutes.toString());
-  if (hours < 24) return t("hoursAgo", "series").replace("{{value}}", hours.toString());
+  if (minutes < 60)
+    return t("minutesAgo", "series").replace("{{value}}", minutes.toString());
+  if (hours < 24)
+    return t("hoursAgo", "series").replace("{{value}}", hours.toString());
   return t("daysAgo", "series").replace("{{value}}", days.toString());
 }
 
@@ -76,7 +78,7 @@ function LatestUpdateItemCard({ item, t }: LatestUpdateItemCardProps) {
           fill
           className={cn(
             "object-cover transition-transform duration-300 group-hover:scale-105",
-            isNsfw && !isNsfwRevealed && "blur-md"
+            isNsfw && !isNsfwRevealed && "blur-md",
           )}
           sizes="(max-width: 640px) 48px, (max-width: 768px) 64px, 80px"
         />
@@ -92,8 +94,12 @@ function LatestUpdateItemCard({ item, t }: LatestUpdateItemCardProps) {
           >
             <div className="text-center px-2">
               <EyeOff className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground mx-auto mb-1" />
-              <p className="text-foreground font-semibold text-[10px] sm:text-xs mb-0.5">NSFW</p>
-              <p className="text-muted-foreground text-[9px] sm:text-[10px]">Click to reveal</p>
+              <p className="text-foreground font-semibold text-[10px] sm:text-xs mb-0.5">
+                NSFW
+              </p>
+              <p className="text-muted-foreground text-[9px] sm:text-[10px]">
+                Click to reveal
+              </p>
             </div>
           </div>
         )}
@@ -108,15 +114,17 @@ function LatestUpdateItemCard({ item, t }: LatestUpdateItemCardProps) {
 
         {/* Genres/Tags - Show first 2-3 genres, fallback to tags if no genres */}
         {(() => {
-          const displayItems = (item.genres && item.genres.length > 0) 
-            ? item.genres 
-            : (item.tags && item.tags.length > 0) 
-              ? item.tags 
-              : [];
-          const totalCount = (item.genres?.length || 0) + (item.tags?.length || 0);
-          
+          const displayItems =
+            item.genres && item.genres.length > 0
+              ? item.genres
+              : item.tags && item.tags.length > 0
+                ? item.tags
+                : [];
+          const totalCount =
+            (item.genres?.length || 0) + (item.tags?.length || 0);
+
           if (displayItems.length === 0) return null;
-          
+
           return (
             <div className="flex flex-wrap gap-1 sm:gap-1.5 mt-0.5 sm:mt-1">
               {displayItems.slice(0, 3).map((genre, index) => (
@@ -157,7 +165,7 @@ function LatestUpdateItemCard({ item, t }: LatestUpdateItemCardProps) {
               )}
             </span>
           </div>
-          
+
           {/* Timestamp - Separate line on mobile for clarity */}
           <div className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground">
             <span className="flex-shrink-0">

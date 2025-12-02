@@ -122,10 +122,7 @@ export class CommentsAPI {
   static async createComment(
     data: CreateCommentDto,
   ): Promise<ApiResponse<Comment>> {
-    const response = await http.post<ApiResponse<Comment>>(
-      this.BASE_URL,
-      data,
-    );
+    const response = await http.post<ApiResponse<Comment>>(this.BASE_URL, data);
     return response.data;
   }
 
@@ -135,10 +132,9 @@ export class CommentsAPI {
   static async getComments(
     params?: QueryCommentsDto,
   ): Promise<ApiResponseOffset<Comment>> {
-    const response = await http.get<ApiResponseOffset<Comment>>(
-      this.BASE_URL,
-      { params },
-    );
+    const response = await http.get<ApiResponseOffset<Comment>>(this.BASE_URL, {
+      params,
+    });
     return response.data;
   }
 
@@ -247,4 +243,3 @@ export class CommentsAPI {
     return response.data;
   }
 }
-

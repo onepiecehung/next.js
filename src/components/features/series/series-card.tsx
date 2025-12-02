@@ -17,7 +17,8 @@ import { cn } from "@/lib/utils";
  * Returns formatted string like "1 day, 7 hours" or "6 hours, 59 mins"
  */
 function formatAiringTime(targetDate: Date | string): string {
-  const target = typeof targetDate === "string" ? new Date(targetDate) : targetDate;
+  const target =
+    typeof targetDate === "string" ? new Date(targetDate) : targetDate;
   const now = new Date();
   const diff = target.getTime() - now.getTime();
 
@@ -30,7 +31,8 @@ function formatAiringTime(targetDate: Date | string): string {
   const parts: string[] = [];
   if (days > 0) parts.push(`${days} day${days > 1 ? "s" : ""}`);
   if (hours > 0) parts.push(`${hours} hour${hours > 1 ? "s" : ""}`);
-  if (minutes > 0 && days === 0) parts.push(`${minutes} min${minutes > 1 ? "s" : ""}`);
+  if (minutes > 0 && days === 0)
+    parts.push(`${minutes} min${minutes > 1 ? "s" : ""}`);
 
   return parts.length > 0 ? parts.join(", ") : "Airing soon";
 }
@@ -83,7 +85,9 @@ export function SeriesCard({
   const isNsfw = series.isNsfw === true;
 
   // Calculate rating percentage from averageScore (0-100 scale)
-  const rating = series.averageScore ? Math.round(series.averageScore / 10) : null;
+  const rating = series.averageScore
+    ? Math.round(series.averageScore / 10)
+    : null;
   const ratingIcon = useMemo(() => {
     if (rating === null) return null;
     return rating >= 70 ? (
@@ -96,15 +100,17 @@ export function SeriesCard({
   // Format episode info
   const episodeInfo = useMemo(() => {
     if (!currentEpisode || !totalEpisodes) return null;
-    const airingText = nextAiringDate ? formatAiringTime(nextAiringDate) : "Airing";
+    const airingText = nextAiringDate
+      ? formatAiringTime(nextAiringDate)
+      : "Airing";
     return `Ep ${currentEpisode} of ${totalEpisodes} airing in ${airingText}`;
   }, [currentEpisode, totalEpisodes, nextAiringDate]);
-
 
   // Format airing date for AniChart variant
   const formatAiringDate = useMemo(() => {
     if (startDate) {
-      const date = typeof startDate === "string" ? new Date(startDate) : startDate;
+      const date =
+        typeof startDate === "string" ? new Date(startDate) : startDate;
       return date.toLocaleDateString("en-US", {
         month: "long",
         day: "numeric",
@@ -141,8 +147,12 @@ export function SeriesCard({
     >
       <div className="text-center px-4">
         <EyeOff className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground mx-auto mb-2" />
-        <p className="text-foreground font-semibold text-xs sm:text-sm mb-1">NSFW</p>
-        <p className="text-muted-foreground text-[10px] sm:text-xs">Click to reveal</p>
+        <p className="text-foreground font-semibold text-xs sm:text-sm mb-1">
+          NSFW
+        </p>
+        <p className="text-muted-foreground text-[10px] sm:text-xs">
+          Click to reveal
+        </p>
       </div>
     </div>
   );
@@ -168,23 +178,23 @@ export function SeriesCard({
               fill
               className={cn(
                 "object-cover transition-transform duration-500 group-hover:scale-105",
-                isNsfw && !isNsfwRevealed && "blur-md"
+                isNsfw && !isNsfwRevealed && "blur-md",
               )}
               sizes="(max-width: 640px) 96px, (max-width: 768px) 128px, (max-width: 1024px) 144px, (max-width: 1280px) 160px, 176px"
             />
-            
+
             {/* NSFW Overlay */}
             {isNsfw && !isNsfwRevealed && (
               <NSFWOverlay onClick={() => setIsNsfwRevealed(true)} />
             )}
-            
+
             {/* View Details Button - Top Right (only on hover, hidden on mobile) */}
             <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 z-15 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               <div className="rounded-full bg-background/90 backdrop-blur-sm p-1 sm:p-1.5 shadow-lg border border-border/50">
                 <ExternalLink className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-foreground" />
               </div>
             </div>
-            
+
             {/* Dark Gradient Overlay at Bottom with Title and Studio */}
             <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/95 via-black/80 to-transparent pt-6 sm:pt-8 pb-1.5 sm:pb-2 px-1.5 sm:px-2 md:px-3">
               <h3 className="text-white font-semibold text-[11px] sm:text-xs md:text-sm line-clamp-2 mb-0.5 sm:mb-1 drop-shadow-lg leading-tight">
@@ -205,7 +215,9 @@ export function SeriesCard({
           <div className="flex items-start justify-between gap-1.5 sm:gap-2 mb-1.5 sm:mb-2 flex-shrink-0">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1 sm:gap-1.5 mb-0.5 sm:mb-1 flex-wrap">
-                <span className="text-[11px] sm:text-xs text-muted-foreground whitespace-nowrap">Airing on</span>
+                <span className="text-[11px] sm:text-xs text-muted-foreground whitespace-nowrap">
+                  Airing on
+                </span>
                 {formatAiringDate && (
                   <span className="text-xs sm:text-sm md:text-base font-semibold text-foreground">
                     {formatAiringDate}
@@ -213,13 +225,16 @@ export function SeriesCard({
                 )}
               </div>
               {/* Sequel/Source Info */}
-              {(series.status === SERIES_CONSTANTS.RELEASING_STATUS.COMING_SOON || series.source) && (
+              {(series.status ===
+                SERIES_CONSTANTS.RELEASING_STATUS.COMING_SOON ||
+                series.source) && (
                 <p className="text-[10px] sm:text-[11px] md:text-xs text-muted-foreground line-clamp-1">
-                  {series.status === SERIES_CONSTANTS.RELEASING_STATUS.COMING_SOON
+                  {series.status ===
+                  SERIES_CONSTANTS.RELEASING_STATUS.COMING_SOON
                     ? `Sequel to ${series.title}`
                     : series.source
-                    ? `Source • ${series.source.replace(/_/g, " ")}`
-                    : null}
+                      ? `Source • ${series.source.replace(/_/g, " ")}`
+                      : null}
                 </p>
               )}
             </div>
@@ -227,7 +242,9 @@ export function SeriesCard({
             {rank && (
               <div className="flex items-center gap-0.5 sm:gap-1 text-pink-500 flex-shrink-0">
                 <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-current" />
-                <span className="text-xs sm:text-sm md:text-base font-semibold">#{rank}</span>
+                <span className="text-xs sm:text-sm md:text-base font-semibold">
+                  #{rank}
+                </span>
               </div>
             )}
           </div>
@@ -299,7 +316,7 @@ export function SeriesCard({
             fill
             className={cn(
               "object-cover transition-transform duration-300 group-hover:scale-105",
-              isNsfw && !isNsfwRevealed && "blur-md"
+              isNsfw && !isNsfwRevealed && "blur-md",
             )}
             sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, (max-width: 1024px) 96px, 112px"
           />
@@ -313,9 +330,7 @@ export function SeriesCard({
         <div className="flex flex-1 flex-col gap-1 sm:gap-1.5 md:gap-2 min-w-0 min-h-[88px] sm:min-h-[104px] md:min-h-[128px]">
           {/* Header: Episode info, Rating, Rank */}
           <div className="flex flex-wrap items-center gap-1 sm:gap-2 md:gap-3 text-[10px] sm:text-[11px] md:text-xs text-muted-foreground flex-shrink-0">
-            {episodeInfo && (
-              <span className="truncate">{episodeInfo}</span>
-            )}
+            {episodeInfo && <span className="truncate">{episodeInfo}</span>}
             {rating !== null && (
               <div className="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
                 <span>{rating}%</span>
@@ -421,31 +436,43 @@ export function SeriesCard({
             fill
             className={cn(
               "object-cover transition-transform duration-300 group-hover:scale-105",
-              isNsfw && !isNsfwRevealed && "blur-md"
+              isNsfw && !isNsfwRevealed && "blur-md",
             )}
-            sizes={isTiny 
-              ? "(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 20vw, 10vw"
-              : isCompact
-                ? "(max-width: 640px) 50vw, (max-width: 768px) 40vw, (max-width: 1024px) 33vw, 25vw"
-                : "(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"}
+            sizes={
+              isTiny
+                ? "(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 20vw, 10vw"
+                : isCompact
+                  ? "(max-width: 640px) 50vw, (max-width: 768px) 40vw, (max-width: 1024px) 33vw, 25vw"
+                  : "(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            }
           />
           {/* NSFW Overlay */}
           {isNsfw && !isNsfwRevealed && (
             <NSFWOverlay onClick={() => setIsNsfwRevealed(true)} />
           )}
           {/* View Details Button - Top Right - Hidden on tiny variant mobile */}
-          <div className={cn(
-            "absolute z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200",
-            isTiny ? "top-1 right-1 sm:top-1.5 sm:right-1.5" : "top-1.5 right-1.5 sm:top-2 sm:right-2"
-          )}>
-            <div className={cn(
-              "rounded-full bg-background/90 backdrop-blur-sm shadow-lg border border-border/50",
-              isTiny ? "p-1 sm:p-1.5" : "p-1 sm:p-1.5"
-            )}>
-              <ExternalLink className={cn(
-                "text-foreground",
-                isTiny ? "h-2 w-2 sm:h-2.5 sm:w-2.5" : "h-2.5 w-2.5 sm:h-3 sm:w-3"
-              )} />
+          <div
+            className={cn(
+              "absolute z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200",
+              isTiny
+                ? "top-1 right-1 sm:top-1.5 sm:right-1.5"
+                : "top-1.5 right-1.5 sm:top-2 sm:right-2",
+            )}
+          >
+            <div
+              className={cn(
+                "rounded-full bg-background/90 backdrop-blur-sm shadow-lg border border-border/50",
+                isTiny ? "p-1 sm:p-1.5" : "p-1 sm:p-1.5",
+              )}
+            >
+              <ExternalLink
+                className={cn(
+                  "text-foreground",
+                  isTiny
+                    ? "h-2 w-2 sm:h-2.5 sm:w-2.5"
+                    : "h-2.5 w-2.5 sm:h-3 sm:w-3",
+                )}
+              />
             </div>
           </div>
           {isFeatured && (
@@ -459,10 +486,10 @@ export function SeriesCard({
         <div
           className={cn(
             "flex-shrink-0",
-            isTiny 
-              ? "p-1 sm:p-1.5 md:p-2" 
-              : isCompact 
-                ? "p-1.5 sm:p-2 md:p-2.5" 
+            isTiny
+              ? "p-1 sm:p-1.5 md:p-2"
+              : isCompact
+                ? "p-1.5 sm:p-2 md:p-2.5"
                 : "px-2 sm:px-2.5 pt-1.5 pb-1.5 sm:pt-2 sm:pb-2",
           )}
         >

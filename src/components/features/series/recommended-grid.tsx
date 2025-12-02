@@ -40,7 +40,7 @@ export function RecommendedGrid({
             {t(titleI18nKey, "series")}
           </h2>
           {/* Arrow icon - visible on mobile only, inline with heading */}
-          <Link 
+          <Link
             href={viewAllHref}
             className="sm:hidden flex items-center justify-center"
             aria-label={t(viewAllI18nKey, "series")}
@@ -49,13 +49,16 @@ export function RecommendedGrid({
           </Link>
         </div>
         {/* Button with text - visible on desktop only */}
-        <Button 
-          asChild 
-          variant="ghost" 
-          size="sm" 
+        <Button
+          asChild
+          variant="ghost"
+          size="sm"
           className="text-xs sm:text-sm hidden sm:flex"
         >
-          <Link href={viewAllHref} className="flex items-center gap-1.5 sm:gap-2">
+          <Link
+            href={viewAllHref}
+            className="flex items-center gap-1.5 sm:gap-2"
+          >
             <span>{t(viewAllI18nKey, "series")}</span>
             <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
           </Link>

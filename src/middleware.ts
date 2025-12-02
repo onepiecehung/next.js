@@ -186,7 +186,7 @@ export function middleware(request: NextRequest): NextResponse {
   if (isAuth && isAuthenticated) {
     const redirectParam = request.nextUrl.searchParams.get("redirect");
     const redirectUrl = redirectParam || "/";
-    
+
     // Only redirect if we're not already on the target page
     if (pathname !== redirectUrl) {
       Logger.logRedirect(

@@ -125,8 +125,7 @@ export function useDuplicateReports(
 ) {
   return useQuery({
     queryKey: queryKeys.reports.duplicates(reportableType, reportableId),
-    queryFn: () =>
-      ReportsAPI.getDuplicateReports(reportableType, reportableId),
+    queryFn: () => ReportsAPI.getDuplicateReports(reportableType, reportableId),
     enabled: !!reportableType && !!reportableId,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -157,11 +156,15 @@ export function useCreateReport() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.reports.stats({}),
       });
-      toast.success(t("reportCreated", "reports") || "Report created successfully");
+      toast.success(
+        t("reportCreated", "reports") || "Report created successfully",
+      );
     },
     onError: (error) => {
       console.error("Create report error:", error);
-      toast.error(t("reportCreateError", "reports") || "Failed to create report");
+      toast.error(
+        t("reportCreateError", "reports") || "Failed to create report",
+      );
     },
   });
 }
@@ -189,11 +192,15 @@ export function useUpdateReport() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.reports.all(),
       });
-      toast.success(t("reportUpdated", "reports") || "Report updated successfully");
+      toast.success(
+        t("reportUpdated", "reports") || "Report updated successfully",
+      );
     },
     onError: (error) => {
       console.error("Update report error:", error);
-      toast.error(t("reportUpdateError", "reports") || "Failed to update report");
+      toast.error(
+        t("reportUpdateError", "reports") || "Failed to update report",
+      );
     },
   });
 }
@@ -230,7 +237,9 @@ export function useAssignReport() {
     },
     onError: (error) => {
       console.error("Assign report error:", error);
-      toast.error(t("reportAssignError", "reports") || "Failed to assign report");
+      toast.error(
+        t("reportAssignError", "reports") || "Failed to assign report",
+      );
     },
   });
 }
@@ -261,11 +270,15 @@ export function useResolveReport() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.reports.stats({}),
       });
-      toast.success(t("reportResolved", "reports") || "Report resolved successfully");
+      toast.success(
+        t("reportResolved", "reports") || "Report resolved successfully",
+      );
     },
     onError: (error) => {
       console.error("Resolve report error:", error);
-      toast.error(t("reportResolveError", "reports") || "Failed to resolve report");
+      toast.error(
+        t("reportResolveError", "reports") || "Failed to resolve report",
+      );
     },
   });
 }
@@ -278,13 +291,8 @@ export function useDismissReport() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      reportId,
-      reason,
-    }: {
-      reportId: string;
-      reason: string;
-    }) => ReportsAPI.dismissReport(reportId, reason),
+    mutationFn: ({ reportId, reason }: { reportId: string; reason: string }) =>
+      ReportsAPI.dismissReport(reportId, reason),
     onSuccess: (response, variables) => {
       queryClient.setQueryData(
         queryKeys.reports.detail(variables.reportId),
@@ -317,13 +325,8 @@ export function useEscalateReport() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      reportId,
-      reason,
-    }: {
-      reportId: string;
-      reason: string;
-    }) => ReportsAPI.escalateReport(reportId, reason),
+    mutationFn: ({ reportId, reason }: { reportId: string; reason: string }) =>
+      ReportsAPI.escalateReport(reportId, reason),
     onSuccess: (response, variables) => {
       queryClient.setQueryData(
         queryKeys.reports.detail(variables.reportId),
@@ -371,8 +374,9 @@ export function useMergeReports() {
     },
     onError: (error) => {
       console.error("Merge reports error:", error);
-      toast.error(t("reportsMergeError", "reports") || "Failed to merge reports");
+      toast.error(
+        t("reportsMergeError", "reports") || "Failed to merge reports",
+      );
     },
   });
 }
-

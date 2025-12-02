@@ -253,4 +253,3 @@ export class BookmarksAPI {
     return response.data;
   }
 }
-

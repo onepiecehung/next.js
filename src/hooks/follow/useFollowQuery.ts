@@ -33,7 +33,9 @@ export function useFollow() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.follow.followers(targetUserId, {}),
       });
-      toast.success(t("followSuccess", "follow") || "Successfully followed user");
+      toast.success(
+        t("followSuccess", "follow") || "Successfully followed user",
+      );
     },
     onError: (error) => {
       console.error("Follow error:", error);
@@ -197,4 +199,3 @@ export function useFeedStats(userId: string) {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }
-

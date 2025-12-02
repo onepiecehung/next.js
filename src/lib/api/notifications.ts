@@ -320,7 +320,9 @@ export class NotificationsAPI {
    */
   static async bulkUpdatePreferences(
     data: BulkUpdateNotificationPreferencesDto,
-  ): Promise<ApiResponse<{ count: number; preferences: NotificationPreference[] }>> {
+  ): Promise<
+    ApiResponse<{ count: number; preferences: NotificationPreference[] }>
+  > {
     const response = await http.put<
       ApiResponse<{ count: number; preferences: NotificationPreference[] }>
     >(`${this.BASE_URL}/preferences/bulk`, data);
@@ -339,4 +341,3 @@ export class NotificationsAPI {
     return response.data;
   }
 }
-

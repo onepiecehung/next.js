@@ -20,11 +20,7 @@ import {
   UserDropdown,
 } from "@/components/ui";
 import { Button } from "@/components/ui/core/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { LanguageSwitcher } from "@/components/ui/navigation";
 import { VisuallyHidden } from "@/components/ui/utilities/visually-hidden";
 import {
@@ -142,18 +138,18 @@ export default function SiteNav() {
       </header>
 
       {/* Mobile Sidebar - Full Screen with Smooth Animation */}
-      <Dialog 
-        open={isMobileMenuOpen || isAnimatingOut} 
-              onOpenChange={(open) => {
-                if (!open && !isAnimatingOutRef.current) {
-                  // Only handle close if not already animating out
-                  handleCloseMenu();
-                } else if (open) {
-                  setIsMobileMenuOpen(true);
-                  setIsAnimatingOut(false);
-                  isAnimatingOutRef.current = false;
-                }
-              }}
+      <Dialog
+        open={isMobileMenuOpen || isAnimatingOut}
+        onOpenChange={(open) => {
+          if (!open && !isAnimatingOutRef.current) {
+            // Only handle close if not already animating out
+            handleCloseMenu();
+          } else if (open) {
+            setIsMobileMenuOpen(true);
+            setIsAnimatingOut(false);
+            isAnimatingOutRef.current = false;
+          }
+        }}
       >
         <DialogContent
           className="!fixed !inset-0 !h-screen !w-screen !max-w-none !translate-x-0 !translate-y-0 !rounded-none !border-0 !p-0 md:!hidden !animate-none data-[state=open]:!animate-none data-[state=closed]:!animate-none [&>div[data-slot='dialog-overlay']]:!animate-none [&>div[data-slot='dialog-overlay']]:data-[state=open]:!animate-none [&>div[data-slot='dialog-overlay']]:data-[state=closed]:!animate-none"
@@ -162,20 +158,20 @@ export default function SiteNav() {
           <VisuallyHidden>
             <DialogTitle>{t("appName", "common")} - Menu</DialogTitle>
           </VisuallyHidden>
-          
+
           {/* Custom overlay with synchronized animation - replaces default overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={isAnimatingOut ? { opacity: 0 } : { opacity: 1 }}
-            transition={{ 
+            transition={{
               duration: 0.3,
-              ease: "easeInOut"
+              ease: "easeInOut",
             }}
             className="fixed inset-0 z-40 bg-black/50"
             style={{ pointerEvents: isAnimatingOut ? "none" : "auto" }}
             onClick={handleCloseMenu}
           />
-          
+
           <motion.div
             initial={{ x: "100%" }}
             animate={isAnimatingOut ? { x: "100%" } : { x: 0 }}
@@ -201,7 +197,9 @@ export default function SiteNav() {
             {/* Header with close button */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
-              animate={isAnimatingOut ? { opacity: 0, y: -10 } : { opacity: 1, y: 0 }}
+              animate={
+                isAnimatingOut ? { opacity: 0, y: -10 } : { opacity: 1, y: 0 }
+              }
               transition={{ delay: isAnimatingOut ? 0 : 0.1, duration: 0.2 }}
               className="flex items-center justify-between border-b border-border bg-background p-4"
             >
@@ -265,9 +263,9 @@ export default function SiteNav() {
                   {t("nav.language", "common")}
                 </label>
                 <div className="w-full">
-                  <LanguageSwitcher 
-                    variant="full" 
-                    size="default" 
+                  <LanguageSwitcher
+                    variant="full"
+                    size="default"
                     className="w-full justify-start"
                   />
                 </div>
@@ -299,9 +297,9 @@ export default function SiteNav() {
                   {t("nav.theme", "common")}
                 </label>
                 <div className="w-full">
-                  <ThemeSelector 
-                    variant="full" 
-                    size="default" 
+                  <ThemeSelector
+                    variant="full"
+                    size="default"
                     className="w-full justify-start"
                   />
                 </div>
@@ -369,7 +367,8 @@ export default function SiteNav() {
                           />
                         )}
                         <AvatarFallback className="bg-purple-500/20 text-purple-600 dark:bg-purple-400/20 dark:text-purple-300">
-                          {(user.name ||
+                          {(
+                            user.name ||
                             user.username ||
                             user.email?.split("@")[0] ||
                             "US"
@@ -438,10 +437,7 @@ export default function SiteNav() {
                     </div>
                   </div>
                 ) : (
-                  <Button
-                    className="w-full"
-                    onClick={handleLoginClick}
-                  >
+                  <Button className="w-full" onClick={handleLoginClick}>
                     {t("login.button", "auth") || "Login"}
                   </Button>
                 )}

@@ -152,10 +152,9 @@ export class ReportsAPI {
   static async getReports(
     params?: QueryReportsDto,
   ): Promise<ApiResponseOffset<Report>> {
-    const response = await http.get<ApiResponseOffset<Report>>(
-      this.BASE_URL,
-      { params },
-    );
+    const response = await http.get<ApiResponseOffset<Report>>(this.BASE_URL, {
+      params,
+    });
     return response.data;
   }
 
@@ -357,4 +356,3 @@ export class ReportsAPI {
     return response.data;
   }
 }
-

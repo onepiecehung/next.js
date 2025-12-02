@@ -199,9 +199,7 @@ export class AuthAPI {
     >(`${this.BASE_URL}/device-token`, data);
 
     if (!response.data.success) {
-      throw new Error(
-        response.data.message || "Failed to create device token",
-      );
+      throw new Error(response.data.message || "Failed to create device token");
     }
 
     return response.data;
@@ -237,9 +235,7 @@ export class AuthAPI {
     );
 
     if (!response.data.success) {
-      throw new Error(
-        response.data.message || "Failed to fetch sessions",
-      );
+      throw new Error(response.data.message || "Failed to fetch sessions");
     }
 
     return response.data;

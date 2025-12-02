@@ -150,8 +150,7 @@ export const queryKeys = {
     popular: () => ["tags", "popular"] as const,
     trending: () => ["tags", "trending"] as const,
     featured: () => ["tags", "featured"] as const,
-    suggestions: (content: string) =>
-      ["tags", "suggestions", content] as const,
+    suggestions: (content: string) => ["tags", "suggestions", content] as const,
     stats: () => ["tags", "stats"] as const,
   },
 

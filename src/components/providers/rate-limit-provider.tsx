@@ -26,7 +26,10 @@ export function RateLimitProvider({ children }: RateLimitProviderProps) {
       // Calculate remaining seconds based on the timestamp from event detail
       // This ensures accuracy as the timestamp is set before the event is emitted
       const now = Date.now();
-      const secs = Math.max(0, Math.ceil((detail.untilTimestampMs - now) / 1000));
+      const secs = Math.max(
+        0,
+        Math.ceil((detail.untilTimestampMs - now) / 1000),
+      );
       setRemaining(secs);
       setOpen(secs > 0);
     });
@@ -35,7 +38,7 @@ export function RateLimitProvider({ children }: RateLimitProviderProps) {
   // Tick every second while dialog is open to update countdown
   React.useEffect(() => {
     if (!open) return;
-    
+
     // Initial update when dialog opens
     const updateRemaining = () => {
       const secs = getRateLimitRemainingSeconds();
@@ -44,13 +47,13 @@ export function RateLimitProvider({ children }: RateLimitProviderProps) {
         setOpen(false);
       }
     };
-    
+
     // Update immediately
     updateRemaining();
-    
+
     // Update every second
     const id = setInterval(updateRemaining, 1000);
-    
+
     return () => clearInterval(id);
   }, [open]);
 
@@ -65,14 +68,10 @@ export function RateLimitProvider({ children }: RateLimitProviderProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>
-              {t("rateLimit.title", "common")}
-            </DialogTitle>
+            <DialogTitle>{t("rateLimit.title", "common")}</DialogTitle>
           </DialogHeader>
           <div className="space-y-3 text-sm text-muted-foreground">
-            <p>
-              {t("rateLimit.description", "common")}
-            </p>
+            <p>{t("rateLimit.description", "common")}</p>
             <p className="text-base font-medium text-foreground">
               {t("rateLimit.retryIn", "common")} {remaining}s
             </p>

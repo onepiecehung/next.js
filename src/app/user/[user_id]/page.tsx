@@ -26,7 +26,12 @@ import {
   GitHubIcon,
   XIcon,
 } from "@/components/ui";
-import { useFollow, useFollowCounters, useFollowStatus, useUnfollow } from "@/hooks/follow";
+import {
+  useFollow,
+  useFollowCounters,
+  useFollowStatus,
+  useUnfollow,
+} from "@/hooks/follow";
 import { useUserProfile } from "@/hooks/users/useUserQuery";
 import { currentUserAtom } from "@/lib/auth";
 import { cn } from "@/lib/utils";
@@ -49,12 +54,12 @@ export default function ProfilePage() {
 
   // Fetch user profile data with React Query
   const { data: profileData, isLoading, error } = useUserProfile(userId);
-  
+
   // Fetch follow status and counters
   const currentUserId = currentUser?.id || "";
   const { data: followStatus } = useFollowStatus(currentUserId, userId);
   const { data: followCounters } = useFollowCounters(userId);
-  
+
   // Follow/Unfollow mutations
   const followMutation = useFollow();
   const unfollowMutation = useUnfollow();
@@ -99,12 +104,16 @@ export default function ProfilePage() {
   }
 
   const displayName =
-    profileData?.name || profileData?.username || profileData?.email?.split("@")[0] || "User";
+    profileData?.name ||
+    profileData?.username ||
+    profileData?.email?.split("@")[0] ||
+    "User";
   const initials = displayName.slice(0, 2).toUpperCase();
   const hasAvatar = profileData?.avatar?.url;
   const isOwnProfile = currentUser && currentUser.id === userId;
   const isFollowing = followStatus?.data?.isFollowing || false;
-  const isLoadingFollow = followMutation.isPending || unfollowMutation.isPending;
+  const isLoadingFollow =
+    followMutation.isPending || unfollowMutation.isPending;
 
   // Format join date
   const formatJoinDate = (dateString?: string) => {
@@ -128,7 +137,11 @@ export default function ProfilePage() {
   return (
     <div className="bg-background min-h-screen">
       {/* Profile Header Section */}
-      <AnimatedSection loading={isLoading} data={profileData} className="w-full">
+      <AnimatedSection
+        loading={isLoading}
+        data={profileData}
+        className="w-full"
+      >
         <div className="border-b border-border bg-card">
           <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
             <Skeletonize loading={isLoading}>
@@ -219,7 +232,8 @@ export default function ProfilePage() {
                     {profileData?.createdAt && (
                       <span className="flex items-center gap-1.5">
                         <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                        {t("userJoined", "user")} {formatJoinDate(profileData.createdAt)}
+                        {t("userJoined", "user")}{" "}
+                        {formatJoinDate(profileData.createdAt)}
                       </span>
                     )}
                   </div>
@@ -242,7 +256,9 @@ export default function ProfilePage() {
                       className="flex items-center gap-1.5 sm:gap-2 hover:text-primary transition-colors"
                     >
                       <span className="text-base sm:text-lg font-semibold text-foreground">
-                        {followCounters?.data?.followers || profileData?._count?.followers || 0}
+                        {followCounters?.data?.followers ||
+                          profileData?._count?.followers ||
+                          0}
                       </span>
                       <span className="text-xs sm:text-sm text-muted-foreground">
                         {t("userStatsFollowers", "user")}
@@ -253,7 +269,9 @@ export default function ProfilePage() {
                       className="flex items-center gap-1.5 sm:gap-2 hover:text-primary transition-colors"
                     >
                       <span className="text-base sm:text-lg font-semibold text-foreground">
-                        {followCounters?.data?.following || profileData?._count?.following || 0}
+                        {followCounters?.data?.following ||
+                          profileData?._count?.following ||
+                          0}
                       </span>
                       <span className="text-xs sm:text-sm text-muted-foreground">
                         {t("userStatsFollowing", "user")}
@@ -262,7 +280,7 @@ export default function ProfilePage() {
                   </div>
 
                   {/* Social Links */}
-                  {(profileData?.website) && (
+                  {profileData?.website && (
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                       {profileData.website && (
                         <a
@@ -320,7 +338,7 @@ export default function ProfilePage() {
                 "py-3 sm:py-4 px-2 sm:px-4 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap flex items-center gap-1.5 sm:gap-2",
                 activeTab === "articles"
                   ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30",
               )}
             >
               <BookOpen className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -338,12 +356,14 @@ export default function ProfilePage() {
                 "py-3 sm:py-4 px-2 sm:px-4 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap flex items-center gap-1.5 sm:gap-2",
                 activeTab === "scraps"
                   ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30",
               )}
             >
               <PenTool className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span>{t("tabsScraps", "profile")}</span>
-              <span className="text-[10px] sm:text-xs bg-muted px-1.5 py-0.5 rounded-full">0</span>
+              <span className="text-[10px] sm:text-xs bg-muted px-1.5 py-0.5 rounded-full">
+                0
+              </span>
             </button>
             <button
               key="comments"
@@ -352,7 +372,7 @@ export default function ProfilePage() {
                 "py-3 sm:py-4 px-2 sm:px-4 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap flex items-center gap-1.5 sm:gap-2",
                 activeTab === "comments"
                   ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30",
               )}
             >
               <MessageSquare className="h-3.5 w-3.5 sm:h-4 sm:w-4" />

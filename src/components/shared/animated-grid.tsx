@@ -144,4 +144,3 @@ export function AnimatedGrid({
     </motion.div>
   );
 }
-

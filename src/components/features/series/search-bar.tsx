@@ -37,7 +37,7 @@ export function SearchBar({
       platform.indexOf("MAC") >= 0 ||
         platform.indexOf("IPHONE") >= 0 ||
         platform.indexOf("IPAD") >= 0 ||
-        userAgent.indexOf("MAC OS X") >= 0
+        userAgent.indexOf("MAC OS X") >= 0,
     );
   }, []);
 
@@ -78,7 +78,7 @@ export function SearchBar({
           onChange={(e) => setQuery(e.target.value)}
           className={cn(
             "w-full pl-10",
-            showKeyboardShortcut ? "pr-28 sm:pr-32" : "pr-12"
+            showKeyboardShortcut ? "pr-28 sm:pr-32" : "pr-12",
           )}
         />
         {/* Search Button - Always visible */}

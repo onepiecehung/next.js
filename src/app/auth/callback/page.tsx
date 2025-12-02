@@ -35,10 +35,12 @@ export default function OAuthCallbackPage() {
 
         if (!firebaseUser) {
           // No redirect result - user might have navigated here directly
-          setError(t("oauth.noRedirectResult", "auth") || "No OAuth result found");
+          setError(
+            t("oauth.noRedirectResult", "auth") || "No OAuth result found",
+          );
           setAuthLoading(false);
           setIsProcessing(false);
-          
+
           // Redirect to login after a delay
           setTimeout(() => {
             router.push("/auth/login");
@@ -51,7 +53,7 @@ export default function OAuthCallbackPage() {
 
         // Determine which provider was used based on providerData
         const providerId = firebaseUser.providerData[0]?.providerId;
-        
+
         // Call backend to complete authentication
         let user;
         let token;
@@ -82,9 +84,7 @@ export default function OAuthCallbackPage() {
         setUser(user);
 
         // Show success message
-        toast.success(
-          t("oauth.loginSuccess", "auth") || "Login successful!",
-        );
+        toast.success(t("oauth.loginSuccess", "auth") || "Login successful!");
 
         // Get redirect URL from query params or use home page
         const redirectUrl = searchParams.get("redirect") || "/";
@@ -95,12 +95,12 @@ export default function OAuthCallbackPage() {
         }, 500);
       } catch (error) {
         console.error("OAuth callback error:", error);
-        
+
         const errorMessage =
           error instanceof Error
             ? error.message
             : t("oauth.callbackError", "auth") || "OAuth callback failed";
-        
+
         setError(errorMessage);
         toast.error(errorMessage);
 
@@ -141,7 +141,8 @@ export default function OAuthCallbackPage() {
           </div>
           <p className="text-sm text-muted-foreground">{error}</p>
           <p className="text-xs text-muted-foreground">
-            {t("oauth.redirectingToLogin", "auth") || "Redirecting to login page..."}
+            {t("oauth.redirectingToLogin", "auth") ||
+              "Redirecting to login page..."}
           </p>
         </div>
       </div>
@@ -150,4 +151,3 @@ export default function OAuthCallbackPage() {
 
   return null;
 }
-

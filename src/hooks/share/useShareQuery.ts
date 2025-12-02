@@ -3,10 +3,7 @@ import { toast } from "sonner";
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import { ShareAPI } from "@/lib/api/share";
-import type {
-  CreateShareLinkDto,
-  ShareMetricsDto,
-} from "@/lib/api/share";
+import type { CreateShareLinkDto, ShareMetricsDto } from "@/lib/api/share";
 import { queryKeys } from "@/lib/utils/query-keys";
 
 /**
@@ -85,4 +82,3 @@ export function useShareCount(contentType: string, contentId: string) {
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 }
-

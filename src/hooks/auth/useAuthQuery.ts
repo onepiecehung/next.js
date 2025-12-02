@@ -292,10 +292,7 @@ function handleOAuthError(
   t: (key: string, ns?: string) => string,
 ) {
   // Check if this is a redirect initiation (not an actual error)
-  if (
-    error instanceof Error &&
-    error.message === "Redirect initiated"
-  ) {
+  if (error instanceof Error && error.message === "Redirect initiated") {
     // Redirect was initiated - this is expected behavior, don't show error
     return;
   }

@@ -55,7 +55,9 @@ xProvider.addScope("users.read");
  */
 export const signInWithGoogle = async (): Promise<FirebaseUser> => {
   // Check if we should use redirect (mobile or popup likely blocked)
-  const { isMobileDevice, isPopupLikelyBlocked } = await import("@/lib/utils/device");
+  const { isMobileDevice, isPopupLikelyBlocked } = await import(
+    "@/lib/utils/device"
+  );
   const useRedirect = isMobileDevice() || isPopupLikelyBlocked();
 
   if (useRedirect) {
@@ -116,7 +118,9 @@ export const signInWithGoogle = async (): Promise<FirebaseUser> => {
  */
 export const signInWithGithub = async (): Promise<FirebaseUser> => {
   // Check if we should use redirect (mobile or popup likely blocked)
-  const { isMobileDevice, isPopupLikelyBlocked } = await import("@/lib/utils/device");
+  const { isMobileDevice, isPopupLikelyBlocked } = await import(
+    "@/lib/utils/device"
+  );
   const useRedirect = isMobileDevice() || isPopupLikelyBlocked();
 
   if (useRedirect) {
@@ -174,7 +178,9 @@ export const signInWithGithub = async (): Promise<FirebaseUser> => {
  */
 export const signInWithX = async (): Promise<FirebaseUser> => {
   // Check if we should use redirect (mobile or popup likely blocked)
-  const { isMobileDevice, isPopupLikelyBlocked } = await import("@/lib/utils/device");
+  const { isMobileDevice, isPopupLikelyBlocked } = await import(
+    "@/lib/utils/device"
+  );
   const useRedirect = isMobileDevice() || isPopupLikelyBlocked();
 
   if (useRedirect) {
@@ -230,18 +236,19 @@ export const signInWithX = async (): Promise<FirebaseUser> => {
  * Call this on the OAuth callback page to complete the authentication
  * @returns Promise<FirebaseUser | null> - The authenticated Firebase user, or null if no redirect result
  */
-export const getOAuthRedirectResult = async (): Promise<FirebaseUser | null> => {
-  try {
-    const result = await getRedirectResult(auth);
-    if (result) {
-      return result.user;
+export const getOAuthRedirectResult =
+  async (): Promise<FirebaseUser | null> => {
+    try {
+      const result = await getRedirectResult(auth);
+      if (result) {
+        return result.user;
+      }
+      return null;
+    } catch (error) {
+      console.error("Error getting redirect result:", error);
+      throw error;
     }
-    return null;
-  } catch (error) {
-    console.error("Error getting redirect result:", error);
-    throw error;
-  }
-};
+  };
 
 /**
  * Sign out from Firebase Auth

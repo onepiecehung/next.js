@@ -238,9 +238,9 @@ export function usePinComment() {
     onError: (error) => {
       console.error("Pin comment error:", error);
       toast.error(
-        t("commentPinError", "comments") || "Failed to update comment pin status",
+        t("commentPinError", "comments") ||
+          "Failed to update comment pin status",
       );
     },
   });
 }
-

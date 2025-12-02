@@ -73,7 +73,8 @@ export function useUserArticlesLayout(
   // Layout configuration based on layout type
   const layoutConfig = {
     grid: {
-      containerClass: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6",
+      containerClass:
+        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6",
       itemClass: "",
     },
     list: {
@@ -313,9 +314,7 @@ export function usePublishArticle() {
         },
         error: (error) => {
           console.error("Publish article error:", error);
-          return (
-            t("schedule.error", "article") || "Failed to publish article"
-          );
+          return t("schedule.error", "article") || "Failed to publish article";
         },
       });
 

@@ -328,10 +328,7 @@ export function useCreateSeries() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.series.all(),
       });
-      queryClient.setQueryData(
-        queryKeys.series.detail(series.id),
-        series,
-      );
+      queryClient.setQueryData(queryKeys.series.detail(series.id), series);
       toast.success(
         t("seriesCreated", "series") || "Series created successfully",
       );
@@ -365,10 +362,7 @@ export function useUpdateSeries() {
       return result;
     },
     onSuccess: (series, variables) => {
-      queryClient.setQueryData(
-        queryKeys.series.detail(variables.id),
-        series,
-      );
+      queryClient.setQueryData(queryKeys.series.detail(variables.id), series);
       queryClient.invalidateQueries({
         queryKey: queryKeys.series.all(),
       });
@@ -464,15 +458,13 @@ export function useSaveAniListMedia() {
         );
       }
       toast.success(
-        t("anilistMediaSaved", "series") ||
-          "AniList media saved successfully",
+        t("anilistMediaSaved", "series") || "AniList media saved successfully",
       );
     },
     onError: (error) => {
       console.error("Save AniList media error:", error);
       toast.error(
-        t("anilistMediaSaveError", "series") ||
-          "Failed to save AniList media",
+        t("anilistMediaSaveError", "series") || "Failed to save AniList media",
       );
     },
   });
@@ -485,7 +477,9 @@ export function useAniListCrawl() {
   const { t } = useI18n();
 
   return useMutation({
-    mutationFn: async (type?: import("@/lib/constants/series.constants").SeriesType) => {
+    mutationFn: async (
+      type?: import("@/lib/constants/series.constants").SeriesType,
+    ) => {
       const result = await SeriesAPI.triggerAniListCrawl(type);
       await new Promise((resolve) => setTimeout(resolve, 1000));
       return result;
@@ -499,8 +493,7 @@ export function useAniListCrawl() {
     onError: (error) => {
       console.error("Trigger AniList crawl error:", error);
       toast.error(
-        t("anilistCrawlError", "series") ||
-          "Failed to trigger AniList crawl",
+        t("anilistCrawlError", "series") || "Failed to trigger AniList crawl",
       );
     },
   });

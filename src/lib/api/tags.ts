@@ -87,9 +87,7 @@ export class TagsAPI {
   /**
    * Get all tags with pagination and filtering
    */
-  static async getTags(
-    params?: QueryTagsDto,
-  ): Promise<ApiResponseOffset<Tag>> {
+  static async getTags(params?: QueryTagsDto): Promise<ApiResponseOffset<Tag>> {
     const response = await http.get<ApiResponseOffset<Tag>>(this.BASE_URL, {
       params,
     });
@@ -99,9 +97,7 @@ export class TagsAPI {
   /**
    * Get popular tags
    */
-  static async getPopularTags(
-    limit?: number,
-  ): Promise<ApiResponse<Tag[]>> {
+  static async getPopularTags(limit?: number): Promise<ApiResponse<Tag[]>> {
     const response = await http.get<ApiResponse<Tag[]>>(
       `${this.BASE_URL}/popular`,
       {
@@ -114,9 +110,7 @@ export class TagsAPI {
   /**
    * Get trending tags
    */
-  static async getTrendingTags(
-    limit?: number,
-  ): Promise<ApiResponse<Tag[]>> {
+  static async getTrendingTags(limit?: number): Promise<ApiResponse<Tag[]>> {
     const response = await http.get<ApiResponse<Tag[]>>(
       `${this.BASE_URL}/trending`,
       {
@@ -129,9 +123,7 @@ export class TagsAPI {
   /**
    * Get featured tags
    */
-  static async getFeaturedTags(
-    limit?: number,
-  ): Promise<ApiResponse<Tag[]>> {
+  static async getFeaturedTags(limit?: number): Promise<ApiResponse<Tag[]>> {
     const response = await http.get<ApiResponse<Tag[]>>(
       `${this.BASE_URL}/featured`,
       {
@@ -169,9 +161,7 @@ export class TagsAPI {
   /**
    * Bulk create tags
    */
-  static async bulkCreateTags(
-    names: string[],
-  ): Promise<ApiResponse<Tag[]>> {
+  static async bulkCreateTags(names: string[]): Promise<ApiResponse<Tag[]>> {
     const response = await http.get<ApiResponse<Tag[]>>(
       `${this.BASE_URL}/bulk-create`,
       {
@@ -239,4 +229,3 @@ export class TagsAPI {
     return response.data;
   }
 }
-

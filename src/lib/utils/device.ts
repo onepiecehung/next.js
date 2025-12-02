@@ -10,12 +10,14 @@
 export function isMobileDevice(): boolean {
   if (typeof window === "undefined") return false;
 
-  const userAgent = navigator.userAgent || navigator.userAgentData?.userAgent || "";
+  const userAgent =
+    navigator.userAgent || navigator.userAgentData?.userAgent || "";
   const platform = navigator.platform || "";
   const maxTouchPoints = navigator.maxTouchPoints || 0;
 
   // Check user agent for mobile indicators
-  const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+  const mobileRegex =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
   const isMobileUA = mobileRegex.test(userAgent);
 
   // Check for touch capability
@@ -38,4 +40,3 @@ export function isPopupLikelyBlocked(): boolean {
   // On mobile devices, popups are almost always blocked
   return isMobileDevice();
 }
-

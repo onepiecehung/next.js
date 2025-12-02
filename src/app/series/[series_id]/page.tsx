@@ -1,6 +1,13 @@
 "use client";
 
-import { BookOpen, ExternalLink, FileText, Heart, Share2, Star } from "lucide-react";
+import {
+  BookOpen,
+  ExternalLink,
+  FileText,
+  Heart,
+  Share2,
+  Star,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
@@ -24,11 +31,19 @@ export default function SeriesDetailPage() {
   const seriesId = params.series_id as string;
 
   // Fetch series data (transformed)
-  const { data: series, isLoading: isLoadingSeries, error: seriesError } = useSeries(seriesId);
-  
+  const {
+    data: series,
+    isLoading: isLoadingSeries,
+    error: seriesError,
+  } = useSeries(seriesId);
+
   // Fetch full backend series data for complete metadata
-  const { data: backendSeries, isLoading: isLoadingFull, error: fullError } = useSeriesFull(seriesId);
-  
+  const {
+    data: backendSeries,
+    isLoading: isLoadingFull,
+    error: fullError,
+  } = useSeriesFull(seriesId);
+
   const isLoading = isLoadingSeries || isLoadingFull;
   const error = seriesError || fullError;
 
@@ -52,13 +67,34 @@ export default function SeriesDetailPage() {
   const getStatusText = (status: string | undefined) => {
     if (!status) return t("status.unknown", "series");
     const statusMap: Record<string, string> = {
-      [SERIES_CONSTANTS.RELEASING_STATUS.FINISHED]: t("status.finished", "series"),
-      [SERIES_CONSTANTS.RELEASING_STATUS.RELEASING]: t("status.releasing", "series"),
-      [SERIES_CONSTANTS.RELEASING_STATUS.ONGOING]: t("status.ongoing", "series"),
-      [SERIES_CONSTANTS.RELEASING_STATUS.COMING_SOON]: t("status.comingSoon", "series"),
-      [SERIES_CONSTANTS.RELEASING_STATUS.COMPLETED]: t("status.completed", "series"),
-      [SERIES_CONSTANTS.RELEASING_STATUS.NOT_YET_RELEASED]: t("status.notYetReleased", "series"),
-      [SERIES_CONSTANTS.RELEASING_STATUS.CANCELLED]: t("status.cancelled", "series"),
+      [SERIES_CONSTANTS.RELEASING_STATUS.FINISHED]: t(
+        "status.finished",
+        "series",
+      ),
+      [SERIES_CONSTANTS.RELEASING_STATUS.RELEASING]: t(
+        "status.releasing",
+        "series",
+      ),
+      [SERIES_CONSTANTS.RELEASING_STATUS.ONGOING]: t(
+        "status.ongoing",
+        "series",
+      ),
+      [SERIES_CONSTANTS.RELEASING_STATUS.COMING_SOON]: t(
+        "status.comingSoon",
+        "series",
+      ),
+      [SERIES_CONSTANTS.RELEASING_STATUS.COMPLETED]: t(
+        "status.completed",
+        "series",
+      ),
+      [SERIES_CONSTANTS.RELEASING_STATUS.NOT_YET_RELEASED]: t(
+        "status.notYetReleased",
+        "series",
+      ),
+      [SERIES_CONSTANTS.RELEASING_STATUS.CANCELLED]: t(
+        "status.cancelled",
+        "series",
+      ),
       [SERIES_CONSTANTS.RELEASING_STATUS.HIATUS]: t("status.hiatus", "series"),
     };
     return statusMap[status] || status;
@@ -145,7 +181,8 @@ export default function SeriesDetailPage() {
                     <div
                       className={cn(
                         "relative w-full max-w-[200px] mx-auto sm:max-w-none sm:w-full aspect-[2/3] rounded-lg sm:rounded-xl overflow-hidden shadow-lg mb-3 sm:mb-4 md:mb-6",
-                        series.bannerUrl && "-mt-16 sm:-mt-20 md:-mt-24 lg:mt-0"
+                        series.bannerUrl &&
+                          "-mt-16 sm:-mt-20 md:-mt-24 lg:mt-0",
                       )}
                     >
                       <Image
@@ -160,16 +197,27 @@ export default function SeriesDetailPage() {
 
                     {/* Action Buttons */}
                     <div className="flex flex-col gap-2 mb-3 sm:mb-4 md:mb-6">
-                      <Button className="w-full text-sm sm:text-base h-10 sm:h-11" size="default">
+                      <Button
+                        className="w-full text-sm sm:text-base h-10 sm:h-11"
+                        size="default"
+                      >
                         <BookOpen className="h-4 w-4 mr-2" />
                         {t("actions.read", "series")}
                       </Button>
                       <div className="flex gap-2">
-                        <Button variant="outline" className="flex-1 text-sm sm:text-base h-10 sm:h-11" size="default">
+                        <Button
+                          variant="outline"
+                          className="flex-1 text-sm sm:text-base h-10 sm:h-11"
+                          size="default"
+                        >
                           <Heart className="h-4 w-4 mr-2" />
                           {t("actions.follow", "series")}
                         </Button>
-                        <Button variant="outline" size="icon" className="flex-shrink-0 h-10 w-10 sm:h-11 sm:w-11">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="flex-shrink-0 h-10 w-10 sm:h-11 sm:w-11"
+                        >
                           <Share2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -185,7 +233,9 @@ export default function SeriesDetailPage() {
                             <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.status", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground break-words">{getStatusText(series.status)}</p>
+                            <p className="text-xs sm:text-sm text-foreground break-words">
+                              {getStatusText(series.status)}
+                            </p>
                           </div>
                         )}
 
@@ -195,7 +245,9 @@ export default function SeriesDetailPage() {
                             <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.type", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground break-words">{getTypeText(series.type)}</p>
+                            <p className="text-xs sm:text-sm text-foreground break-words">
+                              {getTypeText(series.type)}
+                            </p>
                           </div>
                         )}
 
@@ -205,7 +257,9 @@ export default function SeriesDetailPage() {
                             <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.format", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground break-words">{getFormatText(series.format)}</p>
+                            <p className="text-xs sm:text-sm text-foreground break-words">
+                              {getFormatText(series.format)}
+                            </p>
                           </div>
                         )}
 
@@ -216,7 +270,8 @@ export default function SeriesDetailPage() {
                               {t("metadata.chapters", "series")}
                             </h3>
                             <p className="text-xs sm:text-sm text-foreground break-words">
-                              {backendSeries.chapters ?? t("metadata.unknown", "series")}
+                              {backendSeries.chapters ??
+                                t("metadata.unknown", "series")}
                             </p>
                           </div>
                         )}
@@ -228,7 +283,8 @@ export default function SeriesDetailPage() {
                               {t("metadata.volumes", "series")}
                             </h3>
                             <p className="text-xs sm:text-sm text-foreground break-words">
-                              {backendSeries.volumes ?? t("metadata.unknown", "series")}
+                              {backendSeries.volumes ??
+                                t("metadata.unknown", "series")}
                             </p>
                           </div>
                         )}
@@ -240,7 +296,8 @@ export default function SeriesDetailPage() {
                               {t("metadata.episodes", "series")}
                             </h3>
                             <p className="text-xs sm:text-sm text-foreground break-words">
-                              {backendSeries.episodes ?? t("metadata.unknown", "series")}
+                              {backendSeries.episodes ??
+                                t("metadata.unknown", "series")}
                             </p>
                           </div>
                         )}
@@ -312,7 +369,9 @@ export default function SeriesDetailPage() {
                               {t("metadata.licensed", "series")}
                             </h3>
                             <p className="text-xs sm:text-sm text-foreground break-words">
-                              {backendSeries.isLicensed ? t("metadata.yes", "series") : t("metadata.no", "series")}
+                              {backendSeries.isLicensed
+                                ? t("metadata.yes", "series")
+                                : t("metadata.no", "series")}
                             </p>
                           </div>
                         )}
@@ -320,7 +379,6 @@ export default function SeriesDetailPage() {
 
                       {/* Full-width items below grid */}
                       <div className="space-y-3 sm:space-y-4">
-
                         {/* NSFW Warning */}
                         {backendSeries?.isNsfw && (
                           <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-2 sm:p-3">
@@ -358,60 +416,68 @@ export default function SeriesDetailPage() {
                         )}
 
                         {/* Authors */}
-                        {backendSeries?.authorRoles && backendSeries.authorRoles.length > 0 && (
-                          <div>
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
-                              {t("metadata.authors", "series")}
-                            </h3>
-                            <div className="space-y-1 sm:space-y-1.5">
-                              {backendSeries.authorRoles.map((authorRole) => {
-                                const author = authorRole.author;
-                                if (!author) return null;
-                                return (
-                                  <div key={authorRole.id} className="flex items-start sm:items-center gap-1.5 sm:gap-2 flex-wrap">
-                                    <p className="text-xs sm:text-sm text-foreground break-words">
-                                      {author.name}
-                                      {authorRole.role && (
-                                        <span className="text-[10px] sm:text-xs text-muted-foreground ml-1">
-                                          ({authorRole.role})
-                                        </span>
+                        {backendSeries?.authorRoles &&
+                          backendSeries.authorRoles.length > 0 && (
+                            <div>
+                              <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
+                                {t("metadata.authors", "series")}
+                              </h3>
+                              <div className="space-y-1 sm:space-y-1.5">
+                                {backendSeries.authorRoles.map((authorRole) => {
+                                  const author = authorRole.author;
+                                  if (!author) return null;
+                                  return (
+                                    <div
+                                      key={authorRole.id}
+                                      className="flex items-start sm:items-center gap-1.5 sm:gap-2 flex-wrap"
+                                    >
+                                      <p className="text-xs sm:text-sm text-foreground break-words">
+                                        {author.name}
+                                        {authorRole.role && (
+                                          <span className="text-[10px] sm:text-xs text-muted-foreground ml-1">
+                                            ({authorRole.role})
+                                          </span>
+                                        )}
+                                      </p>
+                                      {authorRole.isMain && (
+                                        <Badge
+                                          variant="default"
+                                          className="text-[10px] sm:text-xs flex-shrink-0"
+                                        >
+                                          {t("metadata.main", "series")}
+                                        </Badge>
                                       )}
-                                    </p>
-                                    {authorRole.isMain && (
-                                      <Badge variant="default" className="text-[10px] sm:text-xs flex-shrink-0">
-                                        {t("metadata.main", "series")}
-                                      </Badge>
-                                    )}
-                                  </div>
-                                );
-                              })}
+                                    </div>
+                                  );
+                                })}
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
 
                         {/* Genres */}
-                        {backendSeries?.genres && backendSeries.genres.length > 0 && (
-                          <div>
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
-                              {t("metadata.genres", "series")}
-                            </h3>
-                            <div className="flex flex-wrap gap-1 sm:gap-1.5">
-                              {backendSeries.genres.map((genreItem) => {
-                                const genre = genreItem.genre;
-                                if (!genre) return null;
-                                return (
-                                  <Badge
-                                    key={genre.id || genre.name}
-                                    variant="secondary"
-                                    className="text-[10px] sm:text-xs"
-                                  >
-                                    {genre.name}
-                                  </Badge>
-                                );
-                              })}
+                        {backendSeries?.genres &&
+                          backendSeries.genres.length > 0 && (
+                            <div>
+                              <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
+                                {t("metadata.genres", "series")}
+                              </h3>
+                              <div className="flex flex-wrap gap-1 sm:gap-1.5">
+                                {backendSeries.genres.map((genreItem) => {
+                                  const genre = genreItem.genre;
+                                  if (!genre) return null;
+                                  return (
+                                    <Badge
+                                      key={genre.id || genre.name}
+                                      variant="secondary"
+                                      className="text-[10px] sm:text-xs"
+                                    >
+                                      {genre.name}
+                                    </Badge>
+                                  );
+                                })}
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
 
                         {/* Tags */}
                         {series.tags && series.tags.length > 0 && (
@@ -421,7 +487,11 @@ export default function SeriesDetailPage() {
                             </h3>
                             <div className="flex flex-wrap gap-1 sm:gap-1.5">
                               {series.tags.map((tag, index) => (
-                                <Badge key={index} variant="outline" className="text-[10px] sm:text-xs">
+                                <Badge
+                                  key={index}
+                                  variant="outline"
+                                  className="text-[10px] sm:text-xs"
+                                >
                                   {tag}
                                 </Badge>
                               ))}
@@ -430,27 +500,31 @@ export default function SeriesDetailPage() {
                         )}
 
                         {/* External Links */}
-                        {backendSeries?.externalLinks && Object.keys(backendSeries.externalLinks).length > 0 && (
-                          <div>
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
-                              {t("metadata.links", "series")}
-                            </h3>
-                            <div className="flex flex-col gap-1.5 sm:gap-2">
-                              {Object.entries(backendSeries.externalLinks).map(([label, url], index) => (
-                                <a
-                                  key={index}
-                                  href={url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center gap-2 text-xs sm:text-sm text-primary hover:underline py-1 min-h-[44px] sm:min-h-0"
-                                >
-                                  <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5 flex-shrink-0" />
-                                  <span className="break-words">{label}</span>
-                                </a>
-                              ))}
+                        {backendSeries?.externalLinks &&
+                          Object.keys(backendSeries.externalLinks).length >
+                            0 && (
+                            <div>
+                              <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
+                                {t("metadata.links", "series")}
+                              </h3>
+                              <div className="flex flex-col gap-1.5 sm:gap-2">
+                                {Object.entries(
+                                  backendSeries.externalLinks,
+                                ).map(([label, url], index) => (
+                                  <a
+                                    key={index}
+                                    href={url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2 text-xs sm:text-sm text-primary hover:underline py-1 min-h-[44px] sm:min-h-0"
+                                  >
+                                    <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5 flex-shrink-0" />
+                                    <span className="break-words">{label}</span>
+                                  </a>
+                                ))}
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
                       </div>
                     </div>
                   </aside>
@@ -466,33 +540,48 @@ export default function SeriesDetailPage() {
                       {/* Alternative Titles */}
                       {backendSeries?.title && (
                         <div className="mt-2 sm:mt-3 space-y-1 sm:space-y-1.5">
-                          {backendSeries.title.romaji && backendSeries.title.romaji !== series.title && (
-                            <p className="text-xs sm:text-sm text-muted-foreground break-words">
-                              <span className="font-medium">Romaji:</span> {backendSeries.title.romaji}
-                            </p>
-                          )}
-                          {backendSeries.title.english && backendSeries.title.english !== series.title && (
-                            <p className="text-xs sm:text-sm text-muted-foreground break-words">
-                              <span className="font-medium">English:</span> {backendSeries.title.english}
-                            </p>
-                          )}
-                          {backendSeries.title.native && backendSeries.title.native !== series.title && (
-                            <p className="text-xs sm:text-sm text-muted-foreground break-words">
-                              <span className="font-medium">Native:</span> {backendSeries.title.native}
-                            </p>
-                          )}
-                          {backendSeries.synonyms && backendSeries.synonyms.length > 0 && (
-                            <div className="mt-2 sm:mt-3">
-                              <p className="text-[10px] sm:text-xs font-medium text-muted-foreground mb-1 sm:mb-1.5">Synonyms:</p>
-                              <div className="flex flex-wrap gap-1 sm:gap-1.5">
-                                {backendSeries.synonyms.map((synonym, idx) => (
-                                  <Badge key={idx} variant="outline" className="text-[10px] sm:text-xs">
-                                    {synonym}
-                                  </Badge>
-                                ))}
+                          {backendSeries.title.romaji &&
+                            backendSeries.title.romaji !== series.title && (
+                              <p className="text-xs sm:text-sm text-muted-foreground break-words">
+                                <span className="font-medium">Romaji:</span>{" "}
+                                {backendSeries.title.romaji}
+                              </p>
+                            )}
+                          {backendSeries.title.english &&
+                            backendSeries.title.english !== series.title && (
+                              <p className="text-xs sm:text-sm text-muted-foreground break-words">
+                                <span className="font-medium">English:</span>{" "}
+                                {backendSeries.title.english}
+                              </p>
+                            )}
+                          {backendSeries.title.native &&
+                            backendSeries.title.native !== series.title && (
+                              <p className="text-xs sm:text-sm text-muted-foreground break-words">
+                                <span className="font-medium">Native:</span>{" "}
+                                {backendSeries.title.native}
+                              </p>
+                            )}
+                          {backendSeries.synonyms &&
+                            backendSeries.synonyms.length > 0 && (
+                              <div className="mt-2 sm:mt-3">
+                                <p className="text-[10px] sm:text-xs font-medium text-muted-foreground mb-1 sm:mb-1.5">
+                                  Synonyms:
+                                </p>
+                                <div className="flex flex-wrap gap-1 sm:gap-1.5">
+                                  {backendSeries.synonyms.map(
+                                    (synonym, idx) => (
+                                      <Badge
+                                        key={idx}
+                                        variant="outline"
+                                        className="text-[10px] sm:text-xs"
+                                      >
+                                        {synonym}
+                                      </Badge>
+                                    ),
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )}
                         </div>
                       )}
 
@@ -530,4 +619,3 @@ export default function SeriesDetailPage() {
     </div>
   );
 }
-

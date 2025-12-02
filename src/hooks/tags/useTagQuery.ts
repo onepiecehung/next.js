@@ -3,11 +3,7 @@ import { toast } from "sonner";
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import { TagsAPI } from "@/lib/api/tags";
-import type {
-  CreateTagDto,
-  QueryTagsDto,
-  UpdateTagDto,
-} from "@/lib/api/tags";
+import type { CreateTagDto, QueryTagsDto, UpdateTagDto } from "@/lib/api/tags";
 import { queryKeys } from "@/lib/utils/query-keys";
 
 /**
@@ -198,16 +194,11 @@ export function useBulkCreateTags() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.tags.stats(),
       });
-      toast.success(
-        t("tagsCreated", "tags") || "Tags created successfully",
-      );
+      toast.success(t("tagsCreated", "tags") || "Tags created successfully");
     },
     onError: (error) => {
       console.error("Bulk create tags error:", error);
-      toast.error(
-        t("tagsCreateError", "tags") || "Failed to create tags",
-      );
+      toast.error(t("tagsCreateError", "tags") || "Failed to create tags");
     },
   });
 }
-
