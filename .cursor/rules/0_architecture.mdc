@@ -63,3 +63,11 @@ yarn dev / build / start / lint / format / test
 yarn dlx shadcn add button card input
 ```
 Always commit `yarn.lock`.
+
+## Environment & Tooling
+- Next.js 15+ (App Router), TypeScript strict
+- Yarn v3+/Berry (no npm/pnpm)
+- shadcn/ui + TailwindCSS
+- Jest + @testing-library/react
+- ESLint + Prettier
+- i18n via `src/i18n/config.ts`
