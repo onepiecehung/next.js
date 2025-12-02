@@ -216,10 +216,11 @@ export function useGoogleOneTap({
       // Show the One Tap prompt
       window.google.accounts.id.prompt((notification) => {
         if (notification.isNotDisplayed()) {
-          console.log(
-            "Google One Tap: Not displayed -",
-            notification.getNotDisplayedReason(),
-          );
+          const reason = notification.getNotDisplayedReason();
+          // Suppress common mobile/FedCM errors in console
+          if (reason !== "suppressed_by_user" && reason !== "opt_out_or_no_session") {
+            console.log("Google One Tap: Not displayed -", reason);
+          }
         } else if (notification.isSkippedMoment()) {
           console.log(
             "Google One Tap: Skipped -",
@@ -233,11 +234,22 @@ export function useGoogleOneTap({
         }
       });
     } catch (error) {
-      console.error("Google One Tap: Initialization failed", error);
-      toast.error(
-        t("errors.unknownError", "auth") ||
-          "Failed to initialize Google One Tap",
-      );
+      // Suppress FedCM-related errors (common on mobile/unsupported browsers)
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const isFedCMError = errorMessage.includes("FedCM") || 
+                           errorMessage.includes("AbortError") ||
+                           errorMessage.includes("signal is aborted");
+      
+      if (!isFedCMError) {
+        console.error("Google One Tap: Initialization failed", error);
+        toast.error(
+          t("errors.unknownError", "auth") ||
+            "Failed to initialize Google One Tap",
+        );
+      } else {
+        // Just log FedCM errors quietly (they're expected on mobile)
+        console.log("Google One Tap: FedCM not available (expected on mobile devices)");
+      }
     }
   }, [handleCredentialResponse, t]);
 

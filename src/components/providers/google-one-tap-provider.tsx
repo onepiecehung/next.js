@@ -9,9 +9,10 @@ import { useEffect, useState } from "react";
 /**
  * Global Google One Tap Provider
  * 
- * Shows Google One Tap on ALL pages except:
+ * Shows Google One Tap on DESKTOP ONLY, except:
  * - When user is already authenticated
  * - On auth pages (login, register) - to avoid duplicate prompts
+ * - On mobile devices - FedCM API not fully supported, causes console errors
  * - On pages where it might be intrusive (optional)
  * 
  * Features:
@@ -19,6 +20,7 @@ import { useEffect, useState } from "react";
  * - Auto-show when user logs out
  * - Smart page detection
  * - Configurable excluded paths
+ * - Mobile detection to prevent FedCM errors
  * 
  * Usage:
  * Add to app/layout.tsx inside providers:
@@ -31,6 +33,7 @@ export default function GoogleOneTapProvider() {
   const pathname = usePathname();
   const router = useRouter();
   const [shouldShow, setShouldShow] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   /**
    * List of paths where One Tap should NOT appear
@@ -46,9 +49,34 @@ export default function GoogleOneTapProvider() {
   ];
 
   /**
+   * Detect if user is on mobile device
+   * Run once on mount to avoid hydration issues
+   */
+  useEffect(() => {
+    const checkMobile = () => {
+      const userAgent = navigator.userAgent;
+      const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+      const isMobileDevice = mobileRegex.test(userAgent) || window.innerWidth < 768;
+      setIsMobile(isMobileDevice);
+      
+      if (isMobileDevice) {
+        console.log("Google One Tap: Mobile device detected - One Tap disabled to prevent FedCM errors");
+      }
+    };
+
+    checkMobile();
+  }, []);
+
+  /**
    * Check if current path should show One Tap
    */
   useEffect(() => {
+    // Don't show on mobile devices (prevents FedCM AbortError)
+    if (isMobile) {
+      setShouldShow(false);
+      return;
+    }
+
     // Don't show if user is authenticated
     if (currentUser) {
       setShouldShow(false);
@@ -65,11 +93,9 @@ export default function GoogleOneTapProvider() {
       return;
     }
 
-    // Show on all other pages when not authenticated
-    // Note: Mobile detection is handled by Google SDK
-    // One Tap will automatically adapt for mobile devices
+    // Show on all other pages when not authenticated and on desktop
     setShouldShow(true);
-  }, [currentUser, pathname]);
+  }, [currentUser, pathname, isMobile]);
 
   /**
    * Handle successful login
