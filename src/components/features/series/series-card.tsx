@@ -156,10 +156,10 @@ export function SeriesCard({
           className,
         )}
       >
-        {/* Left Section: Cover Image - Fixed height matching card height */}
+        {/* Left Section: Cover Image - Optimized width for mobile */}
         <Link
           href={`/series/${series.id}`}
-          className="relative w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 flex-shrink-0 overflow-hidden bg-muted block h-full m-0 p-0"
+          className="relative w-24 sm:w-32 md:w-36 lg:w-40 xl:w-44 flex-shrink-0 overflow-hidden bg-muted block h-full m-0 p-0"
         >
           <div className="relative w-full h-full m-0 p-0 leading-none">
             <Image
@@ -170,7 +170,7 @@ export function SeriesCard({
                 "object-cover transition-transform duration-500 group-hover:scale-105",
                 isNsfw && !isNsfwRevealed && "blur-md"
               )}
-              sizes="(max-width: 640px) 128px, (max-width: 768px) 144px, (max-width: 1024px) 160px, (max-width: 1280px) 176px, 192px"
+              sizes="(max-width: 640px) 96px, (max-width: 768px) 128px, (max-width: 1024px) 144px, (max-width: 1280px) 160px, 176px"
             />
             
             {/* NSFW Overlay */}
@@ -178,20 +178,20 @@ export function SeriesCard({
               <NSFWOverlay onClick={() => setIsNsfwRevealed(true)} />
             )}
             
-            {/* View Details Button - Top Right (only on hover) */}
-            <div className="absolute top-2 right-2 z-15 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <div className="rounded-full bg-background/90 backdrop-blur-sm p-1.5 shadow-lg border border-border/50">
-                <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-foreground" />
+            {/* View Details Button - Top Right (only on hover, hidden on mobile) */}
+            <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 z-15 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <div className="rounded-full bg-background/90 backdrop-blur-sm p-1 sm:p-1.5 shadow-lg border border-border/50">
+                <ExternalLink className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-foreground" />
               </div>
             </div>
             
             {/* Dark Gradient Overlay at Bottom with Title and Studio */}
-            <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/95 via-black/80 to-transparent pt-8 pb-2 px-2 sm:px-3">
-              <h3 className="text-white font-semibold text-xs sm:text-sm line-clamp-2 mb-1 drop-shadow-lg leading-tight">
+            <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/95 via-black/80 to-transparent pt-6 sm:pt-8 pb-1.5 sm:pb-2 px-1.5 sm:px-2 md:px-3">
+              <h3 className="text-white font-semibold text-[11px] sm:text-xs md:text-sm line-clamp-2 mb-0.5 sm:mb-1 drop-shadow-lg leading-tight">
                 {series.title}
               </h3>
               {studio && (
-                <p className="text-blue-300 text-[10px] sm:text-xs line-clamp-1 drop-shadow-md">
+                <p className="text-blue-300 text-[9px] sm:text-[10px] md:text-xs line-clamp-1 drop-shadow-md">
                   {studio}
                 </p>
               )}
@@ -199,22 +199,22 @@ export function SeriesCard({
           </div>
         </Link>
 
-        {/* Right Section: Information Panel - Match height with image */}
-        <div className="flex flex-1 flex-col p-3 sm:p-4 min-w-0 h-full min-h-[160px] sm:min-h-[180px]">
+        {/* Right Section: Information Panel - Optimized spacing for mobile */}
+        <div className="flex flex-1 flex-col p-2.5 sm:p-3 md:p-4 min-w-0 h-full min-h-[140px] sm:min-h-[160px] md:min-h-[180px]">
           {/* Top Row: Airing Date and Ranking */}
-          <div className="flex items-start justify-between gap-2 mb-2 flex-shrink-0">
+          <div className="flex items-start justify-between gap-1.5 sm:gap-2 mb-1.5 sm:mb-2 flex-shrink-0">
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1.5 mb-1">
-                <span className="text-[10px] sm:text-xs text-muted-foreground">Airing on</span>
+              <div className="flex items-center gap-1 sm:gap-1.5 mb-0.5 sm:mb-1 flex-wrap">
+                <span className="text-[11px] sm:text-xs text-muted-foreground whitespace-nowrap">Airing on</span>
                 {formatAiringDate && (
-                  <span className="text-sm sm:text-base font-semibold text-foreground">
+                  <span className="text-xs sm:text-sm md:text-base font-semibold text-foreground">
                     {formatAiringDate}
                   </span>
                 )}
               </div>
               {/* Sequel/Source Info */}
               {(series.status === SERIES_CONSTANTS.RELEASING_STATUS.COMING_SOON || series.source) && (
-                <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-1">
+                <p className="text-[10px] sm:text-[11px] md:text-xs text-muted-foreground line-clamp-1">
                   {series.status === SERIES_CONSTANTS.RELEASING_STATUS.COMING_SOON
                     ? `Sequel to ${series.title}`
                     : series.source
@@ -225,38 +225,44 @@ export function SeriesCard({
             </div>
             {/* Ranking Badge */}
             {rank && (
-              <div className="flex items-center gap-1 text-pink-500 flex-shrink-0">
-                <Heart className="h-3 w-3 sm:h-4 sm:w-4 fill-current" />
-                <span className="text-sm sm:text-base font-semibold">#{rank}</span>
+              <div className="flex items-center gap-0.5 sm:gap-1 text-pink-500 flex-shrink-0">
+                <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-current" />
+                <span className="text-xs sm:text-sm md:text-base font-semibold">#{rank}</span>
               </div>
             )}
           </div>
 
-          {/* Synopsis/Description - Always reserve space for consistent card height */}
-          <div className="flex-1 min-h-[60px] sm:min-h-[72px] mb-3">
+          {/* Synopsis/Description - Optimized min-height for mobile */}
+          <div className="flex-1 min-h-[48px] sm:min-h-[60px] md:min-h-[72px] mb-2 sm:mb-3">
             {series.description ? (
-              <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 sm:line-clamp-4 leading-relaxed h-full">
+              <p className="text-[11px] sm:text-xs md:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-3 md:line-clamp-4 leading-relaxed h-full">
                 {series.description}
               </p>
             ) : (
-              <p className="text-xs sm:text-sm text-muted-foreground/50 italic line-clamp-3 sm:line-clamp-4 leading-relaxed h-full">
+              <p className="text-[11px] sm:text-xs md:text-sm text-muted-foreground/50 italic line-clamp-2 sm:line-clamp-3 md:line-clamp-4 leading-relaxed h-full">
                 <i>No description available.</i>
               </p>
             )}
           </div>
 
-          {/* Bottom: Genre Pills */}
+          {/* Bottom: Genre Pills - Show fewer on mobile */}
           {displayGenres.length > 0 && (
-            <div className="flex items-center gap-1.5 sm:gap-2 mt-auto pt-2 flex-shrink-0">
-              <div className="flex flex-wrap gap-1 sm:gap-1.5 flex-1">
-                {displayGenres.slice(0, 4).map((genre, index) => (
+            <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 mt-auto pt-1.5 sm:pt-2 flex-shrink-0">
+              <div className="flex flex-wrap gap-0.5 sm:gap-1 md:gap-1.5 flex-1">
+                {displayGenres.slice(0, 3).map((genre, index) => (
                   <span
                     key={index}
-                    className="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-md text-[10px] sm:text-xs font-semibold bg-amber-600 text-white border-0"
+                    className="inline-flex items-center px-1.5 sm:px-2 md:px-2.5 py-0.5 rounded-md text-[10px] sm:text-[11px] md:text-xs font-semibold bg-amber-600 text-white border-0 whitespace-nowrap"
                   >
                     {genre}
                   </span>
                 ))}
+                {/* Show +N indicator on mobile if more genres exist */}
+                {displayGenres.length > 3 && (
+                  <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded-md text-[10px] sm:text-[11px] md:text-xs font-semibold bg-muted text-muted-foreground border-0">
+                    +{displayGenres.length - 3}
+                  </span>
+                )}
               </div>
               <Button
                 variant="ghost"
@@ -264,7 +270,7 @@ export function SeriesCard({
                 className="h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0"
                 aria-label="Add to list"
               >
-                <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
+                <Plus className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
               </Button>
             </div>
           )}
@@ -282,10 +288,10 @@ export function SeriesCard({
           className,
         )}
       >
-        {/* Cover Image - Left side */}
+        {/* Cover Image - Left side - Optimized for mobile readability */}
         <Link
           href={`/series/${series.id}`}
-          className="relative w-14 sm:w-16 md:w-20 lg:w-24 h-18 sm:h-20 md:h-28 lg:h-32 flex-shrink-0 overflow-hidden rounded bg-muted"
+          className="relative w-16 sm:w-20 md:w-24 lg:w-28 h-22 sm:h-26 md:h-32 lg:h-36 flex-shrink-0 overflow-hidden rounded bg-muted"
         >
           <Image
             src={series.coverUrl}
@@ -295,7 +301,7 @@ export function SeriesCard({
               "object-cover transition-transform duration-300 group-hover:scale-105",
               isNsfw && !isNsfwRevealed && "blur-md"
             )}
-            sizes="(max-width: 375px) 56px, (max-width: 640px) 64px, (max-width: 768px) 80px, 96px"
+            sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, (max-width: 1024px) 96px, 112px"
           />
           {/* NSFW Overlay */}
           {isNsfw && !isNsfwRevealed && (
@@ -303,38 +309,38 @@ export function SeriesCard({
           )}
         </Link>
 
-        {/* Content - Right side */}
-        <div className="flex flex-1 flex-col gap-1 sm:gap-1.5 md:gap-2 min-w-0 min-h-[120px] sm:min-h-[140px]">
+        {/* Content - Right side - Better mobile spacing */}
+        <div className="flex flex-1 flex-col gap-1 sm:gap-1.5 md:gap-2 min-w-0 min-h-[88px] sm:min-h-[104px] md:min-h-[128px]">
           {/* Header: Episode info, Rating, Rank */}
-          <div className="flex flex-wrap items-center gap-1 sm:gap-2 md:gap-3 text-[9px] sm:text-[10px] md:text-xs text-muted-foreground flex-shrink-0">
+          <div className="flex flex-wrap items-center gap-1 sm:gap-2 md:gap-3 text-[10px] sm:text-[11px] md:text-xs text-muted-foreground flex-shrink-0">
             {episodeInfo && (
               <span className="truncate">{episodeInfo}</span>
             )}
             {rating !== null && (
-              <div className="flex items-center gap-1 flex-shrink-0">
+              <div className="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
                 <span>{rating}%</span>
                 {ratingIcon}
               </div>
             )}
             {rank && (
-              <div className="flex items-center gap-1 text-red-500 flex-shrink-0 ml-auto">
+              <div className="flex items-center gap-0.5 sm:gap-1 text-red-500 flex-shrink-0 ml-auto">
                 <Heart className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-current" />
                 <span>#{rank}</span>
               </div>
             )}
           </div>
 
-          {/* Title */}
+          {/* Title - Improved mobile readability */}
           <Link
             href={`/series/${series.id}`}
-            className="font-semibold text-xs sm:text-sm md:text-base lg:text-lg text-foreground hover:text-primary line-clamp-2 leading-tight flex-shrink-0"
+            className="font-semibold text-sm sm:text-base md:text-lg lg:text-xl text-foreground hover:text-primary line-clamp-2 leading-tight flex-shrink-0"
           >
             {series.title}
           </Link>
 
           {/* Subtitle/Source */}
           {series.season && series.seasonYear && (
-            <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground flex-shrink-0">
+            <p className="text-[10px] sm:text-[11px] md:text-xs text-muted-foreground flex-shrink-0">
               {series.season} {series.seasonYear}
               {series.source && (
                 <span className="hidden sm:inline">
@@ -344,14 +350,14 @@ export function SeriesCard({
             </p>
           )}
 
-          {/* Description - Reserve space for consistent layout */}
-          <div className="flex-1 min-h-[40px] sm:min-h-[48px]">
+          {/* Description - Optimized line-clamp for mobile */}
+          <div className="flex-1 min-h-[32px] sm:min-h-[40px] md:min-h-[48px]">
             {series.description ? (
-              <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground line-clamp-1 sm:line-clamp-2 md:line-clamp-3 leading-relaxed">
+              <p className="text-[11px] sm:text-xs md:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-2 md:line-clamp-3 leading-relaxed">
                 {series.description}
               </p>
             ) : (
-              <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground/50 italic line-clamp-1 sm:line-clamp-2 md:line-clamp-3 leading-relaxed">
+              <p className="text-[11px] sm:text-xs md:text-sm text-muted-foreground/50 italic line-clamp-2 sm:line-clamp-2 md:line-clamp-3 leading-relaxed">
                 <i>No description available.</i>
               </p>
             )}
@@ -359,31 +365,37 @@ export function SeriesCard({
 
           {/* Studio/Source */}
           {studio && (
-            <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground flex-shrink-0">
+            <p className="text-[10px] sm:text-[11px] md:text-xs text-muted-foreground flex-shrink-0 truncate">
               {studio}
             </p>
           )}
 
-          {/* Genre Tags */}
+          {/* Genre Tags - Show 2-3 tags max on mobile */}
           {series.tags && series.tags.length > 0 && (
-            <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 mt-auto pt-0.5 sm:pt-1 flex-shrink-0">
+            <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 mt-auto pt-1 flex-shrink-0">
               <div className="flex flex-wrap gap-0.5 sm:gap-1 md:gap-1.5 flex-1">
                 {series.tags.slice(0, 2).map((tag, index) => (
                   <span
                     key={index}
-                    className="inline-flex items-center px-1 sm:px-1.5 md:px-2 py-0.5 rounded text-[8px] sm:text-[9px] md:text-[10px] font-medium bg-accent text-accent-foreground border border-border/50"
+                    className="inline-flex items-center px-1.5 sm:px-2 md:px-2.5 py-0.5 rounded text-[9px] sm:text-[10px] md:text-[11px] font-medium bg-accent text-accent-foreground border border-border/50 whitespace-nowrap"
                   >
                     {tag}
                   </span>
                 ))}
+                {/* Show +N for additional tags */}
+                {series.tags.length > 2 && (
+                  <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] md:text-[11px] font-medium bg-muted text-muted-foreground">
+                    +{series.tags.length - 2}
+                  </span>
+                )}
               </div>
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 flex-shrink-0"
+                className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 flex-shrink-0"
                 aria-label="View more"
               >
-                <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5" />
+                <Plus className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
               </Button>
             </div>
           )}
@@ -392,7 +404,7 @@ export function SeriesCard({
     );
   }
 
-  // Original vertical layout for other variants
+  // Original vertical layout for other variants - Mobile optimized
   return (
     <Link href={`/series/${series.id}`} className="block h-full">
       <Card
@@ -401,8 +413,8 @@ export function SeriesCard({
           className,
         )}
       >
-        {/* Cover Image */}
-        <div className="relative aspect-[3/4] w-full overflow-hidden bg-muted">
+        {/* Cover Image - Aspect ratio optimized for mobile */}
+        <div className="relative aspect-[2/3] w-full overflow-hidden bg-muted">
           <Image
             src={series.coverUrl}
             alt={series.title}
@@ -412,43 +424,53 @@ export function SeriesCard({
               isNsfw && !isNsfwRevealed && "blur-md"
             )}
             sizes={isTiny 
-              ? "(max-width: 640px) 25vw, (max-width: 1024px) 20vw, 10vw"
+              ? "(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 20vw, 10vw"
               : isCompact
-                ? "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"}
+                ? "(max-width: 640px) 50vw, (max-width: 768px) 40vw, (max-width: 1024px) 33vw, 25vw"
+                : "(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"}
           />
           {/* NSFW Overlay */}
           {isNsfw && !isNsfwRevealed && (
             <NSFWOverlay onClick={() => setIsNsfwRevealed(true)} />
           )}
-          {/* View Details Button - Top Right */}
-          <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            <div className="rounded-full bg-background/90 backdrop-blur-sm p-1.5 shadow-lg border border-border/50">
-              <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-foreground" />
+          {/* View Details Button - Top Right - Hidden on tiny variant mobile */}
+          <div className={cn(
+            "absolute z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200",
+            isTiny ? "top-1 right-1 sm:top-1.5 sm:right-1.5" : "top-1.5 right-1.5 sm:top-2 sm:right-2"
+          )}>
+            <div className={cn(
+              "rounded-full bg-background/90 backdrop-blur-sm shadow-lg border border-border/50",
+              isTiny ? "p-1 sm:p-1.5" : "p-1 sm:p-1.5"
+            )}>
+              <ExternalLink className={cn(
+                "text-foreground",
+                isTiny ? "h-2 w-2 sm:h-2.5 sm:w-2.5" : "h-2.5 w-2.5 sm:h-3 sm:w-3"
+              )} />
             </div>
           </div>
           {isFeatured && (
-            <div className="absolute top-2 left-2 z-10 rounded bg-primary px-2 py-1 text-xs font-semibold text-primary-foreground">
+            <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 z-10 rounded bg-primary px-1.5 py-0.5 sm:px-2 sm:py-1 text-[10px] sm:text-xs font-semibold text-primary-foreground">
               {t("featured", "series")}
             </div>
           )}
         </div>
 
+        {/* Title Section - Optimized padding and font sizes for mobile */}
         <div
           className={cn(
             "flex-shrink-0",
             isTiny 
-              ? "p-1 sm:p-1.5" 
+              ? "p-1 sm:p-1.5 md:p-2" 
               : isCompact 
-                ? "p-1.5 sm:p-2" 
-                : "px-1.5 sm:px-2 pt-1 pb-1",
+                ? "p-1.5 sm:p-2 md:p-2.5" 
+                : "px-2 sm:px-2.5 pt-1.5 pb-1.5 sm:pt-2 sm:pb-2",
           )}
         >
           <h3
             className={cn(
-              "font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors",
+              "font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors leading-tight",
               isTiny
-                ? "text-[11px] xs:text-xs sm:text-sm md:text-base lg:text-lg"
+                ? "text-[10px] sm:text-xs md:text-sm lg:text-base"
                 : isCompact
                   ? "text-xs sm:text-sm md:text-base lg:text-lg"
                   : "text-sm sm:text-base md:text-lg lg:text-xl",
