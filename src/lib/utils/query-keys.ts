@@ -80,8 +80,7 @@ export const queryKeys = {
   // Comments related queries
   comments: {
     all: () => ["comments"] as const,
-    list: (params?: unknown) =>
-      ["comments", "list", params] as const,
+    list: (params?: unknown) => ["comments", "list", params] as const,
     detail: (id: string, options?: unknown) =>
       ["comments", "detail", id, options] as const,
     replies: (id: string, params?: unknown) =>

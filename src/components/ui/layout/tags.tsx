@@ -189,10 +189,7 @@ export const TagsList = ({ className, ...props }: TagsListProps) => (
 
 export type TagsEmptyProps = ComponentProps<typeof CommandEmpty>;
 
-export const TagsEmpty = ({
-  children,
-  ...props
-}: TagsEmptyProps) => (
+export const TagsEmpty = ({ children, ...props }: TagsEmptyProps) => (
   <CommandEmpty {...props}>{children ?? "No tags found."}</CommandEmpty>
 );
 

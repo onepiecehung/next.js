@@ -21,7 +21,9 @@ import { ScrambledImageCanvas } from "./scrambled-image-canvas";
  */
 export function ImageScramblerDemo() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [uploadedMedia, setUploadedMedia] = useState<UploadedMedia | null>(null);
+  const [uploadedMedia, setUploadedMedia] = useState<UploadedMedia | null>(
+    null,
+  );
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -81,7 +83,8 @@ export function ImageScramblerDemo() {
       setUploadedMedia(media);
     } catch (error: unknown) {
       console.error("Upload error:", error);
-      const errorMessage = error instanceof Error ? error.message : "Failed to upload image";
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to upload image";
       setUploadError(errorMessage);
     } finally {
       setIsUploading(false);
@@ -314,7 +317,10 @@ export function ImageScramblerDemo() {
                                   alert(message);
                                 }
                               } catch (error: unknown) {
-                                const errorMessage = error instanceof Error ? error.message : "Unknown error";
+                                const errorMessage =
+                                  error instanceof Error
+                                    ? error.message
+                                    : "Unknown error";
                                 alert(
                                   `❌ CORS test failed: ${errorMessage}\n\nThis usually means:\n1. CORS not configured\n2. CORS not yet propagated (wait 1-5 min)\n3. Network error`,
                                 );
@@ -392,7 +398,8 @@ export function ImageScramblerDemo() {
                       &nbsp;&nbsp;&quot;http://localhost:3001&quot;
                       <br />
                       ]<br />
-                      AllowedMethods: [&quot;GET&quot;, &quot;HEAD&quot;, &quot;POST&quot;]
+                      AllowedMethods: [&quot;GET&quot;, &quot;HEAD&quot;,
+                      &quot;POST&quot;]
                       <br />
                       AllowedHeaders: [&quot;*&quot;]
                     </code>
@@ -405,8 +412,9 @@ export function ImageScramblerDemo() {
                         origin
                       </p>
                       <p>
-                        2. Or temporarily allow all origins: <code>&quot;*&quot;</code>{" "}
-                        (not recommended for production)
+                        2. Or temporarily allow all origins:{" "}
+                        <code>&quot;*&quot;</code> (not recommended for
+                        production)
                       </p>
                       <p>
                         3. Or run frontend on port 3000 to match CORS config

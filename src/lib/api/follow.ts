@@ -69,7 +69,7 @@ export interface RebuildDto {
   force?: boolean;
 }
 
-export interface PaginationDto extends Omit<QueryParamsWithCursor, 'limit'> {
+export interface PaginationDto extends Omit<QueryParamsWithCursor, "limit"> {
   limit?: number;
 }
 
