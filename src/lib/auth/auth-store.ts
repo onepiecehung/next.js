@@ -54,7 +54,7 @@ export function useUserProfileLoading() {
 /**
  * Store authentication tokens securely
  */
-function storeTokens(accessToken: string, refreshToken?: string) {
+export function storeTokens(accessToken: string, refreshToken?: string) {
   // Store access token in memory (secure, not persisted)
   setAccessToken(accessToken);
 
