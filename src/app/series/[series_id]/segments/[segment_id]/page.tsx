@@ -8,9 +8,8 @@ import {
   Lock,
   Maximize2,
   Minimize2,
-  Play,
   Video,
-  ZoomIn,
+  ZoomIn
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,6 +20,7 @@ import { ScrambledImageCanvas } from "@/components/features/media/components/scr
 import { useI18n } from "@/components/providers/i18n-provider";
 import { AnimatedSection, Skeletonize } from "@/components/shared";
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
+import { Badge } from "@/components/ui/core/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,11 +29,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
-import { Badge } from "@/components/ui/core/badge";
 import { useCurrentUser } from "@/hooks/auth";
 import { useSeries, useSeriesFull, useSeriesSegment } from "@/hooks/series";
-import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
+import { currentUserAtom } from "@/lib/auth";
 import { cn } from "@/lib/utils";
+import { useAtom } from "jotai";
 
 /**
  * Segment Detail Page Component
@@ -58,8 +58,12 @@ export default function SegmentDetailPage() {
   const { data: backendSeries } = useSeriesFull(seriesId);
 
   // Check authentication status
+  // Use both query and atom to ensure reactivity on logout
   const { data: currentUser } = useCurrentUser();
-  const isAuthenticated = !!currentUser;
+  const [userFromAtom] = useAtom(currentUserAtom);
+  // Prefer atom value if available (more reactive), fallback to query data
+  const effectiveUser = userFromAtom ?? currentUser;
+  const isAuthenticated = !!effectiveUser;
 
   // Image size mode state
   type ImageSizeMode = "default" | "full" | "half" | "fit";
@@ -107,16 +111,19 @@ export default function SegmentDetailPage() {
 
   // Process images sequentially from top to bottom
   useEffect(() => {
+    // Reset when user logs out or when not authenticated
     if (!isAuthenticated || imageAttachments.length === 0) {
       setMaxUnscrambleIndex(-1);
       return;
     }
 
-    // Reset when segment changes
+    // Reset when authentication state changes (login) or segment changes
     setMaxUnscrambleIndex(-1);
 
     // Process images one by one with delay between each
     let currentIndex = 0;
+    let timeoutId: NodeJS.Timeout | null = null;
+    
     const processNextImage = () => {
       if (currentIndex >= imageAttachments.length) {
         return;
@@ -129,13 +136,19 @@ export default function SegmentDetailPage() {
       currentIndex++;
       if (currentIndex < imageAttachments.length) {
         // Delay increases slightly for each image to ensure smooth processing
-        setTimeout(processNextImage, 300);
+        timeoutId = setTimeout(processNextImage, 300);
       }
     };
 
     // Start processing from the first image after a short initial delay
-    const timeoutId = setTimeout(processNextImage, 100);
-    return () => clearTimeout(timeoutId);
+    timeoutId = setTimeout(processNextImage, 100);
+    
+    return () => {
+      // Cleanup: cancel any pending timeouts when auth state changes or component unmounts
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [isAuthenticated, imageAttachments]);
 
   // Show 404 if segment not found
