@@ -871,6 +871,12 @@
     "goHomepageDesc": "Bắt đầu lại từ trang chủ của chúng tôi",
     "popularLinks": "Trang phổ biến:"
   },
+  "nav": {
+    "menu": "Menu",
+    "language": "Ngôn ngữ",
+    "theme": "Giao diện",
+    "account": "Tài khoản"
+  },
   "rateLimit": {
     "title": "Quá nhiều yêu cầu",
     "description": "Bạn đã vượt quá giới hạn gọi API. Vui lòng chờ trước khi thử lại.",

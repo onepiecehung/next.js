@@ -871,6 +871,12 @@
     "goHomepageDesc": "Start fresh from our homepage",
     "popularLinks": "Popular pages:"
   },
+  "nav": {
+    "menu": "Menu",
+    "language": "Language",
+    "theme": "Theme",
+    "account": "Account"
+  },
   "rateLimit": {
     "title": "Too Many Requests",
     "description": "You have hit the request limit. Please wait before trying again.",

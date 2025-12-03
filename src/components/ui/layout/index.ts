@@ -48,6 +48,17 @@ export {
 export { Separator } from "./separator";
 
 export {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./sheet";
+
+export {
   Tags,
   TagsContent,
   TagsEmpty,

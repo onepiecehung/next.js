@@ -34,6 +34,17 @@
     0%, 50% { opacity: 1; }
     51%, 100% { opacity: 0; }
   }
+
+  /* Safe area support for iOS devices with notch */
+  @supports (padding: env(safe-area-inset-bottom)) {
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    .pt-safe {
+      padding-top: env(safe-area-inset-top);
+    }
+  }
 }
 
 @theme inline {
