@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/core/badge";
 import { useSeries, useSeriesFull } from "@/hooks/series";
 import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
 import { cn } from "@/lib/utils";
+import { transformBackendSeries } from "@/lib/utils/series-utils";
 
 /**
  * Series Detail Page Component
@@ -30,22 +31,15 @@ export default function SeriesDetailPage() {
   const { t } = useI18n();
   const seriesId = params.series_id as string;
 
-  // Fetch series data (transformed)
-  const {
-    data: series,
-    isLoading: isLoadingSeries,
-    error: seriesError,
-  } = useSeries(seriesId);
-
-  // Fetch full backend series data for complete metadata
+  // Fetch full backend series data (single API call)
   const {
     data: backendSeries,
-    isLoading: isLoadingFull,
-    error: fullError,
+    isLoading,
+    error,
   } = useSeriesFull(seriesId);
 
-  const isLoading = isLoadingSeries || isLoadingFull;
-  const error = seriesError || fullError;
+  // Transform to display format using utility function
+  const series = backendSeries ? transformBackendSeries(backendSeries) : undefined;
 
   // Show 404 if series not found
   if (!isLoading && !error && !series) {
