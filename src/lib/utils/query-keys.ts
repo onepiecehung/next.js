@@ -75,6 +75,13 @@ export const queryKeys = {
     recentlyAdded: () => ["series", "recently-added"] as const,
     byType: (type: string) => ["series", "type", type] as const,
     byGenre: (genre: string) => ["series", "genre", genre] as const,
+    segments: {
+      all: (seriesId: string) => ["series", seriesId, "segments"] as const,
+      list: (seriesId: string, params?: AdvancedQueryParams) =>
+        ["series", seriesId, "segments", "list", params] as const,
+      detail: (seriesId: string, segmentId: string) =>
+        ["series", seriesId, "segments", segmentId] as const,
+    },
   },
 
   // Comments related queries

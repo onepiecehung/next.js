@@ -128,6 +128,86 @@
     "title": "Chương",
     "comingSoon": "Danh sách chương sắp có"
   },
+  "segments": {
+    "title": "Tải Lên Segment",
+    "description": "Tải lên chương hoặc tập mới cho series này",
+    "form": {
+      "type": "Loại Segment",
+      "typePlaceholder": "Chọn loại segment",
+      "number": "Số",
+      "numberPlaceholder": "Nhập số segment (ví dụ: 1, 2, 3)",
+      "subNumber": "Số Phụ",
+      "subNumberPlaceholder": "Tùy chọn: cho chương/tập .5 (ví dụ: 5 cho 12.5)",
+      "title": "Tiêu Đề",
+      "titlePlaceholder": "Nhập tiêu đề segment (tùy chọn)",
+      "description": "Mô Tả",
+      "descriptionPlaceholder": "Nhập mô tả segment (tùy chọn)",
+      "summary": "Tóm Tắt",
+      "summaryPlaceholder": "Nhập tóm tắt ngắn (tùy chọn)",
+      "slug": "URL Slug",
+      "slugPlaceholder": "Tự động tạo từ tiêu đề nếu không cung cấp",
+      "status": "Trạng Thái",
+      "statusPlaceholder": "Chọn trạng thái",
+      "accessType": "Loại Truy Cập",
+      "accessTypePlaceholder": "Chọn loại truy cập",
+      "languageCode": "Ngôn Ngữ",
+      "languageCodePlaceholder": "Chọn ngôn ngữ",
+      "publishedAt": "Ngày Xuất Bản",
+      "publishedAtPlaceholder": "Chọn ngày xuất bản",
+      "originalReleaseDate": "Ngày Phát Hành Gốc",
+      "originalReleaseDatePlaceholder": "Chọn ngày phát hành gốc",
+      "durationSec": "Thời Lượng (giây)",
+      "durationSecPlaceholder": "Chỉ cho tập phim",
+      "pageCount": "Số Trang",
+      "pageCountPlaceholder": "Chỉ cho chương",
+      "startPage": "Trang Bắt Đầu",
+      "startPagePlaceholder": "Tùy chọn: số trang bắt đầu",
+      "endPage": "Trang Kết Thúc",
+      "endPagePlaceholder": "Tùy chọn: số trang kết thúc",
+      "isNsfw": "Nội Dung NSFW",
+      "mediaFiles": "Tệp Media",
+      "mediaFilesPlaceholder": "Tải lên hình ảnh, video hoặc tài liệu",
+      "uploadSegment": "Tải Lên Segment",
+      "uploadingSegment": "Đang tải lên...",
+      "saveDraft": "Lưu Bản Nháp",
+      "basicInfo": "Thông Tin Cơ Bản",
+      "basicInfoDescription": "Nhập thông tin cần thiết cho segment này",
+      "advancedSettings": "Cài Đặt Nâng Cao",
+      "advancedSettingsDescription": "Các tùy chọn tùy chỉnh cho segment của bạn",
+      "showAdvancedSettings": "Hiển Thị Cài Đặt Nâng Cao",
+      "hideAdvancedSettings": "Ẩn Cài Đặt Nâng Cao",
+      "clearAll": "Xóa Tất Cả"
+    },
+    "type": {
+      "trailer": "Trailer",
+      "episode": "Tập Phim",
+      "chapter": "Chương"
+    },
+    "status": {
+      "active": "Hoạt Động",
+      "inactive": "Không Hoạt Động",
+      "pending": "Đang Chờ",
+      "archived": "Đã Lưu Trữ"
+    },
+    "accessType": {
+      "free": "Miễn Phí",
+      "paid": "Trả Phí",
+      "subscription": "Đăng Ký",
+      "membership": "Thành Viên"
+    },
+    "success": {
+      "created": "Segment đã được tạo thành công!",
+      "updated": "Segment đã được cập nhật thành công!",
+      "deleted": "Segment đã được xóa thành công!"
+    },
+    "errors": {
+      "create": "Không thể tạo segment",
+      "update": "Không thể cập nhật segment",
+      "delete": "Không thể xóa segment",
+      "numberRequired": "Số segment là bắt buộc",
+      "typeRequired": "Loại segment là bắt buộc"
+    }
+  },
   "error": {
     "title": "Không Tìm Thấy Truyện",
     "message": "Truyện bạn đang tìm không tồn tại hoặc đã bị xóa.",

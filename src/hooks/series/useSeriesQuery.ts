@@ -7,10 +7,14 @@ import type { SeriesSeason } from "@/lib/constants/series.constants";
 import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
 import type {
   BackendSeries,
+  CreateSegmentDto,
   LatestUpdateItem,
   PopularSeries,
   Series,
+  SeriesSegment,
+  UpdateSegmentDto,
 } from "@/lib/interface/series.interface";
+import type { AdvancedQueryParams } from "@/lib/types";
 import { queryKeys } from "@/lib/utils/query-keys";
 import {
   transformBackendSeries,
@@ -477,6 +481,169 @@ export function useAniListCrawl() {
       console.error("Trigger AniList crawl error:", error);
       toast.error(
         t("anilistCrawlError", "series") || "Failed to trigger AniList crawl",
+      );
+    },
+  });
+}
+
+// ==================== Segments (Chapters/Episodes) Hooks ====================
+
+/**
+ * Hook for fetching segments for a series
+ */
+export function useSeriesSegments(
+  seriesId: string,
+  params?: AdvancedQueryParams,
+) {
+  return useQuery({
+    queryKey: queryKeys.series.segments.list(seriesId, params),
+    queryFn: async () => {
+      const response = await SeriesAPI.getSegments(seriesId, params);
+      return response.data;
+    },
+    enabled: !!seriesId && seriesId !== "undefined" && seriesId !== "null",
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    placeholderData: (previousData) => previousData,
+  });
+}
+
+/**
+ * Hook for fetching a single segment
+ */
+export function useSeriesSegment(seriesId: string, segmentId: string) {
+  return useQuery<SeriesSegment>({
+    queryKey: queryKeys.series.segments.detail(seriesId, segmentId),
+    queryFn: async () => {
+      return await SeriesAPI.getSegment(seriesId, segmentId);
+    },
+    enabled:
+      !!seriesId &&
+      !!segmentId &&
+      seriesId !== "undefined" &&
+      segmentId !== "undefined",
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+  });
+}
+
+/**
+ * Hook for creating a segment
+ */
+export function useCreateSegment() {
+  const { t } = useI18n();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      seriesId,
+      data,
+    }: {
+      seriesId: string;
+      data: CreateSegmentDto;
+    }) => {
+      console.log("seriesId", seriesId);
+      console.log("data", data);
+      const result = await SeriesAPI.createSegment(seriesId, data);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      return { ...result, seriesId };
+    },
+    onSuccess: (segment) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.series.segments.all(segment.seriesId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.series.detail(segment.seriesId),
+      });
+      toast.success(
+        t("segmentCreated", "series") || "Segment created successfully",
+      );
+    },
+    onError: (error) => {
+      console.error("Create segment error:", error);
+      toast.error(
+        t("segmentCreateError", "series") || "Failed to create segment",
+      );
+    },
+  });
+}
+
+/**
+ * Hook for updating a segment
+ */
+export function useUpdateSegment() {
+  const { t } = useI18n();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      seriesId,
+      segmentId,
+      data,
+    }: {
+      seriesId: string;
+      segmentId: string;
+      data: UpdateSegmentDto;
+    }) => {
+      const result = await SeriesAPI.updateSegment(seriesId, segmentId, data);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      return { ...result, seriesId };
+    },
+    onSuccess: (segment) => {
+      queryClient.setQueryData(
+        queryKeys.series.segments.detail(segment.seriesId, segment.id),
+        segment,
+      );
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.series.segments.all(segment.seriesId),
+      });
+      toast.success(
+        t("segmentUpdated", "series") || "Segment updated successfully",
+      );
+    },
+    onError: (error) => {
+      console.error("Update segment error:", error);
+      toast.error(
+        t("segmentUpdateError", "series") || "Failed to update segment",
+      );
+    },
+  });
+}
+
+/**
+ * Hook for deleting a segment
+ */
+export function useDeleteSegment() {
+  const { t } = useI18n();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      seriesId,
+      segmentId,
+    }: {
+      seriesId: string;
+      segmentId: string;
+    }) => {
+      await SeriesAPI.deleteSegment(seriesId, segmentId);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      return { seriesId, segmentId };
+    },
+    onSuccess: ({ seriesId }) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.series.segments.all(seriesId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.series.detail(seriesId),
+      });
+      toast.success(
+        t("segmentDeleted", "series") || "Segment deleted successfully",
+      );
+    },
+    onError: (error) => {
+      console.error("Delete segment error:", error);
+      toast.error(
+        t("segmentDeleteError", "series") || "Failed to delete segment",
       );
     },
   });

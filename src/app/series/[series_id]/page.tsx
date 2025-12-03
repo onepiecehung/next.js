@@ -198,6 +198,19 @@ export default function SeriesDetailPage() {
                         <BookOpen className="h-4 w-4 mr-2" />
                         {t("actions.read", "series")}
                       </Button>
+                      <Link
+                        href={`/series/${seriesId}/upload-segment`}
+                        className="w-full"
+                      >
+                        <Button
+                          variant="secondary"
+                          className="w-full text-sm sm:text-base h-10 sm:h-11"
+                          size="default"
+                        >
+                          <FileText className="h-4 w-4 mr-2" />
+                          {t("segments.title", "series")}
+                        </Button>
+                      </Link>
                       <div className="flex gap-2">
                         <Button
                           variant="outline"

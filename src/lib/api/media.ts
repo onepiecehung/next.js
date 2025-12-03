@@ -29,7 +29,7 @@ export type ScrambleKeyResponse = {
  */
 export class MediaAPI {
   private static readonly BASE_URL = "/media";
-  private static readonly MAX_FILES_PER_UPLOAD = 3;
+  private static readonly MAX_FILES_PER_UPLOAD = 50;
 
   static async upload(files: File[]): Promise<ApiResponse<UploadedMedia[]>> {
     if (!files || files.length === 0) {
@@ -47,8 +47,10 @@ export class MediaAPI {
     }
 
     const form = new FormData();
-    // Backend expects single file with field name "file"
-    form.append("files", files[0]);
+    // Backend expects field name "files" (plural) and can accept multiple files
+    files.forEach((file) => {
+      form.append("files", file);
+    });
     const response = await http.post<ApiResponse<UploadedMedia[]>>(
       this.BASE_URL,
       form,

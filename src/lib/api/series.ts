@@ -6,7 +6,12 @@ import type {
   ApiResponseOffset,
   QueryParamsWithCursor,
 } from "@/lib/types";
-import type { Series } from "@/lib/interface/series.interface";
+import type {
+  Series,
+  SeriesSegment,
+  CreateSegmentDto,
+  UpdateSegmentDto,
+} from "@/lib/interface/series.interface";
 import type {
   SeriesType,
   SeriesFormat,
@@ -234,5 +239,78 @@ export class SeriesAPI {
       ApiResponse<{ jobId: string; type: string }>
     >(`${this.BASE_URL}/anilist/crawl`, { params });
     return response.data;
+  }
+
+  // ==================== Segments (Chapters/Episodes) ====================
+
+  /**
+   * Create a new segment for a series
+   * Requires authentication
+   */
+  static async createSegment(
+    seriesId: string,
+    data: CreateSegmentDto,
+  ): Promise<SeriesSegment> {
+    const response = await http.post<ApiResponse<SeriesSegment>>(
+      `${this.BASE_URL}/${seriesId}/segments`,
+      data,
+    );
+    return response.data.data;
+  }
+
+  /**
+   * Get all segments for a series
+   */
+  static async getSegments(
+    seriesId: string,
+    params?: AdvancedQueryParams,
+  ): Promise<ApiResponseOffset<SeriesSegment>> {
+    const response = await http.get<ApiResponseOffset<SeriesSegment>>(
+      `${this.BASE_URL}/${seriesId}/segments`,
+      { params },
+    );
+    return response.data;
+  }
+
+  /**
+   * Get a segment by ID
+   */
+  static async getSegment(
+    seriesId: string,
+    segmentId: string,
+  ): Promise<SeriesSegment> {
+    const response = await http.get<ApiResponse<SeriesSegment>>(
+      `${this.BASE_URL}/${seriesId}/segments/${segmentId}`,
+    );
+    return response.data.data;
+  }
+
+  /**
+   * Update a segment
+   * Requires authentication
+   */
+  static async updateSegment(
+    seriesId: string,
+    segmentId: string,
+    data: UpdateSegmentDto,
+  ): Promise<SeriesSegment> {
+    const response = await http.patch<ApiResponse<SeriesSegment>>(
+      `${this.BASE_URL}/${seriesId}/segments/${segmentId}`,
+      data,
+    );
+    return response.data.data;
+  }
+
+  /**
+   * Delete a segment (soft delete)
+   * Requires authentication
+   */
+  static async deleteSegment(
+    seriesId: string,
+    segmentId: string,
+  ): Promise<void> {
+    await http.delete<ApiResponse<void>>(
+      `${this.BASE_URL}/${seriesId}/segments/${segmentId}`,
+    );
   }
 }

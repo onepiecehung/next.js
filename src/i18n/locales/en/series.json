@@ -128,6 +128,86 @@
     "title": "Chapters",
     "comingSoon": "Chapters list coming soon"
   },
+  "segments": {
+    "title": "Upload Segment",
+    "description": "Upload a new chapter or episode for this series",
+    "form": {
+      "type": "Segment Type",
+      "typePlaceholder": "Select segment type",
+      "number": "Number",
+      "numberPlaceholder": "Enter segment number (e.g., 1, 2, 3)",
+      "subNumber": "Sub Number",
+      "subNumberPlaceholder": "Optional: for .5 chapters/episodes (e.g., 5 for 12.5)",
+      "title": "Title",
+      "titlePlaceholder": "Enter segment title (optional)",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter segment description (optional)",
+      "summary": "Summary",
+      "summaryPlaceholder": "Enter short summary (optional)",
+      "slug": "URL Slug",
+      "slugPlaceholder": "Auto-generated from title if not provided",
+      "status": "Status",
+      "statusPlaceholder": "Select status",
+      "accessType": "Access Type",
+      "accessTypePlaceholder": "Select access type",
+      "languageCode": "Language",
+      "languageCodePlaceholder": "Select language",
+      "publishedAt": "Published At",
+      "publishedAtPlaceholder": "Select publication date",
+      "originalReleaseDate": "Original Release Date",
+      "originalReleaseDatePlaceholder": "Select original release date",
+      "durationSec": "Duration (seconds)",
+      "durationSecPlaceholder": "For episodes only",
+      "pageCount": "Page Count",
+      "pageCountPlaceholder": "For chapters only",
+      "startPage": "Start Page",
+      "startPagePlaceholder": "Optional: starting page number",
+      "endPage": "End Page",
+      "endPagePlaceholder": "Optional: ending page number",
+      "isNsfw": "NSFW Content",
+      "mediaFiles": "Media Files",
+      "mediaFilesPlaceholder": "Upload images, videos, or documents",
+      "uploadSegment": "Upload Segment",
+      "uploadingSegment": "Uploading...",
+      "saveDraft": "Save as Draft",
+      "basicInfo": "Basic Information",
+      "basicInfoDescription": "Enter the essential information for this segment",
+      "advancedSettings": "Advanced Settings",
+      "advancedSettingsDescription": "Optional settings for fine-tuning your segment",
+      "showAdvancedSettings": "Show Advanced Settings",
+      "hideAdvancedSettings": "Hide Advanced Settings",
+      "clearAll": "Clear All"
+    },
+    "type": {
+      "trailer": "Trailer",
+      "episode": "Episode",
+      "chapter": "Chapter"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "archived": "Archived"
+    },
+    "accessType": {
+      "free": "Free",
+      "paid": "Paid",
+      "subscription": "Subscription",
+      "membership": "Membership"
+    },
+    "success": {
+      "created": "Segment created successfully!",
+      "updated": "Segment updated successfully!",
+      "deleted": "Segment deleted successfully!"
+    },
+    "errors": {
+      "create": "Failed to create segment",
+      "update": "Failed to update segment",
+      "delete": "Failed to delete segment",
+      "numberRequired": "Segment number is required",
+      "typeRequired": "Segment type is required"
+    }
+  },
   "error": {
     "title": "Series Not Found",
     "message": "The series you're looking for doesn't exist or has been removed.",
