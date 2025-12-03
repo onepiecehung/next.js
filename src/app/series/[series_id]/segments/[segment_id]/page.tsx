@@ -17,6 +17,7 @@ import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
+import { ScrambledImageCanvas } from "@/components/features/media/components/scrambled-image-canvas";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { AnimatedSection, Skeletonize } from "@/components/shared";
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
@@ -29,6 +30,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
 import { Badge } from "@/components/ui/core/badge";
+import { useCurrentUser } from "@/hooks/auth";
 import { useSeries, useSeriesFull, useSeriesSegment } from "@/hooks/series";
 import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
 import { cn } from "@/lib/utils";
@@ -54,6 +56,10 @@ export default function SegmentDetailPage() {
   // Fetch series data for context
   const { data: seriesDisplay } = useSeries(seriesId);
   const { data: backendSeries } = useSeriesFull(seriesId);
+
+  // Check authentication status
+  const { data: currentUser } = useCurrentUser();
+  const isAuthenticated = !!currentUser;
 
   // Image size mode state
   type ImageSizeMode = "default" | "full" | "half" | "fit";
@@ -94,6 +100,43 @@ export default function SegmentDetailPage() {
       isImage(media.url, media.type, media.mimeType),
     );
   }, [segment]);
+
+  // Track which images are ready to be unscrambled (sequential processing)
+  // Only unscramble images up to this index
+  const [maxUnscrambleIndex, setMaxUnscrambleIndex] = useState<number>(-1);
+
+  // Process images sequentially from top to bottom
+  useEffect(() => {
+    if (!isAuthenticated || imageAttachments.length === 0) {
+      setMaxUnscrambleIndex(-1);
+      return;
+    }
+
+    // Reset when segment changes
+    setMaxUnscrambleIndex(-1);
+
+    // Process images one by one with delay between each
+    let currentIndex = 0;
+    const processNextImage = () => {
+      if (currentIndex >= imageAttachments.length) {
+        return;
+      }
+
+      // Mark this image as ready to unscramble
+      setMaxUnscrambleIndex(currentIndex);
+
+      // Process next image after a delay (to avoid overwhelming the browser)
+      currentIndex++;
+      if (currentIndex < imageAttachments.length) {
+        // Delay increases slightly for each image to ensure smooth processing
+        setTimeout(processNextImage, 300);
+      }
+    };
+
+    // Start processing from the first image after a short initial delay
+    const timeoutId = setTimeout(processNextImage, 100);
+    return () => clearTimeout(timeoutId);
+  }, [isAuthenticated, imageAttachments]);
 
   // Show 404 if segment not found
   if (!isLoadingSegment && !segmentError && !segment) {
@@ -403,31 +446,95 @@ export default function SegmentDetailPage() {
                                 </div>
 
                                 {/* Image Container - Full width, auto height */}
-                                <div className="flex items-center justify-center w-full py-2 sm:py-4">
+                                <div
+                                  className={cn(
+                                    "flex items-center justify-center w-full py-2 sm:py-4",
+                                    imageSizeMode === "full" && "px-0 -mx-4 sm:-mx-6 md:-mx-8",
+                                  )}
+                                >
                                   <div
                                     className={cn(
                                       "relative",
                                       imageSizeMode === "default" && "w-full max-w-5xl",
-                                      imageSizeMode === "full" && "w-full",
+                                      imageSizeMode === "full" && "w-screen",
                                       imageSizeMode === "half" && "w-full sm:w-1/2",
                                       imageSizeMode === "fit" && "w-auto",
                                     )}
                                   >
                                     <Skeletonize loading={false}>
-                                      <Image
-                                        src={media.url}
-                                        alt={`Page ${index + 1} - ${media.name || ""}`}
-                                        width={1200}
-                                        height={1600}
-                                        className={cn(
-                                          imageSizeMode === "fit"
-                                            ? "h-auto w-auto max-w-full object-contain"
-                                            : "w-full h-auto object-contain",
-                                        )}
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 95vw, 1200px"
-                                        priority={index < 3}
-                                        loading={index < 3 ? "eager" : "lazy"}
-                                      />
+                                      {isAuthenticated && media.id ? (
+                                        // Unscramble image for authenticated users (sequential processing)
+                                        index <= maxUnscrambleIndex ? (
+                                          // Render ScrambledImageCanvas when it's this image's turn
+                                          <div className="relative">
+                                            {/* Show scrambled image as placeholder while unscrambling */}
+                                            <Image
+                                              src={media.url}
+                                              alt={`Page ${index + 1} - ${media.name || ""} (scrambled placeholder)`}
+                                              width={1200}
+                                              height={1600}
+                                              className={cn(
+                                                "absolute inset-0 w-full h-full object-contain opacity-50",
+                                                imageSizeMode === "fit"
+                                                  ? "h-auto w-auto max-w-full"
+                                                  : "",
+                                              )}
+                                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 95vw, 1200px"
+                                            />
+                                            {/* Unscrambled image overlay */}
+                                            <ScrambledImageCanvas
+                                              mediaId={media.id}
+                                              src={media.url}
+                                              alt={`Page ${index + 1} - ${media.name || ""}`}
+                                              className={cn(
+                                                "relative z-10",
+                                                imageSizeMode === "fit"
+                                                  ? "h-auto w-auto max-w-full object-contain"
+                                                  : "w-full h-auto object-contain",
+                                              )}
+                                              animate={true}
+                                              animationDuration={500}
+                                            />
+                                          </div>
+                                        ) : (
+                                          // Show loading state while waiting to unscramble
+                                          <div className="relative w-full flex items-center justify-center min-h-[400px] sm:min-h-[600px] bg-muted/30 rounded-md">
+                                            <div className="flex flex-col items-center gap-3 z-10">
+                                              <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+                                              <p className="text-sm text-muted-foreground">
+                                                {index === maxUnscrambleIndex + 1
+                                                  ? "Unscrambling image..."
+                                                  : `Waiting... (${index - maxUnscrambleIndex - 1} ahead)`}
+                                              </p>
+                                            </div>
+                                            {/* Show scrambled image as placeholder */}
+                                            <Image
+                                              src={media.url}
+                                              alt={`Page ${index + 1} - ${media.name || ""} (scrambled)`}
+                                              width={1200}
+                                              height={1600}
+                                              className="absolute inset-0 w-full h-full object-contain opacity-30 blur-sm"
+                                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 95vw, 1200px"
+                                            />
+                                          </div>
+                                        )
+                                      ) : (
+                                        // Show scrambled image for non-authenticated users
+                                        <Image
+                                          src={media.url}
+                                          alt={`Page ${index + 1} - ${media.name || ""}`}
+                                          width={1200}
+                                          height={1600}
+                                          className={cn(
+                                            imageSizeMode === "fit"
+                                              ? "h-auto w-auto max-w-full object-contain"
+                                              : "w-full h-auto object-contain",
+                                          )}
+                                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 95vw, 1200px"
+                                          priority={index < 3}
+                                          loading={index < 3 ? "eager" : "lazy"}
+                                        />
+                                      )}
                                     </Skeletonize>
                                   </div>
                                 </div>
