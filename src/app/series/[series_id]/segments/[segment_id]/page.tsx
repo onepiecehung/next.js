@@ -2,23 +2,32 @@
 
 import {
   ArrowLeft,
-  Calendar,
-  Clock,
   Download,
   FileText,
   Image as ImageIcon,
   Lock,
+  Maximize2,
+  Minimize2,
   Play,
   Video,
+  ZoomIn,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import { AnimatedSection, Skeletonize } from "@/components/shared";
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/layout/dropdown-menu";
 import { Badge } from "@/components/ui/core/badge";
 import { useSeries, useSeriesFull, useSeriesSegment } from "@/hooks/series";
 import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
@@ -46,7 +55,9 @@ export default function SegmentDetailPage() {
   const { data: seriesDisplay } = useSeries(seriesId);
   const { data: backendSeries } = useSeriesFull(seriesId);
 
-  // Note: Removed currentPage state as we're using continuous scroll now
+  // Image size mode state
+  type ImageSizeMode = "default" | "full" | "half" | "fit";
+  const [imageSizeMode, setImageSizeMode] = useState<ImageSizeMode>("default");
 
   // Helper functions - defined before useMemo to avoid reference errors
   // Check if media is image
@@ -239,9 +250,9 @@ export default function SegmentDetailPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Main Content - Manga Reader Style */}
-                <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {/* Summary */}
                   {segment.summary && (
                     <Card>
@@ -278,7 +289,7 @@ export default function SegmentDetailPage() {
                   {imageAttachments.length > 0 && (
                     <Card className="overflow-hidden">
                       <CardHeader className="pb-3">
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                           <div>
                             <CardTitle className="text-base sm:text-lg">
                               {getSegmentTypeText()} {getSegmentNumber()}
@@ -288,6 +299,78 @@ export default function SegmentDetailPage() {
                             </CardDescription>
                           </div>
                           <div className="flex items-center gap-2">
+                            {/* Image Size Selector */}
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="sm" className="gap-2">
+                                  {imageSizeMode === "default" && (
+                                    <>
+                                      <Maximize2 className="h-4 w-4" />
+                                      Default
+                                    </>
+                                  )}
+                                  {imageSizeMode === "full" && (
+                                    <>
+                                      <Maximize2 className="h-4 w-4" />
+                                      Full Width
+                                    </>
+                                  )}
+                                  {imageSizeMode === "half" && (
+                                    <>
+                                      <Minimize2 className="h-4 w-4" />
+                                      Half Width
+                                    </>
+                                  )}
+                                  {imageSizeMode === "fit" && (
+                                    <>
+                                      <ZoomIn className="h-4 w-4" />
+                                      Fit Image
+                                    </>
+                                  )}
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Image Size</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  onClick={() => setImageSizeMode("default")}
+                                  className={cn(
+                                    imageSizeMode === "default" && "bg-accent",
+                                  )}
+                                >
+                                  <Maximize2 className="h-4 w-4 mr-2" />
+                                  Default (max-w-5xl)
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => setImageSizeMode("full")}
+                                  className={cn(
+                                    imageSizeMode === "full" && "bg-accent",
+                                  )}
+                                >
+                                  <Maximize2 className="h-4 w-4 mr-2" />
+                                  Full Width
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => setImageSizeMode("half")}
+                                  className={cn(
+                                    imageSizeMode === "half" && "bg-accent",
+                                  )}
+                                >
+                                  <Minimize2 className="h-4 w-4 mr-2" />
+                                  Half Width
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => setImageSizeMode("fit")}
+                                  className={cn(
+                                    imageSizeMode === "fit" && "bg-accent",
+                                  )}
+                                >
+                                  <ZoomIn className="h-4 w-4 mr-2" />
+                                  Fit Image (Original Size)
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+
                             <Button
                               variant="outline"
                               size="sm"
@@ -321,40 +404,32 @@ export default function SegmentDetailPage() {
 
                                 {/* Image Container - Full width, auto height */}
                                 <div className="flex items-center justify-center w-full py-2 sm:py-4">
-                                  <div className="relative w-full max-w-5xl">
+                                  <div
+                                    className={cn(
+                                      "relative",
+                                      imageSizeMode === "default" && "w-full max-w-5xl",
+                                      imageSizeMode === "full" && "w-full",
+                                      imageSizeMode === "half" && "w-full sm:w-1/2",
+                                      imageSizeMode === "fit" && "w-auto",
+                                    )}
+                                  >
                                     <Skeletonize loading={false}>
                                       <Image
                                         src={media.url}
                                         alt={`Page ${index + 1} - ${media.name || ""}`}
                                         width={1200}
                                         height={1600}
-                                        className="w-full h-auto object-contain"
+                                        className={cn(
+                                          imageSizeMode === "fit"
+                                            ? "h-auto w-auto max-w-full object-contain"
+                                            : "w-full h-auto object-contain",
+                                        )}
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 95vw, 1200px"
                                         priority={index < 3}
                                         loading={index < 3 ? "eager" : "lazy"}
                                       />
                                     </Skeletonize>
                                   </div>
-                                </div>
-
-                                {/* Download Button - Appears on hover */}
-                                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                                  <Button
-                                    variant="secondary"
-                                    size="sm"
-                                    className="gap-2 shadow-lg"
-                                    asChild
-                                  >
-                                    <a
-                                      href={media.url}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      download
-                                    >
-                                      <Download className="h-4 w-4" />
-                                      Download
-                                    </a>
-                                  </Button>
                                 </div>
                               </div>
                             ))}
@@ -498,139 +573,6 @@ export default function SegmentDetailPage() {
                   )}
                 </div>
 
-                {/* Sidebar */}
-                <div className="space-y-4 sm:space-y-6">
-                  {/* Metadata Card */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-base sm:text-lg">
-                        Information
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {/* Type */}
-                      <div>
-                        <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide">
-                          Type
-                        </p>
-                        <p className="text-sm text-foreground">
-                          {getSegmentTypeText()}
-                        </p>
-                      </div>
-
-                      {/* Number */}
-                      <div>
-                        <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide">
-                          Number
-                        </p>
-                        <p className="text-sm text-foreground">
-                          {getSegmentNumber()}
-                        </p>
-                      </div>
-
-                      {/* Status */}
-                      <div>
-                        <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide">
-                          Status
-                        </p>
-                        <p className="text-sm text-foreground">
-                          {getStatusText()}
-                        </p>
-                      </div>
-
-                      {/* Access Type */}
-                      <div>
-                        <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide">
-                          Access
-                        </p>
-                        <p className="text-sm text-foreground">
-                          {getAccessTypeText()}
-                        </p>
-                      </div>
-
-                      {/* Duration (for episodes) */}
-                      {segment.type === "episode" && segment.durationSec && (
-                        <div>
-                          <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            Duration
-                          </p>
-                          <p className="text-sm text-foreground">
-                            {formatDuration(segment.durationSec)}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Page Count (for chapters) */}
-                      {segment.type === "chapter" && segment.pageCount && (
-                        <div>
-                          <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide">
-                            Pages
-                          </p>
-                          <p className="text-sm text-foreground">
-                            {segment.pageCount} pages
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Language */}
-                      {segment.languageCode && (
-                        <div>
-                          <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide">
-                            Language
-                          </p>
-                          <p className="text-sm text-foreground uppercase">
-                            {segment.languageCode}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Published At */}
-                      {segment.publishedAt && (
-                        <div>
-                          <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
-                            Published
-                          </p>
-                          <p className="text-sm text-foreground">
-                            {formatDate(segment.publishedAt)}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Original Release Date */}
-                      {segment.originalReleaseDate && (
-                        <div>
-                          <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
-                            Original Release
-                          </p>
-                          <p className="text-sm text-foreground">
-                            {formatDate(segment.originalReleaseDate)}
-                          </p>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-
-                  {/* Navigation */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-base sm:text-lg">
-                        Navigation
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      <Link href={`/series/${seriesId}`}>
-                        <Button variant="outline" className="w-full justify-start gap-2">
-                          <ArrowLeft className="h-4 w-4" />
-                          Back to Series
-                        </Button>
-                      </Link>
-                      {/* TODO: Add previous/next segment navigation when API is available */}
-                    </CardContent>
-                  </Card>
-                </div>
               </div>
             </>
           )}
