@@ -2,7 +2,9 @@
 
 import { MediaAPI } from "@/lib/api/media";
 import { cn, generatePermutation } from "@/lib/utils";
+import Lottie from "lottie-react";
 import { useEffect, useRef, useState } from "react";
+import pacmanLoading from "@/assets/lottiefiles/pacman-loading.json";
 
 /**
  * Props for the ScrambledImageCanvas component
@@ -1011,15 +1013,15 @@ export function ScrambledImageCanvas({
         aria-busy={loading}
       />
       {loading && !animationStarted && (
-        // Show loading indicator while fetching scramble key and loading image
+        // Show Lottie loading animation while fetching scramble key and loading image
         // Hide when animation/drawing starts (even if loading is still true)
         <div className="absolute inset-0 flex items-center justify-center bg-muted/30 backdrop-blur-sm z-20">
-          <div className="flex flex-col items-center gap-3">
-            <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-            <div className="text-xs text-muted-foreground">
-              {animate ? "Preparing image..." : "Loading..."}
-            </div>
-          </div>
+          <Lottie
+            animationData={pacmanLoading}
+            loop
+            autoplay
+            className="h-20 w-20"
+          />
         </div>
       )}
     </div>
