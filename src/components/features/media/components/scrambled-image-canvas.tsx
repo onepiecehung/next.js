@@ -1,10 +1,10 @@
 "use client";
 
+import pacmanLoading from "@/assets/lottiefiles/pacman-loading.json";
 import { MediaAPI } from "@/lib/api/media";
 import { cn, generatePermutation } from "@/lib/utils";
 import Lottie from "lottie-react";
 import { useEffect, useRef, useState } from "react";
-import pacmanLoading from "@/assets/lottiefiles/pacman-loading.json";
 
 /**
  * Props for the ScrambledImageCanvas component
@@ -1020,7 +1020,10 @@ export function ScrambledImageCanvas({
             animationData={pacmanLoading}
             loop
             autoplay
-            className="h-20 w-20"
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
           />
         </div>
       )}
