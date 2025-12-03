@@ -50,6 +50,7 @@ export function ScrambledImageCanvas({
   const animationFrameRef = useRef<number | null>(null);
   const blobUrlRef = useRef<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [animationStarted, setAnimationStarted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // Image dimensions for potential future use (e.g., responsive sizing)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -70,6 +71,7 @@ export function ScrambledImageCanvas({
     async function loadAndUnscrambleImage() {
       try {
         setLoading(true);
+        setAnimationStarted(false); // Reset when starting new load
         setError(null);
 
         // Wait for canvas to be mounted with retry logic
@@ -878,10 +880,12 @@ export function ScrambledImageCanvas({
             }
           };
 
-          // Start animation
+          // Start animation - hide loading overlay when animation begins
+          setAnimationStarted(true);
           animationFrameRef.current = requestAnimationFrame(drawFrame);
         } else {
-          // Non-animated drawing (instant)
+          // Non-animated drawing (instant) - hide loading overlay when drawing starts
+          setAnimationStarted(true);
           const startTime = performance.now();
 
           for (const tile of tiles) {
@@ -1006,10 +1010,16 @@ export function ScrambledImageCanvas({
         aria-label={alt ?? "Unscrambled image"}
         aria-busy={loading}
       />
-      {loading && !animate && (
-        // Show subtle loading indicator only if animation is disabled
-        <div className="absolute inset-0 flex items-center justify-center bg-muted/30">
-          <div className="text-xs text-muted-foreground">Loading...</div>
+      {loading && !animationStarted && (
+        // Show loading indicator while fetching scramble key and loading image
+        // Hide when animation/drawing starts (even if loading is still true)
+        <div className="absolute inset-0 flex items-center justify-center bg-muted/30 backdrop-blur-sm z-20">
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            <div className="text-xs text-muted-foreground">
+              {animate ? "Preparing image..." : "Loading..."}
+            </div>
+          </div>
         </div>
       )}
     </div>
