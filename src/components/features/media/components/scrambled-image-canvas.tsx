@@ -126,13 +126,6 @@ export function ScrambledImageCanvas({
         const { permutationSeed, tileRows, tileCols } =
           scrambleKeyResponse.data;
 
-        console.log("🔑 Scramble Key Data:", {
-          permutationSeed: permutationSeed.substring(0, 20) + "...",
-          tileRows,
-          tileCols,
-          totalTiles: tileRows * tileCols,
-        });
-
         // Step 2: Generate permutation mapping
         const { inversePermutation } = generatePermutation(
           permutationSeed,
@@ -140,37 +133,12 @@ export function ScrambledImageCanvas({
           tileCols,
         );
 
-        console.log("🔀 Permutation generated:", {
-          length: inversePermutation.length,
-          firstFew: inversePermutation.slice(0, 5),
-          lastFew: inversePermutation.slice(-5),
-        });
-
         // Step 3: Load the scrambled image
-        console.log("Loading scrambled image from:", src);
-
-        // Get current frontend origin
-        const currentOrigin =
-          typeof window !== "undefined" ? window.location.origin : "";
-        const isLocalhost3000 = currentOrigin === "http://localhost:3000";
-        const isLocalhost3001 = currentOrigin === "http://localhost:3001";
-        const isAllowedOrigin = isLocalhost3000 || isLocalhost3001;
         const isHttps = src.startsWith("https://");
-
-        console.log("CORS Analysis:", {
-          imageUrl: src,
-          frontendOrigin: currentOrigin,
-          isLocalhost3000,
-          isLocalhost3001,
-          isAllowedOrigin,
-          isHttps,
-          needsCORS: isHttps && !src.includes("localhost"),
-        });
 
         // Test CORS configuration first (non-blocking)
         // This is just for diagnostics - we'll still try to load the image even if test fails
         if (isHttps && !src.includes("localhost")) {
-          console.log("🔍 Testing CORS configuration...");
           try {
             // Add delay before CORS test to ensure preflight can complete
             // This is critical when DevTools is closed
@@ -180,83 +148,12 @@ export function ScrambledImageCanvas({
               });
             });
 
-            const corsTestResponse = await fetch(src, {
+            await fetch(src, {
               method: "HEAD",
               mode: "cors",
             });
-            const corsHeaders = {
-              "Access-Control-Allow-Origin": corsTestResponse.headers.get(
-                "Access-Control-Allow-Origin",
-              ),
-              "Access-Control-Allow-Methods": corsTestResponse.headers.get(
-                "Access-Control-Allow-Methods",
-              ),
-              "Access-Control-Allow-Headers": corsTestResponse.headers.get(
-                "Access-Control-Allow-Headers",
-              ),
-              "Access-Control-Max-Age": corsTestResponse.headers.get(
-                "Access-Control-Max-Age",
-              ),
-            };
-            console.log("📋 CORS Test Response Headers:", corsHeaders);
-
-            // Validate CORS configuration
-            if (!corsHeaders["Access-Control-Allow-Origin"]) {
-              console.warn("⚠️ No CORS headers detected in test!");
-              console.warn(
-                "   → CDN CORS may not be configured or not yet propagated.",
-              );
-              console.warn("   → Will still attempt to load image...");
-            } else if (
-              corsHeaders["Access-Control-Allow-Origin"] !== currentOrigin &&
-              corsHeaders["Access-Control-Allow-Origin"] !== "*"
-            ) {
-              console.warn("⚠️ CORS origin mismatch:", {
-                expected: currentOrigin,
-                received: corsHeaders["Access-Control-Allow-Origin"],
-                suggestion: `Add "${currentOrigin}" to AllowedOrigins in R2 CORS config`,
-              });
-            } else {
-              console.log(
-                "✅ CORS origin matches:",
-                corsHeaders["Access-Control-Allow-Origin"],
-              );
-            }
-
-            // Check for OPTIONS method
-            const allowedMethods =
-              corsHeaders["Access-Control-Allow-Methods"]?.toUpperCase() || "";
-            if (!allowedMethods.includes("OPTIONS")) {
-              console.warn("⚠️ OPTIONS method not found in AllowedMethods!");
-              console.warn("   → Browser preflight requests may fail.");
-            } else {
-              console.log("✅ OPTIONS method is allowed");
-            }
-
-            // Check for headers
-            const allowedHeaders =
-              corsHeaders["Access-Control-Allow-Headers"] || "";
-            if (!allowedHeaders || allowedHeaders === "") {
-              console.warn("⚠️ AllowedHeaders is empty.");
-            } else {
-              console.log("✅ AllowedHeaders configured:", allowedHeaders);
-            }
-
-            // Check Max-Age
-            if (corsHeaders["Access-Control-Max-Age"]) {
-              console.log(
-                "✅ CORS Max-Age:",
-                corsHeaders["Access-Control-Max-Age"],
-                "seconds",
-              );
-            }
-          } catch (corsTestError) {
-            const error = corsTestError as Error;
-            console.warn("⚠️ CORS test failed (non-blocking):", error.message);
-            console.warn("   → Will still attempt to load image...");
-            console.warn(
-              "   → If image load fails, check R2 CORS configuration.",
-            );
+          } catch {
+            // CORS test failed, but continue with image load
           }
         }
 
@@ -271,16 +168,10 @@ export function ScrambledImageCanvas({
         if (isHttps && !src.includes("localhost")) {
           // External HTTPS URL - try fetch() first, fallback to direct load if it fails
           corsAttempted = true;
-          console.log(
-            "🌐 Attempting to load image via fetch() for better CORS handling...",
-          );
-          console.log("   CDN should allow CORS from:", currentOrigin);
-          console.log("   Image URL:", src);
 
           // CRITICAL: Pre-warm CORS before first fetch attempt
           // This is essential when DevTools is closed (code runs faster)
           // We need to ensure CORS preflight completes before actual fetch
-          console.log("⏳ Pre-warming CORS before fetch...");
 
           // Strategy: Use a small test fetch to trigger and wait for CORS preflight
           // This ensures the browser has processed CORS before we do the actual fetch
@@ -290,72 +181,45 @@ export function ScrambledImageCanvas({
 
           while (!preflightReady && preflightAttempts < maxPreflightAttempts) {
             preflightAttempts++;
-            console.log(
-              `🔄 Pre-warming CORS (attempt ${preflightAttempts}/${maxPreflightAttempts})...`,
-            );
 
             try {
               // Make a small HEAD request to trigger CORS preflight
-              const preflightStartTime = performance.now();
               const preflightResponse = await fetch(src, {
                 method: "HEAD",
                 mode: "cors",
                 credentials: "omit",
                 cache: "no-cache", // Force fresh request
               });
-              const preflightDuration = performance.now() - preflightStartTime;
 
               // Check if we got CORS headers
               const corsHeader = preflightResponse.headers.get(
                 "access-control-allow-origin",
               );
               if (corsHeader) {
-                console.log(
-                  `✅ CORS preflight completed (${preflightDuration.toFixed(2)}ms) - Headers present`,
-                );
                 preflightReady = true;
               } else {
-                console.warn(
-                  `⚠️ CORS preflight response received but no CORS headers (${preflightDuration.toFixed(2)}ms)`,
-                );
                 // Wait a bit and retry
                 await new Promise((resolve) =>
                   setTimeout(resolve, 200 * preflightAttempts),
                 );
               }
-            } catch (preflightError) {
-              const error = preflightError as Error;
-              console.warn(
-                `⚠️ CORS preflight attempt ${preflightAttempts} failed:`,
-                error.message,
-              );
-
-              // If it's a CORS error, wait and retry - the preflight might still be processing
-              if (
-                error.message.includes("CORS") ||
-                error.message.includes("Failed to fetch")
-              ) {
-                // Wait longer between retries to give browser time to process
-                await new Promise((resolve) => {
+            } catch {
+              // Wait longer between retries to give browser time to process
+              await new Promise((resolve) => {
+                requestAnimationFrame(() => {
                   requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                      setTimeout(() => {
-                        resolve(undefined);
-                      }, 500 * preflightAttempts); // Increasing delay
-                    });
+                    setTimeout(() => {
+                      resolve(undefined);
+                    }, 500 * preflightAttempts); // Increasing delay
                   });
                 });
-              } else {
-                // Other errors, break and continue
-                break;
-              }
+              });
             }
           }
 
           // Additional delay to ensure preflight is fully processed by browser
           // This is critical when DevTools is closed (code runs faster)
           // Multiple animation frames + timeout to ensure browser processes CORS
-          console.log("⏳ Final delay to ensure CORS is fully processed...");
           await new Promise((resolve) => {
             requestAnimationFrame(() => {
               requestAnimationFrame(() => {
@@ -369,7 +233,6 @@ export function ScrambledImageCanvas({
               });
             });
           });
-          console.log("✅ Ready to fetch image...");
 
           let fetchAttempts = 0;
           const maxFetchAttempts = 3;
@@ -379,9 +242,6 @@ export function ScrambledImageCanvas({
             fetchAttempts++;
 
             if (fetchAttempts > 1) {
-              console.log(
-                `🔄 Retrying fetch (attempt ${fetchAttempts}/${maxFetchAttempts})...`,
-              );
               // Increase delay between retries
               await new Promise((resolve) =>
                 setTimeout(resolve, 1000 * fetchAttempts),
@@ -389,9 +249,6 @@ export function ScrambledImageCanvas({
             }
 
             try {
-              console.log(`📡 Fetching image (attempt ${fetchAttempts})...`);
-              const fetchStartTime = performance.now();
-
               const response = await fetch(src, {
                 method: "GET",
                 mode: "cors",
@@ -399,68 +256,25 @@ export function ScrambledImageCanvas({
                 cache: "default",
               });
 
-              const fetchDuration = performance.now() - fetchStartTime;
-              console.log(
-                `📥 Fetch response received (${fetchDuration.toFixed(2)}ms):`,
-                {
-                  status: response.status,
-                  statusText: response.statusText,
-                  ok: response.ok,
-                  headers: {
-                    "content-type": response.headers.get("content-type"),
-                    "content-length": response.headers.get("content-length"),
-                    "access-control-allow-origin": response.headers.get(
-                      "access-control-allow-origin",
-                    ),
-                  },
-                },
-              );
-
               if (!response.ok) {
                 throw new Error(
                   `HTTP ${response.status}: ${response.statusText}`,
                 );
               }
 
-              const blobStartTime = performance.now();
               const blob = await response.blob();
-              const blobDuration = performance.now() - blobStartTime;
-              console.log(`📦 Blob created (${blobDuration.toFixed(2)}ms):`, {
-                size: blob.size,
-                type: blob.type,
-              });
 
               imageBlobUrl = URL.createObjectURL(blob);
               blobUrlRef.current = imageBlobUrl; // Store for cleanup
-              console.log(
-                `✅ Image fetched successfully (attempt ${fetchAttempts})`,
-              );
-              console.log(
-                `   Blob URL created: ${imageBlobUrl.substring(0, 50)}...`,
-              );
               fetchSuccess = true;
-            } catch (fetchError) {
-              const error = fetchError as Error;
-              console.error(`❌ Fetch attempt ${fetchAttempts} failed:`, {
-                message: error.message,
-                name: error.name,
-                stack: error.stack?.split("\n").slice(0, 3).join("\n"),
-              });
-
+            } catch {
               if (fetchAttempts >= maxFetchAttempts) {
-                console.warn(
-                  "⚠️ All fetch attempts failed, will fallback to direct image load",
-                );
-                console.warn("   Last error:", error.message);
                 useDirectLoad = true;
                 break; // Exit loop, will use direct load
               }
             }
           }
         } else {
-          console.log(
-            "No CORS needed - localhost or HTTP URL, using direct load",
-          );
           useDirectLoad = true;
         }
 
@@ -472,15 +286,11 @@ export function ScrambledImageCanvas({
           // For direct load, we need crossOrigin set BEFORE src
           // CRITICAL: When DevTools is closed, code runs faster and CORS preflight
           // may not complete before image load. We need to ensure preflight completes.
-          console.log(
-            '🖼️ Using direct image load with crossOrigin="anonymous"',
-          );
           img.crossOrigin = "anonymous";
 
           // CRITICAL FIX: Pre-warm CORS by making a preflight request
           // This ensures CORS preflight completes before we set img.src
           // This is essential when DevTools is closed (code runs faster)
-          console.log("⏳ Pre-warming CORS preflight for direct image load...");
           try {
             // Make a HEAD request to trigger CORS preflight
             await fetch(src, {
@@ -488,12 +298,8 @@ export function ScrambledImageCanvas({
               mode: "cors",
               credentials: "omit",
             });
-            console.log("✅ CORS preflight completed");
-          } catch (preflightError) {
-            console.warn(
-              "⚠️ CORS preflight failed, but continuing...",
-              preflightError,
-            );
+          } catch {
+            // CORS preflight failed, but continue
           }
 
           // Additional delay to ensure preflight is fully processed
@@ -510,11 +316,6 @@ export function ScrambledImageCanvas({
               });
             });
           });
-          console.log("⏳ Delay completed, ready to load image");
-        } else if (imageBlobUrl) {
-          console.log("🖼️ Using blob URL (no crossOrigin needed)");
-        } else {
-          console.log("🖼️ Using direct image load (no CORS needed)");
         }
 
         await new Promise<void>((resolve, reject) => {
@@ -528,13 +329,6 @@ export function ScrambledImageCanvas({
 
           img.onload = () => {
             clearTimeout(timeout);
-            console.log("✅ Image loaded into Image element:", {
-              width: img.naturalWidth,
-              height: img.naturalHeight,
-              complete: img.complete,
-              source: imageBlobUrl ? "blob URL" : "direct URL",
-              crossOrigin: img.crossOrigin || "none",
-            });
             // Small delay to ensure image is fully decoded
             // This is especially important when DevTools is closed
             setTimeout(() => {
@@ -542,44 +336,16 @@ export function ScrambledImageCanvas({
             }, 100); // Increased delay for better stability
           };
 
-          img.onerror = (e) => {
+          img.onerror = () => {
             clearTimeout(timeout);
             if (imageBlobUrl) {
               URL.revokeObjectURL(imageBlobUrl);
               blobUrlRef.current = null;
             }
-            console.error("❌ Image load error:", e);
-            console.error("Failed URL:", src);
-            console.error(
-              "Image source:",
-              imageBlobUrl ? "blob URL" : "direct URL",
-            );
-            console.error("crossOrigin:", img.crossOrigin || "none");
-            console.error("useDirectLoad:", useDirectLoad);
 
             let corsMessage = "";
             if (corsAttempted && useDirectLoad) {
-              corsMessage = `\n\n🔴 CORS CONFIGURATION REQUIRED:\n`;
-              corsMessage += `\nThe CDN (R2) is NOT sending CORS headers. This is why the image cannot be loaded into canvas.\n`;
-              corsMessage += `\n📋 REQUIRED R2 CORS CONFIGURATION:\n`;
-              corsMessage += `[\n`;
-              corsMessage += `  {\n`;
-              corsMessage += `    "AllowedOrigins": ["http://localhost:3000", "http://localhost:3001"],\n`;
-              corsMessage += `    "AllowedMethods": ["GET", "HEAD", "OPTIONS"],\n`;
-              corsMessage += `    "AllowedHeaders": ["*"],\n`;
-              corsMessage += `    "MaxAgeSeconds": 3600\n`;
-              corsMessage += `  }\n`;
-              corsMessage += `]\n`;
-              corsMessage += `\n📝 STEPS TO FIX:\n`;
-              corsMessage += `1. Go to Cloudflare R2 Dashboard\n`;
-              corsMessage += `2. Select your bucket\n`;
-              corsMessage += `3. Go to Settings > CORS Policy\n`;
-              corsMessage += `4. Paste the JSON config above\n`;
-              corsMessage += `5. Save and wait 1-5 minutes for propagation\n`;
-              corsMessage += `6. Hard refresh browser (Cmd+Shift+R / Ctrl+Shift+R)\n`;
-              corsMessage += `\n⚠️ NOTE: When DevTools is open, browser may bypass CORS in some cases.\n`;
-              corsMessage += `   But for canvas operations, CORS headers are REQUIRED.\n`;
-              corsMessage += `   The R2 CORS config MUST be set correctly.\n`;
+              corsMessage = `You have been blocked for suspicious activity.`;
             }
 
             reject(
@@ -589,9 +355,6 @@ export function ScrambledImageCanvas({
             );
           };
 
-          console.log(
-            `📸 Setting img.src to: ${imageBlobUrl ? "blob URL" : src}`,
-          );
           img.src = imageSrc;
         });
 
@@ -599,15 +362,6 @@ export function ScrambledImageCanvas({
 
         const scrambledWidth = img.naturalWidth;
         const scrambledHeight = img.naturalHeight;
-
-        console.log("📐 Image dimensions:", {
-          width: scrambledWidth,
-          height: scrambledHeight,
-          tileRows,
-          tileCols,
-          expectedTiles: tileRows * tileCols,
-          actualTiles: inversePermutation.length,
-        });
 
         // Validate dimensions
         if (scrambledWidth <= 0 || scrambledHeight <= 0) {
@@ -626,27 +380,6 @@ export function ScrambledImageCanvas({
         // Use exact division to match backend behavior
         const tileWidth = Math.floor(scrambledWidth / tileCols);
         const tileHeight = Math.floor(scrambledHeight / tileRows);
-
-        console.log("🧩 Tile dimensions:", {
-          tileWidth,
-          tileHeight,
-          totalWidth: tileWidth * tileCols,
-          totalHeight: tileHeight * tileRows,
-          widthRemainder: scrambledWidth % tileCols,
-          heightRemainder: scrambledHeight % tileRows,
-          widthMatch: tileWidth * tileCols === scrambledWidth,
-          heightMatch: tileHeight * tileRows === scrambledHeight,
-        });
-
-        // Warn if dimensions don't match exactly (may cause issues)
-        if (
-          tileWidth * tileCols !== scrambledWidth ||
-          tileHeight * tileRows !== scrambledHeight
-        ) {
-          console.warn(
-            "⚠️ Image dimensions do not divide evenly by tiles. Some pixels may be lost.",
-          );
-        }
 
         // Step 5: Set up canvas for unscrambled image
         const canvas = canvasRef.current;
@@ -693,16 +426,6 @@ export function ScrambledImageCanvas({
         // Clear canvas
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-        console.log("🎨 Starting to draw tiles...");
-        console.log("Canvas setup:", {
-          canvasWidth,
-          canvasHeight,
-          totalTiles: inversePermutation.length,
-          animate,
-          animationDuration,
-          staggerDelay,
-        });
-
         // Prepare tile data for drawing
         interface TileData {
           scrambledIndex: number;
@@ -714,7 +437,6 @@ export function ScrambledImageCanvas({
         }
 
         const tiles: TileData[] = [];
-        let tilesSkipped = 0;
 
         // Pre-calculate all tile positions
         for (
@@ -726,10 +448,6 @@ export function ScrambledImageCanvas({
 
           // Validate indices
           if (originalIndex < 0 || originalIndex >= inversePermutation.length) {
-            console.warn(
-              `⚠️ Invalid originalIndex ${originalIndex} for scrambledIndex ${scrambledIndex}`,
-            );
-            tilesSkipped++;
             continue;
           }
 
@@ -753,7 +471,6 @@ export function ScrambledImageCanvas({
             sx + tileWidth > scrambledWidth ||
             sy + tileHeight > scrambledHeight
           ) {
-            tilesSkipped++;
             continue;
           }
 
@@ -763,7 +480,6 @@ export function ScrambledImageCanvas({
             dx + tileWidth > canvasWidth ||
             dy + tileHeight > canvasHeight
           ) {
-            tilesSkipped++;
             continue;
           }
 
@@ -776,10 +492,6 @@ export function ScrambledImageCanvas({
             dy,
           });
         }
-
-        console.log(
-          `Prepared ${tiles.length} tiles for drawing${tilesSkipped > 0 ? ` (${tilesSkipped} skipped)` : ""}`,
-        );
 
         // Draw tiles with or without animation
         if (animate && tiles.length > 0) {
@@ -875,7 +587,6 @@ export function ScrambledImageCanvas({
               }
               setAnimationProgress(1);
               setLoading(false);
-              console.log(`✅ Animation complete: ${tiles.length} tiles drawn`);
             } else {
               // Continue animation
               animationFrameRef.current = requestAnimationFrame(drawFrame);
@@ -888,7 +599,6 @@ export function ScrambledImageCanvas({
         } else {
           // Non-animated drawing (instant) - hide loading overlay when drawing starts
           setAnimationStarted(true);
-          const startTime = performance.now();
 
           for (const tile of tiles) {
             ctx.drawImage(
@@ -904,27 +614,10 @@ export function ScrambledImageCanvas({
             );
           }
 
-          const endTime = performance.now();
-          const duration = endTime - startTime;
-
-          console.log(
-            `✅ Successfully drew ${tiles.length} / ${inversePermutation.length} tiles in ${duration.toFixed(2)}ms`,
-          );
-          if (tilesSkipped > 0) {
-            console.warn(
-              `⚠️ Skipped ${tilesSkipped} tiles due to out-of-bounds errors`,
-            );
-          }
-
           setLoading(false);
         }
       } catch (err) {
         const error = err as Error;
-        console.error("❌ Failed to unscramble image:", err);
-        console.error("Error details:", {
-          message: error.message,
-          stack: error.stack,
-        });
         if (!cancelled) {
           setError(
             error?.message ?? "Unknown error occurred while unscrambling image",
@@ -983,15 +676,7 @@ export function ScrambledImageCanvas({
               d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 16.5c-.77.833.192 2.5 1.732 2.5z"
             />
           </svg>
-          <p>Failed to unscramble image</p>
-          <p className="text-xs mt-1 opacity-75 break-words">{error}</p>
-          <div className="mt-2 text-xs opacity-60">
-            <p>Check browser console for detailed error information.</p>
-            <p>
-              Note: CDN is configured to allow CORS from localhost:3000 and
-              localhost:3001 only.
-            </p>
-          </div>
+          <p>You have been blocked for suspicious activity.</p>
         </div>
       </div>
     );
