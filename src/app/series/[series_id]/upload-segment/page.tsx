@@ -244,7 +244,10 @@ export default function UploadSegmentPage() {
     }
 
     if (subNumber && (isNaN(Number(subNumber)) || Number(subNumber) < 0)) {
-      toast.error("Sub number must be a non-negative integer");
+      toast.error(
+        t("segments.errors.subNumberInvalid", "series") ||
+          "Sub number must be a non-negative integer",
+      );
       return;
     }
 
@@ -257,7 +260,10 @@ export default function UploadSegmentPage() {
           attachments = uploadedIds.map((id) => ({ id }));
         } catch (mediaError) {
           console.error("Error uploading media:", mediaError);
-          toast.error("Failed to upload media files. Please try again.");
+          toast.error(
+            t("segments.errors.uploadMediaFailed", "series") ||
+              "Failed to upload media files. Please try again.",
+          );
           return;
         }
       }
@@ -714,36 +720,79 @@ export default function UploadSegmentPage() {
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4 sm:space-y-6">
-                      {/* Segment Type */}
-                      <div>
-                        <Label htmlFor="type" className="text-sm font-medium">
-                          {t("segments.form.type", "series")} *
-                        </Label>
-                        <Select
-                          value={type}
-                          onValueChange={(value) =>
-                            setType(value as "trailer" | "episode" | "chapter")
-                          }
-                          disabled={isFormDisabled}
-                          required
-                        >
-                          <SelectTrigger className="mt-1.5 w-full">
-                            <SelectValue
-                              placeholder={t("segments.form.type", "series")}
-                            />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="chapter">
-                              {t("segments.type.chapter", "series")}
-                            </SelectItem>
-                            <SelectItem value="episode">
-                              {t("segments.type.episode", "series")}
-                            </SelectItem>
-                            <SelectItem value="trailer">
-                              {t("segments.type.trailer", "series")}
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
+                      {/* Segment Type & Language Code */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {/* Segment Type */}
+                        <div>
+                          <Label
+                            htmlFor="type"
+                            className="text-sm font-medium"
+                          >
+                            {t("segments.form.type", "series")} *
+                          </Label>
+                          <Select
+                            value={type}
+                            onValueChange={(value) =>
+                              setType(
+                                value as "trailer" | "episode" | "chapter",
+                              )
+                            }
+                            disabled={isFormDisabled}
+                            required
+                          >
+                            <SelectTrigger className="mt-1.5 w-full">
+                              <SelectValue
+                                placeholder={t(
+                                  "segments.form.type",
+                                  "series",
+                                )}
+                              />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="chapter">
+                                {t("segments.type.chapter", "series")}
+                              </SelectItem>
+                              <SelectItem value="episode">
+                                {t("segments.type.episode", "series")}
+                              </SelectItem>
+                              <SelectItem value="trailer">
+                                {t("segments.type.trailer", "series")}
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        {/* Language Code */}
+                        <div>
+                          <Label
+                            htmlFor="languageCode"
+                            className="text-sm font-medium"
+                          >
+                            {t("segments.form.languageCode", "series")}
+                          </Label>
+                          <Select
+                            value={languageCode}
+                            onValueChange={setLanguageCode}
+                            disabled={isFormDisabled}
+                          >
+                            <SelectTrigger className="mt-1.5 w-full">
+                              <SelectValue
+                                placeholder={t(
+                                  "segments.form.languageCode",
+                                  "series",
+                                )}
+                              />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {LANGUAGES.map((lang) => (
+                                <SelectItem key={lang.code} value={lang.code}>
+                                  {lang.name} ({lang.native})
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
                       </div>
 
                       {/* Number and Sub Number */}
@@ -791,37 +840,6 @@ export default function UploadSegmentPage() {
                             className="mt-1.5"
                           />
                         </div>
-                      </div>
-
-                      {/* Language Code */}
-                      <div>
-                        <Label
-                          htmlFor="languageCode"
-                          className="text-sm font-medium"
-                        >
-                          {t("segments.form.languageCode", "series")}
-                        </Label>
-                        <Select
-                          value={languageCode}
-                          onValueChange={setLanguageCode}
-                          disabled={isFormDisabled}
-                        >
-                          <SelectTrigger className="mt-1.5 w-full">
-                            <SelectValue
-                              placeholder={t(
-                                "segments.form.languageCode",
-                                "series",
-                              )}
-                            />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {LANGUAGES.map((lang) => (
-                              <SelectItem key={lang.code} value={lang.code}>
-                                {lang.name} ({lang.native})
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
                       </div>
                     </CardContent>
                   </Card>

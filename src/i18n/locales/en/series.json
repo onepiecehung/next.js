@@ -29,7 +29,7 @@
   "follows": "Follows",
   "titles": "Titles",
   "community": "Community",
-  "mangadex": "MangaDex",
+  "mangadex": "MangaSBS",
   "updates": "Updates",
   "library": "Library",
   "mdLists": "MDLists",
@@ -220,7 +220,17 @@
       "update": "Failed to update segment",
       "delete": "Failed to delete segment",
       "numberRequired": "Segment number is required",
-      "typeRequired": "Segment type is required"
+      "typeRequired": "Segment type is required",
+      "subNumberInvalid": "Sub number must be a non-negative integer",
+      "uploadMediaFailed": "Failed to upload media files. Please try again."
+    },
+    "toast": {
+      "created": "Segment created successfully!",
+      "createError": "Failed to create segment",
+      "updated": "Segment updated successfully!",
+      "updateError": "Failed to update segment",
+      "deleted": "Segment deleted successfully!",
+      "deleteError": "Failed to delete segment"
     }
   },
   "error": {

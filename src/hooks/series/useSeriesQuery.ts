@@ -636,13 +636,17 @@ export function useCreateSegment() {
         queryKey: queryKeys.series.detail(segment.seriesId),
       });
       toast.success(
-        t("segmentCreated", "series") || "Segment created successfully",
+        t("segments.toast.created", "series") ||
+          t("segments.success.created", "series") ||
+          "Segment created successfully",
       );
     },
     onError: (error) => {
       console.error("Create segment error:", error);
       toast.error(
-        t("segmentCreateError", "series") || "Failed to create segment",
+        t("segments.toast.createError", "series") ||
+          t("segments.errors.create", "series") ||
+          "Failed to create segment",
       );
     },
   });
@@ -679,13 +683,17 @@ export function useUpdateSegment() {
         queryKey: queryKeys.series.segments.all(segment.seriesId),
       });
       toast.success(
-        t("segmentUpdated", "series") || "Segment updated successfully",
+        t("segments.toast.updated", "series") ||
+          t("segments.success.updated", "series") ||
+          "Segment updated successfully",
       );
     },
     onError: (error) => {
       console.error("Update segment error:", error);
       toast.error(
-        t("segmentUpdateError", "series") || "Failed to update segment",
+        t("segments.toast.updateError", "series") ||
+          t("segments.errors.update", "series") ||
+          "Failed to update segment",
       );
     },
   });
@@ -719,13 +727,17 @@ export function useDeleteSegment() {
         queryKey: queryKeys.series.detail(seriesId),
       });
       toast.success(
-        t("segmentDeleted", "series") || "Segment deleted successfully",
+        t("segments.toast.deleted", "series") ||
+          t("segments.success.deleted", "series") ||
+          "Segment deleted successfully",
       );
     },
     onError: (error) => {
       console.error("Delete segment error:", error);
       toast.error(
-        t("segmentDeleteError", "series") || "Failed to delete segment",
+        t("segments.toast.deleteError", "series") ||
+          t("segments.errors.delete", "series") ||
+          "Failed to delete segment",
       );
     },
   });

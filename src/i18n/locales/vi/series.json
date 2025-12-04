@@ -29,7 +29,7 @@
   "follows": "Theo Dõi",
   "titles": "Truyện",
   "community": "Cộng Đồng",
-  "mangadex": "MangaDex",
+  "mangadex": "MangaSBS",
   "updates": "Cập Nhật",
   "library": "Thư Viện",
   "mdLists": "MDLists",
@@ -220,7 +220,17 @@
       "update": "Không thể cập nhật segment",
       "delete": "Không thể xóa segment",
       "numberRequired": "Số segment là bắt buộc",
-      "typeRequired": "Loại segment là bắt buộc"
+      "typeRequired": "Loại segment là bắt buộc",
+      "subNumberInvalid": "Số phụ phải là số nguyên không âm",
+      "uploadMediaFailed": "Không thể tải lên tệp media. Vui lòng thử lại."
+    },
+    "toast": {
+      "created": "Segment đã được tạo thành công!",
+      "createError": "Không thể tạo segment",
+      "updated": "Segment đã được cập nhật thành công!",
+      "updateError": "Không thể cập nhật segment",
+      "deleted": "Segment đã được xóa thành công!",
+      "deleteError": "Không thể xóa segment"
     }
   },
   "error": {
