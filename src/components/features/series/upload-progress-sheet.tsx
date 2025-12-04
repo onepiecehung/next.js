@@ -55,15 +55,18 @@ export function UploadProgressSheet({
   const failedFiles = Object.values(uploadStatus).filter(
     (status) => status === "error",
   ).length;
+  // Overall progress is based on number of completed files (0–100%),
+  // optionally combined with a small boost while creating the segment.
+  // Clamp to 0–100 to avoid going over 100%.
+  const baseProgress =
+    totalFiles > 0 ? Math.round((completedFiles / totalFiles) * 100) : 0;
+  const extraStepProgress =
+    currentStep === "creating" && baseProgress < 100 ? 10 : 0;
+  const overallProgressRaw = baseProgress + extraStepProgress;
   const overallProgress =
-    totalFiles > 0
-      ? Math.round(
-          (completedFiles / totalFiles) * 100 +
-            (currentStep === "creating" ? 10 : 0),
-        )
-      : currentStep === "creating"
-        ? 50
-        : 0;
+    currentStep === "creating" && totalFiles === 0
+      ? 50
+      : Math.min(100, Math.max(0, overallProgressRaw));
 
   // Auto-scroll to the file that is currently uploading
   useEffect(() => {
