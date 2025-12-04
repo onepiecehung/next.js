@@ -122,7 +122,9 @@
     "oneShot": "One Shot"
   },
   "description": {
-    "title": "Description"
+    "title": "Description",
+    "readMore": "Read More",
+    "readLess": "Read Less"
   },
   "chapters": {
     "title": "Chapters",

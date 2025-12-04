@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
+import { useState } from "react";
 
 import { ChaptersList } from "@/components/features/series";
 import { useI18n } from "@/components/providers/i18n-provider";
@@ -18,9 +19,11 @@ import { AnimatedSection, Skeletonize } from "@/components/shared";
 import { Button } from "@/components/ui";
 import { Badge } from "@/components/ui/core/badge";
 import { useSeries, useSeriesFull } from "@/hooks/series";
+import { currentUserAtom } from "@/lib/auth";
 import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
 import { cn } from "@/lib/utils";
 import { transformBackendSeries } from "@/lib/utils/series-utils";
+import { useAtom } from "jotai";
 
 /**
  * Series Detail Page Component
@@ -31,6 +34,8 @@ export default function SeriesDetailPage() {
   const params = useParams();
   const { t } = useI18n();
   const seriesId = params.series_id as string;
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [currentUser] = useAtom(currentUserAtom);
 
   // Fetch full backend series data (single API call)
   const {
@@ -206,19 +211,22 @@ export default function SeriesDetailPage() {
                         <BookOpen className="h-4 w-4 mr-2" />
                         {t("actions.read", "series")}
                       </Button>
-                      <Link
-                        href={`/series/${seriesId}/upload-segment`}
-                        className="w-full"
-                      >
-                        <Button
-                          variant="secondary"
-                          className="w-full text-sm sm:text-base h-10 sm:h-11"
-                          size="default"
+                      {/* Only show upload button if user is authenticated */}
+                      {currentUser && (
+                        <Link
+                          href={`/series/${seriesId}/upload-segment`}
+                          className="w-full"
                         >
-                          <FileText className="h-4 w-4 mr-2" />
-                          {t("segments.title", "series")}
-                        </Button>
-                      </Link>
+                          <Button
+                            variant="secondary"
+                            className="w-full text-sm sm:text-base h-10 sm:h-11"
+                            size="default"
+                          >
+                            <FileText className="h-4 w-4 mr-2" />
+                            {t("segments.title", "series")}
+                          </Button>
+                        </Link>
+                      )}
                       <div className="flex gap-2">
                         <Button
                           variant="outline"
@@ -600,15 +608,40 @@ export default function SeriesDetailPage() {
                         </div>
                       )}
 
-                      {/* Description */}
+                      {/* Description - Expandable */}
                       {series.description && (
                         <div className="mt-4 sm:mt-5 md:mt-6">
                           <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-2 sm:mb-3">
                             {t("description.title", "series")}
                           </h2>
-                          <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed whitespace-pre-line break-words">
-                            {series.description}
-                          </p>
+                          <div className="space-y-2">
+                            <p
+                              className={cn(
+                                "text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed whitespace-pre-line break-words",
+                                !isDescriptionExpanded &&
+                                  "line-clamp-3 sm:line-clamp-4 md:line-clamp-5",
+                              )}
+                            >
+                              {series.description}
+                            </p>
+                            {/* Show Read More/Less button if description is long */}
+                            {series.description.length > 200 && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() =>
+                                  setIsDescriptionExpanded(!isDescriptionExpanded)
+                                }
+                                className="h-auto p-0 text-xs sm:text-sm text-primary hover:text-primary/80 hover:underline"
+                              >
+                                {isDescriptionExpanded
+                                  ? t("description.readLess", "series") ||
+                                    "Read Less"
+                                  : t("description.readMore", "series") ||
+                                    "Read More"}
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       )}
 

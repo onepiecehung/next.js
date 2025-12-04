@@ -122,7 +122,9 @@
     "oneShot": "One Shot"
   },
   "description": {
-    "title": "Mô Tả"
+    "title": "Mô Tả",
+    "readMore": "Đọc Thêm",
+    "readLess": "Thu Gọn"
   },
   "chapters": {
     "title": "Chương",
