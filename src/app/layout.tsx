@@ -1,6 +1,7 @@
 import { SiteFooter, SiteNav } from "@/components/features/navigation";
 import {
   AuthProvider,
+  FontProvider,
   GoogleOneTapProvider,
   I18nProvider,
   LoadingProvider,
@@ -11,17 +12,90 @@ import {
 } from "@/components/providers";
 import { Toaster } from "@/components/ui";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Inter,
+  Roboto,
+  Open_Sans,
+  Lato,
+  Montserrat,
+  Poppins,
+  Raleway,
+  Source_Sans_3,
+  Comic_Neue,
+} from "next/font/google";
 import "./globals.css";
 
+// Load all available fonts with Next.js font optimization
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const roboto = Roboto({
+  variable: "--font-roboto",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  display: "swap",
+});
+
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const lato = Lato({
+  variable: "--font-lato",
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const raleway = Raleway({
+  variable: "--font-raleway",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const sourceSansPro = Source_Sans_3({
+  variable: "--font-source-sans-pro",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const comicNeue = Comic_Neue({
+  variable: "--font-comic-neue",
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -71,24 +145,26 @@ export default function RootLayout({
         ></script>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${roboto.variable} ${openSans.variable} ${lato.variable} ${montserrat.variable} ${poppins.variable} ${raleway.variable} ${sourceSansPro.variable} ${comicNeue.variable} antialiased bg-background text-foreground`}
         suppressHydrationWarning={true}
       >
         <NoSSR>
           <ReactQueryProvider>
             <I18nProvider>
               <ThemeProvider>
-                <AuthProvider>
-                  <LoadingProvider>
-                    <RateLimitProvider>
-                      {/* Global Google One Tap - Shows on all pages when not authenticated */}
-                      <GoogleOneTapProvider />
-                      <SiteNav />
-                      {children}
-                      <SiteFooter />
-                    </RateLimitProvider>
-                  </LoadingProvider>
-                </AuthProvider>
+                <FontProvider>
+                  <AuthProvider>
+                    <LoadingProvider>
+                      <RateLimitProvider>
+                        {/* Global Google One Tap - Shows on all pages when not authenticated */}
+                        <GoogleOneTapProvider />
+                        <SiteNav />
+                        {children}
+                        <SiteFooter />
+                      </RateLimitProvider>
+                    </LoadingProvider>
+                  </AuthProvider>
+                </FontProvider>
               </ThemeProvider>
             </I18nProvider>
           </ReactQueryProvider>

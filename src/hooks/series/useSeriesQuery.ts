@@ -2,24 +2,25 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { useI18n } from "@/components/providers/i18n-provider";
+import { SegmentsAPI, type QuerySegmentDto } from "@/lib/api/segments";
 import { SeriesAPI, type QuerySeriesDto } from "@/lib/api/series";
 import type { SeriesSeason } from "@/lib/constants/series.constants";
 import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
 import type {
-    BackendSeries,
-    CreateSegmentDto,
-    LatestUpdateItem,
-    PopularSeries,
-    Series,
-    SeriesSegment,
-    UpdateSegmentDto,
+  BackendSeries,
+  CreateSegmentDto,
+  LatestUpdateItem,
+  PopularSeries,
+  Series,
+  SeriesSegment,
+  UpdateSegmentDto,
 } from "@/lib/interface/series.interface";
 import type { AdvancedQueryParams } from "@/lib/types";
 import { queryKeys } from "@/lib/utils/query-keys";
 import {
-    transformBackendSeries,
-    transformBackendSeriesList,
-    transformToPopularSeries,
+  transformBackendSeries,
+  transformBackendSeriesList,
+  transformToPopularSeries,
 } from "@/lib/utils/series-utils";
 
 /**
@@ -493,12 +494,19 @@ export function useAniListCrawl() {
  */
 export function useSeriesSegments(
   seriesId: string,
-  params?: AdvancedQueryParams,
+  params?: Partial<AdvancedQueryParams>,
 ) {
   return useQuery({
-    queryKey: queryKeys.series.segments.list(seriesId, params),
+    queryKey: queryKeys.series.segments.list(
+      seriesId,
+      params as AdvancedQueryParams | undefined,
+    ),
     queryFn: async () => {
-      const response = await SeriesAPI.getSegments(seriesId, params);
+      const queryParams: Partial<QuerySegmentDto> = {
+        ...params,
+        seriesId, // Add seriesId to query params
+      };
+      const response = await SegmentsAPI.getSegments(queryParams);
       return response.data;
     },
     enabled: !!seriesId && seriesId !== "undefined" && seriesId !== "null",
@@ -509,18 +517,18 @@ export function useSeriesSegments(
 
 /**
  * Hook for fetching a single segment
+ * Note: Now uses segmentId only, seriesId is optional for query key organization
  */
 export function useSeriesSegment(seriesId: string, segmentId: string) {
   return useQuery<SeriesSegment>({
     queryKey: queryKeys.series.segments.detail(seriesId, segmentId),
     queryFn: async () => {
-      return await SeriesAPI.getSegment(seriesId, segmentId);
+      return await SegmentsAPI.getSegmentById(segmentId);
     },
     enabled:
-      !!seriesId &&
       !!segmentId &&
-      seriesId !== "undefined" &&
-      segmentId !== "undefined",
+      segmentId !== "undefined" &&
+      segmentId !== "null",
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
@@ -536,7 +544,7 @@ export function useSegment(segmentId: string) {
   return useQuery<SeriesSegment>({
     queryKey: ["segments", "detail", segmentId],
     queryFn: async () => {
-      return await SeriesAPI.getSegmentById(segmentId);
+      return await SegmentsAPI.getSegmentById(segmentId);
     },
     enabled: !!segmentId && segmentId !== "undefined",
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -560,9 +568,12 @@ export function useCreateSegment() {
       seriesId: string;
       data: CreateSegmentDto;
     }) => {
-      console.log("seriesId", seriesId);
-      console.log("data", data);
-      const result = await SeriesAPI.createSegment(seriesId, data);
+      // Include seriesId in the data payload (required by backend)
+      const segmentData: CreateSegmentDto = {
+        ...data,
+        seriesId,
+      };
+      const result = await SegmentsAPI.createSegment(segmentData);
       await new Promise((resolve) => setTimeout(resolve, 1500));
       return { ...result, seriesId };
     },
@@ -603,7 +614,8 @@ export function useUpdateSegment() {
       segmentId: string;
       data: UpdateSegmentDto;
     }) => {
-      const result = await SeriesAPI.updateSegment(seriesId, segmentId, data);
+      // Note: seriesId is not needed in the API call anymore, but kept for query key organization
+      const result = await SegmentsAPI.updateSegment(segmentId, data);
       await new Promise((resolve) => setTimeout(resolve, 1500));
       return { ...result, seriesId };
     },
@@ -643,7 +655,8 @@ export function useDeleteSegment() {
       seriesId: string;
       segmentId: string;
     }) => {
-      await SeriesAPI.deleteSegment(seriesId, segmentId);
+      // Note: seriesId is not needed in the API call anymore, but kept for query key organization
+      await SegmentsAPI.deleteSegment(segmentId);
       await new Promise((resolve) => setTimeout(resolve, 1500));
       return { seriesId, segmentId };
     },

@@ -857,6 +857,21 @@
     "selectTheme": "Select Theme",
     "selectColorScheme": "Select Color Scheme"
   },
+  "font": {
+    "selectFont": "Select Font",
+    "geist-sans": "Geist Sans",
+    "geist-mono": "Geist Mono",
+    "inter": "Inter",
+    "roboto": "Roboto",
+    "open-sans": "Open Sans",
+    "lato": "Lato",
+    "montserrat": "Montserrat",
+    "poppins": "Poppins",
+    "raleway": "Raleway",
+    "source-sans-pro": "Source Sans Pro",
+    "comic-neue": "Comic Neue",
+    "system": "System"
+  },
   "notFound": {
     "title": "Oops! Page not found",
     "description": "The page you're looking for doesn't exist or has been moved. Don't worry, it happens to the best of us!",

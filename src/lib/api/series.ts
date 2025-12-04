@@ -1,24 +1,21 @@
 import type {
-    SeriesFormat,
-    SeriesReleasingStatus,
-    SeriesSeason,
-    SeriesSource,
-    SeriesStatus,
-    SeriesType,
+  SeriesFormat,
+  SeriesReleasingStatus,
+  SeriesSeason,
+  SeriesSource,
+  SeriesStatus,
+  SeriesType,
 } from "@/lib/constants/series.constants";
 import { http } from "@/lib/http";
 import type {
-    CreateSegmentDto,
-    Series,
-    SeriesSegment,
-    UpdateSegmentDto,
+  Series,
 } from "@/lib/interface/series.interface";
 import type {
-    AdvancedQueryParams,
-    ApiResponse,
-    ApiResponseCursor,
-    ApiResponseOffset,
-    QueryParamsWithCursor,
+  AdvancedQueryParams,
+  ApiResponse,
+  ApiResponseCursor,
+  ApiResponseOffset,
+  QueryParamsWithCursor,
 } from "@/lib/types";
 
 /**
@@ -165,7 +162,7 @@ export class SeriesAPI {
    * Get series list with offset pagination
    */
   static async getSeriesOffset(
-    params?: QuerySeriesDto,
+    params?: Partial<QuerySeriesDto>,
   ): Promise<ApiResponseOffset<Series>> {
     const response = await http.get<ApiResponseOffset<Series>>(this.BASE_URL, {
       params,
@@ -241,88 +238,4 @@ export class SeriesAPI {
     return response.data;
   }
 
-  // ==================== Segments (Chapters/Episodes) ====================
-
-  /**
-   * Create a new segment for a series
-   * Requires authentication
-   */
-  static async createSegment(
-    seriesId: string,
-    data: CreateSegmentDto,
-  ): Promise<SeriesSegment> {
-    const response = await http.post<ApiResponse<SeriesSegment>>(
-      `${this.BASE_URL}/${seriesId}/segments`,
-      data,
-    );
-    return response.data.data;
-  }
-
-  /**
-   * Get all segments for a series
-   */
-  static async getSegments(
-    seriesId: string,
-    params?: AdvancedQueryParams,
-  ): Promise<ApiResponseOffset<SeriesSegment>> {
-    const response = await http.get<ApiResponseOffset<SeriesSegment>>(
-      `${this.BASE_URL}/${seriesId}/segments`,
-      { params },
-    );
-    return response.data;
-  }
-
-  /**
-   * Get a segment by ID
-   */
-  static async getSegment(
-    seriesId: string,
-    segmentId: string,
-  ): Promise<SeriesSegment> {
-    const response = await http.get<ApiResponse<SeriesSegment>>(
-      `${this.BASE_URL}/${seriesId}/segments/${segmentId}`,
-    );
-    return response.data.data;
-  }
-
-  /**
-   * Get a segment by segmentId only (without seriesId)
-   * Assumes backend has endpoint: GET /segments/:segmentId
-   * If backend doesn't support this, you may need to add it
-   */
-  static async getSegmentById(segmentId: string): Promise<SeriesSegment> {
-    const response = await http.get<ApiResponse<SeriesSegment>>(
-      `/segments/${segmentId}`,
-    );
-    return response.data.data;
-  }
-
-  /**
-   * Update a segment
-   * Requires authentication
-   */
-  static async updateSegment(
-    seriesId: string,
-    segmentId: string,
-    data: UpdateSegmentDto,
-  ): Promise<SeriesSegment> {
-    const response = await http.patch<ApiResponse<SeriesSegment>>(
-      `${this.BASE_URL}/${seriesId}/segments/${segmentId}`,
-      data,
-    );
-    return response.data.data;
-  }
-
-  /**
-   * Delete a segment (soft delete)
-   * Requires authentication
-   */
-  static async deleteSegment(
-    seriesId: string,
-    segmentId: string,
-  ): Promise<void> {
-    await http.delete<ApiResponse<void>>(
-      `${this.BASE_URL}/${seriesId}/segments/${segmentId}`,
-    );
-  }
 }

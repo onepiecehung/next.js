@@ -1,4 +1,5 @@
 export { default as AuthProvider } from "./auth-provider";
+export { FontProvider, useFont, useCurrentFont } from "./font-provider";
 export { I18nProvider, useI18n } from "./i18n-provider";
 export { LoadingProvider, useLoading } from "./loading-provider";
 export { NoSSR, useIsMounted } from "./no-ssr";
