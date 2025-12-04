@@ -8,6 +8,13 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { Skeletonize } from "@/components/shared";
 import { Badge } from "@/components/ui/core/badge";
 import { Button } from "@/components/ui/core/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useSeriesSegmentsInfinite } from "@/hooks/series";
 import { LANGUAGES } from "@/lib/constants";
 import type { SeriesSegment } from "@/lib/interface/series.interface";
@@ -325,15 +332,6 @@ export function ChaptersList({
     );
   }
 
-  // Available languages for filter
-  const languages = [
-    { value: "all", label: t("chapters.filter.all", "series") || "All Languages" },
-    ...LANGUAGES.map((lang) => ({
-      value: lang.code,
-      label: `${lang.name} (${lang.native})`,
-    })),
-  ];
-
   return (
     <div className={cn("space-y-4", className)}>
       {/* Header with Filter */}
@@ -345,18 +343,29 @@ export function ChaptersList({
         {/* Language Filter */}
         <div className="flex items-center gap-2">
           <Globe className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-          <select
+          <Select
             value={selectedLanguage}
-            onChange={(e) => setSelectedLanguage(e.target.value)}
-            className="h-9 px-3 py-1 text-sm border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring disabled:opacity-50 disabled:cursor-not-allowed min-w-[140px] sm:min-w-[160px]"
-            aria-label={t("chapters.filter.label", "series") || "Filter by language"}
+            onValueChange={setSelectedLanguage}
           >
-            {languages.map((lang) => (
-              <option key={lang.value} value={lang.value}>
-                {lang.label}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger
+              className="min-w-[140px] sm:min-w-[160px]"
+              aria-label={t("chapters.filter.label", "series") || "Filter by language"}
+            >
+              <SelectValue
+                placeholder={t("chapters.filter.all", "series") || "All Languages"}
+              />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">
+                {t("chapters.filter.all", "series") || "All Languages"}
+              </SelectItem>
+              {LANGUAGES.map((lang) => (
+                <SelectItem key={lang.code} value={lang.code}>
+                  {lang.name} ({lang.native})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

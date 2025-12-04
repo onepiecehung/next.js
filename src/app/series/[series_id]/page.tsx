@@ -247,16 +247,16 @@ export default function SeriesDetailPage() {
                     </div>
 
                     {/* Metadata Sidebar */}
-                    <div className="border-t border-border pt-3 sm:pt-4">
-                      {/* Compact Grid Layout for Mobile - 2 columns */}
-                      <div className="grid grid-cols-2 sm:grid-cols-1 gap-x-3 gap-y-2.5 sm:gap-y-3 sm:space-y-0 mb-3 sm:mb-0">
+                    <div className="border-t border-border pt-4 sm:pt-5 md:pt-6">
+                      {/* Responsive Grid Layout: 2 cols mobile, 2 cols tablet, 1 col desktop */}
+                      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-1 gap-x-4 gap-y-3 sm:gap-x-5 sm:gap-y-3.5 md:gap-y-4 lg:gap-y-3 mb-4 sm:mb-5 md:mb-0">
                         {/* Status */}
                         {series.status && (
-                          <div className="sm:space-y-1 sm:mb-0">
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.status", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground break-words">
+                            <p className="text-xs sm:text-sm md:text-sm text-foreground break-words leading-relaxed">
                               {getStatusText(series.status)}
                             </p>
                           </div>
@@ -264,11 +264,11 @@ export default function SeriesDetailPage() {
 
                         {/* Type */}
                         {series.type && (
-                          <div className="sm:space-y-1 sm:mb-0">
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.type", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground break-words">
+                            <p className="text-xs sm:text-sm md:text-sm text-foreground break-words leading-relaxed">
                               {getTypeText(series.type)}
                             </p>
                           </div>
@@ -276,11 +276,11 @@ export default function SeriesDetailPage() {
 
                         {/* Format */}
                         {series.format && (
-                          <div className="sm:space-y-1 sm:mb-0">
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.format", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground break-words">
+                            <p className="text-xs sm:text-sm md:text-sm text-foreground break-words leading-relaxed">
                               {getFormatText(series.format)}
                             </p>
                           </div>
@@ -288,11 +288,11 @@ export default function SeriesDetailPage() {
 
                         {/* Chapters/Volumes */}
                         {backendSeries?.chapters !== undefined && (
-                          <div className="sm:space-y-1 sm:mb-0">
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.chapters", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground break-words">
+                            <p className="text-xs sm:text-sm md:text-sm text-foreground break-words leading-relaxed">
                               {backendSeries.chapters ??
                                 t("metadata.unknown", "series")}
                             </p>
@@ -301,11 +301,11 @@ export default function SeriesDetailPage() {
 
                         {/* Volumes */}
                         {backendSeries?.volumes !== undefined && (
-                          <div className="sm:space-y-1 sm:mb-0">
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.volumes", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground break-words">
+                            <p className="text-xs sm:text-sm md:text-sm text-foreground break-words leading-relaxed">
                               {backendSeries.volumes ??
                                 t("metadata.unknown", "series")}
                             </p>
@@ -314,11 +314,11 @@ export default function SeriesDetailPage() {
 
                         {/* Episodes (for anime) */}
                         {backendSeries?.episodes !== undefined && (
-                          <div className="sm:space-y-1 sm:mb-0">
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.episodes", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground break-words">
+                            <p className="text-xs sm:text-sm md:text-sm text-foreground break-words leading-relaxed">
                               {backendSeries.episodes ??
                                 t("metadata.unknown", "series")}
                             </p>
@@ -327,11 +327,11 @@ export default function SeriesDetailPage() {
 
                         {/* Start Date */}
                         {backendSeries?.startDate && (
-                          <div className="sm:space-y-1 sm:mb-0">
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.startDate", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground break-words">
+                            <p className="text-xs sm:text-sm md:text-sm text-foreground break-words leading-relaxed">
                               {formatDate(backendSeries.startDate)}
                             </p>
                           </div>
@@ -339,11 +339,11 @@ export default function SeriesDetailPage() {
 
                         {/* End Date */}
                         {backendSeries?.endDate && (
-                          <div className="sm:space-y-1 sm:mb-0">
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.endDate", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground break-words">
+                            <p className="text-xs sm:text-sm md:text-sm text-foreground break-words leading-relaxed">
                               {formatDate(backendSeries.endDate)}
                             </p>
                           </div>
@@ -351,11 +351,11 @@ export default function SeriesDetailPage() {
 
                         {/* Season */}
                         {backendSeries?.season && backendSeries?.seasonYear && (
-                          <div className="sm:space-y-1 sm:mb-0">
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.season", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground capitalize break-words">
+                            <p className="text-xs sm:text-sm md:text-sm text-foreground capitalize break-words leading-relaxed">
                               {backendSeries.season} {backendSeries.seasonYear}
                             </p>
                           </div>
@@ -363,11 +363,11 @@ export default function SeriesDetailPage() {
 
                         {/* Source */}
                         {backendSeries?.source && (
-                          <div className="sm:space-y-1 sm:mb-0">
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.source", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground capitalize break-words">
+                            <p className="text-xs sm:text-sm md:text-sm text-foreground capitalize break-words leading-relaxed">
                               {backendSeries.source.replace(/_/g, " ")}
                             </p>
                           </div>
@@ -375,11 +375,11 @@ export default function SeriesDetailPage() {
 
                         {/* Country of Origin */}
                         {backendSeries?.countryOfOrigin && (
-                          <div className="sm:space-y-1 sm:mb-0">
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.country", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground break-words">
+                            <p className="text-xs sm:text-sm md:text-sm text-foreground break-words leading-relaxed">
                               {backendSeries.countryOfOrigin}
                             </p>
                           </div>
@@ -387,11 +387,11 @@ export default function SeriesDetailPage() {
 
                         {/* Licensed */}
                         {backendSeries?.isLicensed !== undefined && (
-                          <div className="sm:space-y-1 sm:mb-0">
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-0.5 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.licensed", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground break-words">
+                            <p className="text-xs sm:text-sm md:text-sm text-foreground break-words leading-relaxed">
                               {backendSeries.isLicensed
                                 ? t("metadata.yes", "series")
                                 : t("metadata.no", "series")}
@@ -401,11 +401,11 @@ export default function SeriesDetailPage() {
                       </div>
 
                       {/* Full-width items below grid */}
-                      <div className="space-y-3 sm:space-y-4">
+                      <div className="space-y-3 sm:space-y-4 md:space-y-4 lg:space-y-3">
                         {/* NSFW Warning */}
                         {backendSeries?.isNsfw && (
-                          <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-2 sm:p-3">
-                            <p className="text-[10px] sm:text-xs font-semibold text-destructive">
+                          <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-2.5 sm:p-3 md:p-3.5">
+                            <p className="text-[11px] sm:text-xs md:text-sm font-semibold text-destructive">
                               {t("metadata.nsfw", "series")}
                             </p>
                           </div>
@@ -413,13 +413,13 @@ export default function SeriesDetailPage() {
 
                         {/* Score */}
                         {series.averageScore && (
-                          <div>
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.score", "series")}
                             </h3>
                             <div className="flex items-center gap-1.5 sm:gap-2">
-                              <Star className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-yellow-500 fill-current" />
-                              <p className="text-xs sm:text-sm text-foreground">
+                              <Star className="h-3.5 w-3.5 sm:h-4 sm:w-4 md:h-4 md:w-4 text-yellow-500 fill-current" />
+                              <p className="text-xs sm:text-sm md:text-sm text-foreground">
                                 {Math.round(series.averageScore / 10)}%
                               </p>
                             </div>
@@ -428,11 +428,11 @@ export default function SeriesDetailPage() {
 
                         {/* Popularity */}
                         {series.popularity && (
-                          <div>
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1 sm:mb-1.5 uppercase tracking-wide">
                               {t("metadata.popularity", "series")}
                             </h3>
-                            <p className="text-xs sm:text-sm text-foreground">
+                            <p className="text-xs sm:text-sm md:text-sm text-foreground">
                               {Math.floor(series.popularity).toLocaleString()}
                             </p>
                           </div>
@@ -441,11 +441,11 @@ export default function SeriesDetailPage() {
                         {/* Authors */}
                         {backendSeries?.authorRoles &&
                           backendSeries.authorRoles.length > 0 && (
-                            <div>
-                              <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
+                            <div className="space-y-1 sm:space-y-1.5">
+                              <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
                                 {t("metadata.authors", "series")}
                               </h3>
-                              <div className="space-y-1 sm:space-y-1.5">
+                              <div className="space-y-1.5 sm:space-y-2">
                                 {backendSeries.authorRoles.map((authorRole) => {
                                   const author = authorRole.author;
                                   if (!author) return null;
@@ -454,10 +454,10 @@ export default function SeriesDetailPage() {
                                       key={authorRole.id}
                                       className="flex items-start sm:items-center gap-1.5 sm:gap-2 flex-wrap"
                                     >
-                                      <p className="text-xs sm:text-sm text-foreground break-words">
+                                      <p className="text-xs sm:text-sm md:text-sm text-foreground break-words leading-relaxed">
                                         {author.name}
                                         {authorRole.role && (
-                                          <span className="text-[10px] sm:text-xs text-muted-foreground ml-1">
+                                          <span className="text-[10px] sm:text-xs md:text-xs text-muted-foreground ml-1">
                                             ({authorRole.role})
                                           </span>
                                         )}
@@ -465,7 +465,7 @@ export default function SeriesDetailPage() {
                                       {authorRole.isMain && (
                                         <Badge
                                           variant="default"
-                                          className="text-[10px] sm:text-xs flex-shrink-0"
+                                          className="text-[10px] sm:text-xs md:text-xs flex-shrink-0"
                                         >
                                           {t("metadata.main", "series")}
                                         </Badge>
@@ -480,11 +480,11 @@ export default function SeriesDetailPage() {
                         {/* Genres */}
                         {backendSeries?.genres &&
                           backendSeries.genres.length > 0 && (
-                            <div>
-                              <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
+                            <div className="space-y-1 sm:space-y-1.5">
+                              <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
                                 {t("metadata.genres", "series")}
                               </h3>
-                              <div className="flex flex-wrap gap-1 sm:gap-1.5">
+                              <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                 {backendSeries.genres.map((genreItem) => {
                                   const genre = genreItem.genre;
                                   if (!genre) return null;
@@ -492,7 +492,7 @@ export default function SeriesDetailPage() {
                                     <Badge
                                       key={genre.id || genre.name}
                                       variant="secondary"
-                                      className="text-[10px] sm:text-xs"
+                                      className="text-[10px] sm:text-xs md:text-xs px-2 py-0.5"
                                     >
                                       {genre.name}
                                     </Badge>
@@ -504,16 +504,16 @@ export default function SeriesDetailPage() {
 
                         {/* Tags */}
                         {series.tags && series.tags.length > 0 && (
-                          <div>
-                            <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
+                          <div className="space-y-1 sm:space-y-1.5">
+                            <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
                               {t("metadata.tags", "series")}
                             </h3>
-                            <div className="flex flex-wrap gap-1 sm:gap-1.5">
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
                               {series.tags.map((tag, index) => (
                                 <Badge
                                   key={index}
                                   variant="outline"
-                                  className="text-[10px] sm:text-xs"
+                                  className="text-[10px] sm:text-xs md:text-xs px-2 py-0.5"
                                 >
                                   {tag}
                                 </Badge>
@@ -526,11 +526,11 @@ export default function SeriesDetailPage() {
                         {backendSeries?.externalLinks &&
                           Object.keys(backendSeries.externalLinks).length >
                             0 && (
-                            <div>
-                              <h3 className="text-[10px] sm:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
+                            <div className="space-y-1 sm:space-y-1.5">
+                              <h3 className="text-[11px] sm:text-xs md:text-xs font-semibold text-muted-foreground mb-1.5 sm:mb-2 uppercase tracking-wide">
                                 {t("metadata.links", "series")}
                               </h3>
-                              <div className="flex flex-col gap-1.5 sm:gap-2">
+                              <div className="flex flex-col gap-2 sm:gap-2.5">
                                 {Object.entries(
                                   backendSeries.externalLinks,
                                 ).map(([label, url], index) => (
@@ -539,9 +539,9 @@ export default function SeriesDetailPage() {
                                     href={url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-2 text-xs sm:text-sm text-primary hover:underline py-1 min-h-[44px] sm:min-h-0"
+                                    className="flex items-center gap-2 text-xs sm:text-sm md:text-sm text-primary hover:underline py-1.5 sm:py-1 min-h-[44px] sm:min-h-0 transition-colors"
                                   >
-                                    <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5 flex-shrink-0" />
+                                    <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
                                     <span className="break-words">{label}</span>
                                   </a>
                                 ))}
