@@ -525,10 +525,7 @@ export function useSeriesSegment(seriesId: string, segmentId: string) {
     queryFn: async () => {
       return await SegmentsAPI.getSegmentById(segmentId);
     },
-    enabled:
-      !!segmentId &&
-      segmentId !== "undefined" &&
-      segmentId !== "null",
+    enabled: !!segmentId && segmentId !== "undefined" && segmentId !== "null",
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),

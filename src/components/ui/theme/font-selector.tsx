@@ -85,9 +85,7 @@ export function FontSelector({
                 key={font.value}
                 onClick={() => setFontFamily(font.value)}
                 className={`min-h-[44px] sm:min-h-0 py-2.5 sm:py-1.5 px-3 sm:px-2 hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary active:bg-primary/20 ${
-                  fontFamily === font.value
-                    ? "bg-primary/10 text-primary"
-                    : ""
+                  fontFamily === font.value ? "bg-primary/10 text-primary" : ""
                 }`}
               >
                 <div className="flex items-center justify-between w-full gap-2">
@@ -150,9 +148,7 @@ export function FontSelector({
               key={font.value}
               onClick={() => setFontFamily(font.value)}
               className={`min-h-[44px] sm:min-h-0 py-2.5 sm:py-1.5 px-3 sm:px-2 hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary active:bg-primary/20 ${
-                fontFamily === font.value
-                  ? "bg-primary/10 text-primary"
-                  : ""
+                fontFamily === font.value ? "bg-primary/10 text-primary" : ""
               }`}
             >
               <div className="flex items-center justify-between w-full gap-2">
@@ -175,4 +171,3 @@ export function FontSelector({
     </DropdownMenu>
   );
 }
-

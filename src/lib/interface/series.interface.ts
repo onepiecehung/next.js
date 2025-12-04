@@ -260,7 +260,7 @@ export interface SeriesSegment {
  */
 export interface CreateSegmentDto {
   seriesId?: string; // Optional - can be set from URL param
-  attachments?: Record<string,unknown>[]; // Array of media IDs to attach to the segment
+  attachments?: Record<string, unknown>[]; // Array of media IDs to attach to the segment
   userId?: string; // Optional - set automatically from authenticated user
   organizationId?: string; // Optional - for organization-owned content
   type: "trailer" | "episode" | "chapter";

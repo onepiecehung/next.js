@@ -7,9 +7,7 @@ import type {
   SeriesType,
 } from "@/lib/constants/series.constants";
 import { http } from "@/lib/http";
-import type {
-  Series,
-} from "@/lib/interface/series.interface";
+import type { Series } from "@/lib/interface/series.interface";
 import type {
   AdvancedQueryParams,
   ApiResponse,
@@ -237,5 +235,4 @@ export class SeriesAPI {
     >(`${this.BASE_URL}/anilist/crawl`, { params });
     return response.data;
   }
-
 }

@@ -2,7 +2,14 @@
 
 import type { User } from "@/lib/interface";
 import { useAtom } from "jotai";
-import { LogOut, Menu, PenTool, Settings, User as UserIcon, X } from "lucide-react";
+import {
+  LogOut,
+  Menu,
+  PenTool,
+  Settings,
+  User as UserIcon,
+  X,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -23,11 +30,7 @@ import {
 } from "@/components/ui/shadcn-io/popover";
 import { LanguageSwitcher } from "@/components/ui/navigation";
 import { Separator } from "@/components/ui/layout/separator";
-import {
-  authLoadingAtom,
-  clearUserState,
-  currentUserAtom,
-} from "@/lib/auth";
+import { authLoadingAtom, clearUserState, currentUserAtom } from "@/lib/auth";
 
 interface BottomNavProps {
   onLogout: () => Promise<void>;
@@ -76,20 +79,20 @@ export default function BottomNav({ onLogout, isLoggingOut }: BottomNavProps) {
         >
           {/* Icon transition with rotation animation - properly centered */}
           <div className="relative w-6 h-6 flex items-center justify-center">
-            <Menu 
+            <Menu
               className={`absolute transition-all duration-200 ease-in-out ${
-                isPopoverOpen 
-                  ? 'opacity-0 rotate-90 scale-50' 
-                  : 'opacity-100 rotate-0 scale-100'
+                isPopoverOpen
+                  ? "opacity-0 rotate-90 scale-50"
+                  : "opacity-100 rotate-0 scale-100"
               }`}
               size={24}
               strokeWidth={2.5}
             />
-            <X 
+            <X
               className={`absolute transition-all duration-200 ease-in-out ${
-                isPopoverOpen 
-                  ? 'opacity-100 rotate-0 scale-100' 
-                  : 'opacity-0 -rotate-90 scale-50'
+                isPopoverOpen
+                  ? "opacity-100 rotate-0 scale-100"
+                  : "opacity-0 -rotate-90 scale-50"
               }`}
               size={24}
               strokeWidth={2.5}
@@ -241,4 +244,3 @@ export default function BottomNav({ onLogout, isLoggingOut }: BottomNavProps) {
     </Popover>
   );
 }
-

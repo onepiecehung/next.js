@@ -169,6 +169,8 @@
       "mediaFilesPlaceholder": "Upload images, videos, or documents",
       "uploadSegment": "Upload Segment",
       "uploadingSegment": "Uploading...",
+      "uploadingFiles": "Uploading files...",
+      "creatingSegment": "Creating segment...",
       "saveDraft": "Save as Draft",
       "basicInfo": "Basic Information",
       "basicInfoDescription": "Enter the essential information for this segment",

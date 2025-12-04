@@ -31,8 +31,5 @@ export {
 } from "@/components/providers/theme-provider";
 export type { Theme, ColorScheme } from "@/components/providers/theme-provider";
 export { FontSelector } from "./font-selector";
-export {
-  useFont,
-  useCurrentFont,
-} from "@/components/providers/font-provider";
+export { useFont, useCurrentFont } from "@/components/providers/font-provider";
 export type { FontFamily } from "@/components/providers/font-provider";

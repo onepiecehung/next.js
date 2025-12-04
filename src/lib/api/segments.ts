@@ -193,4 +193,3 @@ export class SegmentsAPI {
     await http.delete<ApiResponse<void>>(`${this.BASE_URL}/${segmentId}`);
   }
 }
-

@@ -32,14 +32,12 @@ export default function SeriesDetailPage() {
   const seriesId = params.series_id as string;
 
   // Fetch full backend series data (single API call)
-  const {
-    data: backendSeries,
-    isLoading,
-    error,
-  } = useSeriesFull(seriesId);
+  const { data: backendSeries, isLoading, error } = useSeriesFull(seriesId);
 
   // Transform to display format using utility function
-  const series = backendSeries ? transformBackendSeries(backendSeries) : undefined;
+  const series = backendSeries
+    ? transformBackendSeries(backendSeries)
+    : undefined;
 
   // Show 404 if series not found
   if (!isLoading && !error && !series) {

@@ -169,6 +169,8 @@
       "mediaFilesPlaceholder": "Tải lên hình ảnh, video hoặc tài liệu",
       "uploadSegment": "Tải Lên Segment",
       "uploadingSegment": "Đang tải lên...",
+      "uploadingFiles": "Đang tải lên tệp...",
+      "creatingSegment": "Đang tạo segment...",
       "saveDraft": "Lưu Bản Nháp",
       "basicInfo": "Thông Tin Cơ Bản",
       "basicInfoDescription": "Nhập thông tin cần thiết cho segment này",

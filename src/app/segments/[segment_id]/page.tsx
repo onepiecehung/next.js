@@ -9,7 +9,7 @@ import {
   Maximize2,
   Minimize2,
   Video,
-  ZoomIn
+  ZoomIn,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,7 +19,14 @@ import { useEffect, useMemo, useState } from "react";
 import { ScrambledImageCanvas } from "@/components/features/media/components/scrambled-image-canvas";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { AnimatedSection, Skeletonize } from "@/components/shared";
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui";
 import { Badge } from "@/components/ui/core/badge";
 import {
   DropdownMenu,
@@ -125,7 +132,7 @@ export default function SegmentDetailPage() {
     // Process images one by one with delay between each
     let currentIndex = 0;
     let timeoutId: NodeJS.Timeout | null = null;
-    
+
     const processNextImage = () => {
       if (currentIndex >= imageAttachments.length) {
         return;
@@ -144,7 +151,7 @@ export default function SegmentDetailPage() {
 
     // Start processing from the first image after a short initial delay
     timeoutId = setTimeout(processNextImage, 100);
-    
+
     return () => {
       // Cleanup: cancel any pending timeouts when auth state changes or component unmounts
       if (timeoutId) {
@@ -251,7 +258,8 @@ export default function SegmentDetailPage() {
                 Segment Not Found
               </h1>
               <p className="text-sm text-muted-foreground mb-6">
-                {segmentError.message || "The segment you're looking for doesn't exist."}
+                {segmentError.message ||
+                  "The segment you're looking for doesn't exist."}
               </p>
               {seriesId && (
                 <Link href={`/series/${seriesId}`}>
@@ -369,7 +377,11 @@ export default function SegmentDetailPage() {
                             {/* Image Size Selector */}
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="sm" className="gap-2">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="gap-2"
+                                >
                                   {imageSizeMode === "default" && (
                                     <>
                                       <Maximize2 className="h-4 w-4" />
@@ -397,7 +409,9 @@ export default function SegmentDetailPage() {
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Image Size</DropdownMenuLabel>
+                                <DropdownMenuLabel>
+                                  Image Size
+                                </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem
                                   onClick={() => setImageSizeMode("default")}
@@ -473,15 +487,18 @@ export default function SegmentDetailPage() {
                                 <div
                                   className={cn(
                                     "flex items-center justify-center w-full py-2 sm:py-4",
-                                    imageSizeMode === "full" && "px-0 -mx-4 sm:-mx-6 md:-mx-8",
+                                    imageSizeMode === "full" &&
+                                      "px-0 -mx-4 sm:-mx-6 md:-mx-8",
                                   )}
                                 >
                                   <div
                                     className={cn(
                                       "relative",
-                                      imageSizeMode === "default" && "w-full max-w-5xl",
+                                      imageSizeMode === "default" &&
+                                        "w-full max-w-5xl",
                                       imageSizeMode === "full" && "w-screen",
-                                      imageSizeMode === "half" && "w-full sm:w-1/2",
+                                      imageSizeMode === "half" &&
+                                        "w-full sm:w-1/2",
                                       imageSizeMode === "fit" && "w-auto",
                                     )}
                                   >
@@ -526,7 +543,8 @@ export default function SegmentDetailPage() {
                                             <div className="flex flex-col items-center gap-3 z-10">
                                               <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
                                               <p className="text-sm text-muted-foreground">
-                                                {index === maxUnscrambleIndex + 1
+                                                {index ===
+                                                maxUnscrambleIndex + 1
                                                   ? "Unscrambling image..."
                                                   : `Waiting... (${index - maxUnscrambleIndex - 1} ahead)`}
                                               </p>
@@ -577,7 +595,10 @@ export default function SegmentDetailPage() {
                                   variant="outline"
                                   size="sm"
                                   onClick={() => {
-                                    window.scrollTo({ top: 0, behavior: "smooth" });
+                                    window.scrollTo({
+                                      top: 0,
+                                      behavior: "smooth",
+                                    });
                                   }}
                                   className="gap-2"
                                 >
@@ -596,9 +617,7 @@ export default function SegmentDetailPage() {
                   {((segment.attachments && segment.attachments.length > 0) ||
                     (segment.media && segment.media.length > 0)) && (
                     <>
-                      {(
-                        segment.attachments || segment.media || []
-                      ).some(
+                      {(segment.attachments || segment.media || []).some(
                         (media) =>
                           !isImage(media.url, media.type, media.mimeType),
                       ) && (
@@ -616,7 +635,11 @@ export default function SegmentDetailPage() {
                               {(segment.attachments || segment.media || [])
                                 .filter(
                                   (media) =>
-                                    !isImage(media.url, media.type, media.mimeType),
+                                    !isImage(
+                                      media.url,
+                                      media.type,
+                                      media.mimeType,
+                                    ),
                                 )
                                 .map((media) => (
                                   <div
@@ -624,17 +647,25 @@ export default function SegmentDetailPage() {
                                     className="relative group border border-border rounded-lg overflow-hidden bg-card hover:shadow-md transition-shadow"
                                   >
                                     {/* Video */}
-                                    {isVideo(media.url, media.type, media.mimeType) && (
+                                    {isVideo(
+                                      media.url,
+                                      media.type,
+                                      media.mimeType,
+                                    ) && (
                                       <div className="relative aspect-video w-full bg-black">
                                         <video
                                           src={media.url}
                                           controls
                                           className="w-full h-full"
                                         >
-                                          Your browser does not support the video tag.
+                                          Your browser does not support the
+                                          video tag.
                                         </video>
                                         <div className="absolute top-2 left-2">
-                                          <Badge variant="secondary" className="gap-1">
+                                          <Badge
+                                            variant="secondary"
+                                            className="gap-1"
+                                          >
                                             <Video className="h-3 w-3" />
                                             Video
                                           </Badge>
@@ -643,11 +674,17 @@ export default function SegmentDetailPage() {
                                     )}
 
                                     {/* Document */}
-                                    {isDocument(media.url, media.type, media.mimeType) && (
+                                    {isDocument(
+                                      media.url,
+                                      media.type,
+                                      media.mimeType,
+                                    ) && (
                                       <div className="p-6 flex flex-col items-center justify-center min-h-[200px]">
                                         <FileText className="h-12 w-12 text-muted-foreground mb-3" />
                                         <p className="text-sm font-medium text-foreground mb-2">
-                                          {(media.mimeType || media.type)?.includes("pdf")
+                                          {(
+                                            media.mimeType || media.type
+                                          )?.includes("pdf")
                                             ? "PDF"
                                             : "EPUB"}
                                         </p>
@@ -672,7 +709,9 @@ export default function SegmentDetailPage() {
                                     {/* Media Info */}
                                     <div className="p-3 border-t border-border">
                                       <p className="text-xs text-muted-foreground truncate">
-                                        {media.mimeType || media.type || "Unknown type"}
+                                        {media.mimeType ||
+                                          media.type ||
+                                          "Unknown type"}
                                       </p>
                                       {media.name && (
                                         <p className="text-xs font-medium text-foreground truncate mt-1">
@@ -690,20 +729,18 @@ export default function SegmentDetailPage() {
                   )}
 
                   {/* No Attachments */}
-                  {(!segment.attachments ||
-                    segment.attachments.length === 0) &&
+                  {(!segment.attachments || segment.attachments.length === 0) &&
                     (!segment.media || segment.media.length === 0) && (
-                    <Card>
-                      <CardContent className="py-12 text-center">
-                        <ImageIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                        <p className="text-sm text-muted-foreground">
-                          No attachments available for this segment
-                        </p>
-                      </CardContent>
-                    </Card>
-                  )}
+                      <Card>
+                        <CardContent className="py-12 text-center">
+                          <ImageIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                          <p className="text-sm text-muted-foreground">
+                            No attachments available for this segment
+                          </p>
+                        </CardContent>
+                      </Card>
+                    )}
                 </div>
-
               </div>
             </>
           )}
@@ -712,4 +749,3 @@ export default function SegmentDetailPage() {
     </div>
   );
 }
-
