@@ -1,4 +1,13 @@
+import type {
+  SeriesFormat,
+  SeriesReleasingStatus,
+  SeriesSeason,
+  SeriesSource,
+  SeriesStatus,
+  SeriesType,
+} from "@/lib/constants/series.constants";
 import { http } from "@/lib/http";
+import type { Series } from "@/lib/interface/series.interface";
 import type {
   AdvancedQueryParams,
   ApiResponse,
@@ -6,15 +15,6 @@ import type {
   ApiResponseOffset,
   QueryParamsWithCursor,
 } from "@/lib/types";
-import type { Series } from "@/lib/interface/series.interface";
-import type {
-  SeriesType,
-  SeriesFormat,
-  SeriesSeason,
-  SeriesSource,
-  SeriesReleasingStatus,
-  SeriesStatus,
-} from "@/lib/constants/series.constants";
 
 /**
  * Create Series DTO
@@ -160,7 +160,7 @@ export class SeriesAPI {
    * Get series list with offset pagination
    */
   static async getSeriesOffset(
-    params?: QuerySeriesDto,
+    params?: Partial<QuerySeriesDto>,
   ): Promise<ApiResponseOffset<Series>> {
     const response = await http.get<ApiResponseOffset<Series>>(this.BASE_URL, {
       params,

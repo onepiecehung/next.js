@@ -9,6 +9,7 @@ import {
   Shield,
   User,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import {
@@ -35,6 +36,7 @@ import { currentUserAtom } from "@/lib/auth";
  */
 export default function SettingsPage() {
   const { t } = useI18n();
+  const router = useRouter();
   const [currentUser] = useAtom(currentUserAtom);
   const [activeSection, setActiveSection] = useState<string>("profile");
   const isMounted = useIsMounted();
@@ -43,6 +45,13 @@ export default function SettingsPage() {
   if (!isMounted) {
     return <div className="min-h-screen bg-background" />;
   }
+
+  // Handle login redirect with current path for returning back after login
+  const handleLoginRedirect = () => {
+    const currentPath = window.location.pathname;
+    const loginUrl = `/auth/login?redirect=${encodeURIComponent(currentPath)}`;
+    router.push(loginUrl);
+  };
 
   // Redirect to login if not authenticated
   if (!currentUser) {
@@ -58,8 +67,8 @@ export default function SettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
-            <Button asChild>
-              <a href="/auth/login">{t("settingsGoToLogin", "settings")}</a>
+            <Button onClick={handleLoginRedirect}>
+              {t("settingsGoToLogin", "settings")}
             </Button>
           </CardContent>
         </Card>

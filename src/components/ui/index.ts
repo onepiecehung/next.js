@@ -68,3 +68,4 @@ export {
 } from "./shadcn-io/input-otp";
 export { ThemeSelector, ThemeToggle } from "./theme";
 export { ContentRenderer } from "./utilities";
+export { Spinner } from "./spinner";

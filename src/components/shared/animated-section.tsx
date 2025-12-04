@@ -104,4 +104,3 @@ export function AnimatedSection({
     </motion.section>
   );
 }
-

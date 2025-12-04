@@ -168,6 +168,10 @@ export interface Series {
   type?: string; // ANIME or MANGA
   format?: string;
   status?: string;
+  source?: string; // Source material (Manga, Light Novel, etc.)
+  startDate?: Date | string; // Start date of the series
+  episodes?: number; // Number of episodes (for anime)
+  genres?: string[]; // Genres extracted from genres array
   averageScore?: number;
   popularity?: number;
   trending?: number;
@@ -190,6 +194,9 @@ export interface LatestUpdateItem {
   groups: ScanlationGroup[];
   timestamp: Date | string;
   commentCount?: number;
+  isNsfw?: boolean;
+  genres?: string[];
+  tags?: string[];
 }
 
 /**
@@ -201,3 +208,88 @@ export interface PopularSeries extends Series {
   likes?: number;
   rating?: number;
 }
+
+/**
+ * Series Segment (Chapter/Episode) interface
+ * Based on backend/src/series/entities/segments.entity.ts
+ */
+export interface SeriesSegment {
+  id: string;
+  seriesId: string;
+  type: "trailer" | "episode" | "chapter";
+  number: number;
+  subNumber?: number;
+  title?: string;
+  description?: string;
+  slug?: string;
+  summary?: string;
+  durationSec?: number;
+  pageCount?: number;
+  startPage?: number;
+  endPage?: number;
+  status: "active" | "inactive" | "pending" | "archived";
+  publishedAt?: Date | string;
+  originalReleaseDate?: Date | string;
+  accessType: "free" | "paid" | "subscription" | "membership";
+  languageCode?: string;
+  isNsfw: boolean;
+  metadata?: Record<string, unknown>;
+  media?: Array<{
+    id: string;
+    url: string;
+    type?: string;
+    mimeType?: string;
+    name?: string;
+  }>;
+  attachments?: Array<{
+    id: string;
+    url: string;
+    type?: string;
+    mimeType?: string;
+    name?: string;
+  }>;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  user?: {
+    id: string;
+    name?: string;
+    username?: string;
+    email?: string;
+  };
+}
+
+/**
+ * Create Segment DTO
+ * Based on backend/src/series/dto/create-segment.dto.ts
+ * Note: seriesId is passed via URL param, but can also be included in body
+ * Note: userId is optional and will be set automatically from authenticated user
+ */
+export interface CreateSegmentDto {
+  seriesId?: string; // Optional - can be set from URL param
+  attachments?: Record<string, unknown>[]; // Array of media IDs to attach to the segment
+  userId?: string; // Optional - set automatically from authenticated user
+  organizationId?: string; // Optional - for organization-owned content
+  type: "trailer" | "episode" | "chapter";
+  number: number;
+  subNumber?: number;
+  title?: string;
+  description?: string;
+  slug?: string;
+  summary?: string;
+  durationSec?: number;
+  pageCount?: number;
+  startPage?: number;
+  endPage?: number;
+  status?: "active" | "inactive" | "pending" | "archived";
+  publishedAt?: Date | string;
+  originalReleaseDate?: Date | string;
+  accessType?: "free" | "paid" | "subscription" | "membership";
+  languageCode?: string;
+  isNsfw?: boolean;
+  metadata?: Record<string, unknown>;
+}
+
+/**
+ * Update Segment DTO
+ */
+export type UpdateSegmentDto = Partial<Omit<CreateSegmentDto, "seriesId">>;

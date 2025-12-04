@@ -35,7 +35,7 @@ export const sectionVariants: Variants = {
  * Note: opacity is set to 1 in hidden state to allow skeleton to be visible
  */
 export const containerVariants: Variants = {
-  hidden: { 
+  hidden: {
     opacity: 1, // Keep visible for skeleton
   },
   visible: {
@@ -179,4 +179,3 @@ export function shouldAnimateArray<T>(
 ): boolean {
   return !loading && !!data && data.length > 0;
 }
-

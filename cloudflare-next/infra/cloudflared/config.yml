@@ -1,0 +1,10 @@
+# infra/cloudflared/config.yml
+tunnel: 5dda7d4c-fea5-4e75-a794-a23587c41c17
+credentials-file: /etc/5dda7d4c-fea5-4e75-a794-a23587c41c17.json
+protocol: http2
+edge-ip-version: "4"
+
+ingress:
+  - hostname: beta.calumma.cc
+    service: http://192.168.2.157:3001
+  - service: http_status:404

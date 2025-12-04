@@ -4,27 +4,48 @@ alwaysApply: true
 
 # ⚙️ Cursor Scaffolding & Definition of Done
 
+## ⚠️ BEFORE Creating Anything: Check MCP Tools First!
+
+**MANDATORY Steps:**
+1. 🔍 **Search shadcn MCP** - Check if component already exists
+2. 📚 **Check Next.js MCP** - Verify best practices and patterns
+3. ✅ **Only create custom** - If MCP doesn't provide solution
+
+See `8_mcp_tools.mdc` for detailed MCP usage guidelines.
+
+---
+
 ## Cursor Scaffolding
 
 **When:** `Create page <slug>`
-1. `src/app/<slug>/page.tsx` — RSC page
-2. `src/components/features/<slug>/*`
-3. `src/lib/api/<slug>.ts`
-4. `src/hooks/use<Slug>.ts`
-5. `src/i18n/locales/{en,vi}/<slug>.json`
-6. `src/__tests__/<slug>.spec.tsx`
+1. **FIRST**: Check MCP for existing page patterns
+2. `src/app/<slug>/page.tsx` — RSC page
+3. `src/components/features/<slug>/*`
+4. `src/lib/api/<slug>.ts`
+5. `src/hooks/use<Slug>.ts`
+6. `src/i18n/locales/{en,vi}/<slug>.json`
+7. `src/__tests__/<slug>.spec.tsx`
 
 **When:** `Create form <name>`
+- **FIRST**: Search shadcn MCP for form components
 - Path: `src/components/features/<domain>/<name>-form.tsx`
 - Use RHF + Zod + shadcn `<Form />`
 - Disabled/loading state + toast
 
 **When:** `Create modal <name>`
+- **FIRST**: Check shadcn MCP for Dialog/Sheet components
 - Use `Dialog`/`Sheet`
 - Focus trap, ESC close, responsive sizing
 
+**When:** `Add UI component <name>`
+- **MANDATORY**: Use `mcp_shadcn_search_items_in_registries` first
+- Get installation: `mcp_shadcn_get_add_command_for_items`
+- Get examples: `mcp_shadcn_get_item_examples_from_registries`
+- Only create custom if not available in MCP
+
 > ❌ Never create `app/api/*` or `"use server"`.
 > ✅ Always use `src/lib/http/client.ts`.
+> ⚠️ Always check MCP tools BEFORE creating new components.
 
 ---
 
@@ -32,6 +53,7 @@ alwaysApply: true
 
 | Check | Status |
 |-------|--------|
+| MCP tools checked before creating | ✅ |
 | No TS/ESLint warnings | ✅ |
 | Theme dark/light + color variants works | ✅ |
 | Mobile-first responsive | ✅ |

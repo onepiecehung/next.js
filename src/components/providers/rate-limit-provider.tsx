@@ -20,27 +20,42 @@ export function RateLimitProvider({ children }: RateLimitProviderProps) {
   const [open, setOpen] = React.useState(false);
   const [remaining, setRemaining] = React.useState<number>(0);
 
-  // Tick every second while dialog is open
+  // Listen to bus events - update state when rate limit is triggered
+  React.useEffect(() => {
+    return rateLimitBus.on((detail) => {
+      // Calculate remaining seconds based on the timestamp from event detail
+      // This ensures accuracy as the timestamp is set before the event is emitted
+      const now = Date.now();
+      const secs = Math.max(
+        0,
+        Math.ceil((detail.untilTimestampMs - now) / 1000),
+      );
+      setRemaining(secs);
+      setOpen(secs > 0);
+    });
+  }, []);
+
+  // Tick every second while dialog is open to update countdown
   React.useEffect(() => {
     if (!open) return;
-    const id = setInterval(() => {
+
+    // Initial update when dialog opens
+    const updateRemaining = () => {
       const secs = getRateLimitRemainingSeconds();
       setRemaining(secs);
       if (secs <= 0) {
         setOpen(false);
       }
-    }, 1000);
+    };
+
+    // Update immediately
+    updateRemaining();
+
+    // Update every second
+    const id = setInterval(updateRemaining, 1000);
+
     return () => clearInterval(id);
   }, [open]);
-
-  // Listen to bus events
-  React.useEffect(() => {
-    return rateLimitBus.on(() => {
-      const secs = getRateLimitRemainingSeconds();
-      setRemaining(secs);
-      setOpen(secs > 0);
-    });
-  }, []);
 
   const handleClose = React.useCallback(() => {
     // Allow closing, but if still in cooldown, it will pop up again on new requests
@@ -53,23 +68,16 @@ export function RateLimitProvider({ children }: RateLimitProviderProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>
-              {t("common.rateLimitTitle", "Too Many Requests")}
-            </DialogTitle>
+            <DialogTitle>{t("rateLimit.title", "common")}</DialogTitle>
           </DialogHeader>
           <div className="space-y-3 text-sm text-muted-foreground">
-            <p>
-              {t(
-                "common.rateLimitDescription",
-                "You have hit the request limit. Please wait before trying again.",
-              )}
-            </p>
+            <p>{t("rateLimit.description", "common")}</p>
             <p className="text-base font-medium text-foreground">
-              {t("common.rateLimitRetryIn", "Retry in")} {remaining}s
+              {t("rateLimit.retryIn", "common")} {remaining}s
             </p>
             <div className="flex justify-end gap-2 pt-2">
               <Button variant="outline" onClick={handleClose}>
-                {t("common.buttonClose", "Close")}
+                {t("actions.close", "common")}
               </Button>
             </div>
           </div>

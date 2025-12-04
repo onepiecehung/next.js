@@ -29,7 +29,7 @@
   "follows": "Theo Dõi",
   "titles": "Truyện",
   "community": "Cộng Đồng",
-  "mangadex": "MangaDex",
+  "mangadex": "MangaSBS",
   "updates": "Cập Nhật",
   "library": "Thư Viện",
   "mdLists": "MDLists",
@@ -57,5 +57,186 @@
   "systemStatus": "Trạng Thái Hệ Thống",
   "type": "Loại",
   "format": "Định Dạng",
-  "score": "Điểm"
+  "score": "Điểm",
+  "actions": {
+    "read": "Đọc",
+    "follow": "Theo Dõi",
+    "share": "Chia Sẻ"
+  },
+  "metadata": {
+    "status": "Trạng Thái",
+    "type": "Loại",
+    "format": "Định Dạng",
+    "chapters": "Chương",
+    "volumes": "Tập",
+    "episodes": "Tập Phim",
+    "score": "Điểm",
+    "popularity": "Độ Phổ Biến",
+    "author": "Tác Giả",
+    "authors": "Tác Giả",
+    "genres": "Thể Loại",
+    "tags": "Thẻ",
+    "links": "Liên Kết",
+    "startDate": "Ngày Bắt Đầu",
+    "endDate": "Ngày Kết Thúc",
+    "season": "Mùa",
+    "source": "Nguồn",
+    "country": "Quốc Gia",
+    "licensed": "Có Bản Quyền",
+    "nsfw": "Nội Dung NSFW",
+    "main": "Chính",
+    "yes": "Có",
+    "no": "Không",
+    "unknown": "Không Rõ"
+  },
+  "status": {
+    "finished": "Hoàn Thành",
+    "releasing": "Đang Phát Hành",
+    "ongoing": "Đang Tiếp Diễn",
+    "comingSoon": "Sắp Ra Mắt",
+    "completed": "Đã Hoàn Thành",
+    "notYetReleased": "Chưa Phát Hành",
+    "cancelled": "Đã Hủy",
+    "hiatus": "Tạm Dừng",
+    "unknown": "Không Rõ"
+  },
+  "type": {
+    "anime": "Anime",
+    "manga": "Manga",
+    "lightNovel": "Light Novel",
+    "visualNovel": "Visual Novel",
+    "videoGame": "Video Game",
+    "doujinshi": "Doujinshi",
+    "webNovel": "Web Novel"
+  },
+  "format": {
+    "tv": "TV",
+    "tvShort": "TV Ngắn",
+    "movie": "Phim",
+    "special": "Đặc Biệt",
+    "ova": "OVA",
+    "ona": "ONA",
+    "music": "Nhạc",
+    "manga": "Manga",
+    "novel": "Tiểu Thuyết",
+    "oneShot": "One Shot"
+  },
+  "description": {
+    "title": "Mô Tả",
+    "readMore": "Đọc Thêm",
+    "readLess": "Thu Gọn"
+  },
+  "chapters": {
+    "title": "Chương",
+    "comingSoon": "Danh sách chương sắp có",
+    "noChapters": "Chưa có chương nào",
+    "loading": "Đang tải thêm chương...",
+    "endOfList": "Hết chương",
+    "updatedAt": "Thời gian cập nhật",
+    "uploadBy": "Tải lên bởi",
+    "filter": {
+      "label": "Lọc theo ngôn ngữ",
+      "all": "Tất cả ngôn ngữ"
+    }
+  },
+  "segments": {
+    "title": "Tải Lên Segment",
+    "description": "Tải lên chương hoặc tập mới cho series này",
+    "form": {
+      "type": "Loại Segment",
+      "typePlaceholder": "Chọn loại segment",
+      "number": "Số",
+      "numberPlaceholder": "Nhập số segment (ví dụ: 1, 2, 3)",
+      "subNumber": "Số Phụ",
+      "subNumberPlaceholder": "Tùy chọn: cho chương/tập .5 (ví dụ: 5 cho 12.5)",
+      "title": "Tiêu Đề",
+      "titlePlaceholder": "Nhập tiêu đề segment (tùy chọn)",
+      "description": "Mô Tả",
+      "descriptionPlaceholder": "Nhập mô tả segment (tùy chọn)",
+      "summary": "Tóm Tắt",
+      "summaryPlaceholder": "Nhập tóm tắt ngắn (tùy chọn)",
+      "slug": "URL Slug",
+      "slugPlaceholder": "Tự động tạo từ tiêu đề nếu không cung cấp",
+      "status": "Trạng Thái",
+      "statusPlaceholder": "Chọn trạng thái",
+      "accessType": "Loại Truy Cập",
+      "accessTypePlaceholder": "Chọn loại truy cập",
+      "languageCode": "Ngôn Ngữ",
+      "languageCodePlaceholder": "Chọn ngôn ngữ",
+      "publishedAt": "Ngày Xuất Bản",
+      "publishedAtPlaceholder": "Chọn ngày xuất bản",
+      "originalReleaseDate": "Ngày Phát Hành Gốc",
+      "originalReleaseDatePlaceholder": "Chọn ngày phát hành gốc",
+      "durationSec": "Thời Lượng (giây)",
+      "durationSecPlaceholder": "Chỉ cho tập phim",
+      "pageCount": "Số Trang",
+      "pageCountPlaceholder": "Chỉ cho chương",
+      "startPage": "Trang Bắt Đầu",
+      "startPagePlaceholder": "Tùy chọn: số trang bắt đầu",
+      "endPage": "Trang Kết Thúc",
+      "endPagePlaceholder": "Tùy chọn: số trang kết thúc",
+      "isNsfw": "Nội Dung NSFW",
+      "mediaFiles": "Tệp Media",
+      "mediaFilesPlaceholder": "Tải lên hình ảnh, video hoặc tài liệu",
+      "uploadSegment": "Tải Lên Segment",
+      "uploadingSegment": "Đang tải lên...",
+      "uploadingFiles": "Đang tải lên tệp...",
+      "creatingSegment": "Đang tạo segment...",
+      "saveDraft": "Lưu Bản Nháp",
+      "basicInfo": "Thông Tin Cơ Bản",
+      "basicInfoDescription": "Nhập thông tin cần thiết cho segment này",
+      "advancedSettings": "Cài Đặt Nâng Cao",
+      "advancedSettingsDescription": "Các tùy chọn tùy chỉnh cho segment của bạn",
+      "showAdvancedSettings": "Hiển Thị Cài Đặt Nâng Cao",
+      "hideAdvancedSettings": "Ẩn Cài Đặt Nâng Cao",
+      "clearAll": "Xóa Tất Cả"
+    },
+    "type": {
+      "trailer": "Trailer",
+      "episode": "Tập Phim",
+      "chapter": "Chương"
+    },
+    "status": {
+      "active": "Hoạt Động",
+      "inactive": "Không Hoạt Động",
+      "pending": "Đang Chờ",
+      "archived": "Đã Lưu Trữ"
+    },
+    "accessType": {
+      "free": "Miễn Phí",
+      "paid": "Trả Phí",
+      "subscription": "Đăng Ký",
+      "membership": "Thành Viên"
+    },
+    "pages": "trang",
+    "minutes": "phút",
+    "success": {
+      "created": "Segment đã được tạo thành công!",
+      "updated": "Segment đã được cập nhật thành công!",
+      "deleted": "Segment đã được xóa thành công!"
+    },
+    "errors": {
+      "create": "Không thể tạo segment",
+      "update": "Không thể cập nhật segment",
+      "delete": "Không thể xóa segment",
+      "numberRequired": "Số segment là bắt buộc",
+      "typeRequired": "Loại segment là bắt buộc",
+      "subNumberInvalid": "Số phụ phải là số nguyên không âm",
+      "uploadMediaFailed": "Không thể tải lên tệp media. Vui lòng thử lại."
+    },
+    "toast": {
+      "created": "Segment đã được tạo thành công!",
+      "createError": "Không thể tạo segment",
+      "updated": "Segment đã được cập nhật thành công!",
+      "updateError": "Không thể cập nhật segment",
+      "deleted": "Segment đã được xóa thành công!",
+      "deleteError": "Không thể xóa segment"
+    }
+  },
+  "error": {
+    "title": "Không Tìm Thấy Truyện",
+    "message": "Truyện bạn đang tìm không tồn tại hoặc đã bị xóa.",
+    "backToHome": "Về Trang Chủ",
+    "loadingChapters": "Không thể tải danh sách chương"
+  }
 }

@@ -70,11 +70,29 @@ export function useUserArticlesLayout(
   const formattedArticles =
     data?.data?.result?.map((article: Article) => formatArticle(article)) || [];
 
+  // Layout configuration based on layout type
+  const layoutConfig = {
+    grid: {
+      containerClass:
+        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6",
+      itemClass: "",
+    },
+    list: {
+      containerClass: "space-y-4 sm:space-y-6",
+      itemClass: "",
+    },
+    card: {
+      containerClass: "grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6",
+      itemClass: "",
+    },
+  };
+
   return {
     articles: formattedArticles,
     isLoading,
     error,
     refetch,
+    layoutConfig: layoutConfig[layout] || layoutConfig.grid,
     totalCount: data?.data?.metaData?.totalRecords || 0,
     hasMore: data?.data?.metaData?.hasNextPage || false,
     currentPage: data?.data?.metaData?.currentPage || 1,
@@ -253,6 +271,97 @@ export function useDeleteArticle() {
         error: (error) => {
           console.error("Article deletion error:", error);
           return t("schedule.error", "article") || "Failed to delete article";
+        },
+      });
+
+      return promise();
+    },
+  });
+}
+
+/**
+ * Hook for publishing an article
+ */
+export function usePublishArticle() {
+  const { t } = useI18n();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => {
+      const promise = async () => {
+        const result = await ArticleAPI.updateArticle(id, {
+          status: ARTICLE_CONSTANTS.STATUS.PUBLISHED,
+        });
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        return result;
+      };
+
+      toast.promise(promise(), {
+        loading: t("schedule.publishing", "article") || "Publishing article...",
+        success: (article) => {
+          queryClient.setQueryData(
+            queryKeys.articles.detail(article.id),
+            article,
+          );
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.articles.all(),
+          });
+          return (
+            t("status.published", "article") +
+            " " +
+            t("schedule.success", "article")
+          );
+        },
+        error: (error) => {
+          console.error("Publish article error:", error);
+          return t("schedule.error", "article") || "Failed to publish article";
+        },
+      });
+
+      return promise();
+    },
+  });
+}
+
+/**
+ * Hook for unpublishing an article
+ */
+export function useUnpublishArticle() {
+  const { t } = useI18n();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => {
+      const promise = async () => {
+        const result = await ArticleAPI.updateArticle(id, {
+          status: ARTICLE_CONSTANTS.STATUS.DRAFT,
+        });
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        return result;
+      };
+
+      toast.promise(promise(), {
+        loading:
+          t("schedule.unpublishing", "article") || "Unpublishing article...",
+        success: (article) => {
+          queryClient.setQueryData(
+            queryKeys.articles.detail(article.id),
+            article,
+          );
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.articles.all(),
+          });
+          return (
+            t("status.draft", "article") +
+            " " +
+            t("schedule.success", "article")
+          );
+        },
+        error: (error) => {
+          console.error("Unpublish article error:", error);
+          return (
+            t("schedule.error", "article") || "Failed to unpublish article"
+          );
         },
       });
 

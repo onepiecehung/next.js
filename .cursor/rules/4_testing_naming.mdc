@@ -28,3 +28,9 @@ alwaysApply: true
 - **Domain-based** organization (auth/, article/, etc.)
 - **Consistent naming** across all modules
 - **TypeScript interfaces** in dedicated files
+- **Always use `@/` alias; never deep relative paths**
+
+## Performance
+- `next/image` with `sizes`: e.g. `sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"`
+- Defer heavy client components: `dynamic(() => import(...), { ssr: false })`
+- Avoid unnecessary hydration; prefer RSC render when possible (public data)

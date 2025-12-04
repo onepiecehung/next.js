@@ -48,13 +48,14 @@ xProvider.addScope("users.read");
 
 /**
  * Sign in with Google using Firebase Auth
+ * Uses popup flow only
  * @returns Promise<FirebaseUser> - The authenticated Firebase user
  */
 export const signInWithGoogle = async (): Promise<FirebaseUser> => {
   try {
     const result = await signInWithPopup(auth, googleProvider);
     return result.user;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error signing in with Google:", error);
     throw error;
   }
@@ -62,13 +63,14 @@ export const signInWithGoogle = async (): Promise<FirebaseUser> => {
 
 /**
  * Sign in with GitHub using Firebase Auth
+ * Uses popup flow only
  * @returns Promise<FirebaseUser> - The authenticated Firebase user
  */
 export const signInWithGithub = async (): Promise<FirebaseUser> => {
   try {
     const result = await signInWithPopup(auth, githubProvider);
     return result.user;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error signing in with GitHub:", error);
     throw error;
   }
@@ -76,13 +78,14 @@ export const signInWithGithub = async (): Promise<FirebaseUser> => {
 
 /**
  * Sign in with X (Twitter) using Firebase Auth
+ * Uses popup flow only
  * @returns Promise<FirebaseUser> - The authenticated Firebase user
  */
 export const signInWithX = async (): Promise<FirebaseUser> => {
   try {
     const result = await signInWithPopup(auth, xProvider);
     return result.user;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error signing in with X:", error);
     throw error;
   }

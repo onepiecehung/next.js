@@ -29,7 +29,7 @@ export type ScrambleKeyResponse = {
  */
 export class MediaAPI {
   private static readonly BASE_URL = "/media";
-  private static readonly MAX_FILES_PER_UPLOAD = 3;
+  private static readonly MAX_FILES_PER_UPLOAD = 50;
 
   static async upload(files: File[]): Promise<ApiResponse<UploadedMedia[]>> {
     if (!files || files.length === 0) {
@@ -47,8 +47,10 @@ export class MediaAPI {
     }
 
     const form = new FormData();
-    // Backend expects single file with field name "file"
-    form.append("files", files[0]);
+    // Backend expects field name "files" (plural) and can accept multiple files
+    files.forEach((file) => {
+      form.append("files", file);
+    });
     const response = await http.post<ApiResponse<UploadedMedia[]>>(
       this.BASE_URL,
       form,
@@ -59,20 +61,144 @@ export class MediaAPI {
     return response.data;
   }
 
-  static async getUserMedia(
-    userId: string,
-  ): Promise<ApiResponse<UploadedMedia[]>> {
+  /**
+   * Get media list with query parameters
+   */
+  static async getMedia(params?: {
+    page?: number;
+    limit?: number;
+    userId?: string;
+    type?: string;
+  }): Promise<ApiResponse<UploadedMedia[]>> {
     const response = await http.get<ApiResponse<UploadedMedia[]>>(
-      `${this.BASE_URL}/user/${userId}`,
+      this.BASE_URL,
+      { params },
     );
     return response.data;
   }
 
+  /**
+   * Get media by ID
+   */
+  static async getMediaById(
+    mediaId: string,
+  ): Promise<ApiResponse<UploadedMedia>> {
+    const response = await http.get<ApiResponse<UploadedMedia>>(
+      `${this.BASE_URL}/${mediaId}`,
+    );
+    return response.data;
+  }
+
+  /**
+   * Update media
+   */
+  static async updateMedia(
+    mediaId: string,
+    data: {
+      name?: string;
+      metadata?: string;
+    },
+  ): Promise<ApiResponse<UploadedMedia>> {
+    const response = await http.put<ApiResponse<UploadedMedia>>(
+      `${this.BASE_URL}/${mediaId}`,
+      data,
+    );
+    return response.data;
+  }
+
+  /**
+   * Delete media
+   */
   static async delete(mediaId: string): Promise<ApiResponse<void>> {
     const response = await http.delete<ApiResponse<void>>(
       `${this.BASE_URL}/${mediaId}`,
     );
     return response.data;
+  }
+
+  /**
+   * Activate media
+   */
+  static async activateMedia(
+    mediaId: string,
+  ): Promise<ApiResponse<UploadedMedia>> {
+    const response = await http.post<ApiResponse<UploadedMedia>>(
+      `${this.BASE_URL}/${mediaId}/activate`,
+    );
+    return response.data;
+  }
+
+  /**
+   * Deactivate media
+   */
+  static async deactivateMedia(
+    mediaId: string,
+  ): Promise<ApiResponse<UploadedMedia>> {
+    const response = await http.post<ApiResponse<UploadedMedia>>(
+      `${this.BASE_URL}/${mediaId}/deactivate`,
+    );
+    return response.data;
+  }
+
+  /**
+   * Generate presigned upload URL
+   */
+  static async generatePresignedUploadUrl(data: {
+    filename: string;
+    contentType: string;
+    contentLength?: number;
+  }): Promise<ApiResponse<{ uploadUrl: string; key: string }>> {
+    const response = await http.post<
+      ApiResponse<{ uploadUrl: string; key: string }>
+    >(`${this.BASE_URL}/presigned-upload`, data);
+    return response.data;
+  }
+
+  /**
+   * Generate presigned download URL
+   */
+  static async generatePresignedDownloadUrl(
+    mediaId: string,
+    expiresIn?: number,
+  ): Promise<ApiResponse<{ presignedUrl: string; expiresIn: number }>> {
+    const params = expiresIn ? { expiresIn } : {};
+    const response = await http.get<
+      ApiResponse<{ presignedUrl: string; expiresIn: number }>
+    >(`${this.BASE_URL}/${mediaId}/presigned-download`, { params });
+    return response.data;
+  }
+
+  /**
+   * Get media file metadata
+   */
+  static async getMediaMetadata(
+    mediaId: string,
+  ): Promise<ApiResponse<Record<string, unknown>>> {
+    const response = await http.get<ApiResponse<Record<string, unknown>>>(
+      `${this.BASE_URL}/${mediaId}/metadata`,
+    );
+    return response.data;
+  }
+
+  /**
+   * Check if media file exists
+   */
+  static async checkMediaExists(
+    mediaId: string,
+  ): Promise<ApiResponse<{ exists: boolean }>> {
+    const response = await http.get<ApiResponse<{ exists: boolean }>>(
+      `${this.BASE_URL}/${mediaId}/exists`,
+    );
+    return response.data;
+  }
+
+  /**
+   * Get user media (legacy endpoint)
+   */
+  static async getUserMedia(
+    userId: string,
+  ): Promise<ApiResponse<UploadedMedia[]>> {
+    return this.getMedia({ userId });
   }
 
   /**

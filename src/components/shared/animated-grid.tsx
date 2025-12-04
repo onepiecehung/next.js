@@ -96,12 +96,16 @@ export function AnimatedGrid({
   const wrappedChildren = React.Children.map(children, (child, index) => {
     if (React.isValidElement(child)) {
       // Check if child is already a motion component
+      const childType = child.type as
+        | { displayName?: string }
+        | string
+        | symbol;
       if (
-        typeof child.type === "object" &&
-        child.type !== null &&
-        "displayName" in child.type &&
-        typeof child.type.displayName === "string" &&
-        child.type.displayName.startsWith("motion.")
+        typeof childType === "object" &&
+        childType !== null &&
+        "displayName" in childType &&
+        typeof childType.displayName === "string" &&
+        childType.displayName.startsWith("motion.")
       ) {
         return child;
       }
@@ -144,4 +148,3 @@ export function AnimatedGrid({
     </motion.div>
   );
 }
-

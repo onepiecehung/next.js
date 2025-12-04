@@ -274,7 +274,7 @@ export default function ArticleViewPage() {
                     <Heart
                       className={cn(
                         "h-5 w-5 sm:h-6 sm:w-6 transition-colors",
-                        isLiked && "text-red-500 fill-current"
+                        isLiked && "text-red-500 fill-current",
                       )}
                     />
                     <span className="text-lg sm:text-xl font-semibold text-foreground">

@@ -1,5 +1,5 @@
 {
-  "appName": "Medium-ish",
+  "appName": "MangaSBS",
   "actions": {
     "edit": "Edit",
     "save": "Save",
@@ -824,7 +824,7 @@
     "serverError": "Server error. Please try again later"
   },
   "nav": {
-    "brand": "Medium-ish",
+    "brand": "MangaSBS",
     "home": "Home",
     "write": "Write",
     "profile": "Profile",
@@ -857,6 +857,21 @@
     "selectTheme": "Select Theme",
     "selectColorScheme": "Select Color Scheme"
   },
+  "font": {
+    "selectFont": "Select Font",
+    "geist-sans": "Geist Sans",
+    "geist-mono": "Geist Mono",
+    "inter": "Inter",
+    "roboto": "Roboto",
+    "open-sans": "Open Sans",
+    "lato": "Lato",
+    "montserrat": "Montserrat",
+    "poppins": "Poppins",
+    "raleway": "Raleway",
+    "source-sans-pro": "Source Sans Pro",
+    "comic-neue": "Comic Neue",
+    "system": "System"
+  },
   "notFound": {
     "title": "Oops! Page not found",
     "description": "The page you're looking for doesn't exist or has been moved. Don't worry, it happens to the best of us!",
@@ -870,6 +885,12 @@
     "goHomepage": "Go to homepage",
     "goHomepageDesc": "Start fresh from our homepage",
     "popularLinks": "Popular pages:"
+  },
+  "nav": {
+    "menu": "Menu",
+    "language": "Language",
+    "theme": "Theme",
+    "account": "Account"
   },
   "rateLimit": {
     "title": "Too Many Requests",

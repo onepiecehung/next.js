@@ -67,6 +67,7 @@ export const formatArticle = (article: Article) => ({
   statusText: getStatusText(article.status),
   visibilityText: getVisibilityText(article.visibility),
   statusColor: getStatusColor(article.status),
+  tags: article.tags || [], // Ensure tags is always an array
 });
 
 // Form validation

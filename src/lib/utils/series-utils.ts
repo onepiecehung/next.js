@@ -123,6 +123,19 @@ function extractTags(backendSeries: BackendSeries): string[] {
 }
 
 /**
+ * Extract genres from backend series
+ * Genres are different from tags - they are more structured categories
+ */
+function extractGenres(backendSeries: BackendSeries): string[] {
+  if (!backendSeries.genres || backendSeries.genres.length === 0) {
+    return [];
+  }
+  return backendSeries.genres
+    .map((genreItem) => genreItem.genre?.name)
+    .filter((name): name is string => !!name);
+}
+
+/**
  * Extract author from backend series
  */
 function extractAuthor(backendSeries: BackendSeries): string {
@@ -171,7 +184,11 @@ export function transformBackendSeries(backendSeries: BackendSeries): Series {
     // Additional fields
     type: backendSeries.type,
     format: backendSeries.format,
-    status: backendSeries.status,
+    status: backendSeries.status || backendSeries.releasingStatus,
+    source: backendSeries.source,
+    startDate: backendSeries.startDate,
+    episodes: backendSeries.episodes,
+    genres: extractGenres(backendSeries),
     averageScore: backendSeries.averageScore,
     popularity: backendSeries.popularity,
     trending: backendSeries.trending,

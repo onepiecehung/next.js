@@ -44,7 +44,9 @@ export default function LoginPage() {
   }
 
   const handleLoginSuccess = () => {
-    // Redirect will be handled by useAuthRedirect hook
+    // Let useAuthRedirect handle the redirect to avoid race conditions
+    // The hook will automatically redirect when user state is updated
+    // No manual redirect needed here
   };
 
   const handleForgotPassword = () => {

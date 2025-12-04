@@ -20,11 +20,12 @@ fetch(url, { next: { revalidate: 60, tags: ['posts'] } })
 - **Query Keys**: Structured keys like `["article", articleId]`, `["settings", userId]`
 - **Error Handling**: Automatic retry with toast notifications via Sonner
 
-## Forms
-- `react-hook-form` + `zod` + shadcn `<Form />`
+## Forms & Validation
+- `react-hook-form` + `zod` + shadcn `<Form />` primitives (`components/ui/layout/form.tsx`)
 - Disable submit while pending
 - Show `FormMessage` for errors
 - **Toast notifications** with Sonner for feedback
+- Respect mobile ergonomics (spacing, label click area)
 
 ## i18n
 - All text in `src/i18n/locales/{en,vi}/*.json`

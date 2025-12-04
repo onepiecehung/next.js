@@ -5,7 +5,7 @@ import { toast } from "sonner";
  * Simple, reusable form validation hook
  * No complex logic, just basic validation
  */
-export function useFormValidation<T extends Record<string, any>>(
+export function useFormValidation<T extends Record<string, unknown>>(
   validateFn: (data: T) => { isValid: boolean; errors: Record<string, string> },
 ) {
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -43,11 +43,11 @@ export function useToast() {
  * Simple form submission hook
  * Handles loading state and basic error handling
  */
-export function useFormSubmit<T>(
-  submitFn: (data: T) => Promise<any>,
+export function useFormSubmit<T, R = unknown>(
+  submitFn: (data: T) => Promise<R>,
   options?: {
-    onSuccess?: (result: any) => void;
-    onError?: (error: any) => void;
+    onSuccess?: (result: R) => void;
+    onError?: (error: Error) => void;
     successMessage?: string;
     errorMessage?: string;
   },
@@ -73,7 +73,7 @@ export function useFormSubmit<T>(
         return result;
       } catch (err) {
         if (options?.onError) {
-          options.onError(err);
+          options.onError(err instanceof Error ? err : new Error(String(err)));
         }
 
         if (options?.errorMessage) {

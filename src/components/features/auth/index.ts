@@ -9,3 +9,4 @@ export { LoginForm } from "./login-form";
 export { default as OTPLoginForm } from "./otp-login-form";
 export { default as SignupForm } from "./signup-form";
 export { ProtectedRoute } from "./protected-route";
+export { default as GoogleOneTap } from "./google-one-tap";

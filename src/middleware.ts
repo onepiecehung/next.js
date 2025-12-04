@@ -180,16 +180,19 @@ export function middleware(request: NextRequest): NextResponse {
     return RedirectUtils.createLoginRedirect(request, pathname);
   }
 
-  // Handle auth routes - redirect to home if already authenticated
+  // Handle auth routes - redirect authenticated users away from auth pages
+  // If there's a redirect param, use it; otherwise redirect to home
+  // This ensures users are redirected back to their intended destination after login
   if (isAuth && isAuthenticated) {
-    const redirectUrl = request.nextUrl.searchParams.get("redirect") || "/";
+    const redirectParam = request.nextUrl.searchParams.get("redirect");
+    const redirectUrl = redirectParam || "/";
 
-    // Only redirect if not already on target page
+    // Only redirect if we're not already on the target page
     if (pathname !== redirectUrl) {
       Logger.logRedirect(
         pathname,
         redirectUrl,
-        "Authenticated user on auth route",
+        "Authenticated user on auth route, redirecting to intended destination",
       );
       return RedirectUtils.createAuthRedirect(request, redirectUrl);
     } else {

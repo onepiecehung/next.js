@@ -11,6 +11,12 @@ interface CustomImageContentRendererProps {
   width?: number;
   height?: number;
   className?: string;
+  /**
+   * Whether this image should be prioritized for loading (LCP optimization)
+   * Set to true for above-the-fold images, especially the first image in content
+   * @default false
+   */
+  priority?: boolean;
 }
 
 /**
@@ -24,6 +30,7 @@ export function CustomImageContentRenderer({
   width = 800,
   height = 600,
   className = "",
+  priority = false,
 }: CustomImageContentRendererProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -72,7 +79,7 @@ export function CustomImageContentRenderer({
           onLoadingComplete={handleImageLoad}
           onError={handleImageError}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-          priority={false}
+          priority={priority}
           placeholder="empty"
         />
       </Skeletonize>

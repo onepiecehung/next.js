@@ -1,5 +1,5 @@
 {
-  "appName": "Medium-ish",
+  "appName": "MangaSBS",
   "actions": {
     "edit": "Sửa",
     "save": "Lưu",
@@ -824,7 +824,7 @@
     "serverError": "Lỗi máy chủ. Vui lòng thử lại sau"
   },
   "nav": {
-    "brand": "Medium-ish",
+    "brand": "MangaSBS",
     "home": "Trang chủ",
     "write": "Viết",
     "profile": "Hồ sơ",
@@ -857,6 +857,21 @@
     "selectTheme": "Chọn chủ đề",
     "selectColorScheme": "Chọn chế độ màu"
   },
+  "font": {
+    "selectFont": "Chọn font chữ",
+    "geist-sans": "Geist Sans",
+    "geist-mono": "Geist Mono",
+    "inter": "Inter",
+    "roboto": "Roboto",
+    "open-sans": "Open Sans",
+    "lato": "Lato",
+    "montserrat": "Montserrat",
+    "poppins": "Poppins",
+    "raleway": "Raleway",
+    "source-sans-pro": "Source Sans Pro",
+    "comic-neue": "Comic Neue",
+    "system": "Hệ thống"
+  },
   "notFound": {
     "title": "Ôi! Không tìm thấy trang",
     "description": "Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển. Đừng lo lắng, điều này xảy ra với tất cả chúng ta!",
@@ -870,6 +885,12 @@
     "goHomepage": "Đi đến trang chủ",
     "goHomepageDesc": "Bắt đầu lại từ trang chủ của chúng tôi",
     "popularLinks": "Trang phổ biến:"
+  },
+  "nav": {
+    "menu": "Menu",
+    "language": "Ngôn ngữ",
+    "theme": "Giao diện",
+    "account": "Tài khoản"
   },
   "rateLimit": {
     "title": "Quá nhiều yêu cầu",

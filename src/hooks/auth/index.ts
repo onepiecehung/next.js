@@ -10,3 +10,5 @@ export {
   useLogout,
   useRequireAuth,
 } from "./useAuthQuery";
+
+export { useGoogleOneTap } from "./useGoogleOneTap";

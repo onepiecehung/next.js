@@ -3,6 +3,7 @@
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
+import Link from "next/link";
 import * as React from "react";
 
 import { Button } from "@/components/ui/core/button";
@@ -105,12 +106,15 @@ export function SeriesHeroCarousel({
                 }}
               />
 
-              {/* Slide container */}
-              <div className="relative px-2.5 sm:px-4 md:px-6 lg:px-8 pt-2.5 sm:pt-4 md:pt-6 lg:pt-8 pb-2.5 sm:pb-4 md:pb-6 lg:pb-8 h-full flex items-center z-10">
+              {/* Slide container - Clickable link to series detail */}
+              <Link
+                href={`/series/${item.id}`}
+                className="relative px-2.5 sm:px-4 md:px-6 lg:px-8 pt-2.5 sm:pt-4 md:pt-6 lg:pt-8 pb-2.5 sm:pb-4 md:pb-6 lg:pb-8 h-full flex items-center z-10 cursor-pointer group"
+              >
                 <div className="relative z-10 w-full flex flex-row sm:grid sm:grid-cols-2 gap-2 sm:gap-3 md:gap-4 lg:gap-6 items-center">
                   {/* Cover image - Mobile: Left, Desktop: Right */}
                   <div className="flex items-center justify-center flex-shrink-0 sm:order-2 sm:mx-0 sm:w-auto">
-                    <div className="relative aspect-[2/3] overflow-hidden rounded-lg shadow-lg w-[80px] sm:w-[120px] md:min-w-[150px] lg:min-w-[180px] xl:min-w-[220px] h-full max-h-[140px] sm:max-h-[200px] md:max-h-[calc(100%-3rem)] lg:max-h-[calc(100%-4rem)]">
+                    <div className="relative aspect-[2/3] overflow-hidden rounded-lg shadow-lg w-[80px] sm:w-[120px] md:min-w-[150px] lg:min-w-[180px] xl:min-w-[220px] h-full max-h-[140px] sm:max-h-[200px] md:max-h-[calc(100%-3rem)] lg:max-h-[calc(100%-4rem)] transition-transform duration-300 group-hover:scale-105">
                       <Image
                         src={item.coverUrl}
                         alt={item.title}
@@ -125,7 +129,7 @@ export function SeriesHeroCarousel({
                   {/* Info section - Mobile: Right, Desktop: Left */}
                   <div className="flex flex-col justify-center space-y-0.5 sm:space-y-1 md:space-y-2 lg:space-y-3 flex-1 min-w-0 sm:order-1 text-left">
                     {/* Title */}
-                    <h2 className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold text-white line-clamp-2 leading-tight">
+                    <h2 className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold text-white line-clamp-2 leading-tight group-hover:text-white/90 transition-colors">
                       {item.title}
                     </h2>
 
@@ -156,7 +160,7 @@ export function SeriesHeroCarousel({
                     )}
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
           ))}
         </div>
@@ -173,7 +177,11 @@ export function SeriesHeroCarousel({
               "opacity-20 sm:opacity-100 active:opacity-100",
               !canScrollPrev && "opacity-10 sm:opacity-50 cursor-not-allowed",
             )}
-            onClick={scrollPrev}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              scrollPrev();
+            }}
             disabled={!canScrollPrev}
             aria-label="Previous slide"
           >
@@ -187,7 +195,11 @@ export function SeriesHeroCarousel({
               "opacity-20 sm:opacity-100 active:opacity-100",
               !canScrollNext && "opacity-10 sm:opacity-50 cursor-not-allowed",
             )}
-            onClick={scrollNext}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              scrollNext();
+            }}
             disabled={!canScrollNext}
             aria-label="Next slide"
           >
@@ -204,7 +216,11 @@ export function SeriesHeroCarousel({
             return (
               <button
                 key={index}
-                onClick={() => emblaApi?.scrollTo(index)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  emblaApi?.scrollTo(index);
+                }}
                 className={cn(
                   "h-1.5 w-1.5 rounded-full transition-all",
                   isActive ? "bg-white w-6" : "bg-white/40 hover:bg-white/60",

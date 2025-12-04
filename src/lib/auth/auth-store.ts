@@ -54,7 +54,7 @@ export function useUserProfileLoading() {
 /**
  * Store authentication tokens securely
  */
-function storeTokens(accessToken: string, refreshToken?: string) {
+export function storeTokens(accessToken: string, refreshToken?: string) {
   // Store access token in memory (secure, not persisted)
   setAccessToken(accessToken);
 
@@ -183,6 +183,21 @@ export async function loginWithGoogleAction(): Promise<User> {
 
   storeTokens(token.accessToken, token.refreshToken);
   return user;
+}
+
+/**
+ * Firebase Google One Tap login action
+ * Used when user authenticates via Google One Tap
+ * @param idToken - Firebase ID token from Google credential
+ */
+export async function loginWithGoogleOneTapAction(idToken: string): Promise<{
+  user: User;
+  token: { accessToken: string; refreshToken?: string };
+}> {
+  // Get user data and token from backend using Firebase ID token
+  const { user, token } = await AuthAPI.firebaseLogin({ idToken });
+
+  return { user, token };
 }
 
 /**

@@ -107,13 +107,17 @@ export function ThemeSelector({
                 key={scheme.value}
                 onClick={() => setColorScheme(scheme.value)}
                 className={`min-h-[44px] sm:min-h-0 py-2.5 sm:py-1.5 px-3 sm:px-2 hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary active:bg-primary/20 ${
-                  colorScheme === scheme.value ? "bg-primary/10 text-primary" : ""
+                  colorScheme === scheme.value
+                    ? "bg-primary/10 text-primary"
+                    : ""
                 }`}
               >
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-2 sm:gap-0">
                     <span className="text-base sm:text-sm">{scheme.icon}</span>
-                    <span className="text-sm sm:text-sm font-medium">{t(`theme.${scheme.value}`, "common")}</span>
+                    <span className="text-sm sm:text-sm font-medium">
+                      {t(`theme.${scheme.value}`, "common")}
+                    </span>
                   </div>
                   <span className="text-xs text-muted-foreground hidden sm:inline">
                     {scheme.value}
@@ -133,7 +137,9 @@ export function ThemeSelector({
                 key={themeOption.value}
                 onClick={() => setTheme(themeOption.value)}
                 className={`min-h-[44px] sm:min-h-0 py-2.5 sm:py-1.5 px-3 sm:px-2 hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary active:bg-primary/20 ${
-                  theme === themeOption.value ? "bg-primary/10 text-primary" : ""
+                  theme === themeOption.value
+                    ? "bg-primary/10 text-primary"
+                    : ""
                 }`}
               >
                 <div className="flex items-center justify-between w-full gap-2">
@@ -143,7 +149,9 @@ export function ThemeSelector({
                       size="md"
                       className="mr-2 shrink-0"
                     />
-                    <span className="text-sm sm:text-sm font-medium">{t(`theme.${themeOption.value}`, "common")}</span>
+                    <span className="text-sm sm:text-sm font-medium">
+                      {t(`theme.${themeOption.value}`, "common")}
+                    </span>
                   </div>
                   <span className="text-xs text-muted-foreground hidden sm:inline truncate max-w-[120px]">
                     {themeOption.description}
@@ -192,12 +200,16 @@ export function ThemeSelector({
                 key={scheme.value}
                 onClick={() => setColorScheme(scheme.value)}
                 className={`min-h-[44px] sm:min-h-0 py-2.5 sm:py-1.5 px-3 sm:px-2 hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary active:bg-primary/20 ${
-                  colorScheme === scheme.value ? "bg-primary/10 text-primary" : ""
+                  colorScheme === scheme.value
+                    ? "bg-primary/10 text-primary"
+                    : ""
                 }`}
               >
                 <div className="flex items-center gap-2 sm:gap-0">
                   <span className="text-base sm:text-sm">{scheme.icon}</span>
-                  <span className="text-sm sm:text-sm font-medium">{t(`theme.${scheme.value}`, "common")}</span>
+                  <span className="text-sm sm:text-sm font-medium">
+                    {t(`theme.${scheme.value}`, "common")}
+                  </span>
                 </div>
               </DropdownMenuItem>
             ))}
@@ -213,7 +225,9 @@ export function ThemeSelector({
                 key={themeOption.value}
                 onClick={() => setTheme(themeOption.value)}
                 className={`min-h-[44px] sm:min-h-0 py-2.5 sm:py-1.5 px-3 sm:px-2 hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary active:bg-primary/20 ${
-                  theme === themeOption.value ? "bg-primary/10 text-primary" : ""
+                  theme === themeOption.value
+                    ? "bg-primary/10 text-primary"
+                    : ""
                 }`}
               >
                 <div className="flex items-center justify-between w-full gap-2">
@@ -223,7 +237,9 @@ export function ThemeSelector({
                       size="md"
                       className="mr-2 shrink-0"
                     />
-                    <span className="text-sm sm:text-sm font-medium">{t(`theme.${themeOption.value}`, "common")}</span>
+                    <span className="text-sm sm:text-sm font-medium">
+                      {t(`theme.${themeOption.value}`, "common")}
+                    </span>
                   </div>
                   <span className="text-xs text-muted-foreground hidden sm:inline truncate max-w-[120px]">
                     {themeOption.description}
@@ -262,10 +278,14 @@ export function ThemeSelector({
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className="min-h-[44px] sm:min-h-0 py-2.5 sm:py-1.5 px-3 sm:px-2 hover:bg-yellow-500/10 hover:text-yellow-500 focus:bg-yellow-500/10 focus:text-yellow-500 active:bg-yellow-500/20">
               <Sun className="mr-2 h-4 w-4 sm:h-4 sm:w-4 text-yellow-500" />
-              {showLabels && <span className="text-sm sm:text-sm font-medium">{t("theme.light", "common")}</span>}
+              {showLabels && (
+                <span className="text-sm sm:text-sm font-medium">
+                  {t("theme.light", "common")}
+                </span>
+              )}
               <ChevronRight className="ml-auto h-4 w-4" />
             </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent 
+            <DropdownMenuSubContent
               sideOffset={8}
               className="w-[calc(100vw-4rem)] sm:w-48 max-w-xs p-0 flex flex-col max-h-[calc(100vh*3/5)] sm:max-h-[70vh]"
             >
@@ -285,7 +305,9 @@ export function ThemeSelector({
                         size="md"
                         className="mr-2 shrink-0"
                       />
-                      <span className="text-sm sm:text-sm font-medium">{t(`theme.${themeOption.value}`, "common")}</span>
+                      <span className="text-sm sm:text-sm font-medium">
+                        {t(`theme.${themeOption.value}`, "common")}
+                      </span>
                     </div>
                   </DropdownMenuItem>
                 ))}
@@ -299,10 +321,14 @@ export function ThemeSelector({
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className="min-h-[44px] sm:min-h-0 py-2.5 sm:py-1.5 px-3 sm:px-2 hover:bg-purple-500/10 hover:text-purple-400 focus:bg-purple-500/10 focus:text-purple-400 active:bg-purple-500/20">
               <Moon className="mr-2 h-4 w-4 sm:h-4 sm:w-4 text-purple-400" />
-              {showLabels && <span className="text-sm sm:text-sm font-medium">{t("theme.dark", "common")}</span>}
+              {showLabels && (
+                <span className="text-sm sm:text-sm font-medium">
+                  {t("theme.dark", "common")}
+                </span>
+              )}
               <ChevronRight className="ml-auto h-4 w-4" />
             </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent 
+            <DropdownMenuSubContent
               sideOffset={8}
               className="w-[calc(100vw-4rem)] sm:w-48 max-w-xs p-0 flex flex-col max-h-[calc(100vh*3/5)] sm:max-h-[70vh]"
             >
@@ -322,7 +348,9 @@ export function ThemeSelector({
                         size="md"
                         className="mr-2 shrink-0"
                       />
-                      <span className="text-sm sm:text-sm font-medium">{t(`theme.${themeOption.value}`, "common")}</span>
+                      <span className="text-sm sm:text-sm font-medium">
+                        {t(`theme.${themeOption.value}`, "common")}
+                      </span>
                     </div>
                   </DropdownMenuItem>
                 ))}
@@ -336,10 +364,14 @@ export function ThemeSelector({
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className="min-h-[44px] sm:min-h-0 py-2.5 sm:py-1.5 px-3 sm:px-2 hover:bg-cyan-500/10 hover:text-cyan-400 focus:bg-cyan-500/10 focus:text-cyan-400 active:bg-cyan-500/20">
               <Monitor className="mr-2 h-4 w-4 sm:h-4 sm:w-4 text-cyan-400" />
-              {showLabels && <span className="text-sm sm:text-sm font-medium">{t("theme.system", "common")}</span>}
+              {showLabels && (
+                <span className="text-sm sm:text-sm font-medium">
+                  {t("theme.system", "common")}
+                </span>
+              )}
               <ChevronRight className="ml-auto h-4 w-4" />
             </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent 
+            <DropdownMenuSubContent
               sideOffset={8}
               className="w-[calc(100vw-4rem)] sm:w-48 max-w-xs p-0 flex flex-col max-h-[calc(100vh*3/5)] sm:max-h-[70vh]"
             >
@@ -359,7 +391,9 @@ export function ThemeSelector({
                         size="md"
                         className="mr-2 shrink-0"
                       />
-                      <span className="text-sm sm:text-sm font-medium">{t(`theme.${themeOption.value}`, "common")}</span>
+                      <span className="text-sm sm:text-sm font-medium">
+                        {t(`theme.${themeOption.value}`, "common")}
+                      </span>
                     </div>
                   </DropdownMenuItem>
                 ))}

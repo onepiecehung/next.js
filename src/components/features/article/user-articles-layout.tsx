@@ -593,7 +593,7 @@ function ArticleItem({
         </div>
 
         {/* Tags */}
-        {article.tags.length > 0 && (
+        {article.tags && article.tags.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {article.tags.slice(0, 3).map((tag: string) => (
               <Badge key={tag} variant="outline" className="text-xs px-2 py-1">
@@ -690,7 +690,7 @@ function ArticleItem({
             </div>
 
             {/* Tags */}
-            {article.tags.length > 0 && (
+            {article.tags && article.tags.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {article.tags.slice(0, 4).map((tag: string) => (
                   <Badge key={tag} variant="outline" className="text-xs">
@@ -863,7 +863,7 @@ function ArticleItem({
         </div>
 
         {/* Tags */}
-        {article.tags.length > 0 && (
+        {article.tags && article.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {article.tags.map((tag: string) => (
               <Badge key={tag} variant="outline" className="text-sm px-3 py-1">

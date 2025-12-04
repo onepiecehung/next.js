@@ -5,6 +5,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
   VisuallyHidden,
@@ -67,6 +68,13 @@ export default function LoginDialog() {
               return t("login.title", "auth");
             })()}
           </DialogTitle>
+          <DialogDescription>
+            {(() => {
+              if (showSignup) return t("register.cardDescription", "auth");
+              if (loginMode === "otp") return t("otp.loginDescription", "auth");
+              return t("login.cardDescription", "auth");
+            })()}
+          </DialogDescription>
         </VisuallyHidden>
         {(() => {
           if (showSignup) {

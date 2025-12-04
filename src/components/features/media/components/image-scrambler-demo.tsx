@@ -8,8 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/core/card";
-import { MediaAPI } from "@/lib/api/media";
-import type { Media } from "@/lib/interface/media.interface";
+import { MediaAPI, type UploadedMedia } from "@/lib/api/media";
 import React, { useState } from "react";
 import { ScrambledImageCanvas } from "./scrambled-image-canvas";
 
@@ -22,7 +21,9 @@ import { ScrambledImageCanvas } from "./scrambled-image-canvas";
  */
 export function ImageScramblerDemo() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [uploadedMedia, setUploadedMedia] = useState<Media | null>(null);
+  const [uploadedMedia, setUploadedMedia] = useState<UploadedMedia | null>(
+    null,
+  );
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -80,9 +81,11 @@ export function ImageScramblerDemo() {
       }
 
       setUploadedMedia(media);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Upload error:", error);
-      setUploadError(error?.message || "Failed to upload image");
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to upload image";
+      setUploadError(errorMessage);
     } finally {
       setIsUploading(false);
     }
@@ -313,9 +316,13 @@ export function ImageScramblerDemo() {
                                     "3. Origin mismatch in AllowedOrigins";
                                   alert(message);
                                 }
-                              } catch (error: any) {
+                              } catch (error: unknown) {
+                                const errorMessage =
+                                  error instanceof Error
+                                    ? error.message
+                                    : "Unknown error";
                                 alert(
-                                  `❌ CORS test failed: ${error.message}\n\nThis usually means:\n1. CORS not configured\n2. CORS not yet propagated (wait 1-5 min)\n3. Network error`,
+                                  `❌ CORS test failed: ${errorMessage}\n\nThis usually means:\n1. CORS not configured\n2. CORS not yet propagated (wait 1-5 min)\n3. Network error`,
                                 );
                               }
                             }}
@@ -386,14 +393,15 @@ export function ImageScramblerDemo() {
                     </p>
                     <code className="block mt-2 text-xs bg-yellow-100 dark:bg-yellow-900/30 p-2 rounded border">
                       AllowedOrigins: [<br />
-                      &nbsp;&nbsp;"http://localhost:3000",
+                      &nbsp;&nbsp;&quot;http://localhost:3000&quot;,
                       <br />
-                      &nbsp;&nbsp;"http://localhost:3001"
+                      &nbsp;&nbsp;&quot;http://localhost:3001&quot;
                       <br />
                       ]<br />
-                      AllowedMethods: ["GET", "HEAD", "POST"]
+                      AllowedMethods: [&quot;GET&quot;, &quot;HEAD&quot;,
+                      &quot;POST&quot;]
                       <br />
-                      AllowedHeaders: ["*"]
+                      AllowedHeaders: [&quot;*&quot;]
                     </code>
                     <div className="mt-2 text-xs text-yellow-700 dark:text-yellow-300">
                       <p>
@@ -404,8 +412,9 @@ export function ImageScramblerDemo() {
                         origin
                       </p>
                       <p>
-                        2. Or temporarily allow all origins: <code>"*"</code>{" "}
-                        (not recommended for production)
+                        2. Or temporarily allow all origins:{" "}
+                        <code>&quot;*&quot;</code> (not recommended for
+                        production)
                       </p>
                       <p>
                         3. Or run frontend on port 3000 to match CORS config
