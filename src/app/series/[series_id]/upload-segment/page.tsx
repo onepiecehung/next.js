@@ -11,7 +11,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { toast } from "sonner";
 
@@ -45,6 +45,9 @@ export default function UploadSegmentPage() {
   const router = useRouter();
   const { t } = useI18n();
   const seriesId = params.series_id as string;
+
+  // Ref for upload card to scroll to when submitting
+  const uploadCardRef = useRef<HTMLDivElement>(null);
 
   // Fetch series data
   const { data: backendSeries, isLoading: isLoadingSeries } =
@@ -104,6 +107,9 @@ export default function UploadSegmentPage() {
 
   // Create segment mutation
   const { mutate: createSegment, isPending: isSubmitting } = useCreateSegment();
+
+  // Check if form should be disabled
+  const isFormDisabled = isUploading || isSubmitting;
 
   // Upload a single file with progress tracking
   const uploadSingleFileWithProgress = async (
@@ -201,6 +207,14 @@ export default function UploadSegmentPage() {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Scroll to upload card when submitting
+    if (uploadCardRef.current) {
+      uploadCardRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
 
     // Validation
     const numberValue = Number(number);
@@ -424,8 +438,12 @@ export default function UploadSegmentPage() {
                   className="space-y-4 sm:space-y-6"
                 >
                   {/* Card 1: Upload Files */}
-                  <Card>
-                    <CardHeader>
+                  <div
+                    ref={uploadCardRef}
+                    id="upload-card"
+                  >
+                    <Card>
+                      <CardHeader>
                       <CardTitle className="text-base sm:text-lg">
                         {t("segments.form.mediaFiles", "series")}
                       </CardTitle>
@@ -441,6 +459,7 @@ export default function UploadSegmentPage() {
                           type="file"
                           multiple
                           accept="image/*,video/*,.pdf,.epub"
+                          disabled={isFormDisabled}
                           onChange={(e) => {
                             const newFiles = Array.from(e.target.files || []);
                             // Append new files to existing ones (avoid duplicates by name+size)
@@ -570,7 +589,7 @@ export default function UploadSegmentPage() {
                                             });
                                           }
                                         }}
-                                        disabled={index === 0}
+                                        disabled={index === 0 || isFormDisabled}
                                         aria-label="Move up"
                                         title="Move up"
                                       >
@@ -599,7 +618,8 @@ export default function UploadSegmentPage() {
                                           }
                                         }}
                                         disabled={
-                                          index === mediaFiles.length - 1
+                                          index === mediaFiles.length - 1 ||
+                                          isFormDisabled
                                         }
                                         aria-label="Move down"
                                         title="Move down"
@@ -621,6 +641,7 @@ export default function UploadSegmentPage() {
                                             prev.filter((_, i) => i !== index),
                                           );
                                         }}
+                                        disabled={isFormDisabled}
                                         aria-label="Remove"
                                         title="Remove"
                                       >
@@ -636,6 +657,7 @@ export default function UploadSegmentPage() {
                               variant="outline"
                               size="sm"
                               onClick={() => setMediaFiles([])}
+                              disabled={isFormDisabled}
                               className="w-full sm:w-auto"
                             >
                               <X className="h-4 w-4 mr-2" />
@@ -645,7 +667,8 @@ export default function UploadSegmentPage() {
                         )}
                       </div>
                     </CardContent>
-                  </Card>
+                    </Card>
+                  </div>
 
                   {/* Card 2: Basic Information (Type, Number, Sub Number) */}
                   <Card>
@@ -674,7 +697,8 @@ export default function UploadSegmentPage() {
                                 | "chapter",
                             )
                           }
-                          className="mt-1.5 w-full h-9 px-3 py-1 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm"
+                          disabled={isFormDisabled}
+                          className="mt-1.5 w-full h-9 px-3 py-1 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                           required
                         >
                           <option value="chapter">
@@ -708,6 +732,7 @@ export default function UploadSegmentPage() {
                               "segments.form.numberPlaceholder",
                               "series",
                             )}
+                            disabled={isFormDisabled}
                             className="mt-1.5"
                             required
                           />
@@ -729,6 +754,7 @@ export default function UploadSegmentPage() {
                               "segments.form.subNumberPlaceholder",
                               "series",
                             )}
+                            disabled={isFormDisabled}
                             className="mt-1.5"
                           />
                         </div>
@@ -758,6 +784,7 @@ export default function UploadSegmentPage() {
                           onClick={() =>
                             setIsAdvancedSettingsOpen(!isAdvancedSettingsOpen)
                           }
+                          disabled={isFormDisabled}
                           className="w-full sm:w-auto"
                         >
                           {isAdvancedSettingsOpen
@@ -785,6 +812,7 @@ export default function UploadSegmentPage() {
                               "segments.form.titlePlaceholder",
                               "series",
                             )}
+                            disabled={isFormDisabled}
                             className="mt-1.5"
                             maxLength={255}
                           />
@@ -804,6 +832,7 @@ export default function UploadSegmentPage() {
                               "segments.form.slugPlaceholder",
                               "series",
                             )}
+                            disabled={isFormDisabled}
                             className="mt-1.5"
                           />
                         </div>
@@ -824,7 +853,8 @@ export default function UploadSegmentPage() {
                               "segments.form.summaryPlaceholder",
                               "series",
                             )}
-                            className="mt-1.5 w-full min-h-[80px] px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm resize-y"
+                            disabled={isFormDisabled}
+                            className="mt-1.5 w-full min-h-[80px] px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm resize-y disabled:opacity-50 disabled:cursor-not-allowed"
                             maxLength={1000}
                           />
                         </div>
@@ -845,7 +875,8 @@ export default function UploadSegmentPage() {
                               "segments.form.descriptionPlaceholder",
                               "series",
                             )}
-                            className="mt-1.5 w-full min-h-[120px] px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm resize-y"
+                            disabled={isFormDisabled}
+                            className="mt-1.5 w-full min-h-[120px] px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm resize-y disabled:opacity-50 disabled:cursor-not-allowed"
                             maxLength={10000}
                           />
                         </div>
@@ -871,7 +902,8 @@ export default function UploadSegmentPage() {
                                     | "archived",
                                 )
                               }
-                              className="mt-1.5 w-full h-9 px-3 py-1 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm"
+                              disabled={isFormDisabled}
+                              className="mt-1.5 w-full h-9 px-3 py-1 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               <option value="pending">
                                 {t("segments.status.pending", "series")}
@@ -906,7 +938,8 @@ export default function UploadSegmentPage() {
                                     | "membership",
                                 )
                               }
-                              className="mt-1.5 w-full h-9 px-3 py-1 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm"
+                              disabled={isFormDisabled}
+                              className="mt-1.5 w-full h-9 px-3 py-1 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               <option value="free">
                                 {t("segments.accessType.free", "series")}
@@ -939,7 +972,8 @@ export default function UploadSegmentPage() {
                             id="languageCode"
                             value={languageCode}
                             onChange={(e) => setLanguageCode(e.target.value)}
-                            className="mt-1.5 w-full h-9 px-3 py-1 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm"
+                            disabled={isFormDisabled}
+                            className="mt-1.5 w-full h-9 px-3 py-1 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             <option value="en">English</option>
                             <option value="vi">Tiếng Việt</option>
@@ -968,6 +1002,7 @@ export default function UploadSegmentPage() {
                                 "segments.form.durationSecPlaceholder",
                                 "series",
                               )}
+                              disabled={isFormDisabled}
                               className="mt-1.5"
                             />
                           </div>
@@ -992,6 +1027,7 @@ export default function UploadSegmentPage() {
                                   "segments.form.pageCountPlaceholder",
                                   "series",
                                 )}
+                                disabled={isFormDisabled}
                                 className="mt-1.5"
                               />
                             </div>
@@ -1013,6 +1049,7 @@ export default function UploadSegmentPage() {
                                     "segments.form.startPagePlaceholder",
                                     "series",
                                   )}
+                                  disabled={isFormDisabled}
                                   className="mt-1.5"
                                 />
                               </div>
@@ -1033,6 +1070,7 @@ export default function UploadSegmentPage() {
                                     "segments.form.endPagePlaceholder",
                                     "series",
                                   )}
+                                  disabled={isFormDisabled}
                                   className="mt-1.5"
                                 />
                               </div>
@@ -1054,6 +1092,7 @@ export default function UploadSegmentPage() {
                               type="datetime-local"
                               value={publishedAt}
                               onChange={(e) => setPublishedAt(e.target.value)}
+                              disabled={isFormDisabled}
                               className="mt-1.5"
                             />
                           </div>
@@ -1071,6 +1110,7 @@ export default function UploadSegmentPage() {
                               onChange={(e) =>
                                 setOriginalReleaseDate(e.target.value)
                               }
+                              disabled={isFormDisabled}
                               className="mt-1.5"
                             />
                           </div>
@@ -1083,7 +1123,8 @@ export default function UploadSegmentPage() {
                             type="checkbox"
                             checked={isNsfw}
                             onChange={(e) => setIsNsfw(e.target.checked)}
-                            className="h-4 w-4 rounded border-input text-primary focus:ring-ring"
+                            disabled={isFormDisabled}
+                            className="h-4 w-4 rounded border-input text-primary focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
                           />
                           <Label
                             htmlFor="isNsfw"
