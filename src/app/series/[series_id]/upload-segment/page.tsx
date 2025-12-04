@@ -36,7 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCreateSegment, useSeries, useSeriesFull } from "@/hooks/series";
+import { useCreateSegment, useSeriesFull } from "@/hooks/series";
 import type { UploadedMedia } from "@/lib/api/media";
 import {
   DEFAULT_LANGUAGE_CODE,
@@ -45,6 +45,7 @@ import {
 } from "@/lib/constants";
 import { http } from "@/lib/http/client";
 import type { ApiResponse } from "@/lib/types";
+import { transformBackendSeries } from "@/lib/utils/series-utils";
 
 /**
  * Upload Segment Page Component
@@ -60,10 +61,14 @@ export default function UploadSegmentPage() {
   // Ref for upload card to scroll to when submitting
   const uploadCardRef = useRef<HTMLDivElement>(null);
 
-  // Fetch series data
+  // Fetch series data (only once)
   const { data: backendSeries, isLoading: isLoadingSeries } =
     useSeriesFull(seriesId);
-  const { data: seriesDisplay } = useSeries(seriesId);
+
+  // Transform backend data to display format
+  const seriesDisplay = backendSeries
+    ? transformBackendSeries(backendSeries)
+    : undefined;
 
   // Form state
   const [type, setType] = useState<"trailer" | "episode" | "chapter">(
@@ -75,6 +80,7 @@ export default function UploadSegmentPage() {
   const [description, setDescription] = useState<string>("");
   const [summary, setSummary] = useState<string>("");
   const [slug, setSlug] = useState<string>("");
+  const [isTitleManuallyEdited, setIsTitleManuallyEdited] = useState<boolean>(false);
   const [status, setStatus] = useState<
     "active" | "inactive" | "pending" | "archived"
   >("active");
@@ -302,9 +308,25 @@ export default function UploadSegmentPage() {
     }
   };
 
+  // Auto-generate title from series name + number + subNumber
+  useEffect(() => {
+    // Only auto-fill if title hasn't been manually edited and we have series data
+    if (!isTitleManuallyEdited && seriesDisplay?.title && number) {
+      const numberValue = Number(number);
+      if (!isNaN(numberValue) && numberValue > 0) {
+        const subNumberValue = subNumber ? Number(subNumber) : null;
+        const autoTitle = subNumberValue && subNumberValue > 0
+          ? `${seriesDisplay.title} ${numberValue}.${subNumberValue}`
+          : `${seriesDisplay.title} ${numberValue}`;
+        setTitle(autoTitle);
+      }
+    }
+  }, [number, subNumber, seriesDisplay?.title, isTitleManuallyEdited]);
+
   // Auto-generate slug from title
   const handleTitleChange = (value: string) => {
     setTitle(value);
+    setIsTitleManuallyEdited(true); // Mark as manually edited
     if (!slug && value) {
       const generatedSlug = value
         .toLowerCase()
