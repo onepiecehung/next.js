@@ -537,7 +537,11 @@ export function useSeriesSegmentsInfinite(
   languageCode?: string,
 ) {
   return useInfiniteQuery({
-    queryKey: queryKeys.series.segments.cursor(seriesId, undefined, languageCode),
+    queryKey: queryKeys.series.segments.cursor(
+      seriesId,
+      undefined,
+      languageCode,
+    ),
     queryFn: async ({ pageParam }) => {
       const params: QuerySegmentCursorDto = {
         seriesId,
@@ -551,10 +555,7 @@ export function useSeriesSegmentsInfinite(
       return response.data;
     },
     enabled:
-      enabled &&
-      !!seriesId &&
-      seriesId !== "undefined" &&
-      seriesId !== "null",
+      enabled && !!seriesId && seriesId !== "undefined" && seriesId !== "null",
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => {
       // Return next cursor if available, otherwise undefined to stop pagination

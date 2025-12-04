@@ -71,11 +71,29 @@ function SegmentItem({ segment, t }: SegmentItemProps) {
 
   // Format status badge
   const getStatusBadge = (status: string) => {
-    const statusMap: Record<string, { label: string; variant: "default" | "secondary" | "outline" | "destructive" }> = {
-      active: { label: t("segments.status.active", "series"), variant: "default" },
-      pending: { label: t("segments.status.pending", "series"), variant: "secondary" },
-      inactive: { label: t("segments.status.inactive", "series"), variant: "outline" },
-      archived: { label: t("segments.status.archived", "series"), variant: "outline" },
+    const statusMap: Record<
+      string,
+      {
+        label: string;
+        variant: "default" | "secondary" | "outline" | "destructive";
+      }
+    > = {
+      active: {
+        label: t("segments.status.active", "series"),
+        variant: "default",
+      },
+      pending: {
+        label: t("segments.status.pending", "series"),
+        variant: "secondary",
+      },
+      inactive: {
+        label: t("segments.status.inactive", "series"),
+        variant: "outline",
+      },
+      archived: {
+        label: t("segments.status.archived", "series"),
+        variant: "outline",
+      },
     };
     return statusMap[status] || { label: status, variant: "outline" };
   };
@@ -108,13 +126,19 @@ function SegmentItem({ segment, t }: SegmentItemProps) {
         {/* Metadata Row */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
           {/* Status Badge */}
-          <Badge variant={statusInfo.variant} className="text-[10px] sm:text-xs">
+          <Badge
+            variant={statusInfo.variant}
+            className="text-[10px] sm:text-xs"
+          >
             {statusInfo.label}
           </Badge>
 
           {/* NSFW Badge */}
           {segment.isNsfw && (
-            <Badge variant="destructive" className="text-[9px] sm:text-[10px] px-1.5 py-0.5 h-auto">
+            <Badge
+              variant="destructive"
+              className="text-[9px] sm:text-[10px] px-1.5 py-0.5 h-auto"
+            >
               <EyeOff className="h-2 w-2 sm:h-2.5 sm:w-2.5 mr-0.5" />
               NSFW
             </Badge>
@@ -152,7 +176,8 @@ function SegmentItem({ segment, t }: SegmentItemProps) {
           {/* Duration (for episodes) */}
           {segment.type === "episode" && segment.durationSec && (
             <span className="text-[10px] sm:text-xs">
-              {Math.floor(segment.durationSec / 60)} {t("segments.minutes", "series") || "min"}
+              {Math.floor(segment.durationSec / 60)}{" "}
+              {t("segments.minutes", "series") || "min"}
             </span>
           )}
         </div>
@@ -304,16 +329,17 @@ export function ChaptersList({
       {/* Language Filter */}
       <div className="flex items-center gap-2">
         <Globe className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-        <Select
-          value={selectedLanguage}
-          onValueChange={setSelectedLanguage}
-        >
+        <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
           <SelectTrigger
             className="min-w-[140px] sm:min-w-[160px]"
-            aria-label={t("chapters.filter.label", "series") || "Filter by language"}
+            aria-label={
+              t("chapters.filter.label", "series") || "Filter by language"
+            }
           >
             <SelectValue
-              placeholder={t("chapters.filter.all", "series") || "All Languages"}
+              placeholder={
+                t("chapters.filter.all", "series") || "All Languages"
+              }
             />
           </SelectTrigger>
           <SelectContent>
@@ -403,11 +429,7 @@ export function ChaptersList({
         "
       >
         {segments.map((segment) => (
-          <SegmentItem
-            key={segment.id}
-            segment={segment}
-            t={t}
-          />
+          <SegmentItem key={segment.id} segment={segment} t={t} />
         ))}
 
         {/* Load More Trigger (Intersection Observer target) */}
@@ -417,7 +439,8 @@ export function ChaptersList({
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Loader2 className="h-4 w-4 animate-spin" />
                 <span>
-                  {t("chapters.loading", "series") || "Loading more chapters..."}
+                  {t("chapters.loading", "series") ||
+                    "Loading more chapters..."}
                 </span>
               </div>
             )}
@@ -436,4 +459,3 @@ export function ChaptersList({
     </div>
   );
 }
-

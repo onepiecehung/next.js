@@ -1,10 +1,9 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui";
-import { Home, ArrowLeft, Search, RefreshCw } from "lucide-react";
 import { useI18n } from "@/components/providers/i18n-provider";
+import { Button } from "@/components/ui";
+import { ArrowLeft, Home, RefreshCw, Search } from "lucide-react";
+import Link from "next/link";
 
 /**
  * 404 Not Found Page Component
@@ -36,10 +35,10 @@ export default function NotFoundPage() {
         {/* Error Message */}
         <div className="mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-            {t("notFoundTitle", "common") || "Oops! Page not found"}
+            {t("notFound.title", "common") || "Oops! Page not found"}
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-lg mx-auto">
-            {t("notFoundDescription", "common") ||
+            {t("notFound.description", "common") ||
               "The page you're looking for doesn't exist or has been moved. Don't worry, it happens to the best of us!"}
           </p>
         </div>
@@ -49,7 +48,7 @@ export default function NotFoundPage() {
           <Link href="/">
             <Button size="lg" className="w-full sm:w-auto px-6 sm:px-8">
               <Home className="mr-2 h-5 w-5" />
-              {t("notFoundGoHome", "common") || "Go Home"}
+              {t("notFound.goHome", "common") || "Go Home"}
             </Button>
           </Link>
 
@@ -60,14 +59,14 @@ export default function NotFoundPage() {
             onClick={() => window.history.back()}
           >
             <ArrowLeft className="mr-2 h-5 w-5" />
-            {t("notFoundGoBack", "common") || "Go Back"}
+            {t("notFound.goBack", "common") || "Go Back"}
           </Button>
         </div>
 
         {/* Helpful Suggestions */}
         <div className="bg-card border border-border rounded-lg p-6 text-left">
           <h3 className="text-lg font-semibold text-foreground mb-4 text-center">
-            {t("notFoundSuggestions", "common") || "What can you do?"}
+            {t("notFound.suggestions", "common") || "What can you do?"}
           </h3>
 
           <div className="space-y-3">
@@ -77,10 +76,10 @@ export default function NotFoundPage() {
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  {t("notFoundSuggestion1", "common") || "Check the URL"}
+                  {t("notFound.checkUrl", "common") || "Check the URL"}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {t("notFoundSuggestion1Desc", "common") ||
+                  {t("notFound.checkUrlDesc", "common") ||
                     "Make sure the web address is spelled correctly"}
                 </p>
               </div>
@@ -92,10 +91,10 @@ export default function NotFoundPage() {
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  {t("notFoundSuggestion2", "common") || "Try refreshing"}
+                  {t("notFound.refresh", "common") || "Try refreshing"}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {t("notFoundSuggestion2Desc", "common") ||
+                  {t("notFound.refreshDesc", "common") ||
                     "Press F5 or click the refresh button"}
                 </p>
               </div>
@@ -107,47 +106,14 @@ export default function NotFoundPage() {
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  {t("notFoundSuggestion3", "common") || "Go to homepage"}
+                  {t("notFound.goHomepage", "common") || "Go to homepage"}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {t("notFoundSuggestion3Desc", "common") ||
+                  {t("notFound.goHomepageDesc", "common") ||
                     "Start fresh from our homepage"}
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Popular Links */}
-        <div className="mt-8">
-          <p className="text-sm text-muted-foreground mb-4">
-            {t("notFoundPopularLinks", "common") || "Popular pages:"}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <Link
-              href="/write"
-              className="text-xs px-3 py-1 bg-muted hover:bg-muted/80 rounded-full transition-colors"
-            >
-              {t("writeTitle", "write") || "Write"}
-            </Link>
-            <Link
-              href="/demo"
-              className="text-xs px-3 py-1 bg-muted hover:bg-muted/80 rounded-full transition-colors"
-            >
-              {t("demoTitle", "demo") || "Demo"}
-            </Link>
-            <Link
-              href="/demo/theming"
-              className="text-xs px-3 py-1 bg-muted hover:bg-muted/80 rounded-full transition-colors"
-            >
-              {t("themingTitle", "demo") || "Theming"}
-            </Link>
-            <Link
-              href="/demo/editor"
-              className="text-xs px-3 py-1 bg-muted hover:bg-muted/80 rounded-full transition-colors"
-            >
-              {t("editorTitle", "demo") || "Editor"}
-            </Link>
           </div>
         </div>
       </div>

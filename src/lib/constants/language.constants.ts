@@ -40,7 +40,9 @@ export const LANGUAGES: readonly Language[] = [
 /**
  * Language codes array for easy lookup
  */
-export const LANGUAGE_CODES = LANGUAGES.map((lang) => lang.code) as readonly string[];
+export const LANGUAGE_CODES = LANGUAGES.map(
+  (lang) => lang.code,
+) as readonly string[];
 
 /**
  * Default language code
@@ -71,4 +73,3 @@ export const LANGUAGE_CONSTANTS = {
   getLanguageByCode,
   getLanguageNativeName,
 } as const;
-

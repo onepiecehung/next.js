@@ -1,5 +1,5 @@
 {
-  "appName": "Medium-ish",
+  "appName": "MangaSBS",
   "actions": {
     "edit": "Edit",
     "save": "Save",
@@ -824,7 +824,7 @@
     "serverError": "Server error. Please try again later"
   },
   "nav": {
-    "brand": "Medium-ish",
+    "brand": "MangaSBS",
     "home": "Home",
     "write": "Write",
     "profile": "Profile",

@@ -630,7 +630,9 @@ export default function SeriesDetailPage() {
                                 variant="ghost"
                                 size="sm"
                                 onClick={() =>
-                                  setIsDescriptionExpanded(!isDescriptionExpanded)
+                                  setIsDescriptionExpanded(
+                                    !isDescriptionExpanded,
+                                  )
                                 }
                                 className="h-auto p-0 text-xs sm:text-sm text-primary hover:text-primary/80 hover:underline"
                               >

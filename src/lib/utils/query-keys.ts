@@ -80,7 +80,14 @@ export const queryKeys = {
       list: (seriesId: string, params?: AdvancedQueryParams) =>
         ["series", seriesId, "segments", "list", params] as const,
       cursor: (seriesId: string, cursor?: string, languageCode?: string) =>
-        ["series", seriesId, "segments", "cursor", cursor, languageCode] as const,
+        [
+          "series",
+          seriesId,
+          "segments",
+          "cursor",
+          cursor,
+          languageCode,
+        ] as const,
       detail: (seriesId: string, segmentId: string) =>
         ["series", seriesId, "segments", segmentId] as const,
     },

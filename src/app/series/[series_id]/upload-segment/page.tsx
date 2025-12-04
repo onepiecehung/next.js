@@ -81,14 +81,17 @@ export default function UploadSegmentPage() {
   const [description, setDescription] = useState<string>("");
   const [summary, setSummary] = useState<string>("");
   const [slug, setSlug] = useState<string>("");
-  const [isTitleManuallyEdited, setIsTitleManuallyEdited] = useState<boolean>(false);
+  const [isTitleManuallyEdited, setIsTitleManuallyEdited] =
+    useState<boolean>(false);
   const [status, setStatus] = useState<
     "active" | "inactive" | "pending" | "archived"
   >("active");
   const [accessType, setAccessType] = useState<
     "free" | "paid" | "subscription" | "membership"
   >("free");
-  const [languageCode, setLanguageCode] = useState<string>(DEFAULT_LANGUAGE_CODE);
+  const [languageCode, setLanguageCode] = useState<string>(
+    DEFAULT_LANGUAGE_CODE,
+  );
   const [publishedAt, setPublishedAt] = useState<string>("");
   const [originalReleaseDate, setOriginalReleaseDate] = useState<string>("");
   const [durationSec, setDurationSec] = useState<string>("");
@@ -355,9 +358,10 @@ export default function UploadSegmentPage() {
       const numberValue = Number(number);
       if (!isNaN(numberValue) && numberValue > 0) {
         const subNumberValue = subNumber ? Number(subNumber) : null;
-        const autoTitle = subNumberValue && subNumberValue > 0
-          ? `${seriesDisplay.title} ${numberValue}.${subNumberValue}`
-          : `${seriesDisplay.title} ${numberValue}`;
+        const autoTitle =
+          subNumberValue && subNumberValue > 0
+            ? `${seriesDisplay.title} ${numberValue}.${subNumberValue}`
+            : `${seriesDisplay.title} ${numberValue}`;
         setTitle(autoTitle);
       }
     }
@@ -511,197 +515,201 @@ export default function UploadSegmentPage() {
                   className="space-y-4 sm:space-y-6"
                 >
                   {/* Card 1: Upload Files */}
-                  <div
-                    ref={uploadCardRef}
-                    id="upload-card"
-                  >
+                  <div ref={uploadCardRef} id="upload-card">
                     <Card>
                       <CardHeader>
-                      <CardTitle className="text-base sm:text-lg">
-                        {t("segments.form.mediaFiles", "series")}
-                      </CardTitle>
-                      <CardDescription>
-                        Upload images, videos, or documents to attach to this
-                        segment. You can select multiple files at once or add
-                        more files later.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4 sm:space-y-6">
-                      <div className="space-y-3">
-                        <input
-                          type="file"
-                          multiple
-                          accept="image/*,video/*,.pdf,.epub"
-                          disabled={isFormDisabled}
-                          onChange={(e) => {
-                            const newFiles = Array.from(e.target.files || []);
-                            // Append new files to existing ones (avoid duplicates by name+size)
-                            setMediaFiles((prev) => {
-                              const existing = new Set(
-                                prev.map((f) => `${f.name}-${f.size}`),
-                              );
-                              const uniqueNew = newFiles.filter(
-                                (f) => !existing.has(`${f.name}-${f.size}`),
-                              );
-                              return [...prev, ...uniqueNew];
-                            });
-                            // Reset input to allow selecting same files again
-                            e.target.value = "";
-                          }}
-                          className="w-full text-sm text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 cursor-pointer"
-                        />
-                        {mediaFiles.length > 0 && (
-                          <div className="space-y-2">
-                            <p className="text-xs font-medium text-foreground">
-                              {mediaFiles.length} file(s) selected:
-                            </p>
-                            <div className="space-y-1.5 max-h-96 overflow-y-auto border border-border rounded-md p-2 bg-muted/30">
-                              {mediaFiles.map((file, index) => {
-                                const isImage = file.type.startsWith("image/");
-                                // Use stable key based on file properties, not index
-                                const fileKey = `${file.name}-${file.size}-${file.lastModified}`;
-                                const previewUrl = isImage
-                                  ? URL.createObjectURL(file)
-                                  : null;
-
-                                return (
-                                  <div
-                                    key={fileKey}
-                                    className="flex items-start gap-3 p-2 rounded-md bg-background border border-border hover:bg-muted/50 transition-colors"
-                                  >
-                                    {/* Image Preview Thumbnail */}
-                                    {isImage && previewUrl && (
-                                      <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-md overflow-hidden border border-border bg-muted">
-                                        <Image
-                                          src={previewUrl}
-                                          alt={file.name}
-                                          fill
-                                          className="object-cover"
-                                          sizes="80px"
-                                          unoptimized
-                                        />
-                                      </div>
-                                    )}
-
-                                    {/* File Info */}
-                                    <div className="flex-1 min-w-0 space-y-1.5">
-                                      <div>
-                                        <p className="text-xs font-medium text-foreground truncate">
-                                          {file.name}
-                                        </p>
-                                        <p className="text-xs text-muted-foreground">
-                                          {(file.size / 1024 / 1024).toFixed(2)}{" "}
-                                          MB
-                                          {file.type &&
-                                            ` • ${file.type.split("/")[0]}`}
-                                        </p>
-                                      </div>
-
-                                      {/* Upload progress visualization is now handled globally
-                                          by UploadProgressSheet to avoid duplicate UI here. */}
-                                    </div>
-
-                                    {/* Action Buttons */}
-                                    <div className="flex items-center gap-1 flex-shrink-0">
-                                      {/* Move Up Button */}
-                                      <Button
-                                        type="button"
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-7 w-7"
-                                        onClick={() => {
-                                          if (index > 0) {
-                                            setMediaFiles((prev) => {
-                                              const newFiles = [...prev];
-                                              [
-                                                newFiles[index - 1],
-                                                newFiles[index],
-                                              ] = [
-                                                newFiles[index],
-                                                newFiles[index - 1],
-                                              ];
-                                              return newFiles;
-                                            });
-                                          }
-                                        }}
-                                        disabled={index === 0 || isFormDisabled}
-                                        aria-label="Move up"
-                                        title="Move up"
-                                      >
-                                        <ChevronUp className="h-4 w-4" />
-                                      </Button>
-
-                                      {/* Move Down Button */}
-                                      <Button
-                                        type="button"
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-7 w-7"
-                                        onClick={() => {
-                                          if (index < mediaFiles.length - 1) {
-                                            setMediaFiles((prev) => {
-                                              const newFiles = [...prev];
-                                              [
-                                                newFiles[index],
-                                                newFiles[index + 1],
-                                              ] = [
-                                                newFiles[index + 1],
-                                                newFiles[index],
-                                              ];
-                                              return newFiles;
-                                            });
-                                          }
-                                        }}
-                                        disabled={
-                                          index === mediaFiles.length - 1 ||
-                                          isFormDisabled
-                                        }
-                                        aria-label="Move down"
-                                        title="Move down"
-                                      >
-                                        <ChevronDown className="h-4 w-4" />
-                                      </Button>
-
-                                      {/* Remove Button */}
-                                      <Button
-                                        type="button"
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-7 w-7"
-                                        onClick={() => {
-                                          if (previewUrl) {
-                                            URL.revokeObjectURL(previewUrl);
-                                          }
-                                          setMediaFiles((prev) =>
-                                            prev.filter((_, i) => i !== index),
-                                          );
-                                        }}
-                                        disabled={isFormDisabled}
-                                        aria-label="Remove"
-                                        title="Remove"
-                                      >
-                                        <X className="h-4 w-4" />
-                                      </Button>
-                                    </div>
-                                  </div>
+                        <CardTitle className="text-base sm:text-lg">
+                          {t("segments.form.mediaFiles", "series")}
+                        </CardTitle>
+                        <CardDescription>
+                          Upload images, videos, or documents to attach to this
+                          segment. You can select multiple files at once or add
+                          more files later.
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4 sm:space-y-6">
+                        <div className="space-y-3">
+                          <input
+                            type="file"
+                            multiple
+                            accept="image/*,video/*,.pdf,.epub"
+                            disabled={isFormDisabled}
+                            onChange={(e) => {
+                              const newFiles = Array.from(e.target.files || []);
+                              // Append new files to existing ones (avoid duplicates by name+size)
+                              setMediaFiles((prev) => {
+                                const existing = new Set(
+                                  prev.map((f) => `${f.name}-${f.size}`),
                                 );
-                              })}
+                                const uniqueNew = newFiles.filter(
+                                  (f) => !existing.has(`${f.name}-${f.size}`),
+                                );
+                                return [...prev, ...uniqueNew];
+                              });
+                              // Reset input to allow selecting same files again
+                              e.target.value = "";
+                            }}
+                            className="w-full text-sm text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 cursor-pointer"
+                          />
+                          {mediaFiles.length > 0 && (
+                            <div className="space-y-2">
+                              <p className="text-xs font-medium text-foreground">
+                                {mediaFiles.length} file(s) selected:
+                              </p>
+                              <div className="space-y-1.5 max-h-96 overflow-y-auto border border-border rounded-md p-2 bg-muted/30">
+                                {mediaFiles.map((file, index) => {
+                                  const isImage =
+                                    file.type.startsWith("image/");
+                                  // Use stable key based on file properties, not index
+                                  const fileKey = `${file.name}-${file.size}-${file.lastModified}`;
+                                  const previewUrl = isImage
+                                    ? URL.createObjectURL(file)
+                                    : null;
+
+                                  return (
+                                    <div
+                                      key={fileKey}
+                                      className="flex items-start gap-3 p-2 rounded-md bg-background border border-border hover:bg-muted/50 transition-colors"
+                                    >
+                                      {/* Image Preview Thumbnail */}
+                                      {isImage && previewUrl && (
+                                        <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-md overflow-hidden border border-border bg-muted">
+                                          <Image
+                                            src={previewUrl}
+                                            alt={file.name}
+                                            fill
+                                            className="object-cover"
+                                            sizes="80px"
+                                            unoptimized
+                                          />
+                                        </div>
+                                      )}
+
+                                      {/* File Info */}
+                                      <div className="flex-1 min-w-0 space-y-1.5">
+                                        <div>
+                                          <p className="text-xs font-medium text-foreground truncate">
+                                            {file.name}
+                                          </p>
+                                          <p className="text-xs text-muted-foreground">
+                                            {(file.size / 1024 / 1024).toFixed(
+                                              2,
+                                            )}{" "}
+                                            MB
+                                            {file.type &&
+                                              ` • ${file.type.split("/")[0]}`}
+                                          </p>
+                                        </div>
+
+                                        {/* Upload progress visualization is now handled globally
+                                          by UploadProgressSheet to avoid duplicate UI here. */}
+                                      </div>
+
+                                      {/* Action Buttons */}
+                                      <div className="flex items-center gap-1 flex-shrink-0">
+                                        {/* Move Up Button */}
+                                        <Button
+                                          type="button"
+                                          variant="ghost"
+                                          size="icon"
+                                          className="h-7 w-7"
+                                          onClick={() => {
+                                            if (index > 0) {
+                                              setMediaFiles((prev) => {
+                                                const newFiles = [...prev];
+                                                [
+                                                  newFiles[index - 1],
+                                                  newFiles[index],
+                                                ] = [
+                                                  newFiles[index],
+                                                  newFiles[index - 1],
+                                                ];
+                                                return newFiles;
+                                              });
+                                            }
+                                          }}
+                                          disabled={
+                                            index === 0 || isFormDisabled
+                                          }
+                                          aria-label="Move up"
+                                          title="Move up"
+                                        >
+                                          <ChevronUp className="h-4 w-4" />
+                                        </Button>
+
+                                        {/* Move Down Button */}
+                                        <Button
+                                          type="button"
+                                          variant="ghost"
+                                          size="icon"
+                                          className="h-7 w-7"
+                                          onClick={() => {
+                                            if (index < mediaFiles.length - 1) {
+                                              setMediaFiles((prev) => {
+                                                const newFiles = [...prev];
+                                                [
+                                                  newFiles[index],
+                                                  newFiles[index + 1],
+                                                ] = [
+                                                  newFiles[index + 1],
+                                                  newFiles[index],
+                                                ];
+                                                return newFiles;
+                                              });
+                                            }
+                                          }}
+                                          disabled={
+                                            index === mediaFiles.length - 1 ||
+                                            isFormDisabled
+                                          }
+                                          aria-label="Move down"
+                                          title="Move down"
+                                        >
+                                          <ChevronDown className="h-4 w-4" />
+                                        </Button>
+
+                                        {/* Remove Button */}
+                                        <Button
+                                          type="button"
+                                          variant="ghost"
+                                          size="icon"
+                                          className="h-7 w-7"
+                                          onClick={() => {
+                                            if (previewUrl) {
+                                              URL.revokeObjectURL(previewUrl);
+                                            }
+                                            setMediaFiles((prev) =>
+                                              prev.filter(
+                                                (_, i) => i !== index,
+                                              ),
+                                            );
+                                          }}
+                                          disabled={isFormDisabled}
+                                          aria-label="Remove"
+                                          title="Remove"
+                                        >
+                                          <X className="h-4 w-4" />
+                                        </Button>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setMediaFiles([])}
+                                disabled={isFormDisabled}
+                                className="w-full sm:w-auto"
+                              >
+                                <X className="h-4 w-4 mr-2" />
+                                {t("segments.form.clearAll", "series")}
+                              </Button>
                             </div>
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              onClick={() => setMediaFiles([])}
-                              disabled={isFormDisabled}
-                              className="w-full sm:w-auto"
-                            >
-                              <X className="h-4 w-4 mr-2" />
-                              {t("segments.form.clearAll", "series")}
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    </CardContent>
+                          )}
+                        </div>
+                      </CardContent>
                     </Card>
                   </div>
 
@@ -720,10 +728,7 @@ export default function UploadSegmentPage() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {/* Segment Type */}
                         <div>
-                          <Label
-                            htmlFor="type"
-                            className="text-sm font-medium"
-                          >
+                          <Label htmlFor="type" className="text-sm font-medium">
                             {t("segments.form.type", "series")} *
                           </Label>
                           <Select
@@ -738,10 +743,7 @@ export default function UploadSegmentPage() {
                           >
                             <SelectTrigger className="mt-1.5 w-full">
                               <SelectValue
-                                placeholder={t(
-                                  "segments.form.type",
-                                  "series",
-                                )}
+                                placeholder={t("segments.form.type", "series")}
                               />
                             </SelectTrigger>
                             <SelectContent>
@@ -788,7 +790,6 @@ export default function UploadSegmentPage() {
                             </SelectContent>
                           </Select>
                         </div>
-
                       </div>
 
                       {/* Number and Sub Number */}
@@ -983,7 +984,10 @@ export default function UploadSegmentPage() {
                             >
                               <SelectTrigger className="mt-1.5 w-full">
                                 <SelectValue
-                                  placeholder={t("segments.form.status", "series")}
+                                  placeholder={t(
+                                    "segments.form.status",
+                                    "series",
+                                  )}
                                 />
                               </SelectTrigger>
                               <SelectContent>
@@ -1044,7 +1048,10 @@ export default function UploadSegmentPage() {
                                   )}
                                 </SelectItem>
                                 <SelectItem value="membership">
-                                  {t("segments.accessType.membership", "series")}
+                                  {t(
+                                    "segments.accessType.membership",
+                                    "series",
+                                  )}
                                 </SelectItem>
                               </SelectContent>
                             </Select>

@@ -96,10 +96,14 @@ export function UploadProgressSheet({
   // Get current step text
   const getStepText = () => {
     if (currentStep === "complete") {
-      return t("segments.toast.created", "series") || "Segment created successfully!";
+      return (
+        t("segments.toast.created", "series") || "Segment created successfully!"
+      );
     }
     if (currentStep === "creating") {
-      return t("segments.form.creatingSegment", "series") || "Creating segment...";
+      return (
+        t("segments.form.creatingSegment", "series") || "Creating segment..."
+      );
     }
     return t("segments.form.uploadingFiles", "series") || "Uploading files...";
   };
@@ -233,9 +237,7 @@ export function UploadProgressSheet({
                   const status = uploadStatus[fileKey] || "pending";
                   const progress = uploadProgress[fileKey] || 0;
                   const isImage = file.type.startsWith("image/");
-                  const previewUrl = isImage
-                    ? URL.createObjectURL(file)
-                    : null;
+                  const previewUrl = isImage ? URL.createObjectURL(file) : null;
 
                   return (
                     <div
@@ -244,12 +246,10 @@ export function UploadProgressSheet({
                         "flex items-start gap-3 p-2.5 sm:p-3 rounded-lg border transition-colors",
                         status === "success" &&
                           "bg-green-500/10 border-green-500/20",
-                        status === "error" &&
-                          "bg-red-500/10 border-red-500/20",
+                        status === "error" && "bg-red-500/10 border-red-500/20",
                         status === "uploading" &&
                           "bg-primary/5 border-primary/20",
-                        status === "pending" &&
-                          "bg-muted/50 border-border",
+                        status === "pending" && "bg-muted/50 border-border",
                       )}
                     >
                       {/* File Icon/Preview */}
@@ -352,4 +352,3 @@ export function UploadProgressSheet({
     </Sheet>
   );
 }
-
