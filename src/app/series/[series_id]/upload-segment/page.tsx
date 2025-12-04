@@ -250,7 +250,7 @@ export default function UploadSegmentPage() {
         {
           onSuccess: (result) => {
             // Redirect to series page
-            router.push(`/series/${seriesId}/segments/${result.id}`);
+            router.push(`/segments/${result.id}`);
           },
         },
       );
