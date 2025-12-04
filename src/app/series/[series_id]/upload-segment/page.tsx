@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { ProtectedRoute } from "@/components/features/auth";
+import { UploadProgressSheet } from "@/components/features/series/upload-progress-sheet";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { AnimatedSection, Skeletonize } from "@/components/shared";
 import {
@@ -107,6 +108,11 @@ export default function UploadSegmentPage() {
     Record<string, "pending" | "uploading" | "success" | "error">
   >({});
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [showProgressSheet, setShowProgressSheet] = useState<boolean>(false);
+  const [currentStep, setCurrentStep] = useState<
+    "uploading" | "creating" | "complete"
+  >("uploading");
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   // Cleanup object URLs when component unmounts
   useEffect(() => {
@@ -225,7 +231,7 @@ export default function UploadSegmentPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Scroll to upload card when submitting
+    // Scroll to upload card when submitting (for better UX)
     if (uploadCardRef.current) {
       uploadCardRef.current.scrollIntoView({
         behavior: "smooth",
@@ -251,6 +257,13 @@ export default function UploadSegmentPage() {
       return;
     }
 
+    // Reset error state
+    setUploadError(null);
+    setCurrentStep("uploading");
+
+    // Show progress sheet immediately when starting upload
+    setShowProgressSheet(true);
+
     try {
       // Upload media files one by one with progress tracking
       let attachments: Record<string, unknown>[] = [];
@@ -260,13 +273,18 @@ export default function UploadSegmentPage() {
           attachments = uploadedIds.map((id) => ({ id }));
         } catch (mediaError) {
           console.error("Error uploading media:", mediaError);
-          toast.error(
+          const errorMessage =
             t("segments.errors.uploadMediaFailed", "series") ||
-              "Failed to upload media files. Please try again.",
-          );
+            "Failed to upload media files. Please try again.";
+          setUploadError(errorMessage);
+          toast.error(errorMessage);
+          // Keep sheet open to show error
           return;
         }
       }
+
+      // Update step to creating segment
+      setCurrentStep("creating");
 
       // Prepare segment data according to CreateSegmentDto
       // Note: seriesId is passed via URL param in API call, but can also be in body
@@ -304,13 +322,29 @@ export default function UploadSegmentPage() {
         { seriesId: seriesId as string, data: segmentData },
         {
           onSuccess: (result) => {
-            // Redirect to series page
-            router.push(`/segments/${result.id}`);
+            // Update step to complete
+            setCurrentStep("complete");
+            // Keep sheet open briefly to show success, then redirect
+            setTimeout(() => {
+              router.push(`/segments/${result.id}`);
+            }, 1500);
+          },
+          onError: (error) => {
+            console.error("Error creating segment:", error);
+            const errorMessage =
+              t("segments.toast.createError", "series") ||
+              "Failed to create segment";
+            setUploadError(errorMessage);
+            setCurrentStep("uploading"); // Reset to uploading step to show error
           },
         },
       );
     } catch (error) {
       console.error("Error uploading segment:", error);
+      const errorMessage =
+        t("segments.errors.uploadMediaFailed", "series") ||
+        "An unexpected error occurred";
+      setUploadError(errorMessage);
     }
   };
 
@@ -1246,6 +1280,19 @@ export default function UploadSegmentPage() {
             )}
           </Skeletonize>
         </AnimatedSection>
+
+        {/* Upload Progress Sheet */}
+        <UploadProgressSheet
+          open={showProgressSheet}
+          onOpenChange={setShowProgressSheet}
+          mediaFiles={mediaFiles}
+          uploadProgress={uploadProgress}
+          uploadStatus={uploadStatus}
+          isUploading={isUploading}
+          isCreatingSegment={isSubmitting}
+          currentStep={currentStep}
+          error={uploadError}
+        />
       </div>
     </ProtectedRoute>
   );
