@@ -126,7 +126,16 @@
   },
   "chapters": {
     "title": "Chapters",
-    "comingSoon": "Chapters list coming soon"
+    "comingSoon": "Chapters list coming soon",
+    "noChapters": "No chapters available yet",
+    "loading": "Loading more chapters...",
+    "endOfList": "No more chapters",
+    "updatedAt": "Updated",
+    "uploadBy": "Upload by",
+    "filter": {
+      "label": "Filter by language",
+      "all": "All Languages"
+    }
   },
   "segments": {
     "title": "Upload Segment",
@@ -197,6 +206,8 @@
       "subscription": "Subscription",
       "membership": "Membership"
     },
+    "pages": "pages",
+    "minutes": "min",
     "success": {
       "created": "Segment created successfully!",
       "updated": "Segment updated successfully!",
@@ -213,6 +224,7 @@
   "error": {
     "title": "Series Not Found",
     "message": "The series you're looking for doesn't exist or has been removed.",
-    "backToHome": "Back to Home"
+    "backToHome": "Back to Home",
+    "loadingChapters": "Failed to load chapters"
   }
 }

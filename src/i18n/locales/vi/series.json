@@ -126,7 +126,16 @@
   },
   "chapters": {
     "title": "Chương",
-    "comingSoon": "Danh sách chương sắp có"
+    "comingSoon": "Danh sách chương sắp có",
+    "noChapters": "Chưa có chương nào",
+    "loading": "Đang tải thêm chương...",
+    "endOfList": "Hết chương",
+    "updatedAt": "Thời gian cập nhật",
+    "uploadBy": "Tải lên bởi",
+    "filter": {
+      "label": "Lọc theo ngôn ngữ",
+      "all": "Tất cả ngôn ngữ"
+    }
   },
   "segments": {
     "title": "Tải Lên Segment",
@@ -197,6 +206,8 @@
       "subscription": "Đăng Ký",
       "membership": "Thành Viên"
     },
+    "pages": "trang",
+    "minutes": "phút",
     "success": {
       "created": "Segment đã được tạo thành công!",
       "updated": "Segment đã được cập nhật thành công!",
@@ -213,6 +224,7 @@
   "error": {
     "title": "Không Tìm Thấy Truyện",
     "message": "Truyện bạn đang tìm không tồn tại hoặc đã bị xóa.",
-    "backToHome": "Về Trang Chủ"
+    "backToHome": "Về Trang Chủ",
+    "loadingChapters": "Không thể tải danh sách chương"
   }
 }

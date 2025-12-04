@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 
+import { ChaptersList } from "@/components/features/series";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { AnimatedSection, Skeletonize } from "@/components/shared";
 import { Button } from "@/components/ui";
@@ -32,12 +33,21 @@ export default function SeriesDetailPage() {
   const seriesId = params.series_id as string;
 
   // Fetch full backend series data (single API call)
-  const { data: backendSeries, isLoading, error } = useSeriesFull(seriesId);
+  const {
+    data: backendSeries,
+    isLoading,
+    error,
+    isFetched: isSeriesFetched,
+  } = useSeriesFull(seriesId);
 
   // Transform to display format using utility function
   const series = backendSeries
     ? transformBackendSeries(backendSeries)
     : undefined;
+
+  // Only enable chapters loading after series data is fully loaded
+  const shouldLoadChapters =
+    isSeriesFetched && !isLoading && !error && !!series;
 
   // Show 404 if series not found
   if (!isLoading && !error && !series) {
@@ -602,16 +612,12 @@ export default function SeriesDetailPage() {
                         </div>
                       )}
 
-                      {/* Chapters Section - Placeholder */}
+                      {/* Chapters Section - Infinite Scroll */}
                       <div className="mt-4 sm:mt-6 md:mt-8">
-                        <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4">
-                          {t("chapters.title", "series")}
-                        </h2>
-                        <div className="bg-card border border-border rounded-lg p-3 sm:p-4 md:p-6">
-                          <p className="text-xs sm:text-sm text-muted-foreground text-center">
-                            {t("chapters.comingSoon", "series")}
-                          </p>
-                        </div>
+                        <ChaptersList
+                          seriesId={seriesId}
+                          enabled={shouldLoadChapters}
+                        />
                       </div>
                     </header>
                   </main>

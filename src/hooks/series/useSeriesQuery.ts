@@ -1,8 +1,17 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { useI18n } from "@/components/providers/i18n-provider";
-import { SegmentsAPI, type QuerySegmentDto } from "@/lib/api/segments";
+import {
+  SegmentsAPI,
+  type QuerySegmentCursorDto,
+  type QuerySegmentDto,
+} from "@/lib/api/segments";
 import { SeriesAPI, type QuerySeriesDto } from "@/lib/api/series";
 import type { SeriesSeason } from "@/lib/constants/series.constants";
 import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
@@ -512,6 +521,51 @@ export function useSeriesSegments(
     enabled: !!seriesId && seriesId !== "undefined" && seriesId !== "null",
     staleTime: 2 * 60 * 1000, // 2 minutes
     placeholderData: (previousData) => previousData,
+  });
+}
+
+/**
+ * Hook for fetching series segments with cursor-based infinite scroll
+ * Only loads after series data is available (enabled prop)
+ * @param seriesId - Series ID to fetch segments for
+ * @param enabled - Whether to enable the query (should be true only after series data is loaded)
+ * @param languageCode - Optional language code to filter segments by language
+ */
+export function useSeriesSegmentsInfinite(
+  seriesId: string,
+  enabled: boolean = true,
+  languageCode?: string,
+) {
+  return useInfiniteQuery({
+    queryKey: queryKeys.series.segments.cursor(seriesId, undefined, languageCode),
+    queryFn: async ({ pageParam }) => {
+      const params: QuerySegmentCursorDto = {
+        seriesId,
+        cursor: pageParam as string | undefined,
+        take: 20, // Number of items per page
+        // API defaults to createdAt DESC, but we can try to sort by number
+        // If API doesn't support it, it will use default sorting
+        sortBy: "number",
+        order: "ASC", // Sort chapters by number ascending (1, 2, 3...)
+        languageCode: languageCode || undefined, // Filter by language if provided
+      };
+      const response = await SegmentsAPI.getSegmentsCursor(params);
+      return response.data;
+    },
+    enabled:
+      enabled &&
+      !!seriesId &&
+      seriesId !== "undefined" &&
+      seriesId !== "null",
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => {
+      // Return next cursor if available, otherwise undefined to stop pagination
+      return lastPage.metaData.nextCursor ?? undefined;
+    },
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 }
 

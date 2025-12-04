@@ -250,6 +250,12 @@ export interface SeriesSegment {
   }>;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  user?: {
+    id: string;
+    name?: string;
+    username?: string;
+    email?: string;
+  };
 }
 
 /**
