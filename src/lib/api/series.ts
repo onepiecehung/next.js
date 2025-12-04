@@ -1,25 +1,25 @@
+import type {
+    SeriesFormat,
+    SeriesReleasingStatus,
+    SeriesSeason,
+    SeriesSource,
+    SeriesStatus,
+    SeriesType,
+} from "@/lib/constants/series.constants";
 import { http } from "@/lib/http";
 import type {
-  AdvancedQueryParams,
-  ApiResponse,
-  ApiResponseCursor,
-  ApiResponseOffset,
-  QueryParamsWithCursor,
-} from "@/lib/types";
-import type {
-  Series,
-  SeriesSegment,
-  CreateSegmentDto,
-  UpdateSegmentDto,
+    CreateSegmentDto,
+    Series,
+    SeriesSegment,
+    UpdateSegmentDto,
 } from "@/lib/interface/series.interface";
 import type {
-  SeriesType,
-  SeriesFormat,
-  SeriesSeason,
-  SeriesSource,
-  SeriesReleasingStatus,
-  SeriesStatus,
-} from "@/lib/constants/series.constants";
+    AdvancedQueryParams,
+    ApiResponse,
+    ApiResponseCursor,
+    ApiResponseOffset,
+    QueryParamsWithCursor,
+} from "@/lib/types";
 
 /**
  * Create Series DTO

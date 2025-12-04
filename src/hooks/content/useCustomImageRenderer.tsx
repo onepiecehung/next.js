@@ -24,7 +24,7 @@ export function useCustomImageRenderer(
 
       if (!customImageWrappers) return;
 
-      customImageWrappers.forEach((wrapper) => {
+      customImageWrappers.forEach((wrapper, index) => {
         // Skip if already processed
         if (wrapper.getAttribute("data-processed") === "true") return;
 
@@ -40,6 +40,10 @@ export function useCustomImageRenderer(
 
         if (!src) return;
 
+        // Set priority for the first image (likely above the fold and LCP element)
+        // This helps with Largest Contentful Paint (LCP) optimization
+        const isFirstImage = index === 0;
+
         // Create a React root and render the Image component
         const root = createRoot(wrapper);
         roots.set(wrapper, root);
@@ -51,6 +55,7 @@ export function useCustomImageRenderer(
             title={title}
             width={width}
             height={height}
+            priority={isFirstImage}
           />,
         );
 

@@ -94,11 +94,17 @@ export default function UploadSegmentPage() {
     file: File,
     onProgress: (progress: number) => void,
   ): Promise<UploadedMedia> => {
+    // Validate seriesId before using it
+    if (!seriesId || seriesId === "undefined" || seriesId === "null") {
+      throw new Error("Series ID is required for uploading media");
+    }
+
     const form = new FormData();
     form.append("files", file);
 
+    // Use seriesId in the folder path
     const response = await http.post<ApiResponse<UploadedMedia[]>>(
-      "/media",
+      `/media?folder=${encodeURIComponent(seriesId)}/segments`,
       form,
       {
         headers: { "Content-Type": "multipart/form-data" },

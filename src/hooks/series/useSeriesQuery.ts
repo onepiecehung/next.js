@@ -6,20 +6,20 @@ import { SeriesAPI, type QuerySeriesDto } from "@/lib/api/series";
 import type { SeriesSeason } from "@/lib/constants/series.constants";
 import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
 import type {
-  BackendSeries,
-  CreateSegmentDto,
-  LatestUpdateItem,
-  PopularSeries,
-  Series,
-  SeriesSegment,
-  UpdateSegmentDto,
+    BackendSeries,
+    CreateSegmentDto,
+    LatestUpdateItem,
+    PopularSeries,
+    Series,
+    SeriesSegment,
+    UpdateSegmentDto,
 } from "@/lib/interface/series.interface";
 import type { AdvancedQueryParams } from "@/lib/types";
 import { queryKeys } from "@/lib/utils/query-keys";
 import {
-  transformBackendSeries,
-  transformBackendSeriesList,
-  transformToPopularSeries,
+    transformBackendSeries,
+    transformBackendSeriesList,
+    transformToPopularSeries,
 } from "@/lib/utils/series-utils";
 
 /**
