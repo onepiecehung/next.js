@@ -286,6 +286,18 @@ export class SeriesAPI {
   }
 
   /**
+   * Get a segment by segmentId only (without seriesId)
+   * Assumes backend has endpoint: GET /segments/:segmentId
+   * If backend doesn't support this, you may need to add it
+   */
+  static async getSegmentById(segmentId: string): Promise<SeriesSegment> {
+    const response = await http.get<ApiResponse<SeriesSegment>>(
+      `/segments/${segmentId}`,
+    );
+    return response.data.data;
+  }
+
+  /**
    * Update a segment
    * Requires authentication
    */

@@ -30,7 +30,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
 import { useCurrentUser } from "@/hooks/auth";
-import { useSeries, useSeriesFull, useSeriesSegment } from "@/hooks/series";
+import { useSegment, useSeries, useSeriesFull } from "@/hooks/series";
 import { currentUserAtom } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import { useAtom } from "jotai";
@@ -38,24 +38,26 @@ import { useAtom } from "jotai";
 /**
  * Segment Detail Page Component
  * Displays segment information and attachments
- * URL pattern: /series/[series_id]/segments/[segment_id]
+ * URL pattern: /segments/[segment_id]
  */
 export default function SegmentDetailPage() {
   const params = useParams();
   const { t } = useI18n();
-  const seriesId = params.series_id as string;
   const segmentId = params.segment_id as string;
 
-  // Fetch segment data
+  // Fetch segment data by segmentId only
   const {
     data: segment,
     isLoading: isLoadingSegment,
     error: segmentError,
-  } = useSeriesSegment(seriesId, segmentId);
+  } = useSegment(segmentId);
 
-  // Fetch series data for context
-  const { data: seriesDisplay } = useSeries(seriesId);
-  const { data: backendSeries } = useSeriesFull(seriesId);
+  // Get seriesId from segment data after it's loaded
+  const seriesId = segment?.seriesId;
+
+  // Fetch series data for context (only when we have seriesId from segment)
+  const { data: seriesDisplay } = useSeries(seriesId || "");
+  const { data: backendSeries } = useSeriesFull(seriesId || "");
 
   // Check authentication status
   // Use both query and atom to ensure reactivity on logout
@@ -251,8 +253,15 @@ export default function SegmentDetailPage() {
               <p className="text-sm text-muted-foreground mb-6">
                 {segmentError.message || "The segment you're looking for doesn't exist."}
               </p>
-              <Link href={`/series/${seriesId}`}>
-                <Button variant="outline">Back to Series</Button>
+              {seriesId && (
+                <Link href={`/series/${seriesId}`}>
+                  <Button variant="outline">Back to Series</Button>
+                </Link>
+              )}
+              <Link href="/">
+                <Button variant="outline" className={seriesId ? "ml-2" : ""}>
+                  Back to Home
+                </Button>
               </Link>
             </div>
           )}
@@ -261,13 +270,15 @@ export default function SegmentDetailPage() {
             <>
               {/* Header */}
               <div className="mb-4 sm:mb-6">
-                <Link
-                  href={`/series/${seriesId}`}
-                  className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-3 sm:mb-4 transition-colors"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  {seriesDisplay?.title || "Series"}
-                </Link>
+                {seriesId && (
+                  <Link
+                    href={`/series/${seriesId}`}
+                    className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-3 sm:mb-4 transition-colors"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                    {seriesDisplay?.title || "Series"}
+                  </Link>
+                )}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                   <div>
                     <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-2">

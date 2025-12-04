@@ -528,6 +528,24 @@ export function useSeriesSegment(seriesId: string, segmentId: string) {
 }
 
 /**
+ * Hook for fetching a segment by segmentId only (without seriesId)
+ * Useful for routes like /segments/:segmentId
+ * After fetching, you can get seriesId from segment.seriesId
+ */
+export function useSegment(segmentId: string) {
+  return useQuery<SeriesSegment>({
+    queryKey: ["segments", "detail", segmentId],
+    queryFn: async () => {
+      return await SeriesAPI.getSegmentById(segmentId);
+    },
+    enabled: !!segmentId && segmentId !== "undefined",
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+  });
+}
+
+/**
  * Hook for creating a segment
  */
 export function useCreateSegment() {

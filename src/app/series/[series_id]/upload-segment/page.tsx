@@ -104,7 +104,7 @@ export default function UploadSegmentPage() {
 
     // Use seriesId in the folder path
     const response = await http.post<ApiResponse<UploadedMedia[]>>(
-      `/media?folder=${encodeURIComponent(seriesId)}/segments`,
+      `/media?folder=${encodeURIComponent(seriesId + '/segments')}`,
       form,
       {
         headers: { "Content-Type": "multipart/form-data" },
