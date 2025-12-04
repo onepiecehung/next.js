@@ -214,6 +214,16 @@
   }
 }
 
+/* Utility to hide scrollbars while keeping content scrollable */
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 /* Skeleton loading utilities */
 @keyframes skeleton-shimmer {
   0% {

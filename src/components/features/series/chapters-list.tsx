@@ -392,8 +392,16 @@ export function ChaptersList({
       {/* Header with Filter */}
       {headerWithFilter}
 
-      {/* Segments List */}
-      <div className="space-y-2 sm:space-y-3">
+      {/* Segments List (scrollable area) */}
+      <div
+        className="
+          max-h-[60vh] sm:max-h-[65vh] lg:max-h-[85vh]
+          overflow-y-auto
+          pr-1 sm:pr-1.5
+          space-y-2 sm:space-y-3
+          scrollbar-hide
+        "
+      >
         {segments.map((segment) => (
           <SegmentItem
             key={segment.id}
@@ -401,28 +409,30 @@ export function ChaptersList({
             t={t}
           />
         ))}
+
+        {/* Load More Trigger (Intersection Observer target) */}
+        {hasNextPage && (
+          <div ref={loadMoreRef} className="flex justify-center py-4">
+            {isFetchingNextPage && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>
+                  {t("chapters.loading", "series") || "Loading more chapters..."}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* End of list indicator */}
+        {!hasNextPage && segments.length > 0 && (
+          <div className="text-center py-4">
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              {t("chapters.endOfList", "series") || "No more chapters"}
+            </p>
+          </div>
+        )}
       </div>
-
-      {/* Load More Trigger (Intersection Observer target) */}
-      {hasNextPage && (
-        <div ref={loadMoreRef} className="flex justify-center py-4">
-          {isFetchingNextPage && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <span>{t("chapters.loading", "series") || "Loading more chapters..."}</span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* End of list indicator */}
-      {!hasNextPage && segments.length > 0 && (
-        <div className="text-center py-4">
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            {t("chapters.endOfList", "series") || "No more chapters"}
-          </p>
-        </div>
-      )}
     </div>
   );
 }
