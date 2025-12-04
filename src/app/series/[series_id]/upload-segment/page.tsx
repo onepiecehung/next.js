@@ -597,46 +597,8 @@ export default function UploadSegmentPage() {
                                         </p>
                                       </div>
 
-                                      {/* Upload Progress Bar */}
-                                      {isUploading && uploadStatus[fileKey] && (
-                                        <div className="space-y-1">
-                                          <div className="flex items-center justify-between text-xs">
-                                            <span className="text-muted-foreground">
-                                              {uploadStatus[fileKey] ===
-                                                "pending" && "Waiting..."}
-                                              {uploadStatus[fileKey] ===
-                                                "uploading" &&
-                                                `Uploading... ${uploadProgress[fileKey] || 0}%`}
-                                              {uploadStatus[fileKey] ===
-                                                "success" && "Uploaded ✓"}
-                                              {uploadStatus[fileKey] ===
-                                                "error" && "Upload failed ✗"}
-                                            </span>
-                                            {uploadStatus[fileKey] ===
-                                              "uploading" && (
-                                              <span className="text-muted-foreground">
-                                                {uploadProgress[fileKey] || 0}%
-                                              </span>
-                                            )}
-                                          </div>
-                                          <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                                            <div
-                                              className={`h-full transition-all duration-300 ${
-                                                uploadStatus[fileKey] ===
-                                                "success"
-                                                  ? "bg-green-500"
-                                                  : uploadStatus[fileKey] ===
-                                                      "error"
-                                                    ? "bg-red-500"
-                                                    : "bg-primary"
-                                              }`}
-                                              style={{
-                                                width: `${uploadProgress[fileKey] || 0}%`,
-                                              }}
-                                            />
-                                          </div>
-                                        </div>
-                                      )}
+                                      {/* Upload progress visualization is now handled globally
+                                          by UploadProgressSheet to avoid duplicate UI here. */}
                                     </div>
 
                                     {/* Action Buttons */}
