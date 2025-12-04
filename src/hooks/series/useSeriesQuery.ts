@@ -542,11 +542,9 @@ export function useSeriesSegmentsInfinite(
       const params: QuerySegmentCursorDto = {
         seriesId,
         cursor: pageParam as string | undefined,
-        take: 20, // Number of items per page
-        // API defaults to createdAt DESC, but we can try to sort by number
-        // If API doesn't support it, it will use default sorting
+        limit: 20, // Number of items per page
         sortBy: "number",
-        order: "ASC", // Sort chapters by number ascending (1, 2, 3...)
+        order: "DESC", // Sort chapters by number descending (newest/largest first: ..., 5, 4, 3, 2, 1)
         languageCode: languageCode || undefined, // Filter by language if provided
       };
       const response = await SegmentsAPI.getSegmentsCursor(params);
@@ -557,7 +555,7 @@ export function useSeriesSegmentsInfinite(
       !!seriesId &&
       seriesId !== "undefined" &&
       seriesId !== "null",
-    initialPageParam: undefined,
+    initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => {
       // Return next cursor if available, otherwise undefined to stop pagination
       return lastPage.metaData.nextCursor ?? undefined;

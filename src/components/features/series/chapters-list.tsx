@@ -2,6 +2,7 @@
 
 import { BookOpen, EyeOff, Globe, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { useI18n } from "@/components/providers/i18n-provider";
@@ -61,6 +62,8 @@ interface SegmentItemProps {
 }
 
 function SegmentItem({ segment, t }: SegmentItemProps) {
+  const router = useRouter();
+
   // Format segment number with sub-number if exists
   const segmentNumber = segment.subNumber
     ? `${segment.number}.${segment.subNumber}`
@@ -168,9 +171,30 @@ function SegmentItem({ segment, t }: SegmentItemProps) {
           {segment.user && (
             <span className="flex items-center gap-1">
               {t("chapters.uploadBy", "series") || "Upload by"}:{" "}
-              <span className="font-medium text-foreground">
-                {segment.user.name || segment.user.username || segment.user.email?.split("@")[0] || "Unknown"}
-              </span>
+              <button
+                type="button"
+                onClick={(e) => {
+                  // Prevent navigating to segment when clicking on uploader name
+                  e.preventDefault();
+                  e.stopPropagation();
+                  // Navigate to user profile page
+                  if (segment.user) {
+                    router.push(`/user/${segment.user.id}`);
+                  }
+                }}
+                className="font-medium text-foreground hover:text-primary hover:underline transition-colors"
+                aria-label={
+                  segment.user?.name ||
+                  segment.user?.username ||
+                  segment.user?.email?.split("@")[0] ||
+                  "Uploader profile"
+                }
+              >
+                {segment.user?.name ||
+                  segment.user?.username ||
+                  segment.user?.email?.split("@")[0] ||
+                  "Unknown"}
+              </button>
             </span>
           )}
         </div>
@@ -270,13 +294,48 @@ export function ChaptersList({
     };
   }, [enabled, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  // Common header with filter (always visible)
+  const headerWithFilter = (
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-3 sm:mb-4">
+      <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground">
+        {t("chapters.title", "series")}
+      </h2>
+
+      {/* Language Filter */}
+      <div className="flex items-center gap-2">
+        <Globe className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+        <Select
+          value={selectedLanguage}
+          onValueChange={setSelectedLanguage}
+        >
+          <SelectTrigger
+            className="min-w-[140px] sm:min-w-[160px]"
+            aria-label={t("chapters.filter.label", "series") || "Filter by language"}
+          >
+            <SelectValue
+              placeholder={t("chapters.filter.all", "series") || "All Languages"}
+            />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">
+              {t("chapters.filter.all", "series") || "All Languages"}
+            </SelectItem>
+            {LANGUAGES.map((lang) => (
+              <SelectItem key={lang.code} value={lang.code}>
+                {lang.name} ({lang.native})
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
+
   // Loading state (initial load)
   if (isLoading && segments.length === 0) {
     return (
       <div className={cn("space-y-4", className)}>
-        <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4">
-          {t("chapters.title", "series")}
-        </h2>
+        {headerWithFilter}
         <Skeletonize loading={true}>
           <div className="space-y-3">
             {[1, 2, 3, 4, 5].map((i) => (
@@ -295,9 +354,7 @@ export function ChaptersList({
   if (error) {
     return (
       <div className={cn("space-y-4", className)}>
-        <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4">
-          {t("chapters.title", "series")}
-        </h2>
+        {headerWithFilter}
         <div className="bg-card border border-border rounded-lg p-4 sm:p-6 text-center">
           <p className="text-sm sm:text-base text-muted-foreground mb-4">
             {t("error.loadingChapters", "series") || "Failed to load chapters"}
@@ -320,9 +377,7 @@ export function ChaptersList({
   if (!isLoading && segments.length === 0) {
     return (
       <div className={cn("space-y-4", className)}>
-        <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4">
-          {t("chapters.title", "series")}
-        </h2>
+        {headerWithFilter}
         <div className="bg-card border border-border rounded-lg p-4 sm:p-6 text-center">
           <p className="text-sm sm:text-base text-muted-foreground">
             {t("chapters.noChapters", "series") || "No chapters available yet"}
@@ -335,39 +390,7 @@ export function ChaptersList({
   return (
     <div className={cn("space-y-4", className)}>
       {/* Header with Filter */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-3 sm:mb-4">
-        <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground">
-          {t("chapters.title", "series")}
-        </h2>
-
-        {/* Language Filter */}
-        <div className="flex items-center gap-2">
-          <Globe className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-          <Select
-            value={selectedLanguage}
-            onValueChange={setSelectedLanguage}
-          >
-            <SelectTrigger
-              className="min-w-[140px] sm:min-w-[160px]"
-              aria-label={t("chapters.filter.label", "series") || "Filter by language"}
-            >
-              <SelectValue
-                placeholder={t("chapters.filter.all", "series") || "All Languages"}
-              />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">
-                {t("chapters.filter.all", "series") || "All Languages"}
-              </SelectItem>
-              {LANGUAGES.map((lang) => (
-                <SelectItem key={lang.code} value={lang.code}>
-                  {lang.name} ({lang.native})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      {headerWithFilter}
 
       {/* Segments List */}
       <div className="space-y-2 sm:space-y-3">
