@@ -29,9 +29,20 @@ import {
 } from "@/components/ui";
 import { Input, Label } from "@/components/ui/core";
 import { Badge } from "@/components/ui/core/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useCreateSegment, useSeries, useSeriesFull } from "@/hooks/series";
 import type { UploadedMedia } from "@/lib/api/media";
-import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
+import {
+  DEFAULT_LANGUAGE_CODE,
+  LANGUAGES,
+  SERIES_CONSTANTS,
+} from "@/lib/constants";
 import { http } from "@/lib/http/client";
 import type { ApiResponse } from "@/lib/types";
 
@@ -66,11 +77,11 @@ export default function UploadSegmentPage() {
   const [slug, setSlug] = useState<string>("");
   const [status, setStatus] = useState<
     "active" | "inactive" | "pending" | "archived"
-  >("pending");
+  >("active");
   const [accessType, setAccessType] = useState<
     "free" | "paid" | "subscription" | "membership"
   >("free");
-  const [languageCode, setLanguageCode] = useState<string>("en");
+  const [languageCode, setLanguageCode] = useState<string>(DEFAULT_LANGUAGE_CODE);
   const [publishedAt, setPublishedAt] = useState<string>("");
   const [originalReleaseDate, setOriginalReleaseDate] = useState<string>("");
   const [durationSec, setDurationSec] = useState<string>("");
@@ -686,31 +697,31 @@ export default function UploadSegmentPage() {
                         <Label htmlFor="type" className="text-sm font-medium">
                           {t("segments.form.type", "series")} *
                         </Label>
-                        <select
-                          id="type"
+                        <Select
                           value={type}
-                          onChange={(e) =>
-                            setType(
-                              e.target.value as
-                                | "trailer"
-                                | "episode"
-                                | "chapter",
-                            )
+                          onValueChange={(value) =>
+                            setType(value as "trailer" | "episode" | "chapter")
                           }
                           disabled={isFormDisabled}
-                          className="mt-1.5 w-full h-9 px-3 py-1 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                           required
                         >
-                          <option value="chapter">
-                            {t("segments.type.chapter", "series")}
-                          </option>
-                          <option value="episode">
-                            {t("segments.type.episode", "series")}
-                          </option>
-                          <option value="trailer">
-                            {t("segments.type.trailer", "series")}
-                          </option>
-                        </select>
+                          <SelectTrigger className="mt-1.5 w-full">
+                            <SelectValue
+                              placeholder={t("segments.form.type", "series")}
+                            />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="chapter">
+                              {t("segments.type.chapter", "series")}
+                            </SelectItem>
+                            <SelectItem value="episode">
+                              {t("segments.type.episode", "series")}
+                            </SelectItem>
+                            <SelectItem value="trailer">
+                              {t("segments.type.trailer", "series")}
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
 
                       {/* Number and Sub Number */}
@@ -758,6 +769,37 @@ export default function UploadSegmentPage() {
                             className="mt-1.5"
                           />
                         </div>
+                      </div>
+
+                      {/* Language Code */}
+                      <div>
+                        <Label
+                          htmlFor="languageCode"
+                          className="text-sm font-medium"
+                        >
+                          {t("segments.form.languageCode", "series")}
+                        </Label>
+                        <Select
+                          value={languageCode}
+                          onValueChange={setLanguageCode}
+                          disabled={isFormDisabled}
+                        >
+                          <SelectTrigger className="mt-1.5 w-full">
+                            <SelectValue
+                              placeholder={t(
+                                "segments.form.languageCode",
+                                "series",
+                              )}
+                            />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {LANGUAGES.map((lang) => (
+                              <SelectItem key={lang.code} value={lang.code}>
+                                {lang.name} ({lang.native})
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                     </CardContent>
                   </Card>
@@ -890,12 +932,11 @@ export default function UploadSegmentPage() {
                             >
                               {t("segments.form.status", "series")}
                             </Label>
-                            <select
-                              id="status"
+                            <Select
                               value={status}
-                              onChange={(e) =>
+                              onValueChange={(value) =>
                                 setStatus(
-                                  e.target.value as
+                                  value as
                                     | "active"
                                     | "inactive"
                                     | "pending"
@@ -903,21 +944,27 @@ export default function UploadSegmentPage() {
                                 )
                               }
                               disabled={isFormDisabled}
-                              className="mt-1.5 w-full h-9 px-3 py-1 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                              <option value="pending">
-                                {t("segments.status.pending", "series")}
-                              </option>
-                              <option value="active">
-                                {t("segments.status.active", "series")}
-                              </option>
-                              <option value="inactive">
-                                {t("segments.status.inactive", "series")}
-                              </option>
-                              <option value="archived">
-                                {t("segments.status.archived", "series")}
-                              </option>
-                            </select>
+                              <SelectTrigger className="mt-1.5 w-full">
+                                <SelectValue
+                                  placeholder={t("segments.form.status", "series")}
+                                />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="pending">
+                                  {t("segments.status.pending", "series")}
+                                </SelectItem>
+                                <SelectItem value="active">
+                                  {t("segments.status.active", "series")}
+                                </SelectItem>
+                                <SelectItem value="inactive">
+                                  {t("segments.status.inactive", "series")}
+                                </SelectItem>
+                                <SelectItem value="archived">
+                                  {t("segments.status.archived", "series")}
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
                           </div>
                           <div>
                             <Label
@@ -926,12 +973,11 @@ export default function UploadSegmentPage() {
                             >
                               {t("segments.form.accessType", "series")}
                             </Label>
-                            <select
-                              id="accessType"
+                            <Select
                               value={accessType}
-                              onChange={(e) =>
+                              onValueChange={(value) =>
                                 setAccessType(
-                                  e.target.value as
+                                  value as
                                     | "free"
                                     | "paid"
                                     | "subscription"
@@ -939,48 +985,34 @@ export default function UploadSegmentPage() {
                                 )
                               }
                               disabled={isFormDisabled}
-                              className="mt-1.5 w-full h-9 px-3 py-1 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                              <option value="free">
-                                {t("segments.accessType.free", "series")}
-                              </option>
-                              <option value="paid">
-                                {t("segments.accessType.paid", "series")}
-                              </option>
-                              <option value="subscription">
-                                {t(
-                                  "segments.accessType.subscription",
-                                  "series",
-                                )}
-                              </option>
-                              <option value="membership">
-                                {t("segments.accessType.membership", "series")}
-                              </option>
-                            </select>
+                              <SelectTrigger className="mt-1.5 w-full">
+                                <SelectValue
+                                  placeholder={t(
+                                    "segments.form.accessType",
+                                    "series",
+                                  )}
+                                />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="free">
+                                  {t("segments.accessType.free", "series")}
+                                </SelectItem>
+                                <SelectItem value="paid">
+                                  {t("segments.accessType.paid", "series")}
+                                </SelectItem>
+                                <SelectItem value="subscription">
+                                  {t(
+                                    "segments.accessType.subscription",
+                                    "series",
+                                  )}
+                                </SelectItem>
+                                <SelectItem value="membership">
+                                  {t("segments.accessType.membership", "series")}
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
                           </div>
-                        </div>
-
-                        {/* Language Code */}
-                        <div>
-                          <Label
-                            htmlFor="languageCode"
-                            className="text-sm font-medium"
-                          >
-                            {t("segments.form.languageCode", "series")}
-                          </Label>
-                          <select
-                            id="languageCode"
-                            value={languageCode}
-                            onChange={(e) => setLanguageCode(e.target.value)}
-                            disabled={isFormDisabled}
-                            className="mt-1.5 w-full h-9 px-3 py-1 border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            <option value="en">English</option>
-                            <option value="vi">Tiếng Việt</option>
-                            <option value="ja">日本語</option>
-                            <option value="zh">中文</option>
-                            <option value="ko">한국어</option>
-                          </select>
                         </div>
 
                         {/* Type-specific fields */}

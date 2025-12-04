@@ -5,6 +5,7 @@ export * from "./bookmark.constants";
 export * from "./comment.constants";
 export * from "./common.constants";
 export * from "./file.constants";
+export * from "./language.constants";
 export * from "./media.constants";
 export * from "./notification.constants";
 export * from "./qr.constants";

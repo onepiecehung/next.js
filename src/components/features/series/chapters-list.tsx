@@ -9,6 +9,7 @@ import { Skeletonize } from "@/components/shared";
 import { Badge } from "@/components/ui/core/badge";
 import { Button } from "@/components/ui/core/button";
 import { useSeriesSegmentsInfinite } from "@/hooks/series";
+import { LANGUAGES } from "@/lib/constants";
 import type { SeriesSegment } from "@/lib/interface/series.interface";
 import type { PaginationCursor } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -327,11 +328,10 @@ export function ChaptersList({
   // Available languages for filter
   const languages = [
     { value: "all", label: t("chapters.filter.all", "series") || "All Languages" },
-    { value: "en", label: "English" },
-    { value: "vi", label: "Tiếng Việt" },
-    { value: "ja", label: "日本語" },
-    { value: "zh", label: "中文" },
-    { value: "ko", label: "한국어" },
+    ...LANGUAGES.map((lang) => ({
+      value: lang.code,
+      label: `${lang.name} (${lang.native})`,
+    })),
   ];
 
   return (
