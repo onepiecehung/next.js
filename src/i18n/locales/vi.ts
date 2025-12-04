@@ -5,6 +5,7 @@ import demo from "./vi/demo.json";
 import home from "./vi/home.json";
 import series from "./vi/series.json";
 import profile from "./vi/profile.json";
+import settings from "./vi/settings.json";
 import toast from "./vi/toast.json";
 import user from "./vi/user.json";
 import write from "./vi/write.json";
@@ -20,6 +21,7 @@ const viMessages = {
   write,
   demo,
   series,
+  settings,
 };
 
 export default viMessages;

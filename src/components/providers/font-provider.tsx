@@ -168,11 +168,17 @@ export function FontProvider({
     if (!mounted) return;
 
     const root = document.documentElement;
+    const body = document.body;
     const currentFontData = fonts.find((f) => f.value === fontFamily);
 
     if (currentFontData) {
       // Apply font family via CSS variable
       root.style.setProperty("--font-family", currentFontData.fontFamily);
+      
+      // Also apply directly to body element to ensure it takes effect
+      if (body) {
+        body.style.fontFamily = currentFontData.fontFamily;
+      }
 
       // Save to localStorage with validation
       if (fonts.some((f) => f.value === fontFamily)) {

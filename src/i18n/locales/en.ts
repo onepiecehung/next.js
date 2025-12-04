@@ -5,6 +5,7 @@ import demo from "./en/demo.json";
 import home from "./en/home.json";
 import series from "./en/series.json";
 import profile from "./en/profile.json";
+import settings from "./en/settings.json";
 import toast from "./en/toast.json";
 import user from "./en/user.json";
 import write from "./en/write.json";
@@ -20,6 +21,7 @@ const enMessages = {
   write,
   demo,
   series,
+  settings,
 };
 
 export default enMessages;
