@@ -19,6 +19,7 @@ import { AnimatedSection, Skeletonize } from "@/components/shared";
 import { Button } from "@/components/ui";
 import { Badge } from "@/components/ui/core/badge";
 import { useSeries, useSeriesFull } from "@/hooks/series";
+import { usePageMetadata } from "@/hooks/ui";
 import { currentUserAtom } from "@/lib/auth";
 import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
 import { cn } from "@/lib/utils";
@@ -53,6 +54,18 @@ export default function SeriesDetailPage() {
   // Only enable chapters loading after series data is fully loaded
   const shouldLoadChapters =
     isSeriesFetched && !isLoading && !error && !!series;
+
+  // Update page metadata
+  usePageMetadata({
+    title: series?.title,
+    description: series?.description
+      ? series.description.substring(0, 160)
+      : undefined,
+    image: series?.coverUrl,
+    url: typeof window !== "undefined" ? window.location.href : undefined,
+    keywords: series?.tags,
+    type: "website",
+  });
 
   // Show 404 if series not found
   if (!isLoading && !error && !series) {

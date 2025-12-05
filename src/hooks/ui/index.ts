@@ -5,3 +5,4 @@
 
 export { useLoadingDelay } from "./useLoadingDelay";
 export { useTheme } from "./useTheme";
+export { usePageMetadata } from "./use-page-metadata";
