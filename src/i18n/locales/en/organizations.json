@@ -44,6 +44,26 @@
   "organizationUpdateError": "Failed to update organization",
   "organizationDeleted": "Organization deleted successfully",
   "organizationDeleteError": "Failed to delete organization",
+  "detail": {
+    "title": "Organization Details",
+    "error": {
+      "title": "Error",
+      "message": "Failed to load organization",
+      "backToHome": "Back to Home"
+    },
+    "visibility": "Visibility",
+    "public": "Public",
+    "private": "Private",
+    "members": "Members",
+    "articles": "Articles",
+    "created": "Created",
+    "website": "Website",
+    "owner": "Owner",
+    "edit": "Edit Organization",
+    "join": "Join Organization",
+    "articlesComingSoon": "Articles section coming soon...",
+    "membersComingSoon": "Members section coming soon..."
+  },
   "validation": {
     "nameRequired": "Organization name is required",
     "nameMaxLength": "Organization name must be less than 100 characters",

@@ -79,6 +79,14 @@ function matchRoute(
     return BreadcrumbRoutes.organizations.register();
   }
 
+  if (pathname.match(/^\/organizations\/([^/]+)$/)) {
+    const organizationId = pathname.split("/")[2];
+    return BreadcrumbRoutes.organizations.detail(
+      organizationId,
+      dynamicParams?.organization_name,
+    );
+  }
+
   // Series routes
   if (pathname.match(/^\/series\/([^/]+)\/upload-segment$/)) {
     const seriesId = pathname.split("/")[2];

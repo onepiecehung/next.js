@@ -44,6 +44,26 @@
   "organizationUpdateError": "Không thể cập nhật tổ chức",
   "organizationDeleted": "Xóa tổ chức thành công",
   "organizationDeleteError": "Không thể xóa tổ chức",
+  "detail": {
+    "title": "Chi tiết tổ chức",
+    "error": {
+      "title": "Lỗi",
+      "message": "Không thể tải tổ chức",
+      "backToHome": "Về trang chủ"
+    },
+    "visibility": "Quyền riêng tư",
+    "public": "Công khai",
+    "private": "Riêng tư",
+    "members": "Thành viên",
+    "articles": "Bài viết",
+    "created": "Ngày tạo",
+    "website": "Trang web",
+    "owner": "Chủ sở hữu",
+    "edit": "Chỉnh sửa tổ chức",
+    "join": "Tham gia tổ chức",
+    "articlesComingSoon": "Phần bài viết sắp ra mắt...",
+    "membersComingSoon": "Phần thành viên sắp ra mắt..."
+  },
   "validation": {
     "nameRequired": "Tên tổ chức là bắt buộc",
     "nameMaxLength": "Tên tổ chức phải ít hơn 100 ký tự",

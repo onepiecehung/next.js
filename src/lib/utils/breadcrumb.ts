@@ -96,6 +96,14 @@ export const BreadcrumbRoutes = {
       { label: "nav.breadcrumb.organizations", href: "/organizations" },
       { label: "nav.breadcrumb.register", isActive: true },
     ],
+    detail: (organizationId: string, organizationName?: string): BreadcrumbItem[] => [
+      { label: "nav.breadcrumb.home", href: "/" },
+      { label: "nav.breadcrumb.organizations", href: "/organizations" },
+      {
+        label: organizationName && organizationName.trim() ? organizationName : "nav.breadcrumb.organizations",
+        isActive: true,
+      },
+    ],
   },
 
   /**
