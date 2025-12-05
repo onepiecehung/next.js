@@ -21,6 +21,8 @@
     "logoPlaceholder": "Tải lên logo tổ chức",
     "logoDescription": "Tải lên logo vuông cho tổ chức của bạn. Kích thước đề xuất: 512x512px",
     "logoUploadError": "Không thể tải lên logo. Vui lòng thử lại.",
+    "logoUploadSuccess": "Tải lên logo thành công",
+    "logoUploading": "Đang tải lên logo...",
     "logoUrl": "URL logo",
     "logoUrlPlaceholder": "https://example.com/logo.png (thay thế cho tải lên)",
     "logoUrlOptional": "(tùy chọn)",

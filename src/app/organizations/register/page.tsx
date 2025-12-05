@@ -32,6 +32,9 @@ import { useImageUpload } from "@/hooks/media/useMediaQuery";
 import { useCreateOrganization } from "@/hooks/organizations";
 import { useBreadcrumb } from "@/hooks/ui";
 import { extractErrorMessage } from "@/lib/utils/error-extractor";
+import { http } from "@/lib/http";
+import type { ApiResponse } from "@/lib/types";
+import type { UploadedMedia } from "@/lib/interface";
 import {
   createOrganizationSchema,
   type CreateOrganizationFormData,
@@ -58,6 +61,10 @@ export default function OrganizationRegisterPage() {
   
   // Logo file state
   const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoUploadProgress, setLogoUploadProgress] = useState<number>(0);
+  const [logoUploadStatus, setLogoUploadStatus] = useState<"idle" | "uploading" | "success" | "error">("idle");
+  const [uploadedLogoId, setUploadedLogoId] = useState<string | undefined>(undefined);
+  const [uploadedLogoUrl, setUploadedLogoUrl] = useState<string | undefined>(undefined);
 
   const form = useForm<CreateOrganizationFormData>({
     resolver: zodResolver(createOrganizationSchema),
@@ -78,19 +85,84 @@ export default function OrganizationRegisterPage() {
     reset,
   } = form;
 
+  // Upload logo with progress tracking
+  const uploadLogoWithProgress = async (file: File) => {
+    setLogoUploadStatus("uploading");
+    setLogoUploadProgress(0);
+
+    try {
+      const formData = new FormData();
+      formData.append("files", file);
+
+      const response = await http.post<ApiResponse<UploadedMedia[]>>(
+        "/media",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          onUploadProgress: (progressEvent) => {
+            if (progressEvent.total) {
+              const percentCompleted = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total,
+              );
+              setLogoUploadProgress(percentCompleted);
+            }
+          },
+        },
+      );
+
+      if (response.data.success && response.data.data.length > 0) {
+        const uploadedMedia = response.data.data[0];
+        setUploadedLogoId(uploadedMedia.id);
+        setUploadedLogoUrl(uploadedMedia.url);
+        setLogoUploadStatus("success");
+        setLogoUploadProgress(100);
+        
+        return uploadedMedia;
+      } else {
+        throw new Error(response.data.message || "Upload failed");
+      }
+    } catch (error) {
+      console.error("Logo upload error:", error);
+      setLogoUploadStatus("error");
+      setLogoUploadProgress(0);
+      throw error;
+    }
+  };
+
+  // Handle logo file selection - just store the file, don't upload yet
+  const handleLogoFileChange = (file: File | null) => {
+    setLogoFile(file);
+    
+    if (!file) {
+      // Reset upload state when file is removed
+      setLogoUploadStatus("idle");
+      setLogoUploadProgress(0);
+      setUploadedLogoId(undefined);
+      setUploadedLogoUrl(undefined);
+      form.setValue("logoId", "");
+      form.setValue("logoUrl", "");
+    } else {
+      // Reset upload status when new file is selected
+      setLogoUploadStatus("idle");
+      setLogoUploadProgress(0);
+      setUploadedLogoId(undefined);
+      setUploadedLogoUrl(undefined);
+    }
+  };
+
   const onSubmit = async (values: CreateOrganizationFormData) => {
     try {
-      let logoId: string | undefined = values.logoId?.trim() || undefined;
+      let logoId: string | undefined = uploadedLogoId || values.logoId?.trim() || undefined;
 
-      // Upload logo file if provided
-      if (logoFile) {
+      // Upload logo file if provided (only when submitting form)
+      if (logoFile && !uploadedLogoId) {
         try {
-          const uploadResponse = await uploadImage.mutateAsync(logoFile);
-          if (uploadResponse?.data?.[0]?.id) {
-            logoId = uploadResponse.data[0].id;
+          const uploadedMedia = await uploadLogoWithProgress(logoFile);
+          if (uploadedMedia?.id) {
+            logoId = uploadedMedia.id;
             // Also set logoUrl if available
-            if (uploadResponse.data[0].url && !values.logoUrl?.trim()) {
-              form.setValue("logoUrl", uploadResponse.data[0].url);
+            if (uploadedMedia.url && !values.logoUrl?.trim()) {
+              form.setValue("logoUrl", uploadedMedia.url);
             }
           }
         } catch (uploadError) {
@@ -120,6 +192,10 @@ export default function OrganizationRegisterPage() {
       // Reset form and logo file
       reset();
       setLogoFile(null);
+      setLogoUploadStatus("idle");
+      setLogoUploadProgress(0);
+      setUploadedLogoId(undefined);
+      setUploadedLogoUrl(undefined);
 
       // Redirect to organization detail page after a short delay to show success toast
       // Use replace instead of push to avoid creating history entry
@@ -316,32 +392,91 @@ export default function OrganizationRegisterPage() {
                           </span>
                         </FormLabel>
                         <FormControl>
-                          <ImageUpload
-                            value={logoFile}
-                            onChange={(file) => {
-                              setLogoFile(file);
-                              // Clear logoId when file is removed
-                              if (!file) {
-                                field.onChange("");
-                                form.setValue("logoId", "");
+                          <div className="space-y-3">
+                            <ImageUpload
+                              value={logoFile}
+                              onChange={handleLogoFileChange}
+                              placeholder={
+                                t("register.logoPlaceholder", "organizations") ||
+                                "Upload organization logo"
                               }
-                            }}
-                            placeholder={
-                              t("register.logoPlaceholder", "organizations") ||
-                              "Upload organization logo"
-                            }
-                            disabled={isSubmitting || createOrganization.isPending || uploadImage.isPending}
-                            maxSizeInMB={5}
-                            acceptedTypes={[
-                              "image/jpeg",
-                              "image/jpg",
-                              "image/png",
-                              "image/gif",
-                              "image/webp",
-                            ]}
-                            enableCrop={true}
-                            aspectRatio={1} // Square logo
-                          />
+                              disabled={isSubmitting || createOrganization.isPending || logoUploadStatus === "uploading"}
+                              maxSizeInMB={5}
+                              acceptedTypes={[
+                                "image/jpeg",
+                                "image/jpg",
+                                "image/png",
+                                "image/gif",
+                                "image/webp",
+                              ]}
+                              enableCrop={true}
+                              aspectRatio={1} // Square logo
+                            />
+                            
+                            {/* Upload Progress Bar */}
+                            {logoUploadStatus === "uploading" && (
+                              <div className="space-y-2">
+                                <div className="flex items-center justify-between text-xs">
+                                  <span className="text-muted-foreground">
+                                    {t("register.logoUploading", "organizations") || "Uploading logo..."}
+                                  </span>
+                                  <span className="font-medium text-foreground">
+                                    {logoUploadProgress}%
+                                  </span>
+                                </div>
+                                <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                                  <div
+                                    className="h-full bg-primary transition-all duration-300 ease-out"
+                                    style={{ width: `${logoUploadProgress}%` }}
+                                  />
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Upload Success Indicator */}
+                            {logoUploadStatus === "success" && (
+                              <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
+                                <svg
+                                  className="h-4 w-4"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M5 13l4 4L19 7"
+                                  />
+                                </svg>
+                                <span>
+                                  {t("register.logoUploadSuccess", "organizations") || "Logo uploaded successfully"}
+                                </span>
+                              </div>
+                            )}
+
+                            {/* Upload Error Indicator */}
+                            {logoUploadStatus === "error" && (
+                              <div className="flex items-center gap-2 text-sm text-destructive">
+                                <svg
+                                  className="h-4 w-4"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
+                                <span>
+                                  {t("register.logoUploadError", "organizations") || "Failed to upload logo"}
+                                </span>
+                              </div>
+                            )}
+                          </div>
                         </FormControl>
                         <FormDescription>
                           {t("register.logoDescription", "organizations") ||
@@ -374,7 +509,7 @@ export default function OrganizationRegisterPage() {
                             }
                             {...field}
                             value={field.value || ""}
-                            disabled={!!logoFile} // Disable if logo file is uploaded
+                            disabled={!!logoFile || logoUploadStatus === "uploading"} // Disable if logo file is uploaded or uploading
                           />
                         </FormControl>
                         <FormDescription>

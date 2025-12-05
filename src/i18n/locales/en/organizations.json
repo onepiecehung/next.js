@@ -21,6 +21,8 @@
     "logoPlaceholder": "Upload organization logo",
     "logoDescription": "Upload a square logo for your organization. Recommended size: 512x512px",
     "logoUploadError": "Failed to upload logo. Please try again.",
+    "logoUploadSuccess": "Logo uploaded successfully",
+    "logoUploading": "Uploading logo...",
     "logoUrl": "Logo URL",
     "logoUrlPlaceholder": "https://example.com/logo.png (alternative to upload)",
     "logoUrlOptional": "(optional)",

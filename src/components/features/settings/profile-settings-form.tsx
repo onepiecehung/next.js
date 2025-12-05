@@ -99,18 +99,19 @@ export function ProfileSettingsForm() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Basic Information */}
-      <Card>
-        <CardHeader>
-          <CardTitle>{t("profileBasicInfo", "settings")}</CardTitle>
-          <CardDescription>
-            {t("profileBasicInfoDescription", "settings")}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="space-y-6">
+          {/* Basic Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("profileBasicInfo", "settings")}</CardTitle>
+              <CardDescription>
+                {t("profileBasicInfoDescription", "settings")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
@@ -210,26 +211,25 @@ export function ProfileSettingsForm() {
                 />
               </div>
 
-              <Button type="submit" disabled={isUpdating}>
-                {isUpdating
-                  ? t("profileUpdating", "settings")
-                  : t("profileUpdate", "settings")}
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+                <Button type="submit" disabled={isUpdating}>
+                  {isUpdating
+                    ? t("profileUpdating", "settings")
+                    : t("profileUpdate", "settings")}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
-      {/* Social Links */}
-      <Card>
-        <CardHeader>
-          <CardTitle>{t("profileSocialLinks", "settings")}</CardTitle>
-          <CardDescription>
-            {t("profileSocialLinksDescription", "settings")}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
+          {/* Social Links */}
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("profileSocialLinks", "settings")}</CardTitle>
+              <CardDescription>
+                {t("profileSocialLinksDescription", "settings")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
             <FormField
               control={form.control}
               name="github"
@@ -280,9 +280,11 @@ export function ProfileSettingsForm() {
                 </FormItem>
               )}
             />
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </form>
+    </Form>
   );
 }
