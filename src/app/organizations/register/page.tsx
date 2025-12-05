@@ -121,8 +121,11 @@ export default function OrganizationRegisterPage() {
       reset();
       setLogoFile(null);
 
-      // Redirect to organization page
-      router.push(`/organizations/${organization.id}`);
+      // Redirect to organization detail page after a short delay to show success toast
+      // Use replace instead of push to avoid creating history entry
+      setTimeout(() => {
+        router.replace(`/organizations/${organization.id}`);
+      }, 500);
     } catch (error: unknown) {
       // Error is already handled by the mutation hook
       console.error("Organization creation error:", error);
