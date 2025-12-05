@@ -36,14 +36,14 @@ interface PageMetadataOptions {
 
 /**
  * Custom hook to update page metadata (title, meta tags) for client components
- * 
+ *
  * This hook updates:
  * - document.title
  * - meta description
  * - Open Graph tags
  * - Twitter Card tags
  * - Canonical URL
- * 
+ *
  * @example
  * ```tsx
  * usePageMetadata({
@@ -71,17 +71,23 @@ export function usePageMetadata({
     }
 
     // Helper function to update or create meta tag
-    const updateMetaTag = (name: string, content: string, attribute: string = "name") => {
+    const updateMetaTag = (
+      name: string,
+      content: string,
+      attribute: string = "name",
+    ) => {
       if (!content) return;
 
-      let element = document.querySelector(`meta[${attribute}="${name}"]`) as HTMLMetaElement;
-      
+      let element = document.querySelector(
+        `meta[${attribute}="${name}"]`,
+      ) as HTMLMetaElement;
+
       if (!element) {
         element = document.createElement("meta");
         element.setAttribute(attribute, name);
         document.head.appendChild(element);
       }
-      
+
       element.setAttribute("content", content);
     };
 
@@ -106,9 +112,11 @@ export function usePageMetadata({
 
     if (url) {
       updateMetaTag("og:url", url, "property");
-      
+
       // Update canonical link
-      let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+      let canonicalLink = document.querySelector(
+        'link[rel="canonical"]',
+      ) as HTMLLinkElement;
       if (!canonicalLink) {
         canonicalLink = document.createElement("link");
         canonicalLink.setAttribute("rel", "canonical");
@@ -137,4 +145,3 @@ export function usePageMetadata({
     };
   }, [title, description, image, url, keywords, author, type]);
 }
-

@@ -55,7 +55,8 @@ export function useBreadcrumb(
 
     // Fallback to auto-generation
     const autoItems = generateBreadcrumbs(pathname, dynamicParams, {
-      home: t("nav.home", "common") || t("nav.breadcrumb.home", "common") || "Home",
+      home:
+        t("nav.home", "common") || t("nav.breadcrumb.home", "common") || "Home",
     });
 
     return autoItems.map((item) => ({
@@ -127,20 +128,13 @@ function matchRoute(
   // User routes
   if (pathname.match(/^\/user\/([^/]+)\/settings$/)) {
     const userId = pathname.split("/")[2];
-    return BreadcrumbRoutes.user.settings(
-      userId,
-      dynamicParams?.username,
-    );
+    return BreadcrumbRoutes.user.settings(userId, dynamicParams?.username);
   }
 
   if (pathname.match(/^\/user\/([^/]+)$/)) {
     const userId = pathname.split("/")[2];
-    return BreadcrumbRoutes.user.profile(
-      userId,
-      dynamicParams?.username,
-    );
+    return BreadcrumbRoutes.user.profile(userId, dynamicParams?.username);
   }
 
   return null;
 }
-

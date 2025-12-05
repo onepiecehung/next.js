@@ -126,4 +126,3 @@ export class OrganizationsAPI {
     return response.data.data;
   }
 }
-

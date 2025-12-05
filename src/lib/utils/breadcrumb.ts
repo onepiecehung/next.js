@@ -96,11 +96,17 @@ export const BreadcrumbRoutes = {
       { label: "nav.breadcrumb.organizations", href: "/organizations" },
       { label: "nav.breadcrumb.register", isActive: true },
     ],
-    detail: (organizationId: string, organizationName?: string): BreadcrumbItem[] => [
+    detail: (
+      organizationId: string,
+      organizationName?: string,
+    ): BreadcrumbItem[] => [
       { label: "nav.breadcrumb.home", href: "/" },
       { label: "nav.breadcrumb.organizations", href: "/organizations" },
       {
-        label: organizationName && organizationName.trim() ? organizationName : "nav.breadcrumb.organizations",
+        label:
+          organizationName && organizationName.trim()
+            ? organizationName
+            : "nav.breadcrumb.organizations",
         isActive: true,
       },
     ],
@@ -110,12 +116,18 @@ export const BreadcrumbRoutes = {
    * Series routes
    */
   series: {
-    uploadSegment: (seriesId: string, seriesTitle?: string): BreadcrumbItem[] => [
+    uploadSegment: (
+      seriesId: string,
+      seriesTitle?: string,
+    ): BreadcrumbItem[] => [
       { label: "nav.breadcrumb.home", href: "/" },
       { label: "nav.breadcrumb.series", href: "/series" },
       {
         // Use seriesTitle if provided and not empty, otherwise use translation key
-        label: seriesTitle && seriesTitle.trim() ? seriesTitle : "nav.breadcrumb.series",
+        label:
+          seriesTitle && seriesTitle.trim()
+            ? seriesTitle
+            : "nav.breadcrumb.series",
         href: `/series/${seriesId}`,
       },
       { label: "nav.breadcrumb.uploadSegment", isActive: true },
@@ -123,10 +135,13 @@ export const BreadcrumbRoutes = {
     detail: (seriesId: string, seriesTitle?: string): BreadcrumbItem[] => [
       { label: "nav.breadcrumb.home", href: "/" },
       { label: "nav.breadcrumb.series", href: "/series" },
-      { 
+      {
         // Use seriesTitle if provided and not empty, otherwise use translation key
-        label: seriesTitle && seriesTitle.trim() ? seriesTitle : "nav.breadcrumb.series", 
-        isActive: true 
+        label:
+          seriesTitle && seriesTitle.trim()
+            ? seriesTitle
+            : "nav.breadcrumb.series",
+        isActive: true,
       },
     ],
   },
@@ -145,14 +160,18 @@ export const BreadcrumbRoutes = {
       { label: "nav.breadcrumb.series", href: "/series" },
       {
         // Use seriesTitle if provided and not empty, otherwise use translation key
-        label: seriesTitle && seriesTitle.trim() ? seriesTitle : "nav.breadcrumb.series",
+        label:
+          seriesTitle && seriesTitle.trim()
+            ? seriesTitle
+            : "nav.breadcrumb.series",
         href: `/series/${seriesId}`,
       },
       {
         // Use segmentNumber if provided, otherwise use translation key
-        label: segmentNumber && segmentNumber.trim()
-          ? `${segmentNumber}`
-          : "nav.breadcrumb.segment",
+        label:
+          segmentNumber && segmentNumber.trim()
+            ? `${segmentNumber}`
+            : "nav.breadcrumb.segment",
         isActive: true,
       },
     ],
@@ -165,10 +184,13 @@ export const BreadcrumbRoutes = {
     detail: (articleId: string, articleTitle?: string): BreadcrumbItem[] => [
       { label: "nav.breadcrumb.home", href: "/" },
       { label: "nav.breadcrumb.articles", href: "/articles" },
-      { 
+      {
         // Use articleTitle if provided and not empty, otherwise use translation key
-        label: articleTitle && articleTitle.trim() ? articleTitle : "nav.breadcrumb.articles", 
-        isActive: true 
+        label:
+          articleTitle && articleTitle.trim()
+            ? articleTitle
+            : "nav.breadcrumb.articles",
+        isActive: true,
       },
     ],
   },
@@ -188,12 +210,11 @@ export const BreadcrumbRoutes = {
     ],
     profile: (userId: string, username?: string): BreadcrumbItem[] => [
       { label: "nav.breadcrumb.home", href: "/" },
-      { 
+      {
         // Use username if provided and not empty, otherwise use translation key
-        label: username && username.trim() ? username : "nav.breadcrumb.users", 
-        isActive: true 
+        label: username && username.trim() ? username : "nav.breadcrumb.users",
+        isActive: true,
       },
     ],
   },
 };
-

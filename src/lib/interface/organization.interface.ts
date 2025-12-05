@@ -61,4 +61,3 @@ export interface CreateOrganizationDto {
 export type UpdateOrganizationDto = Partial<
   Omit<CreateOrganizationDto, "ownerId">
 >;
-

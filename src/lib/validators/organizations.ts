@@ -94,4 +94,3 @@ export type CreateOrganizationFormData = z.infer<
 export type UpdateOrganizationFormData = z.infer<
   typeof updateOrganizationSchema
 >;
-
