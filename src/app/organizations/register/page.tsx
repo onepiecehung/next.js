@@ -58,13 +58,19 @@ export default function OrganizationRegisterPage() {
   const createOrganization = useCreateOrganization();
   const breadcrumbItems = useBreadcrumb();
   const uploadImage = useImageUpload();
-  
+
   // Logo file state
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoUploadProgress, setLogoUploadProgress] = useState<number>(0);
-  const [logoUploadStatus, setLogoUploadStatus] = useState<"idle" | "uploading" | "success" | "error">("idle");
-  const [uploadedLogoId, setUploadedLogoId] = useState<string | undefined>(undefined);
-  const [uploadedLogoUrl, setUploadedLogoUrl] = useState<string | undefined>(undefined);
+  const [logoUploadStatus, setLogoUploadStatus] = useState<
+    "idle" | "uploading" | "success" | "error"
+  >("idle");
+  const [uploadedLogoId, setUploadedLogoId] = useState<string | undefined>(
+    undefined,
+  );
+  const [uploadedLogoUrl, setUploadedLogoUrl] = useState<string | undefined>(
+    undefined,
+  );
 
   const form = useForm<CreateOrganizationFormData>({
     resolver: zodResolver(createOrganizationSchema),
@@ -116,7 +122,7 @@ export default function OrganizationRegisterPage() {
         setUploadedLogoUrl(uploadedMedia.url);
         setLogoUploadStatus("success");
         setLogoUploadProgress(100);
-        
+
         return uploadedMedia;
       } else {
         throw new Error(response.data.message || "Upload failed");
@@ -132,7 +138,7 @@ export default function OrganizationRegisterPage() {
   // Handle logo file selection - just store the file, don't upload yet
   const handleLogoFileChange = (file: File | null) => {
     setLogoFile(file);
-    
+
     if (!file) {
       // Reset upload state when file is removed
       setLogoUploadStatus("idle");
@@ -152,7 +158,8 @@ export default function OrganizationRegisterPage() {
 
   const onSubmit = async (values: CreateOrganizationFormData) => {
     try {
-      let logoId: string | undefined = uploadedLogoId || values.logoId?.trim() || undefined;
+      let logoId: string | undefined =
+        uploadedLogoId || values.logoId?.trim() || undefined;
 
       // Upload logo file if provided (only when submitting form)
       if (logoFile && !uploadedLogoId) {
@@ -324,8 +331,10 @@ export default function OrganizationRegisterPage() {
                           {t("register.description", "organizations") ||
                             "Description"}
                           <span className="text-muted-foreground ml-1">
-                            {t("register.descriptionOptional", "organizations") ||
-                              "(optional)"}
+                            {t(
+                              "register.descriptionOptional",
+                              "organizations",
+                            ) || "(optional)"}
                           </span>
                         </FormLabel>
                         <FormControl>
@@ -356,8 +365,10 @@ export default function OrganizationRegisterPage() {
                           {t("register.websiteUrl", "organizations") ||
                             "Website URL"}
                           <span className="text-muted-foreground ml-1">
-                            {t("register.websiteUrlOptional", "organizations") ||
-                              "(optional)"}
+                            {t(
+                              "register.websiteUrlOptional",
+                              "organizations",
+                            ) || "(optional)"}
                           </span>
                         </FormLabel>
                         <FormControl>
@@ -397,10 +408,16 @@ export default function OrganizationRegisterPage() {
                               value={logoFile}
                               onChange={handleLogoFileChange}
                               placeholder={
-                                t("register.logoPlaceholder", "organizations") ||
-                                "Upload organization logo"
+                                t(
+                                  "register.logoPlaceholder",
+                                  "organizations",
+                                ) || "Upload organization logo"
                               }
-                              disabled={isSubmitting || createOrganization.isPending || logoUploadStatus === "uploading"}
+                              disabled={
+                                isSubmitting ||
+                                createOrganization.isPending ||
+                                logoUploadStatus === "uploading"
+                              }
                               maxSizeInMB={5}
                               acceptedTypes={[
                                 "image/jpeg",
@@ -412,13 +429,16 @@ export default function OrganizationRegisterPage() {
                               enableCrop={true}
                               aspectRatio={1} // Square logo
                             />
-                            
+
                             {/* Upload Progress Bar */}
                             {logoUploadStatus === "uploading" && (
                               <div className="space-y-2">
                                 <div className="flex items-center justify-between text-xs">
                                   <span className="text-muted-foreground">
-                                    {t("register.logoUploading", "organizations") || "Uploading logo..."}
+                                    {t(
+                                      "register.logoUploading",
+                                      "organizations",
+                                    ) || "Uploading logo..."}
                                   </span>
                                   <span className="font-medium text-foreground">
                                     {logoUploadProgress}%
@@ -450,7 +470,10 @@ export default function OrganizationRegisterPage() {
                                   />
                                 </svg>
                                 <span>
-                                  {t("register.logoUploadSuccess", "organizations") || "Logo uploaded successfully"}
+                                  {t(
+                                    "register.logoUploadSuccess",
+                                    "organizations",
+                                  ) || "Logo uploaded successfully"}
                                 </span>
                               </div>
                             )}
@@ -472,7 +495,10 @@ export default function OrganizationRegisterPage() {
                                   />
                                 </svg>
                                 <span>
-                                  {t("register.logoUploadError", "organizations") || "Failed to upload logo"}
+                                  {t(
+                                    "register.logoUploadError",
+                                    "organizations",
+                                  ) || "Failed to upload logo"}
                                 </span>
                               </div>
                             )}
@@ -504,12 +530,17 @@ export default function OrganizationRegisterPage() {
                           <Input
                             type="url"
                             placeholder={
-                              t("register.logoUrlPlaceholder", "organizations") ||
+                              t(
+                                "register.logoUrlPlaceholder",
+                                "organizations",
+                              ) ||
                               "https://example.com/logo.png (alternative to upload)"
                             }
                             {...field}
                             value={field.value || ""}
-                            disabled={!!logoFile || logoUploadStatus === "uploading"} // Disable if logo file is uploaded or uploading
+                            disabled={
+                              !!logoFile || logoUploadStatus === "uploading"
+                            } // Disable if logo file is uploaded or uploading
                           />
                         </FormControl>
                         <FormDescription>
@@ -542,25 +573,31 @@ export default function OrganizationRegisterPage() {
                                   t(
                                     "register.visibilityDescription",
                                     "organizations",
-                                  ) ||
-                                  "Control who can view your organization"
+                                  ) || "Control who can view your organization"
                                 }
                               />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
                             <SelectItem value="public">
-                              {t("register.visibilityPublic", "organizations") ||
-                                "Public"}
+                              {t(
+                                "register.visibilityPublic",
+                                "organizations",
+                              ) || "Public"}
                             </SelectItem>
                             <SelectItem value="private">
-                              {t("register.visibilityPrivate", "organizations") ||
-                                "Private"}
+                              {t(
+                                "register.visibilityPrivate",
+                                "organizations",
+                              ) || "Private"}
                             </SelectItem>
                           </SelectContent>
                         </Select>
                         <FormDescription>
-                          {t("register.visibilityDescription", "organizations") ||
+                          {t(
+                            "register.visibilityDescription",
+                            "organizations",
+                          ) ||
                             "Control who can view your organization. Public: Anyone can view and discover your organization. Private: Only members can view your organization."}
                         </FormDescription>
                         <FormMessage />
@@ -575,16 +612,26 @@ export default function OrganizationRegisterPage() {
                       variant="outline"
                       className="w-full sm:w-auto"
                       onClick={() => router.back()}
-                      disabled={isSubmitting || createOrganization.isPending || uploadImage.isPending}
+                      disabled={
+                        isSubmitting ||
+                        createOrganization.isPending ||
+                        uploadImage.isPending
+                      }
                     >
                       {t("register.cancelButton", "organizations") || "Cancel"}
                     </Button>
                     <Button
                       type="submit"
                       className="w-full sm:w-auto"
-                      disabled={isSubmitting || createOrganization.isPending || uploadImage.isPending}
+                      disabled={
+                        isSubmitting ||
+                        createOrganization.isPending ||
+                        uploadImage.isPending
+                      }
                     >
-                      {isSubmitting || createOrganization.isPending || uploadImage.isPending
+                      {isSubmitting ||
+                      createOrganization.isPending ||
+                      uploadImage.isPending
                         ? t("register.creating", "organizations") ||
                           "Creating..."
                         : t("register.createButton", "organizations") ||
@@ -600,4 +647,3 @@ export default function OrganizationRegisterPage() {
     </div>
   );
 }
-

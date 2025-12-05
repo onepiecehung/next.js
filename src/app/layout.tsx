@@ -121,7 +121,8 @@ export const metadata: Metadata = {
     default: "MangaSBS",
     template: "%s | MangaSBS",
   },
-  description: "Discover and read manga, anime, and light novels. Your ultimate destination for Japanese entertainment content.",
+  description:
+    "Discover and read manga, anime, and light novels. Your ultimate destination for Japanese entertainment content.",
   keywords: ["manga", "anime", "light novel", "manga reader", "anime database"],
   authors: [{ name: "MangaSBS" }],
   openGraph: {

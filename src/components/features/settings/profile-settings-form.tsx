@@ -112,16 +112,60 @@ export function ProfileSettingsForm() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t("profileName", "settings")}</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={t(
+                              "profileNamePlaceholder",
+                              "settings",
+                            )}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("profileUsername", "settings")}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={t(
+                              "profileUsernamePlaceholder",
+                              "settings",
+                            )}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="bio"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("profileName", "settings")}</FormLabel>
+                      <FormLabel>{t("profileBio", "settings")}</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder={t("profileNamePlaceholder", "settings")}
+                        <textarea
+                          className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                          placeholder={t("profileBioPlaceholder", "settings")}
                           {...field}
                         />
                       </FormControl>
@@ -130,86 +174,49 @@ export function ProfileSettingsForm() {
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("profileUsername", "settings")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder={t(
-                            "profileUsernamePlaceholder",
-                            "settings",
-                          )}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <FormField
+                    control={form.control}
+                    name="website"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t("profileWebsite", "settings")}</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={t(
+                              "profileWebsitePlaceholder",
+                              "settings",
+                            )}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <FormField
-                control={form.control}
-                name="bio"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("profileBio", "settings")}</FormLabel>
-                    <FormControl>
-                      <textarea
-                        className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder={t("profileBioPlaceholder", "settings")}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <FormField
-                  control={form.control}
-                  name="website"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("profileWebsite", "settings")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder={t(
-                            "profileWebsitePlaceholder",
-                            "settings",
-                          )}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="location"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("profileLocation", "settings")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder={t(
-                            "profileLocationPlaceholder",
-                            "settings",
-                          )}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                  <FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("profileLocation", "settings")}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={t(
+                              "profileLocationPlaceholder",
+                              "settings",
+                            )}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
                 <Button type="submit" disabled={isUpdating}>
                   {isUpdating
@@ -230,56 +237,65 @@ export function ProfileSettingsForm() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="github"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("profileGithub", "settings")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={t("profileGithubPlaceholder", "settings")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <FormField
+                  control={form.control}
+                  name="github"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("profileGithub", "settings")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder={t(
+                            "profileGithubPlaceholder",
+                            "settings",
+                          )}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <FormField
-              control={form.control}
-              name="twitter"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("profileTwitter", "settings")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={t("profileTwitterPlaceholder", "settings")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <FormField
+                  control={form.control}
+                  name="twitter"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("profileTwitter", "settings")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder={t(
+                            "profileTwitterPlaceholder",
+                            "settings",
+                          )}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <FormField
-              control={form.control}
-              name="linkedin"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("profileLinkedin", "settings")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={t("profileLinkedinPlaceholder", "settings")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <FormField
+                  control={form.control}
+                  name="linkedin"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("profileLinkedin", "settings")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder={t(
+                            "profileLinkedinPlaceholder",
+                            "settings",
+                          )}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </CardContent>
           </Card>

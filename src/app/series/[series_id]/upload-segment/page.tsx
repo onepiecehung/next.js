@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  BookOpen,
-  ChevronDown,
-  ChevronUp,
-  Upload,
-  X,
-} from "lucide-react";
+import { BookOpen, ChevronDown, ChevronUp, Upload, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -101,7 +95,9 @@ export default function UploadSegmentPage() {
     DEFAULT_LANGUAGE_CODE,
   );
   const [publishedAt, setPublishedAt] = useState<Date | null>(null);
-  const [originalReleaseDate, setOriginalReleaseDate] = useState<Date | null>(null);
+  const [originalReleaseDate, setOriginalReleaseDate] = useState<Date | null>(
+    null,
+  );
   const [durationSec, setDurationSec] = useState<string>("");
   const [pageCount, setPageCount] = useState<string>("");
   const [startPage, setStartPage] = useState<string>("");
@@ -1159,20 +1155,27 @@ export default function UploadSegmentPage() {
                             label={t("segments.form.publishedAt", "series")}
                             value={publishedAt}
                             onChange={setPublishedAt}
-                            placeholder={t(
-                              "segments.form.publishedAtPlaceholder",
-                              "series",
-                            ) || "Select publish date and time"}
+                            placeholder={
+                              t(
+                                "segments.form.publishedAtPlaceholder",
+                                "series",
+                              ) || "Select publish date and time"
+                            }
                             disabled={isFormDisabled}
                           />
                           <DateTimePicker
-                            label={t("segments.form.originalReleaseDate", "series")}
+                            label={t(
+                              "segments.form.originalReleaseDate",
+                              "series",
+                            )}
                             value={originalReleaseDate}
                             onChange={setOriginalReleaseDate}
-                            placeholder={t(
-                              "segments.form.originalReleaseDatePlaceholder",
-                              "series",
-                            ) || "Select original release date and time"}
+                            placeholder={
+                              t(
+                                "segments.form.originalReleaseDatePlaceholder",
+                                "series",
+                              ) || "Select original release date and time"
+                            }
                             disabled={isFormDisabled}
                           />
                         </div>

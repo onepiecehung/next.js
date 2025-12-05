@@ -28,7 +28,7 @@ interface BreadcrumbNavProps {
 
 /**
  * Responsive Breadcrumb Navigation Component
- * 
+ *
  * Features:
  * - Auto-collapses when too many items
  * - Shows dropdown for collapsed items
@@ -48,9 +48,7 @@ export function BreadcrumbNav({
   const visibleItems = shouldCollapse
     ? [items[0], ...items.slice(-(maxItems - 1))]
     : items;
-  const collapsedItems = shouldCollapse
-    ? items.slice(1, -(maxItems - 1))
-    : [];
+  const collapsedItems = shouldCollapse ? items.slice(1, -(maxItems - 1)) : [];
 
   if (items.length === 0) {
     return null;
@@ -137,4 +135,3 @@ export function BreadcrumbNav({
     </Breadcrumb>
   );
 }
-

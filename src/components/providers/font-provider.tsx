@@ -123,7 +123,8 @@ const fonts: {
     description: "Retro pixel-style display font",
     category: "display",
     cssVariable: "--font-pixelify-sans",
-    fontFamily: "var(--font-pixelify-sans), ui-sans-serif, system-ui, sans-serif",
+    fontFamily:
+      "var(--font-pixelify-sans), ui-sans-serif, system-ui, sans-serif",
   },
   {
     value: "comic-relief",
@@ -131,7 +132,8 @@ const fonts: {
     description: "Playful and expressive comic font",
     category: "display",
     cssVariable: "--font-comic-relief",
-    fontFamily: "var(--font-comic-relief), ui-sans-serif, system-ui, sans-serif",
+    fontFamily:
+      "var(--font-comic-relief), ui-sans-serif, system-ui, sans-serif",
   },
   {
     value: "system",
@@ -192,7 +194,7 @@ export function FontProvider({
     if (currentFontData) {
       // Apply font family via CSS variable
       root.style.setProperty("--font-family", currentFontData.fontFamily);
-      
+
       // Also apply directly to body element to ensure it takes effect
       if (body) {
         body.style.fontFamily = currentFontData.fontFamily;

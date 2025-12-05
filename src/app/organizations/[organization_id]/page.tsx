@@ -90,7 +90,11 @@ export default function OrganizationDetailPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <AnimatedSection loading={isLoading} data={organization} className="w-full">
+      <AnimatedSection
+        loading={isLoading}
+        data={organization}
+        className="w-full"
+      >
         <Skeletonize loading={isLoading}>
           {error && (
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -100,10 +104,15 @@ export default function OrganizationDetailPage() {
                   {t("detail.error.title", "organizations") || "Error"}
                 </h1>
                 <p className="text-sm text-muted-foreground mb-6">
-                  {error.message || t("detail.error.message", "organizations") || "Failed to load organization"}
+                  {error.message ||
+                    t("detail.error.message", "organizations") ||
+                    "Failed to load organization"}
                 </p>
                 <Link href="/">
-                  <Button>{t("detail.error.backToHome", "organizations") || "Back to Home"}</Button>
+                  <Button>
+                    {t("detail.error.backToHome", "organizations") ||
+                      "Back to Home"}
+                  </Button>
                 </Link>
               </div>
             </div>
@@ -148,14 +157,17 @@ export default function OrganizationDetailPage() {
                     <div className="flex flex-col gap-2 mb-3 sm:mb-4 md:mb-6">
                       {isOwner && (
                         <>
-                          <Link href={`/organizations/${organizationId}/settings`}>
+                          <Link
+                            href={`/organizations/${organizationId}/settings`}
+                          >
                             <Button
                               variant="default"
                               className="w-full"
                               size="sm"
                             >
                               <Settings className="mr-2 h-4 w-4" />
-                              {t("detail.edit", "organizations") || "Edit Organization"}
+                              {t("detail.edit", "organizations") ||
+                                "Edit Organization"}
                             </Button>
                           </Link>
                         </>
@@ -168,7 +180,8 @@ export default function OrganizationDetailPage() {
                           disabled
                         >
                           <Users className="mr-2 h-4 w-4" />
-                          {t("detail.join", "organizations") || "Join Organization"}
+                          {t("detail.join", "organizations") ||
+                            "Join Organization"}
                         </Button>
                       )}
                     </div>
@@ -179,7 +192,8 @@ export default function OrganizationDetailPage() {
                         {/* Visibility */}
                         <div className="flex items-center justify-between">
                           <span className="text-xs sm:text-sm text-muted-foreground">
-                            {t("detail.visibility", "organizations") || "Visibility"}
+                            {t("detail.visibility", "organizations") ||
+                              "Visibility"}
                           </span>
                           {getVisibilityBadge(organization.visibility)}
                         </div>
@@ -199,7 +213,8 @@ export default function OrganizationDetailPage() {
                         <div className="flex items-center justify-between">
                           <span className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1.5">
                             <FileText className="h-3.5 w-3.5" />
-                            {t("detail.articles", "organizations") || "Articles"}
+                            {t("detail.articles", "organizations") ||
+                              "Articles"}
                           </span>
                           <span className="text-xs sm:text-sm font-medium text-foreground">
                             {organization.articleCount || 0}
@@ -227,7 +242,8 @@ export default function OrganizationDetailPage() {
                               className="flex items-center gap-1.5 text-xs sm:text-sm text-primary hover:underline"
                             >
                               <ExternalLink className="h-3.5 w-3.5" />
-                              {t("detail.website", "organizations") || "Website"}
+                              {t("detail.website", "organizations") ||
+                                "Website"}
                             </Link>
                           </div>
                         )}
@@ -298,10 +314,14 @@ export default function OrganizationDetailPage() {
                         <Card>
                           <CardContent className="p-4 sm:p-6">
                             <h2 className="text-lg sm:text-xl font-semibold text-foreground mb-4">
-                              {t("detail.articles", "organizations") || "Articles"}
+                              {t("detail.articles", "organizations") ||
+                                "Articles"}
                             </h2>
                             <p className="text-sm text-muted-foreground">
-                              {t("detail.articlesComingSoon", "organizations") || "Articles section coming soon..."}
+                              {t(
+                                "detail.articlesComingSoon",
+                                "organizations",
+                              ) || "Articles section coming soon..."}
                             </p>
                           </CardContent>
                         </Card>
@@ -312,10 +332,12 @@ export default function OrganizationDetailPage() {
                         <Card>
                           <CardContent className="p-4 sm:p-6">
                             <h2 className="text-lg sm:text-xl font-semibold text-foreground mb-4">
-                              {t("detail.members", "organizations") || "Members"}
+                              {t("detail.members", "organizations") ||
+                                "Members"}
                             </h2>
                             <p className="text-sm text-muted-foreground">
-                              {t("detail.membersComingSoon", "organizations") || "Members section coming soon..."}
+                              {t("detail.membersComingSoon", "organizations") ||
+                                "Members section coming soon..."}
                             </p>
                           </CardContent>
                         </Card>
@@ -331,4 +353,3 @@ export default function OrganizationDetailPage() {
     </div>
   );
 }
-
