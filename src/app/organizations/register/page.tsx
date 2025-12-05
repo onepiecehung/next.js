@@ -1,7 +1,8 @@
 "use client";
 
+import { BreadcrumbNav } from "@/components/features/navigation";
 import { useI18n } from "@/components/providers/i18n-provider";
-import { Button, Input, Label } from "@/components/ui";
+import { Button, Input } from "@/components/ui";
 import {
   Card,
   CardContent,
@@ -9,13 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/core";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { ImageUpload } from "@/components/ui/core/image-upload";
 import {
   Form,
   FormControl,
@@ -25,19 +20,27 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/layout/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useRequireAuth } from "@/hooks/auth";
+import { useImageUpload } from "@/hooks/media/useMediaQuery";
 import { useCreateOrganization } from "@/hooks/organizations";
-import { BreadcrumbNav } from "@/components/features/navigation";
 import { useBreadcrumb } from "@/hooks/ui";
+import { extractErrorMessage } from "@/lib/utils/error-extractor";
 import {
   createOrganizationSchema,
   type CreateOrganizationFormData,
 } from "@/lib/validators/organizations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { extractErrorMessage } from "@/lib/utils/error-extractor";
+import { toast } from "sonner";
 
 /**
  * Organization Registration Page Component
@@ -51,10 +54,20 @@ export default function OrganizationRegisterPage() {
   const { isAuthenticated, authLoading } = useRequireAuth();
   const createOrganization = useCreateOrganization();
   const breadcrumbItems = useBreadcrumb();
+  const uploadImage = useImageUpload();
+  
+  // Logo file state
+  const [logoFile, setLogoFile] = useState<File | null>(null);
 
   const form = useForm<CreateOrganizationFormData>({
     resolver: zodResolver(createOrganizationSchema),
     defaultValues: {
+      name: "",
+      slug: "",
+      description: "",
+      websiteUrl: "",
+      logoUrl: "",
+      logoId: "",
       visibility: "public",
     },
   });
@@ -67,6 +80,29 @@ export default function OrganizationRegisterPage() {
 
   const onSubmit = async (values: CreateOrganizationFormData) => {
     try {
+      let logoId: string | undefined = values.logoId?.trim() || undefined;
+
+      // Upload logo file if provided
+      if (logoFile) {
+        try {
+          const uploadResponse = await uploadImage.mutateAsync(logoFile);
+          if (uploadResponse?.data?.[0]?.id) {
+            logoId = uploadResponse.data[0].id;
+            // Also set logoUrl if available
+            if (uploadResponse.data[0].url && !values.logoUrl?.trim()) {
+              form.setValue("logoUrl", uploadResponse.data[0].url);
+            }
+          }
+        } catch (uploadError) {
+          console.error("Logo upload error:", uploadError);
+          toast.error(
+            t("register.logoUploadError", "organizations") ||
+              "Failed to upload logo. Please try again.",
+          );
+          return; // Stop submission if logo upload fails
+        }
+      }
+
       // Prepare data for API (remove empty strings)
       const data = {
         name: values.name.trim(),
@@ -74,15 +110,16 @@ export default function OrganizationRegisterPage() {
         description: values.description?.trim() || undefined,
         websiteUrl: values.websiteUrl?.trim() || undefined,
         logoUrl: values.logoUrl?.trim() || undefined,
-        logoId: values.logoId?.trim() || undefined,
+        logoId: logoId,
         visibility: values.visibility || "public",
       };
 
       // Create organization
       const organization = await createOrganization.mutateAsync(data);
 
-      // Reset form
+      // Reset form and logo file
       reset();
+      setLogoFile(null);
 
       // Redirect to organization page
       router.push(`/organizations/${organization.id}`);
@@ -100,9 +137,9 @@ export default function OrganizationRegisterPage() {
   // Show loading state while auth is being checked
   if (authLoading) {
     return (
-      <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-        <div className="w-full max-w-md">
-          <div className="flex items-center justify-center">
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+          <div className="flex items-center justify-center min-h-[60vh]">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
         </div>
@@ -117,8 +154,8 @@ export default function OrganizationRegisterPage() {
   }
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-4 sm:p-6 md:p-10">
-      <div className="w-full max-w-2xl">
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
         {/* Breadcrumb Navigation */}
         <div className="mb-4 sm:mb-6">
           <BreadcrumbNav items={breadcrumbItems} />
@@ -158,6 +195,7 @@ export default function OrganizationRegisterPage() {
                               "Enter organization name"
                             }
                             {...field}
+                            value={field.value || ""}
                           />
                         </FormControl>
                         <FormDescription>
@@ -261,7 +299,57 @@ export default function OrganizationRegisterPage() {
                     )}
                   />
 
-                  {/* Logo URL field */}
+                  {/* Logo Upload field */}
+                  <FormField
+                    control={form.control}
+                    name="logoId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("register.logo", "organizations") || "Logo"}
+                          <span className="text-muted-foreground ml-1">
+                            {t("register.logoOptional", "organizations") ||
+                              "(optional)"}
+                          </span>
+                        </FormLabel>
+                        <FormControl>
+                          <ImageUpload
+                            value={logoFile}
+                            onChange={(file) => {
+                              setLogoFile(file);
+                              // Clear logoId when file is removed
+                              if (!file) {
+                                field.onChange("");
+                                form.setValue("logoId", "");
+                              }
+                            }}
+                            placeholder={
+                              t("register.logoPlaceholder", "organizations") ||
+                              "Upload organization logo"
+                            }
+                            disabled={isSubmitting || createOrganization.isPending || uploadImage.isPending}
+                            maxSizeInMB={5}
+                            acceptedTypes={[
+                              "image/jpeg",
+                              "image/jpg",
+                              "image/png",
+                              "image/gif",
+                              "image/webp",
+                            ]}
+                            enableCrop={true}
+                            aspectRatio={1} // Square logo
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          {t("register.logoDescription", "organizations") ||
+                            "Upload a square logo for your organization. Recommended size: 512x512px"}
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Logo URL field (alternative to upload) */}
                   <FormField
                     control={form.control}
                     name="logoUrl"
@@ -279,12 +367,17 @@ export default function OrganizationRegisterPage() {
                             type="url"
                             placeholder={
                               t("register.logoUrlPlaceholder", "organizations") ||
-                              "https://example.com/logo.png"
+                              "https://example.com/logo.png (alternative to upload)"
                             }
                             {...field}
                             value={field.value || ""}
+                            disabled={!!logoFile} // Disable if logo file is uploaded
                           />
                         </FormControl>
+                        <FormDescription>
+                          {t("register.logoUrlDescription", "organizations") ||
+                            "Or provide a logo URL instead of uploading"}
+                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -344,16 +437,16 @@ export default function OrganizationRegisterPage() {
                       variant="outline"
                       className="w-full sm:w-auto"
                       onClick={() => router.back()}
-                      disabled={isSubmitting || createOrganization.isPending}
+                      disabled={isSubmitting || createOrganization.isPending || uploadImage.isPending}
                     >
                       {t("register.cancelButton", "organizations") || "Cancel"}
                     </Button>
                     <Button
                       type="submit"
                       className="w-full sm:w-auto"
-                      disabled={isSubmitting || createOrganization.isPending}
+                      disabled={isSubmitting || createOrganization.isPending || uploadImage.isPending}
                     >
-                      {isSubmitting || createOrganization.isPending
+                      {isSubmitting || createOrganization.isPending || uploadImage.isPending
                         ? t("register.creating", "organizations") ||
                           "Creating..."
                         : t("register.createButton", "organizations") ||
