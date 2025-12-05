@@ -112,6 +112,8 @@ const comicRelief = Comic_Relief({
   subsets: ["latin"],
   weight: ["400", "700"],
   display: "swap",
+  fallback: ["ui-sans-serif", "system-ui", "sans-serif"],
+  adjustFontFallback: false, // Disable automatic font metrics calculation to avoid warning
 });
 
 export const metadata: Metadata = {

@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  ArrowLeft,
   BookOpen,
   ChevronDown,
   ChevronUp,
@@ -16,6 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { ProtectedRoute } from "@/components/features/auth";
+import { BreadcrumbNav } from "@/components/features/navigation";
 import { UploadProgressSheet } from "@/components/features/series/upload-progress-sheet";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { AnimatedSection, Skeletonize } from "@/components/shared";
@@ -38,6 +38,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCreateSegment, useSeriesFull } from "@/hooks/series";
+import { useBreadcrumb } from "@/hooks/ui";
 import type { UploadedMedia } from "@/lib/api/media";
 import {
   DEFAULT_LANGUAGE_CODE,
@@ -70,6 +71,12 @@ export default function UploadSegmentPage() {
   const seriesDisplay = backendSeries
     ? transformBackendSeries(backendSeries)
     : undefined;
+
+  // Breadcrumb items
+  const breadcrumbItems = useBreadcrumb(undefined, {
+    series_id: seriesId,
+    series_title: seriesDisplay?.title,
+  });
 
   // Form state
   const [type, setType] = useState<"trailer" | "episode" | "chapter">(
@@ -391,15 +398,9 @@ export default function UploadSegmentPage() {
           <Skeletonize loading={isLoadingSeries}>
             {backendSeries && (
               <>
-                {/* Back Link */}
+                {/* Breadcrumb Navigation */}
                 <div className="mb-4 sm:mb-6">
-                  <Link
-                    href={`/series/${seriesId}`}
-                    className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <ArrowLeft className="h-4 w-4" />
-                    {t("segments.title", "series")}
-                  </Link>
+                  <BreadcrumbNav items={breadcrumbItems} />
                 </div>
 
                 {/* Series Info Card */}
