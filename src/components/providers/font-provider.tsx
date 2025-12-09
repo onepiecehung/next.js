@@ -15,6 +15,8 @@ export type FontFamily =
   | "raleway" // Raleway
   | "source-sans-pro" // Source Sans Pro
   | "comic-neue" // Comic Neue
+  | "pixelify-sans" // Pixelify Sans
+  | "comic-relief" // Comic Relief
   | "system"; // System font stack
 
 // Font data - available fonts with metadata
@@ -116,6 +118,24 @@ const fonts: {
     fontFamily: "var(--font-comic-neue), ui-sans-serif, system-ui, sans-serif",
   },
   {
+    value: "pixelify-sans",
+    label: "Pixelify Sans",
+    description: "Retro pixel-style display font",
+    category: "display",
+    cssVariable: "--font-pixelify-sans",
+    fontFamily:
+      "var(--font-pixelify-sans), ui-sans-serif, system-ui, sans-serif",
+  },
+  {
+    value: "comic-relief",
+    label: "Comic Relief",
+    description: "Playful and expressive comic font",
+    category: "display",
+    cssVariable: "--font-comic-relief",
+    fontFamily:
+      "var(--font-comic-relief), ui-sans-serif, system-ui, sans-serif",
+  },
+  {
     value: "system",
     label: "System",
     description: "Use system default font",
@@ -174,7 +194,7 @@ export function FontProvider({
     if (currentFontData) {
       // Apply font family via CSS variable
       root.style.setProperty("--font-family", currentFontData.fontFamily);
-      
+
       // Also apply directly to body element to ensure it takes effect
       if (body) {
         body.style.fontFamily = currentFontData.fontFamily;

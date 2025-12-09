@@ -51,7 +51,8 @@ export default function SettingsPage() {
     },
   ];
 
-  const currentLanguage = languages.find((lang) => lang.value === locale) || languages[0];
+  const currentLanguage =
+    languages.find((lang) => lang.value === locale) || languages[0];
 
   // Prevent hydration mismatch
   if (!isMounted) {
@@ -101,8 +102,8 @@ export default function SettingsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                <div className="flex-1">
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_200px] gap-3 sm:gap-4 items-center">
+                <div>
                   <h4 className="text-sm font-medium text-foreground mb-1">
                     {t("appearance.languageSelect", "settings") || "Language"}
                   </h4>
@@ -111,15 +112,17 @@ export default function SettingsPage() {
                       "Select your interface language"}
                   </p>
                 </div>
-                <div className="flex-shrink-0 w-full sm:w-auto sm:min-w-[180px]">
+                <div className="w-full sm:w-[200px]">
                   <Select value={locale} onValueChange={setLocale}>
-                    <SelectTrigger className="w-full sm:w-auto">
+                    <SelectTrigger className="w-full">
                       <div className="flex items-center gap-2">
-                        <Globe className="h-4 w-4 text-muted-foreground" />
+                        <Globe className="h-4 w-4 text-muted-foreground shrink-0" />
                         <SelectValue
                           placeholder={
-                            t("appearance.languageSelectPlaceholder", "settings") ||
-                            "Select language"
+                            t(
+                              "appearance.languageSelectPlaceholder",
+                              "settings",
+                            ) || "Select language"
                           }
                         />
                       </div>
@@ -151,8 +154,8 @@ export default function SettingsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                <div className="flex-1">
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_200px] gap-3 sm:gap-4 items-center">
+                <div>
                   <h4 className="text-sm font-medium text-foreground mb-1">
                     {t("appearance.fontSelect", "settings") ||
                       t("font.selectFont", "common") ||
@@ -163,14 +166,16 @@ export default function SettingsPage() {
                       "Select a font that matches your reading preference"}
                   </p>
                 </div>
-                <div className="flex-shrink-0 w-full sm:w-auto sm:min-w-[200px]">
+                <div className="w-full sm:w-[200px]">
                   <Select
                     value={fontFamily}
-                    onValueChange={(value) => setFontFamily(value as typeof fontFamily)}
+                    onValueChange={(value) =>
+                      setFontFamily(value as typeof fontFamily)
+                    }
                   >
-                    <SelectTrigger className="w-full sm:w-auto">
+                    <SelectTrigger className="w-full">
                       <div className="flex items-center gap-2">
-                        <Type className="h-4 w-4 text-muted-foreground" />
+                        <Type className="h-4 w-4 text-muted-foreground shrink-0" />
                         <SelectValue
                           placeholder={
                             t("appearance.fontSelectPlaceholder", "settings") ||
@@ -191,11 +196,15 @@ export default function SettingsPage() {
                           <SelectItem key={font.value} value={font.value}>
                             <div className="flex items-center gap-2">
                               <span style={{ fontFamily: font.fontFamily }}>
-                                {t(`font.${font.value}`, "common") || font.label}
+                                {t(`font.${font.value}`, "common") ||
+                                  font.label}
                               </span>
                               {isDefault && (
                                 <span className="ml-2 text-xs text-muted-foreground">
-                                  ({t("appearance.default", "settings") || "default"})
+                                  (
+                                  {t("appearance.default", "settings") ||
+                                    "default"}
+                                  )
                                 </span>
                               )}
                             </div>
@@ -222,31 +231,32 @@ export default function SettingsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Color Scheme */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                <div className="flex-1">
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_200px] gap-3 sm:gap-4 items-center">
+                <div>
                   <h4 className="text-sm font-medium text-foreground mb-1">
-                    {t("appearance.colorScheme", "settings") ||
-                      "Color Scheme"}
+                    {t("appearance.colorScheme", "settings") || "Color Scheme"}
                   </h4>
                   <p className="text-xs sm:text-sm text-muted-foreground">
                     {t("appearance.colorSchemeDescription", "settings") ||
                       "Choose between light and dark mode"}
                   </p>
                 </div>
-                <div className="flex-shrink-0 w-full sm:w-auto sm:min-w-[180px]">
+                <div className="w-full sm:w-[200px]">
                   <Select
                     value={colorScheme}
                     onValueChange={(value) =>
                       setColorScheme(value as ColorScheme)
                     }
                   >
-                    <SelectTrigger className="w-full sm:w-auto">
+                    <SelectTrigger className="w-full">
                       <div className="flex items-center gap-2">
-                        <Palette className="h-4 w-4 text-muted-foreground" />
+                        <Palette className="h-4 w-4 text-muted-foreground shrink-0" />
                         <SelectValue
                           placeholder={
-                            t("appearance.colorSchemePlaceholder", "settings") ||
-                            "Select color scheme"
+                            t(
+                              "appearance.colorSchemePlaceholder",
+                              "settings",
+                            ) || "Select color scheme"
                           }
                         />
                       </div>
@@ -272,8 +282,8 @@ export default function SettingsPage() {
               <div className="h-px bg-border my-2" />
 
               {/* Theme Color */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                <div className="flex-1">
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_200px] gap-3 sm:gap-4 items-center">
+                <div>
                   <h4 className="text-sm font-medium text-foreground mb-1">
                     {t("appearance.themeColor", "settings") || "Theme Color"}
                   </h4>
@@ -282,12 +292,12 @@ export default function SettingsPage() {
                       "Choose a color theme for your interface"}
                   </p>
                 </div>
-                <div className="flex-shrink-0 w-full sm:w-auto sm:min-w-[200px]">
+                <div className="w-full sm:w-[200px]">
                   <Select
                     value={theme}
                     onValueChange={(value) => setTheme(value as Theme)}
                   >
-                    <SelectTrigger className="w-full sm:w-auto">
+                    <SelectTrigger className="w-full">
                       <div className="flex items-center gap-2">
                         <ThemeColorIndicator
                           theme={theme}
@@ -358,4 +368,3 @@ export default function SettingsPage() {
     </div>
   );
 }
-
