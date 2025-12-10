@@ -210,6 +210,9 @@
     },
     "pages": "trang",
     "minutes": "phút",
+    "copyLink": "Sao Chép Liên Kết",
+    "linkCopied": "Đã sao chép liên kết vào clipboard!",
+    "linkCopyError": "Không thể sao chép liên kết. Vui lòng thử lại.",
     "success": {
       "created": "Chương/Tập đã được tạo thành công!",
       "updated": "Chương/Tập đã được cập nhật thành công!",

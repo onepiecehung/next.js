@@ -210,6 +210,9 @@
     },
     "pages": "pages",
     "minutes": "min",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link copied to clipboard!",
+    "linkCopyError": "Failed to copy link. Please try again.",
     "success": {
       "created": "Segment created successfully!",
       "updated": "Segment updated successfully!",

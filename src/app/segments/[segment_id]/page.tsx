@@ -2,6 +2,7 @@
 
 import {
   ArrowLeft,
+  Copy,
   FileText,
   Image as ImageIcon,
   Lock,
@@ -13,6 +14,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+
+import { toast } from "sonner";
 
 import { ScrambledImageCanvas } from "@/components/features/media/components/scrambled-image-canvas";
 import { BreadcrumbNav } from "@/components/features/navigation";
@@ -76,6 +79,9 @@ export default function SegmentDetailPage() {
   // Image size mode state
   type ImageSizeMode = "default" | "full" | "half" | "fit";
   const [imageSizeMode, setImageSizeMode] = useState<ImageSizeMode>("default");
+
+  // Current page URL for sharing
+  const [currentUrl, setCurrentUrl] = useState<string>("");
 
   // Helper function - Check if media is image
   const isImage = (url: string, type?: string, mimeType?: string) => {
@@ -210,6 +216,30 @@ export default function SegmentDetailPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [segmentId]);
 
+  // Get current URL for sharing
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCurrentUrl(window.location.href);
+    }
+  }, [segmentId]);
+
+  // Copy link to clipboard
+  const handleCopyLink = async () => {
+    try {
+      const urlToCopy = currentUrl || window.location.href;
+      await navigator.clipboard.writeText(urlToCopy);
+      toast.success(
+        t("segments.linkCopied", "series") || "Link copied to clipboard!",
+      );
+    } catch (error) {
+      console.error("Failed to copy link:", error);
+      toast.error(
+        t("segments.linkCopyError", "series") ||
+          "Failed to copy link. Please try again.",
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <AnimatedSection
@@ -283,6 +313,27 @@ export default function SegmentDetailPage() {
                           {getAccessTypeText()}
                         </Badge>
                       )}
+                    </div>
+                    {/* Copy Link Section */}
+                    <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row gap-2 sm:items-center">
+                      {/* Link Display */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 px-3 py-2 bg-muted/50 border border-border rounded-md">
+                          <span className="text-xs sm:text-sm text-muted-foreground truncate flex-1 min-w-0">
+                            {currentUrl || ""}
+                          </span>
+                        </div>
+                      </div>
+                      {/* Copy Link Button */}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCopyLink}
+                        className="gap-2 shrink-0"
+                      >
+                        <Copy className="h-4 w-4" />
+                        {t("segments.copyLink", "series") || "Copy Link"}
+                      </Button>
                     </div>
                   </div>
                 </div>
