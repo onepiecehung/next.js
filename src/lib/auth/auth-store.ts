@@ -2,10 +2,10 @@
 
 import { AuthAPI, FirebaseAuthAPI, OTPAuthAPI } from "@/lib/api/auth";
 import {
-    clearRefreshTokenFallback,
-    clearTokens,
-    setAccessToken,
-    setRefreshTokenFallback,
+  clearRefreshTokenFallback,
+  clearTokens,
+  setAccessToken,
+  setRefreshTokenFallback,
 } from "@/lib/http";
 import type { User } from "@/lib/interface";
 import { atom, useAtom } from "jotai";

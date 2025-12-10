@@ -10,13 +10,13 @@ import { currentUserAtom } from "@/lib/auth";
 import { format } from "date-fns";
 import { useAtom } from "jotai";
 import {
-    Building2,
-    Calendar,
-    ExternalLink,
-    FileText,
-    Settings,
-    User,
-    Users
+  Building2,
+  Calendar,
+  ExternalLink,
+  FileText,
+  Settings,
+  User,
+  Users,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -48,7 +48,9 @@ export default function OrganizationDetailPage() {
       : undefined,
     image: organization?.logoUrl,
     url: typeof window !== "undefined" ? window.location.href : undefined,
-    keywords: [organization?.name, "organization"].filter((k): k is string => Boolean(k)),
+    keywords: [organization?.name, "organization"].filter((k): k is string =>
+      Boolean(k),
+    ),
     type: "website",
   });
 

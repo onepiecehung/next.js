@@ -164,7 +164,8 @@ export const BreadcrumbRoutes = {
           seriesTitle && seriesTitle.trim()
             ? seriesTitle
             : "nav.breadcrumb.series",
-        href: `/series/${seriesId}`,
+        // Use seriesId if provided, otherwise fallback to /series to prevent invalid href
+        href: seriesId ? `/series/${seriesId}` : "/series",
       },
       {
         // Use segmentNumber if provided, otherwise use translation key

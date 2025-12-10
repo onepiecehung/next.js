@@ -137,10 +137,63 @@ export function usePageMetadata({
       updateMetaTag("author", author);
     }
 
-    // Cleanup function to restore default title when component unmounts
+    // Cleanup function to restore default metadata when component unmounts
     return () => {
+      // Reset document title
       if (title) {
         document.title = "MangaSBS";
+      }
+
+      // Helper function to remove meta tag
+      const removeMetaTag = (name: string, attribute: string = "name") => {
+        const element = document.querySelector(
+          `meta[${attribute}="${name}"]`,
+        ) as HTMLMetaElement;
+        if (element) {
+          element.remove();
+        }
+      };
+
+      // Remove description meta tags
+      if (description) {
+        removeMetaTag("description");
+        removeMetaTag("og:description", "property");
+        removeMetaTag("twitter:description");
+      }
+
+      // Remove Open Graph and Twitter Card tags
+      if (title) {
+        removeMetaTag("og:title", "property");
+        removeMetaTag("twitter:title");
+      }
+
+      if (image) {
+        removeMetaTag("og:image", "property");
+        removeMetaTag("twitter:image");
+        removeMetaTag("twitter:card");
+      }
+
+      if (url) {
+        removeMetaTag("og:url", "property");
+        // Remove canonical link
+        const canonicalLink = document.querySelector(
+          'link[rel="canonical"]',
+        ) as HTMLLinkElement;
+        if (canonicalLink) {
+          canonicalLink.remove();
+        }
+      }
+
+      if (type) {
+        removeMetaTag("og:type", "property");
+      }
+
+      if (keywords && keywords.length > 0) {
+        removeMetaTag("keywords");
+      }
+
+      if (author) {
+        removeMetaTag("author");
       }
     };
   }, [title, description, image, url, keywords, author, type]);

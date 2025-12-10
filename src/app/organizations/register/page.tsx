@@ -4,40 +4,38 @@ import { BreadcrumbNav } from "@/components/features/navigation";
 import { useI18n } from "@/components/providers/i18n-provider";
 import { Button, Input } from "@/components/ui";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/core";
 import { ImageUpload } from "@/components/ui/core/image-upload";
 import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/layout/form";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { useRequireAuth } from "@/hooks/auth";
-import { useImageUpload } from "@/hooks/media/useMediaQuery";
 import { useCreateOrganization } from "@/hooks/organizations";
 import { useBreadcrumb } from "@/hooks/ui";
 import type { UploadedMedia } from "@/lib/api/media";
 import { http } from "@/lib/http";
 import type { ApiResponse } from "@/lib/types";
-import { extractErrorMessage } from "@/lib/utils/error-extractor";
 import {
-    createOrganizationSchema,
-    type CreateOrganizationFormData,
+  createOrganizationSchema,
+  type CreateOrganizationFormData,
 } from "@/lib/validators/organizations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -57,7 +55,6 @@ export default function OrganizationRegisterPage() {
   const { isAuthenticated, authLoading } = useRequireAuth();
   const createOrganization = useCreateOrganization();
   const breadcrumbItems = useBreadcrumb();
-  const uploadImage = useImageUpload();
 
   // Logo file state
   const [logoFile, setLogoFile] = useState<File | null>(null);
@@ -212,11 +209,6 @@ export default function OrganizationRegisterPage() {
     } catch (error: unknown) {
       // Error is already handled by the mutation hook
       console.error("Organization creation error:", error);
-      const errorMessage = extractErrorMessage(
-        error,
-        t("organizationCreateError", "organizations") ||
-          "Failed to create organization. Please try again.",
-      );
     }
   };
 
@@ -615,7 +607,7 @@ export default function OrganizationRegisterPage() {
                       disabled={
                         isSubmitting ||
                         createOrganization.isPending ||
-                        uploadImage.isPending
+                        logoUploadStatus === "uploading"
                       }
                     >
                       {t("register.cancelButton", "organizations") || "Cancel"}
@@ -626,12 +618,12 @@ export default function OrganizationRegisterPage() {
                       disabled={
                         isSubmitting ||
                         createOrganization.isPending ||
-                        uploadImage.isPending
+                        logoUploadStatus === "uploading"
                       }
                     >
                       {isSubmitting ||
                       createOrganization.isPending ||
-                      uploadImage.isPending
+                      logoUploadStatus === "uploading"
                         ? t("register.creating", "organizations") ||
                           "Creating..."
                         : t("register.createButton", "organizations") ||
