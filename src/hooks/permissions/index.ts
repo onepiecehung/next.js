@@ -4,3 +4,4 @@
  */
 
 export * from "./usePermissionQuery";
+export * from "./useRequireRole";
