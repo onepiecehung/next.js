@@ -64,13 +64,19 @@ export function usePageMetadata({
   type = "website",
 }: PageMetadataOptions) {
   useEffect(() => {
-    // Update document title
-    if (title) {
-      const appName = "MangaSBS";
-      document.title = `${title} | ${appName}`;
+    // Safely update document title
+    try {
+      if (title) {
+        const appName = "MangaSBS";
+        document.title = `${title} | ${appName}`;
+      }
+    } catch (error) {
+      // Silently ignore errors during title update
+      console.warn("Failed to update document title:", error);
     }
 
     // Helper function to update or create meta tag
+    // Wrapped in try-catch to prevent errors during React's commit phase
     const updateMetaTag = (
       name: string,
       content: string,
@@ -78,17 +84,29 @@ export function usePageMetadata({
     ) => {
       if (!content) return;
 
-      let element = document.querySelector(
-        `meta[${attribute}="${name}"]`,
-      ) as HTMLMetaElement;
+      try {
+        let element = document.querySelector(
+          `meta[${attribute}="${name}"]`,
+        ) as HTMLMetaElement;
 
-      if (!element) {
-        element = document.createElement("meta");
-        element.setAttribute(attribute, name);
-        document.head.appendChild(element);
+        if (!element) {
+          // Check if document.head is still available before appending
+          if (!document.head) {
+            console.warn("document.head is not available");
+            return;
+          }
+
+          element = document.createElement("meta");
+          element.setAttribute(attribute, name);
+          document.head.appendChild(element);
+        }
+
+        element.setAttribute("content", content);
+      } catch (error) {
+        // Silently ignore errors during meta tag update
+        // This prevents "removeChild" errors during navigation
+        console.warn(`Failed to update meta tag ${name}:`, error);
       }
-
-      element.setAttribute("content", content);
     };
 
     // Update description
@@ -113,16 +131,26 @@ export function usePageMetadata({
     if (url) {
       updateMetaTag("og:url", url, "property");
 
-      // Update canonical link
-      let canonicalLink = document.querySelector(
-        'link[rel="canonical"]',
-      ) as HTMLLinkElement;
-      if (!canonicalLink) {
-        canonicalLink = document.createElement("link");
-        canonicalLink.setAttribute("rel", "canonical");
-        document.head.appendChild(canonicalLink);
+      // Update canonical link safely
+      try {
+        // Check if document.head is still available
+        if (!document.head) {
+          console.warn("document.head is not available for canonical link");
+        } else {
+          let canonicalLink = document.querySelector(
+            'link[rel="canonical"]',
+          ) as HTMLLinkElement;
+          if (!canonicalLink) {
+            canonicalLink = document.createElement("link");
+            canonicalLink.setAttribute("rel", "canonical");
+            document.head.appendChild(canonicalLink);
+          }
+          canonicalLink.setAttribute("href", url);
+        }
+      } catch (error) {
+        // Silently ignore errors during canonical link update
+        console.warn("Failed to update canonical link:", error);
       }
-      canonicalLink.setAttribute("href", url);
     }
 
     if (type) {
@@ -137,85 +165,8 @@ export function usePageMetadata({
       updateMetaTag("author", author);
     }
 
-    // Cleanup function to restore default metadata when component unmounts
-    // Defer cleanup to avoid conflicts with React's commit deletion effects
-    return () => {
-      // Use queueMicrotask to defer cleanup after React's commit phase
-      queueMicrotask(() => {
-        try {
-          // Reset document title
-          if (title) {
-            document.title = "MangaSBS";
-          }
-
-          // Helper function to safely remove meta tag
-          // Checks if element exists and is still in DOM before removing
-          const removeMetaTag = (name: string, attribute: string = "name") => {
-            try {
-              const element = document.querySelector(
-                `meta[${attribute}="${name}"]`,
-              ) as HTMLMetaElement;
-              // Check if element exists and is still attached to DOM
-              if (element && element.parentNode) {
-                element.remove();
-              }
-            } catch (error) {
-              // Silently ignore errors during cleanup (element may already be removed)
-              // This prevents "removeChild" errors during navigation
-            }
-          };
-
-          // Remove description meta tags
-          if (description) {
-            removeMetaTag("description");
-            removeMetaTag("og:description", "property");
-            removeMetaTag("twitter:description");
-          }
-
-          // Remove Open Graph and Twitter Card tags
-          if (title) {
-            removeMetaTag("og:title", "property");
-            removeMetaTag("twitter:title");
-          }
-
-          if (image) {
-            removeMetaTag("og:image", "property");
-            removeMetaTag("twitter:image");
-            removeMetaTag("twitter:card");
-          }
-
-          if (url) {
-            removeMetaTag("og:url", "property");
-            // Remove canonical link safely
-            try {
-              const canonicalLink = document.querySelector(
-                'link[rel="canonical"]',
-              ) as HTMLLinkElement;
-              // Check if element exists and is still attached to DOM
-              if (canonicalLink && canonicalLink.parentNode) {
-                canonicalLink.remove();
-              }
-            } catch (error) {
-              // Silently ignore errors during cleanup
-            }
-          }
-
-          if (type) {
-            removeMetaTag("og:type", "property");
-          }
-
-          if (keywords && keywords.length > 0) {
-            removeMetaTag("keywords");
-          }
-
-          if (author) {
-            removeMetaTag("author");
-          }
-        } catch (error) {
-          // Silently ignore any errors during cleanup
-          // This prevents navigation errors when React is cleaning up components
-        }
-      });
-    };
+    // No cleanup needed - next page will update metadata automatically
+    // Removing cleanup prevents "removeChild" errors during React's commit deletion phase
+    // Meta tags will be updated by the new page component when it mounts
   }, [title, description, image, url, keywords, author, type]);
 }
