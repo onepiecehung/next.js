@@ -4,16 +4,16 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { Label } from "@/components/ui/core";
 import { Input } from "@/components/ui/core/input";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import type { CompressionOptions } from "@/lib/utils/image-compression";
