@@ -4,16 +4,16 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { Label } from "@/components/ui/core";
 import { Input } from "@/components/ui/core/input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import type { CompressionOptions } from "@/lib/utils/image-compression";
@@ -78,14 +78,33 @@ export function ImageCompressionSettings({
   // Quality as percentage (0-100) for display
   const qualityPercent = Math.round((options.quality ?? 0.8) * 100);
 
+  // Available quality options
+  const qualityOptions = [90, 80, 70];
+
+  // Get the closest quality value from available options
+  // If current quality is not exactly one of the options, use the closest one
+  const getClosestQuality = (current: number): number => {
+    return qualityOptions.reduce((prev, curr) =>
+      Math.abs(curr - current) < Math.abs(prev - current) ? curr : prev,
+    );
+  };
+
+  // Current quality value for select (must be one of the available options)
+  const currentQualityValue = qualityOptions.includes(qualityPercent)
+    ? qualityPercent.toString()
+    : getClosestQuality(qualityPercent).toString();
+
   /**
-   * Handle quality change from slider
+   * Handle quality change from select
    */
-  const handleQualityChange = (value: number) => {
-    onOptionsChange({
-      ...options,
-      quality: value / 100,
-    });
+  const handleQualityChange = (value: string) => {
+    const qualityValue = parseInt(value, 10);
+    if (!isNaN(qualityValue) && qualityValue >= 0 && qualityValue <= 100) {
+      onOptionsChange({
+        ...options,
+        quality: qualityValue / 100,
+      });
+    }
   };
 
   /**
@@ -177,34 +196,25 @@ export function ImageCompressionSettings({
 
       {enabled && (
         <div className="space-y-4 pl-4 border-l-2 border-border">
-          {/* Quality Slider */}
+          {/* Quality Select */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label
-                htmlFor="compression-quality"
-                className="text-sm font-medium"
-              >
-                {t("compression.quality", "series") || "Quality"}
-              </Label>
-              <span className="text-xs text-muted-foreground">
-                {qualityPercent}%
-              </span>
-            </div>
-            <input
-              id="compression-quality"
-              type="range"
-              min="10"
-              max="100"
-              step="5"
-              value={qualityPercent}
-              onChange={(e) =>
-                handleQualityChange(parseInt(e.target.value, 10))
-              }
-              className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
-              style={{
-                background: `linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) ${qualityPercent}%, hsl(var(--muted)) ${qualityPercent}%, hsl(var(--muted)) 100%)`,
-              }}
-            />
+            <Label htmlFor="compression-quality" className="text-sm font-medium">
+              {t("compression.quality", "series") || "Quality"}
+            </Label>
+            <Select
+              value={currentQualityValue}
+              onValueChange={handleQualityChange}
+              disabled={disableToggle}
+            >
+              <SelectTrigger id="compression-quality" className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="90">90%</SelectItem>
+                <SelectItem value="80">80%</SelectItem>
+                <SelectItem value="70">70%</SelectItem>
+              </SelectContent>
+            </Select>
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <Info className="h-3 w-3" />
               <span>
@@ -224,6 +234,7 @@ export function ImageCompressionSettings({
               onValueChange={(value) =>
                 handleFormatChange(value as "jpeg" | "png" | "webp")
               }
+              disabled={disableToggle}
             >
               <SelectTrigger id="compression-format" className="w-full">
                 <SelectValue />
@@ -260,6 +271,7 @@ export function ImageCompressionSettings({
                     step="100"
                     value={options.maxWidth || 1920}
                     onChange={(e) => handleMaxWidthChange(e.target.value)}
+                    disabled={disableToggle}
                     className="text-sm"
                   />
                 </div>
@@ -278,6 +290,7 @@ export function ImageCompressionSettings({
                     step="100"
                     value={options.maxHeight || 1920}
                     onChange={(e) => handleMaxHeightChange(e.target.value)}
+                    disabled={disableToggle}
                     className="text-sm"
                   />
                 </div>

@@ -557,35 +557,16 @@ export default function UploadSegmentPage() {
                           {t("segments.form.mediaFiles", "series")}
                         </CardTitle>
                         <CardDescription>
-                          Upload images, videos, or documents to attach to this
-                          segment. You can select multiple files at once or add
-                          more files later.
+                          Upload images to attach to this segment. You can
+                          select multiple files at once or add more files later.
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4 sm:space-y-6">
-                        {/* Image Compression Settings */}
-                        <div className="p-4 border border-border rounded-md bg-muted/30">
-                          <ImageCompressionSettings
-                            enabled={compressionEnabled}
-                            onEnabledChange={() => {
-                              // Compression is always enabled, do nothing
-                            }}
-                            options={compressionOptions}
-                            onOptionsChange={(options) => {
-                              if (!isFormDisabled) {
-                                setCompressionOptions(options);
-                              }
-                            }}
-                            showAdvanced={false}
-                            disableToggle={true}
-                          />
-                        </div>
-
                         <div className="space-y-3">
                           <input
                             type="file"
                             multiple
-                            accept="image/*,video/*,.pdf,.epub"
+                            accept="image/*"
                             disabled={isFormDisabled}
                             onChange={async (e) => {
                               const newFiles = Array.from(e.target.files || []);
@@ -1089,6 +1070,24 @@ export default function UploadSegmentPage() {
                               </Button>
                             </div>
                           )}
+                        </div>
+
+                        {/* Image Compression Settings */}
+                        <div className="p-4 border border-border rounded-md bg-muted/30">
+                          <ImageCompressionSettings
+                            enabled={compressionEnabled}
+                            onEnabledChange={() => {
+                              // Compression is always enabled, do nothing
+                            }}
+                            options={compressionOptions}
+                            onOptionsChange={(options) => {
+                              if (!isFormDisabled) {
+                                setCompressionOptions(options);
+                              }
+                            }}
+                            showAdvanced={false}
+                            disableToggle={true}
+                          />
                         </div>
                       </CardContent>
                     </Card>
