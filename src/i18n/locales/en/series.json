@@ -233,6 +233,21 @@
       "deleteError": "Failed to delete segment"
     }
   },
+  "compression": {
+    "enable": "Enable compression",
+    "enableDescription": "Reduce image file size before upload",
+    "proFeatureTooltip": "This feature is available for Pro users only",
+    "quality": "Quality",
+    "qualityHint": "Higher quality = larger file size",
+    "format": "Output format",
+    "compressing": "Compressing...",
+    "compressed": "Compressed",
+    "failed": "Compression failed",
+    "sizeReduction": "Size reduced by {{percent}}%",
+    "advanced": "Advanced Settings",
+    "maxWidth": "Max Width (px)",
+    "maxHeight": "Max Height (px)"
+  },
   "error": {
     "title": "Series Not Found",
     "message": "The series you're looking for doesn't exist or has been removed.",

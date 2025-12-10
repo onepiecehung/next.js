@@ -233,6 +233,21 @@
       "deleteError": "Không thể xóa chương/tập"
     }
   },
+  "compression": {
+    "enable": "Bật nén ảnh",
+    "enableDescription": "Giảm kích thước file ảnh trước khi tải lên",
+    "proFeatureTooltip": "Tính năng này chỉ dành cho người dùng Pro",
+    "quality": "Chất lượng",
+    "qualityHint": "Chất lượng cao hơn = file lớn hơn",
+    "format": "Định dạng đầu ra",
+    "compressing": "Đang nén...",
+    "compressed": "Đã nén",
+    "failed": "Nén thất bại",
+    "sizeReduction": "Giảm kích thước {{percent}}%",
+    "advanced": "Cài Đặt Nâng Cao",
+    "maxWidth": "Chiều Rộng Tối Đa (px)",
+    "maxHeight": "Chiều Cao Tối Đa (px)"
+  },
   "error": {
     "title": "Không Tìm Thấy Truyện",
     "message": "Truyện bạn đang tìm không tồn tại hoặc đã bị xóa.",

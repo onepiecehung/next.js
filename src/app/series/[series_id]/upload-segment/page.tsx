@@ -25,6 +25,7 @@ import {
 import { Input, Label } from "@/components/ui/core";
 import { Badge } from "@/components/ui/core/badge";
 import { DateTimePicker } from "@/components/ui/core/date-time-picker";
+import { ImageCompressionSettings } from "@/components/ui/core/image-compression-settings";
 import {
   Select,
   SelectContent,
@@ -32,6 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useImageCompression } from "@/hooks/media/useImageCompression";
 import { useCreateSegment, useSeriesFull } from "@/hooks/series";
 import { useBreadcrumb } from "@/hooks/ui";
 import type { UploadedMedia } from "@/lib/api/media";
@@ -42,6 +44,7 @@ import {
 } from "@/lib/constants";
 import { http } from "@/lib/http/client";
 import type { ApiResponse } from "@/lib/types";
+import type { CompressionOptions } from "@/lib/utils/image-compression";
 import { transformBackendSeries } from "@/lib/utils/series-utils";
 
 /**
@@ -107,6 +110,41 @@ export default function UploadSegmentPage() {
   const [isAdvancedSettingsOpen, setIsAdvancedSettingsOpen] =
     useState<boolean>(false);
 
+  // Image compression state
+  // Compression is always enabled (cannot be disabled by user)
+  const compressionEnabled = true;
+  const [compressionOptions, setCompressionOptions] =
+    useState<CompressionOptions>({
+      quality: 0.8,
+      maxWidth: 1920,
+      maxHeight: 1920,
+      outputFormat: "jpeg",
+    });
+  const [compressionStatus, setCompressionStatus] = useState<
+    Record<string, "compressing" | "compressed" | "failed" | null>
+  >({});
+  const [compressionResults, setCompressionResults] = useState<
+    Record<string, { originalSize: number; compressedSize: number }>
+  >({});
+
+  // Track object URLs for image previews (key: fileKey, value: object URL)
+  // Use original fileKey (from when file was first added) to track preview URLs
+  // This ensures preview URLs persist even after compression changes lastModified
+  const [previewUrls, setPreviewUrls] = useState<Record<string, string>>({});
+
+  // Track original fileKey for each file (maps current fileKey to original fileKey)
+  // This allows us to find preview URLs even after compression changes lastModified
+  const [fileKeyMapping, setFileKeyMapping] = useState<Record<string, string>>(
+    {},
+  );
+
+  // Image compression hook
+  const { compressMultiple, isCompressing: isCompressingImages } =
+    useImageCompression({
+      enabled: compressionEnabled,
+      ...compressionOptions,
+    });
+
   // Upload progress tracking
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>(
     {},
@@ -121,25 +159,26 @@ export default function UploadSegmentPage() {
   >("uploading");
   const [uploadError, setUploadError] = useState<string | null>(null);
 
-  // Cleanup object URLs when component unmounts
+  // Cleanup object URLs when component unmounts or files change
   useEffect(() => {
     return () => {
-      // Cleanup all object URLs when component unmounts
-      mediaFiles.forEach((file) => {
-        if (file.type.startsWith("image/")) {
-          const url = URL.createObjectURL(file);
+      // Revoke all object URLs on unmount
+      Object.values(previewUrls).forEach((url) => {
+        try {
           URL.revokeObjectURL(url);
+        } catch (error) {
+          // URL might already be revoked, ignore
+          console.warn("Failed to revoke object URL:", error);
         }
       });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run on unmount - we don't want to cleanup on every file change
+  }, [previewUrls]);
 
   // Create segment mutation
   const { mutate: createSegment, isPending: isSubmitting } = useCreateSegment();
 
   // Check if form should be disabled
-  const isFormDisabled = isUploading || isSubmitting;
+  const isFormDisabled = isUploading || isSubmitting || isCompressingImages;
 
   // Upload a single file with progress tracking
   const uploadSingleFileWithProgress = async (
@@ -524,24 +563,230 @@ export default function UploadSegmentPage() {
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4 sm:space-y-6">
+                        {/* Image Compression Settings */}
+                        <div className="p-4 border border-border rounded-md bg-muted/30">
+                          <ImageCompressionSettings
+                            enabled={compressionEnabled}
+                            onEnabledChange={() => {
+                              // Compression is always enabled, do nothing
+                            }}
+                            options={compressionOptions}
+                            onOptionsChange={(options) => {
+                              if (!isFormDisabled) {
+                                setCompressionOptions(options);
+                              }
+                            }}
+                            showAdvanced={false}
+                            disableToggle={true}
+                          />
+                        </div>
+
                         <div className="space-y-3">
                           <input
                             type="file"
                             multiple
                             accept="image/*,video/*,.pdf,.epub"
                             disabled={isFormDisabled}
-                            onChange={(e) => {
+                            onChange={async (e) => {
                               const newFiles = Array.from(e.target.files || []);
-                              // Append new files to existing ones (avoid duplicates by name+size)
-                              setMediaFiles((prev) => {
-                                const existing = new Set(
-                                  prev.map((f) => `${f.name}-${f.size}`),
-                                );
-                                const uniqueNew = newFiles.filter(
-                                  (f) => !existing.has(`${f.name}-${f.size}`),
-                                );
-                                return [...prev, ...uniqueNew];
+                              if (newFiles.length === 0) return;
+
+                              // Create stable file keys (using name + lastModified, not size)
+                              const fileKeys = newFiles.map(
+                                (f) => `${f.name}-${f.lastModified}`,
+                              );
+
+                              // Filter out duplicates by checking existing files
+                              const existingKeys = new Set(
+                                mediaFiles.map(
+                                  (f) => `${f.name}-${f.lastModified}`,
+                                ),
+                              );
+                              const uniqueNewFiles = newFiles.filter(
+                                (f, idx) => !existingKeys.has(fileKeys[idx]),
+                              );
+                              const uniqueFileKeys = fileKeys.filter(
+                                (key) => !existingKeys.has(key),
+                              );
+
+                              if (uniqueNewFiles.length === 0) {
+                                e.target.value = "";
+                                return;
+                              }
+
+                              // Initialize compression status for new image files
+                              const newStatus: Record<
+                                string,
+                                "compressing" | "compressed" | "failed" | null
+                              > = {};
+                              uniqueNewFiles.forEach((file, index) => {
+                                const fileKey = uniqueFileKeys[index];
+                                if (
+                                  file.type.startsWith("image/") &&
+                                  compressionEnabled
+                                ) {
+                                  newStatus[fileKey] = "compressing";
+                                }
                               });
+                              setCompressionStatus((prev) => ({
+                                ...prev,
+                                ...newStatus,
+                              }));
+
+                              // Add files to state first (before compression)
+                              setMediaFiles((prev) => [
+                                ...prev,
+                                ...uniqueNewFiles,
+                              ]);
+
+                              // Create object URLs for image previews
+                              // Use original fileKey as the key for preview URLs
+                              const newPreviewUrls: Record<string, string> = {};
+                              const newFileKeyMapping: Record<string, string> =
+                                {};
+                              uniqueNewFiles.forEach((file, index) => {
+                                const originalFileKey = uniqueFileKeys[index];
+                                const currentFileKey = `${file.name}-${file.lastModified}`;
+
+                                // Map current fileKey to original fileKey
+                                newFileKeyMapping[currentFileKey] =
+                                  originalFileKey;
+
+                                if (file.type.startsWith("image/")) {
+                                  newPreviewUrls[originalFileKey] =
+                                    URL.createObjectURL(file);
+                                }
+                              });
+                              setPreviewUrls((prev) => ({
+                                ...prev,
+                                ...newPreviewUrls,
+                              }));
+                              setFileKeyMapping((prev) => ({
+                                ...prev,
+                                ...newFileKeyMapping,
+                              }));
+
+                              // Compress images if enabled
+                              if (
+                                compressionEnabled &&
+                                uniqueNewFiles.length > 0
+                              ) {
+                                try {
+                                  const compressedFiles =
+                                    await compressMultiple(uniqueNewFiles);
+
+                                  // Update files with compressed versions
+                                  setMediaFiles((prev) => {
+                                    return prev.map((file) => {
+                                      // Find matching original file in uniqueNewFiles
+                                      // Compare by name and check if it's one of the newly added files
+                                      const originalIndex =
+                                        uniqueNewFiles.findIndex(
+                                          (originalFile) =>
+                                            originalFile.name === file.name,
+                                        );
+
+                                      // If found in new files, process compression
+                                      if (
+                                        originalIndex !== -1 &&
+                                        uniqueNewFiles[originalIndex]
+                                      ) {
+                                        const originalFileKey =
+                                          uniqueFileKeys[originalIndex];
+                                        const originalFile =
+                                          uniqueNewFiles[originalIndex];
+                                        const compressedFile =
+                                          compressedFiles[originalIndex];
+
+                                        // Only update if it's an image and was compressed
+                                        if (
+                                          originalFile.type.startsWith(
+                                            "image/",
+                                          ) &&
+                                          compressedFile &&
+                                          compressedFile.size <
+                                            originalFile.size
+                                        ) {
+                                          // Revoke old preview URL and create new one for compressed file
+                                          // Keep using originalFileKey for preview URL tracking
+                                          setPreviewUrls((urls) => {
+                                            const oldUrl =
+                                              urls[originalFileKey];
+                                            if (oldUrl) {
+                                              try {
+                                                URL.revokeObjectURL(oldUrl);
+                                              } catch (error) {
+                                                // URL might already be revoked
+                                                console.warn(
+                                                  "Failed to revoke old preview URL:",
+                                                  error,
+                                                );
+                                              }
+                                            }
+                                            // Create new URL for compressed file, keep original fileKey
+                                            return {
+                                              ...urls,
+                                              [originalFileKey]:
+                                                URL.createObjectURL(
+                                                  compressedFile,
+                                                ),
+                                            };
+                                          });
+
+                                          // Update fileKey mapping for compressed file
+                                          const newFileKey = `${compressedFile.name}-${compressedFile.lastModified}`;
+                                          setFileKeyMapping((mapping) => ({
+                                            ...mapping,
+                                            [newFileKey]: originalFileKey,
+                                          }));
+
+                                          // Update compression status (use original fileKey)
+                                          setCompressionStatus((status) => ({
+                                            ...status,
+                                            [originalFileKey]: "compressed",
+                                          }));
+
+                                          // Store compression results (use original fileKey)
+                                          setCompressionResults((results) => ({
+                                            ...results,
+                                            [originalFileKey]: {
+                                              originalSize: originalFile.size,
+                                              compressedSize:
+                                                compressedFile.size,
+                                            },
+                                          }));
+
+                                          // Return compressed file
+                                          return compressedFile;
+                                        } else if (
+                                          originalFile.type.startsWith("image/")
+                                        ) {
+                                          // Image but compression didn't reduce size
+                                          setCompressionStatus((status) => ({
+                                            ...status,
+                                            [originalFileKey]: null,
+                                          }));
+                                        }
+                                      }
+
+                                      return file;
+                                    });
+                                  });
+                                } catch (error) {
+                                  console.error("Compression error:", error);
+                                  // Mark compression as failed but keep original files
+                                  uniqueNewFiles.forEach((file, idx) => {
+                                    const fileKey = uniqueFileKeys[idx];
+                                    if (file.type.startsWith("image/")) {
+                                      setCompressionStatus((status) => ({
+                                        ...status,
+                                        [fileKey]: "failed",
+                                      }));
+                                    }
+                                  });
+                                }
+                              }
+
                               // Reset input to allow selecting same files again
                               e.target.value = "";
                             }}
@@ -556,10 +801,13 @@ export default function UploadSegmentPage() {
                                 {mediaFiles.map((file, index) => {
                                   const isImage =
                                     file.type.startsWith("image/");
-                                  // Use stable key based on file properties, not index
-                                  const fileKey = `${file.name}-${file.size}-${file.lastModified}`;
+                                  // Use stable key (name + lastModified, not size since it changes after compression)
+                                  const fileKey = `${file.name}-${file.lastModified}`;
+                                  // Find original fileKey to get preview URL (handles compression)
+                                  const originalFileKey =
+                                    fileKeyMapping[fileKey] || fileKey;
                                   const previewUrl = isImage
-                                    ? URL.createObjectURL(file)
+                                    ? previewUrls[originalFileKey] || null
                                     : null;
 
                                   return (
@@ -584,14 +832,96 @@ export default function UploadSegmentPage() {
                                       {/* File Info */}
                                       <div className="flex-1 min-w-0 space-y-1.5">
                                         <div>
-                                          <p className="text-xs font-medium text-foreground truncate">
-                                            {file.name}
-                                          </p>
+                                          <div className="flex items-center gap-2">
+                                            <p className="text-xs font-medium text-foreground truncate">
+                                              {file.name}
+                                            </p>
+                                            {/* Compression Status Badge */}
+                                            {isImage &&
+                                              compressionStatus[
+                                                originalFileKey
+                                              ] && (
+                                                <Badge
+                                                  variant={
+                                                    compressionStatus[
+                                                      originalFileKey
+                                                    ] === "compressed"
+                                                      ? "default"
+                                                      : compressionStatus[
+                                                            originalFileKey
+                                                          ] === "compressing"
+                                                        ? "secondary"
+                                                        : "destructive"
+                                                  }
+                                                  className="text-xs"
+                                                >
+                                                  {compressionStatus[
+                                                    originalFileKey
+                                                  ] === "compressing"
+                                                    ? t(
+                                                        "compression.compressing",
+                                                        "series",
+                                                      ) || "Compressing..."
+                                                    : compressionStatus[
+                                                          originalFileKey
+                                                        ] === "compressed"
+                                                      ? t(
+                                                          "compression.compressed",
+                                                          "series",
+                                                        ) || "Compressed"
+                                                      : t(
+                                                          "compression.failed",
+                                                          "series",
+                                                        ) || "Failed"}
+                                                </Badge>
+                                              )}
+                                          </div>
                                           <p className="text-xs text-muted-foreground">
                                             {(file.size / 1024 / 1024).toFixed(
                                               2,
                                             )}{" "}
                                             MB
+                                            {compressionResults[
+                                              originalFileKey
+                                            ] && (
+                                              <span className="text-green-600 dark:text-green-400">
+                                                {" "}
+                                                •{" "}
+                                                {Math.round(
+                                                  ((compressionResults[
+                                                    originalFileKey
+                                                  ].originalSize -
+                                                    compressionResults[
+                                                      originalFileKey
+                                                    ].compressedSize) /
+                                                    compressionResults[
+                                                      originalFileKey
+                                                    ].originalSize) *
+                                                    100,
+                                                )}
+                                                %{" "}
+                                                {t(
+                                                  "compression.sizeReduction",
+                                                  "series",
+                                                )?.replace(
+                                                  "{{percent}}",
+                                                  String(
+                                                    Math.round(
+                                                      ((compressionResults[
+                                                        originalFileKey
+                                                      ].originalSize -
+                                                        compressionResults[
+                                                          originalFileKey
+                                                        ].compressedSize) /
+                                                        compressionResults[
+                                                          originalFileKey
+                                                        ].originalSize) *
+                                                        100,
+                                                    ),
+                                                  ),
+                                                ) || "smaller"}
+                                              </span>
+                                            )}
                                             {file.type &&
                                               ` • ${file.type.split("/")[0]}`}
                                           </p>
@@ -671,14 +1001,51 @@ export default function UploadSegmentPage() {
                                           size="icon"
                                           className="h-7 w-7"
                                           onClick={() => {
-                                            if (previewUrl) {
-                                              URL.revokeObjectURL(previewUrl);
+                                            // Revoke object URL if it exists (use originalFileKey)
+                                            const urlToRevoke =
+                                              previewUrls[originalFileKey];
+                                            if (urlToRevoke) {
+                                              try {
+                                                URL.revokeObjectURL(
+                                                  urlToRevoke,
+                                                );
+                                              } catch (error) {
+                                                console.warn(
+                                                  "Failed to revoke preview URL:",
+                                                  error,
+                                                );
+                                              }
+                                              setPreviewUrls((urls) => {
+                                                const newUrls = { ...urls };
+                                                delete newUrls[originalFileKey];
+                                                return newUrls;
+                                              });
                                             }
+                                            // Remove file
                                             setMediaFiles((prev) =>
                                               prev.filter(
                                                 (_, i) => i !== index,
                                               ),
                                             );
+                                            // Clean up fileKey mapping
+                                            setFileKeyMapping((mapping) => {
+                                              const newMapping = { ...mapping };
+                                              delete newMapping[fileKey];
+                                              return newMapping;
+                                            });
+                                            // Clean up compression status and results
+                                            setCompressionStatus((status) => {
+                                              const newStatus = { ...status };
+                                              delete newStatus[originalFileKey];
+                                              return newStatus;
+                                            });
+                                            setCompressionResults((results) => {
+                                              const newResults = { ...results };
+                                              delete newResults[
+                                                originalFileKey
+                                              ];
+                                              return newResults;
+                                            });
                                           }}
                                           disabled={isFormDisabled}
                                           aria-label="Remove"
@@ -695,7 +1062,25 @@ export default function UploadSegmentPage() {
                                 type="button"
                                 variant="outline"
                                 size="sm"
-                                onClick={() => setMediaFiles([])}
+                                onClick={() => {
+                                  // Revoke all preview URLs
+                                  Object.values(previewUrls).forEach((url) => {
+                                    try {
+                                      URL.revokeObjectURL(url);
+                                    } catch (error) {
+                                      console.warn(
+                                        "Failed to revoke preview URL:",
+                                        error,
+                                      );
+                                    }
+                                  });
+                                  setPreviewUrls({});
+                                  setFileKeyMapping({});
+                                  // Clear all files and related state
+                                  setMediaFiles([]);
+                                  setCompressionStatus({});
+                                  setCompressionResults({});
+                                }}
                                 disabled={isFormDisabled}
                                 className="w-full sm:w-auto"
                               >
