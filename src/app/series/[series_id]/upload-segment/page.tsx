@@ -132,11 +132,9 @@ export default function UploadSegmentPage() {
   // This ensures preview URLs persist even after compression changes lastModified
   const [previewUrls, setPreviewUrls] = useState<Record<string, string>>({});
 
-  // Track original fileKey for each file (maps current fileKey to original fileKey)
-  // This allows us to find preview URLs even after compression changes lastModified
-  const [fileKeyMapping, setFileKeyMapping] = useState<Record<string, string>>(
-    {},
-  );
+  // Track unique IDs for each file to prevent duplicate keys in React
+  // Maps file index to unique ID (created when file is first added)
+  const [fileUniqueIds, setFileUniqueIds] = useState<string[]>([]);
 
   // Image compression hook
   const { compressMultiple, isCompressing: isCompressingImages } =
@@ -572,41 +570,63 @@ export default function UploadSegmentPage() {
                               const newFiles = Array.from(e.target.files || []);
                               if (newFiles.length === 0) return;
 
-                              // Create stable file keys (using name + lastModified, not size)
-                              const fileKeys = newFiles.map(
-                                (f) => `${f.name}-${f.lastModified}`,
+                              // Create stable file identifiers (using name + size + lastModified for better uniqueness)
+                              // This helps identify truly duplicate files even if they have the same name
+                              const fileIdentifiers = newFiles.map(
+                                (f) => `${f.name}-${f.size}-${f.lastModified}`,
                               );
 
                               // Filter out duplicates by checking existing files
-                              const existingKeys = new Set(
+                              // Use a more comprehensive check: name + size + lastModified
+                              const existingIdentifiers = new Set(
                                 mediaFiles.map(
-                                  (f) => `${f.name}-${f.lastModified}`,
+                                  (f) => `${f.name}-${f.size}-${f.lastModified}`,
                                 ),
                               );
-                              const uniqueNewFiles = newFiles.filter(
-                                (f, idx) => !existingKeys.has(fileKeys[idx]),
-                              );
-                              const uniqueFileKeys = fileKeys.filter(
-                                (key) => !existingKeys.has(key),
-                              );
+
+                              // Filter out files that already exist
+                              const uniqueNewFiles: File[] = [];
+                              const uniqueFileIdentifiers: string[] = [];
+                              newFiles.forEach((file, idx) => {
+                                const identifier = fileIdentifiers[idx];
+                                if (!existingIdentifiers.has(identifier)) {
+                                  uniqueNewFiles.push(file);
+                                  uniqueFileIdentifiers.push(identifier);
+                                }
+                              });
 
                               if (uniqueNewFiles.length === 0) {
+                                // Show a toast notification if all files are duplicates
+                                toast.info(
+                                  t("segments.form.allFilesDuplicate", "series") ||
+                                    "All selected files are already added",
+                                );
                                 e.target.value = "";
                                 return;
                               }
 
+                              // Generate unique IDs for new files
+                              // Use timestamp + random number to ensure uniqueness
+                              const newUniqueIds = uniqueNewFiles.map(
+                                () =>
+                                  `file-${Date.now()}-${Math.random()
+                                    .toString(36)
+                                    .substring(2, 9)}`,
+                              );
+
                               // Initialize compression status for new image files
+                              // Use unique ID as key instead of fileKey
                               const newStatus: Record<
                                 string,
                                 "compressing" | "compressed" | "failed" | null
                               > = {};
                               uniqueNewFiles.forEach((file, index) => {
-                                const fileKey = uniqueFileKeys[index];
+                                const uniqueId = newUniqueIds[index];
                                 if (
                                   file.type.startsWith("image/") &&
                                   compressionEnabled
                                 ) {
-                                  newStatus[fileKey] = "compressing";
+                                  newStatus[uniqueId] = "compressing";
                                 }
                               });
                               setCompressionStatus((prev) => ({
@@ -620,31 +640,26 @@ export default function UploadSegmentPage() {
                                 ...uniqueNewFiles,
                               ]);
 
-                              // Create object URLs for image previews
-                              // Use original fileKey as the key for preview URLs
-                              const newPreviewUrls: Record<string, string> = {};
-                              const newFileKeyMapping: Record<string, string> =
-                                {};
-                              uniqueNewFiles.forEach((file, index) => {
-                                const originalFileKey = uniqueFileKeys[index];
-                                const currentFileKey = `${file.name}-${file.lastModified}`;
+                              // Add unique IDs to state
+                              setFileUniqueIds((prev) => [
+                                ...prev,
+                                ...newUniqueIds,
+                              ]);
 
-                                // Map current fileKey to original fileKey
-                                newFileKeyMapping[currentFileKey] =
-                                  originalFileKey;
+                              // Create object URLs for image previews
+                              // Use unique ID as the key for preview URLs
+                              const newPreviewUrls: Record<string, string> = {};
+                              uniqueNewFiles.forEach((file, index) => {
+                                const uniqueId = newUniqueIds[index];
 
                                 if (file.type.startsWith("image/")) {
-                                  newPreviewUrls[originalFileKey] =
+                                  newPreviewUrls[uniqueId] =
                                     URL.createObjectURL(file);
                                 }
                               });
                               setPreviewUrls((prev) => ({
                                 ...prev,
                                 ...newPreviewUrls,
-                              }));
-                              setFileKeyMapping((prev) => ({
-                                ...prev,
-                                ...newFileKeyMapping,
                               }));
 
                               // Compress images if enabled
@@ -657,27 +672,21 @@ export default function UploadSegmentPage() {
                                     await compressMultiple(uniqueNewFiles);
 
                                   // Update files with compressed versions
+                                  // We need to track which files were compressed by their index in the new files array
                                   setMediaFiles((prev) => {
-                                    return prev.map((file) => {
-                                      // Find matching original file in uniqueNewFiles
-                                      // Compare by name and check if it's one of the newly added files
-                                      const originalIndex =
-                                        uniqueNewFiles.findIndex(
-                                          (originalFile) =>
-                                            originalFile.name === file.name,
-                                        );
-
-                                      // If found in new files, process compression
+                                    const startIndex = prev.length - uniqueNewFiles.length;
+                                    return prev.map((file, fileIndex) => {
+                                      // Check if this file is one of the newly added files
+                                      const newFileIndex = fileIndex - startIndex;
                                       if (
-                                        originalIndex !== -1 &&
-                                        uniqueNewFiles[originalIndex]
+                                        newFileIndex >= 0 &&
+                                        newFileIndex < uniqueNewFiles.length
                                       ) {
-                                        const originalFileKey =
-                                          uniqueFileKeys[originalIndex];
+                                        const uniqueId = newUniqueIds[newFileIndex];
                                         const originalFile =
-                                          uniqueNewFiles[originalIndex];
+                                          uniqueNewFiles[newFileIndex];
                                         const compressedFile =
-                                          compressedFiles[originalIndex];
+                                          compressedFiles[newFileIndex];
 
                                         // Only update if it's an image and was compressed
                                         if (
@@ -689,10 +698,9 @@ export default function UploadSegmentPage() {
                                             originalFile.size
                                         ) {
                                           // Revoke old preview URL and create new one for compressed file
-                                          // Keep using originalFileKey for preview URL tracking
+                                          // Use unique ID for preview URL tracking
                                           setPreviewUrls((urls) => {
-                                            const oldUrl =
-                                              urls[originalFileKey];
+                                            const oldUrl = urls[uniqueId];
                                             if (oldUrl) {
                                               try {
                                                 URL.revokeObjectURL(oldUrl);
@@ -704,33 +712,26 @@ export default function UploadSegmentPage() {
                                                 );
                                               }
                                             }
-                                            // Create new URL for compressed file, keep original fileKey
+                                            // Create new URL for compressed file, use unique ID
                                             return {
                                               ...urls,
-                                              [originalFileKey]:
+                                              [uniqueId]:
                                                 URL.createObjectURL(
                                                   compressedFile,
                                                 ),
                                             };
                                           });
 
-                                          // Update fileKey mapping for compressed file
-                                          const newFileKey = `${compressedFile.name}-${compressedFile.lastModified}`;
-                                          setFileKeyMapping((mapping) => ({
-                                            ...mapping,
-                                            [newFileKey]: originalFileKey,
-                                          }));
-
-                                          // Update compression status (use original fileKey)
+                                          // Update compression status (use unique ID)
                                           setCompressionStatus((status) => ({
                                             ...status,
-                                            [originalFileKey]: "compressed",
+                                            [uniqueId]: "compressed",
                                           }));
 
-                                          // Store compression results (use original fileKey)
+                                          // Store compression results (use unique ID)
                                           setCompressionResults((results) => ({
                                             ...results,
-                                            [originalFileKey]: {
+                                            [uniqueId]: {
                                               originalSize: originalFile.size,
                                               compressedSize:
                                                 compressedFile.size,
@@ -745,7 +746,7 @@ export default function UploadSegmentPage() {
                                           // Image but compression didn't reduce size
                                           setCompressionStatus((status) => ({
                                             ...status,
-                                            [originalFileKey]: null,
+                                            [uniqueId]: null,
                                           }));
                                         }
                                       }
@@ -757,11 +758,11 @@ export default function UploadSegmentPage() {
                                   console.error("Compression error:", error);
                                   // Mark compression as failed but keep original files
                                   uniqueNewFiles.forEach((file, idx) => {
-                                    const fileKey = uniqueFileKeys[idx];
+                                    const uniqueId = newUniqueIds[idx];
                                     if (file.type.startsWith("image/")) {
                                       setCompressionStatus((status) => ({
                                         ...status,
-                                        [fileKey]: "failed",
+                                        [uniqueId]: "failed",
                                       }));
                                     }
                                   });
@@ -782,18 +783,18 @@ export default function UploadSegmentPage() {
                                 {mediaFiles.map((file, index) => {
                                   const isImage =
                                     file.type.startsWith("image/");
-                                  // Use stable key (name + lastModified, not size since it changes after compression)
-                                  const fileKey = `${file.name}-${file.lastModified}`;
-                                  // Find original fileKey to get preview URL (handles compression)
-                                  const originalFileKey =
-                                    fileKeyMapping[fileKey] || fileKey;
+                                  // Use unique ID as key to prevent duplicate keys
+                                  const uniqueId =
+                                    fileUniqueIds[index] ||
+                                    `fallback-${file.name}-${index}`;
+                                  // Get preview URL using unique ID
                                   const previewUrl = isImage
-                                    ? previewUrls[originalFileKey] || null
+                                    ? previewUrls[uniqueId] || null
                                     : null;
 
                                   return (
                                     <div
-                                      key={fileKey}
+                                      key={uniqueId}
                                       className="flex items-start gap-3 p-2 rounded-md bg-background border border-border hover:bg-muted/50 transition-colors"
                                     >
                                       {/* Image Preview Thumbnail */}
@@ -819,17 +820,15 @@ export default function UploadSegmentPage() {
                                             </p>
                                             {/* Compression Status Badge */}
                                             {isImage &&
-                                              compressionStatus[
-                                                originalFileKey
-                                              ] && (
+                                              compressionStatus[uniqueId] && (
                                                 <Badge
                                                   variant={
                                                     compressionStatus[
-                                                      originalFileKey
+                                                      uniqueId
                                                     ] === "compressed"
                                                       ? "default"
                                                       : compressionStatus[
-                                                            originalFileKey
+                                                            uniqueId
                                                           ] === "compressing"
                                                         ? "secondary"
                                                         : "destructive"
@@ -837,14 +836,14 @@ export default function UploadSegmentPage() {
                                                   className="text-xs"
                                                 >
                                                   {compressionStatus[
-                                                    originalFileKey
+                                                    uniqueId
                                                   ] === "compressing"
                                                     ? t(
                                                         "compression.compressing",
                                                         "series",
                                                       ) || "Compressing..."
                                                     : compressionStatus[
-                                                          originalFileKey
+                                                          uniqueId
                                                         ] === "compressed"
                                                       ? t(
                                                           "compression.compressed",
@@ -862,21 +861,19 @@ export default function UploadSegmentPage() {
                                               2,
                                             )}{" "}
                                             MB
-                                            {compressionResults[
-                                              originalFileKey
-                                            ] && (
+                                            {compressionResults[uniqueId] && (
                                               <span className="text-green-600 dark:text-green-400">
                                                 {" "}
                                                 •{" "}
                                                 {Math.round(
                                                   ((compressionResults[
-                                                    originalFileKey
+                                                    uniqueId
                                                   ].originalSize -
                                                     compressionResults[
-                                                      originalFileKey
+                                                      uniqueId
                                                     ].compressedSize) /
                                                     compressionResults[
-                                                      originalFileKey
+                                                      uniqueId
                                                     ].originalSize) *
                                                     100,
                                                 )}
@@ -889,13 +886,13 @@ export default function UploadSegmentPage() {
                                                   String(
                                                     Math.round(
                                                       ((compressionResults[
-                                                        originalFileKey
+                                                        uniqueId
                                                       ].originalSize -
                                                         compressionResults[
-                                                          originalFileKey
+                                                          uniqueId
                                                         ].compressedSize) /
                                                         compressionResults[
-                                                          originalFileKey
+                                                          uniqueId
                                                         ].originalSize) *
                                                         100,
                                                     ),
@@ -933,6 +930,18 @@ export default function UploadSegmentPage() {
                                                 ];
                                                 return newFiles;
                                               });
+                                              // Also swap unique IDs
+                                              setFileUniqueIds((prev) => {
+                                                const newIds = [...prev];
+                                                [
+                                                  newIds[index - 1],
+                                                  newIds[index],
+                                                ] = [
+                                                  newIds[index],
+                                                  newIds[index - 1],
+                                                ];
+                                                return newIds;
+                                              });
                                             }
                                           }}
                                           disabled={
@@ -963,6 +972,18 @@ export default function UploadSegmentPage() {
                                                 ];
                                                 return newFiles;
                                               });
+                                              // Also swap unique IDs
+                                              setFileUniqueIds((prev) => {
+                                                const newIds = [...prev];
+                                                [
+                                                  newIds[index],
+                                                  newIds[index + 1],
+                                                ] = [
+                                                  newIds[index + 1],
+                                                  newIds[index],
+                                                ];
+                                                return newIds;
+                                              });
                                             }
                                           }}
                                           disabled={
@@ -982,9 +1003,9 @@ export default function UploadSegmentPage() {
                                           size="icon"
                                           className="h-7 w-7"
                                           onClick={() => {
-                                            // Revoke object URL if it exists (use originalFileKey)
+                                            // Revoke object URL if it exists (use uniqueId)
                                             const urlToRevoke =
-                                              previewUrls[originalFileKey];
+                                              previewUrls[uniqueId];
                                             if (urlToRevoke) {
                                               try {
                                                 URL.revokeObjectURL(
@@ -998,7 +1019,7 @@ export default function UploadSegmentPage() {
                                               }
                                               setPreviewUrls((urls) => {
                                                 const newUrls = { ...urls };
-                                                delete newUrls[originalFileKey];
+                                                delete newUrls[uniqueId];
                                                 return newUrls;
                                               });
                                             }
@@ -1008,23 +1029,21 @@ export default function UploadSegmentPage() {
                                                 (_, i) => i !== index,
                                               ),
                                             );
-                                            // Clean up fileKey mapping
-                                            setFileKeyMapping((mapping) => {
-                                              const newMapping = { ...mapping };
-                                              delete newMapping[fileKey];
-                                              return newMapping;
-                                            });
+                                            // Remove unique ID
+                                            setFileUniqueIds((prev) =>
+                                              prev.filter(
+                                                (_, i) => i !== index,
+                                              ),
+                                            );
                                             // Clean up compression status and results
                                             setCompressionStatus((status) => {
                                               const newStatus = { ...status };
-                                              delete newStatus[originalFileKey];
+                                              delete newStatus[uniqueId];
                                               return newStatus;
                                             });
                                             setCompressionResults((results) => {
                                               const newResults = { ...results };
-                                              delete newResults[
-                                                originalFileKey
-                                              ];
+                                              delete newResults[uniqueId];
                                               return newResults;
                                             });
                                           }}
@@ -1056,9 +1075,9 @@ export default function UploadSegmentPage() {
                                     }
                                   });
                                   setPreviewUrls({});
-                                  setFileKeyMapping({});
                                   // Clear all files and related state
                                   setMediaFiles([]);
+                                  setFileUniqueIds([]);
                                   setCompressionStatus({});
                                   setCompressionResults({});
                                 }}
