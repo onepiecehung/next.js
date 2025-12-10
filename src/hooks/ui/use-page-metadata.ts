@@ -138,63 +138,84 @@ export function usePageMetadata({
     }
 
     // Cleanup function to restore default metadata when component unmounts
+    // Defer cleanup to avoid conflicts with React's commit deletion effects
     return () => {
-      // Reset document title
-      if (title) {
-        document.title = "MangaSBS";
-      }
+      // Use queueMicrotask to defer cleanup after React's commit phase
+      queueMicrotask(() => {
+        try {
+          // Reset document title
+          if (title) {
+            document.title = "MangaSBS";
+          }
 
-      // Helper function to remove meta tag
-      const removeMetaTag = (name: string, attribute: string = "name") => {
-        const element = document.querySelector(
-          `meta[${attribute}="${name}"]`,
-        ) as HTMLMetaElement;
-        if (element) {
-          element.remove();
+          // Helper function to safely remove meta tag
+          // Checks if element exists and is still in DOM before removing
+          const removeMetaTag = (name: string, attribute: string = "name") => {
+            try {
+              const element = document.querySelector(
+                `meta[${attribute}="${name}"]`,
+              ) as HTMLMetaElement;
+              // Check if element exists and is still attached to DOM
+              if (element && element.parentNode) {
+                element.remove();
+              }
+            } catch (error) {
+              // Silently ignore errors during cleanup (element may already be removed)
+              // This prevents "removeChild" errors during navigation
+            }
+          };
+
+          // Remove description meta tags
+          if (description) {
+            removeMetaTag("description");
+            removeMetaTag("og:description", "property");
+            removeMetaTag("twitter:description");
+          }
+
+          // Remove Open Graph and Twitter Card tags
+          if (title) {
+            removeMetaTag("og:title", "property");
+            removeMetaTag("twitter:title");
+          }
+
+          if (image) {
+            removeMetaTag("og:image", "property");
+            removeMetaTag("twitter:image");
+            removeMetaTag("twitter:card");
+          }
+
+          if (url) {
+            removeMetaTag("og:url", "property");
+            // Remove canonical link safely
+            try {
+              const canonicalLink = document.querySelector(
+                'link[rel="canonical"]',
+              ) as HTMLLinkElement;
+              // Check if element exists and is still attached to DOM
+              if (canonicalLink && canonicalLink.parentNode) {
+                canonicalLink.remove();
+              }
+            } catch (error) {
+              // Silently ignore errors during cleanup
+            }
+          }
+
+          if (type) {
+            removeMetaTag("og:type", "property");
+          }
+
+          if (keywords && keywords.length > 0) {
+            removeMetaTag("keywords");
+          }
+
+          if (author) {
+            removeMetaTag("author");
+          }
+        } catch (error) {
+          // Silently ignore any errors during cleanup
+          // This prevents navigation errors when React is cleaning up components
         }
-      };
-
-      // Remove description meta tags
-      if (description) {
-        removeMetaTag("description");
-        removeMetaTag("og:description", "property");
-        removeMetaTag("twitter:description");
-      }
-
-      // Remove Open Graph and Twitter Card tags
-      if (title) {
-        removeMetaTag("og:title", "property");
-        removeMetaTag("twitter:title");
-      }
-
-      if (image) {
-        removeMetaTag("og:image", "property");
-        removeMetaTag("twitter:image");
-        removeMetaTag("twitter:card");
-      }
-
-      if (url) {
-        removeMetaTag("og:url", "property");
-        // Remove canonical link
-        const canonicalLink = document.querySelector(
-          'link[rel="canonical"]',
-        ) as HTMLLinkElement;
-        if (canonicalLink) {
-          canonicalLink.remove();
-        }
-      }
-
-      if (type) {
-        removeMetaTag("og:type", "property");
-      }
-
-      if (keywords && keywords.length > 0) {
-        removeMetaTag("keywords");
-      }
-
-      if (author) {
-        removeMetaTag("author");
-      }
+      });
     };
   }, [title, description, image, url, keywords, author, type]);
 }

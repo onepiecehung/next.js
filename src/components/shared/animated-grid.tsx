@@ -146,9 +146,7 @@ export function AnimatedGrid({
         whileInView={shouldAnimate ? "visible" : "hidden"}
         viewport={viewport}
         className={className}
-        // Add exit animation to handle unmount gracefully
-        exit="hidden"
-        // Prevent errors during navigation by using layout prop
+        // Prevent errors during navigation by disabling layout animations
         layout={false}
         {...props}
       >
@@ -163,9 +161,7 @@ export function AnimatedGrid({
       initial="hidden"
       animate={animateState}
       className={className}
-      // Add exit animation to handle unmount gracefully
-      exit="hidden"
-      // Prevent errors during navigation by using layout prop
+      // Prevent errors during navigation by disabling layout animations
       layout={false}
       {...props}
     >

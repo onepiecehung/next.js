@@ -102,9 +102,7 @@ export function AnimatedSection({
         viewport={viewport}
         variants={variants}
         className={className}
-        // Add exit animation to handle unmount gracefully
-        exit="hidden"
-        // Prevent errors during navigation by using layout prop
+        // Prevent errors during navigation by disabling layout animations
         layout={false}
         {...props}
       >
@@ -119,9 +117,7 @@ export function AnimatedSection({
       animate={animateState}
       variants={variants}
       className={className}
-      // Add exit animation to handle unmount gracefully
-      exit="hidden"
-      // Prevent errors during navigation by using layout prop
+      // Prevent errors during navigation by disabling layout animations
       layout={false}
       {...props}
     >
