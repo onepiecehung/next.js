@@ -580,7 +580,8 @@ export default function UploadSegmentPage() {
                               // Use a more comprehensive check: name + size + lastModified
                               const existingIdentifiers = new Set(
                                 mediaFiles.map(
-                                  (f) => `${f.name}-${f.size}-${f.lastModified}`,
+                                  (f) =>
+                                    `${f.name}-${f.size}-${f.lastModified}`,
                                 ),
                               );
 
@@ -598,8 +599,10 @@ export default function UploadSegmentPage() {
                               if (uniqueNewFiles.length === 0) {
                                 // Show a toast notification if all files are duplicates
                                 toast.info(
-                                  t("segments.form.allFilesDuplicate", "series") ||
-                                    "All selected files are already added",
+                                  t(
+                                    "segments.form.allFilesDuplicate",
+                                    "series",
+                                  ) || "All selected files are already added",
                                 );
                                 e.target.value = "";
                                 return;
@@ -674,15 +677,18 @@ export default function UploadSegmentPage() {
                                   // Update files with compressed versions
                                   // We need to track which files were compressed by their index in the new files array
                                   setMediaFiles((prev) => {
-                                    const startIndex = prev.length - uniqueNewFiles.length;
+                                    const startIndex =
+                                      prev.length - uniqueNewFiles.length;
                                     return prev.map((file, fileIndex) => {
                                       // Check if this file is one of the newly added files
-                                      const newFileIndex = fileIndex - startIndex;
+                                      const newFileIndex =
+                                        fileIndex - startIndex;
                                       if (
                                         newFileIndex >= 0 &&
                                         newFileIndex < uniqueNewFiles.length
                                       ) {
-                                        const uniqueId = newUniqueIds[newFileIndex];
+                                        const uniqueId =
+                                          newUniqueIds[newFileIndex];
                                         const originalFile =
                                           uniqueNewFiles[newFileIndex];
                                         const compressedFile =
@@ -866,15 +872,12 @@ export default function UploadSegmentPage() {
                                                 {" "}
                                                 •{" "}
                                                 {Math.round(
-                                                  ((compressionResults[
-                                                    uniqueId
-                                                  ].originalSize -
-                                                    compressionResults[
-                                                      uniqueId
-                                                    ].compressedSize) /
-                                                    compressionResults[
-                                                      uniqueId
-                                                    ].originalSize) *
+                                                  ((compressionResults[uniqueId]
+                                                    .originalSize -
+                                                    compressionResults[uniqueId]
+                                                      .compressedSize) /
+                                                    compressionResults[uniqueId]
+                                                      .originalSize) *
                                                     100,
                                                 )}
                                                 %{" "}

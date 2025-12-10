@@ -1,9 +1,9 @@
 "use client";
 
 import {
-    containerVariants,
-    itemVariants,
-    shouldAnimateArray,
+  containerVariants,
+  itemVariants,
+  shouldAnimateArray,
 } from "@/lib/utils/animations";
 import { motion, type HTMLMotionProps, type Variants } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";

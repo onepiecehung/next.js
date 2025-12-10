@@ -4,16 +4,16 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { Label } from "@/components/ui/core";
 import { Input } from "@/components/ui/core/input";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import type { CompressionOptions } from "@/lib/utils/image-compression";
@@ -198,7 +198,10 @@ export function ImageCompressionSettings({
         <div className="space-y-4 pl-4 border-l-2 border-border">
           {/* Quality Select */}
           <div className="space-y-2">
-            <Label htmlFor="compression-quality" className="text-sm font-medium">
+            <Label
+              htmlFor="compression-quality"
+              className="text-sm font-medium"
+            >
               {t("compression.quality", "series") || "Quality"}
             </Label>
             <Select
