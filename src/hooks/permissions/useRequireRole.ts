@@ -27,7 +27,8 @@ export function useRequireRole(roleName: string) {
   } = useCheckRole(roleName, !!currentUser);
 
   const hasRole = roleCheckData?.hasRole ?? false;
-  const currentPath = typeof window !== "undefined" ? window.location.pathname : "";
+  const currentPath =
+    typeof window !== "undefined" ? window.location.pathname : "";
 
   useEffect(() => {
     // Don't redirect while auth is still loading
