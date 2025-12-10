@@ -199,6 +199,13 @@ export const queryKeys = {
     duplicates: (type: string, id: string) =>
       ["reports", "duplicates", type, id] as const,
   },
+
+  // Permissions related queries
+  permissions: {
+    all: () => ["permissions"] as const,
+    checkRole: (roleName: string) =>
+      ["permissions", "checkRole", roleName] as const,
+  },
 } as const;
 
 /**
