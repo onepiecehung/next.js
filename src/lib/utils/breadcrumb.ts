@@ -157,7 +157,6 @@ export const BreadcrumbRoutes = {
       seriesTitle?: string,
     ): BreadcrumbItem[] => [
       { label: "nav.breadcrumb.home", href: "/" },
-      { label: "nav.breadcrumb.series", href: "/series" },
       {
         // Use seriesTitle if provided and not empty, otherwise use translation key
         label:
