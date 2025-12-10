@@ -14,24 +14,24 @@ import { UploadProgressSheet } from "@/components/features/series/upload-progres
 import { useI18n } from "@/components/providers/i18n-provider";
 import { AnimatedSection, Skeletonize } from "@/components/shared";
 import {
-    Button,
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-    Spinner,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Spinner,
 } from "@/components/ui";
 import { Input, Label } from "@/components/ui/core";
 import { Badge } from "@/components/ui/core/badge";
 import { DateTimePicker } from "@/components/ui/core/date-time-picker";
 import { ImageCompressionSettings } from "@/components/ui/core/image-compression-settings";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { useImageCompression } from "@/hooks/media/useImageCompression";
 import { useRequireRole } from "@/hooks/permissions";
@@ -39,9 +39,9 @@ import { useCreateSegment, useSeriesFull } from "@/hooks/series";
 import { useBreadcrumb } from "@/hooks/ui";
 import type { UploadedMedia } from "@/lib/api/media";
 import {
-    DEFAULT_LANGUAGE_CODE,
-    LANGUAGES,
-    SERIES_CONSTANTS,
+  DEFAULT_LANGUAGE_CODE,
+  LANGUAGES,
+  SERIES_CONSTANTS,
 } from "@/lib/constants";
 import { http } from "@/lib/http/client";
 import type { ApiResponse } from "@/lib/types";
@@ -60,7 +60,8 @@ export default function UploadSegmentPage() {
   const seriesId = params.series_id as string;
 
   // Check if user has uploader role - redirects to permission-denied if not
-  const { hasRole, isLoading: isCheckingPermission } = useRequireRole("uploader");
+  const { hasRole, isLoading: isCheckingPermission } =
+    useRequireRole("uploader");
 
   // Ref for upload card to scroll to when submitting
   const uploadCardRef = useRef<HTMLDivElement>(null);
@@ -1650,10 +1651,10 @@ export default function UploadSegmentPage() {
               <div className="space-y-4 sm:space-y-6">
                 {/* Breadcrumb placeholder */}
                 <div className="h-6 w-48 rounded" />
-                
+
                 {/* Series Info Card placeholder */}
                 <div className="h-32 sm:h-40 rounded-lg" />
-                
+
                 {/* Form cards placeholder */}
                 <div className="space-y-4">
                   <div className="h-64 sm:h-80 rounded-lg" />

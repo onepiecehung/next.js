@@ -1,12 +1,12 @@
 "use client";
 
 import {
-    BookOpen,
-    ExternalLink,
-    FileText,
-    Heart,
-    Share2,
-    Star,
+  BookOpen,
+  ExternalLink,
+  FileText,
+  Heart,
+  Share2,
+  Star,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

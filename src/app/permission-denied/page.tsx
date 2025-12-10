@@ -45,8 +45,7 @@ export default function PermissionDeniedPage() {
           <div className="flex items-center justify-center gap-2 mb-4">
             <Lock className="h-6 w-6 sm:h-7 sm:w-7 text-destructive" />
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
-              {t("permissionDenied.title", "common") ||
-                "Access Denied"}
+              {t("permissionDenied.title", "common") || "Access Denied"}
             </h2>
           </div>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-lg mx-auto">
@@ -88,8 +87,7 @@ export default function PermissionDeniedPage() {
         <div className="bg-card border border-border rounded-lg p-6 text-left">
           <h3 className="text-lg font-semibold text-foreground mb-4 text-center flex items-center justify-center gap-2">
             <Shield className="h-5 w-5 text-primary" />
-            {t("permissionDenied.info", "common") ||
-              "Why am I seeing this?"}
+            {t("permissionDenied.info", "common") || "Why am I seeing this?"}
           </h3>
 
           <div className="space-y-3">
@@ -131,8 +129,7 @@ export default function PermissionDeniedPage() {
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  {t("permissionDenied.reason3", "common") ||
-                    "Need help?"}
+                  {t("permissionDenied.reason3", "common") || "Need help?"}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   {t("permissionDenied.reason3Desc", "common") ||
