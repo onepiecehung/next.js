@@ -1,30 +1,24 @@
 "use client";
 
 import { useAtom } from "jotai";
-import {
-    LogOut,
-    Menu,
-    Settings,
-    User as UserIcon,
-    X
-} from "lucide-react";
+import { LogOut, Menu, Settings, User as UserIcon, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-    ThemeSelector,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  ThemeSelector,
 } from "@/components/ui";
 import { Button } from "@/components/ui/core/button";
 import { Separator } from "@/components/ui/layout/separator";
 import { LanguageSwitcher } from "@/components/ui/navigation";
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
 } from "@/components/ui/shadcn-io/popover";
 import { authLoadingAtom, currentUserAtom } from "@/lib/auth";
 
