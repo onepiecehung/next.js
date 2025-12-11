@@ -409,6 +409,32 @@ export function useDeleteSeries() {
 }
 
 /**
+ * Hook for searching series by query string
+ * Uses debounced query to avoid excessive API calls
+ * @param query - Search query string
+ * @param enabled - Whether to enable the query (default: true if query is not empty)
+ */
+export function useSeriesSearch(query: string, enabled?: boolean) {
+  return useQuery({
+    queryKey: queryKeys.series.search(query),
+    queryFn: async () => {
+      const response = await SeriesAPI.searchSeries(query, "title:jsonb", 10);
+      // ApiResponseCursor structure: response.data = { data: { result: T[], metaData: {...} } }
+      // So we access: response.data.data.result
+      const backendSeries = response.data.result as unknown as BackendSeries[];
+      return transformBackendSeriesList(backendSeries);
+    },
+    enabled:
+      enabled !== undefined
+        ? enabled && query.trim().length > 0
+        : query.trim().length > 0,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    retry: 1, // Only retry once for search queries
+  });
+}
+
+/**
  * Hook for fetching AniList media list
  */
 export function useAniListMediaList(page?: number, perPage?: number) {

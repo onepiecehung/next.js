@@ -75,6 +75,7 @@ export const queryKeys = {
     recentlyAdded: () => ["series", "recently-added"] as const,
     byType: (type: string) => ["series", "type", type] as const,
     byGenre: (genre: string) => ["series", "genre", genre] as const,
+    search: (query: string) => ["series", "search", query] as const,
     segments: {
       all: (seriesId: string) => ["series", seriesId, "segments"] as const,
       list: (seriesId: string, params?: AdvancedQueryParams) =>

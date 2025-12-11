@@ -919,5 +919,11 @@
     "reason3": "Cần trợ giúp?",
     "reason3Desc": "Liên hệ hỗ trợ hoặc quản trị viên nếu bạn cho rằng bạn nên có quyền truy cập"
   },
-  "checkingPermission": "Đang kiểm tra quyền..."
+  "checkingPermission": "Đang kiểm tra quyền...",
+  "inviteOnly": {
+    "title": "Chỉ Dành Cho Người Được Mời",
+    "description": "Trang web này hiện chỉ dành cho người được mời",
+    "message": "Quyền truy cập vào nền tảng này bị giới hạn chỉ dành cho người dùng được mời. Nếu bạn có lời mời, vui lòng sử dụng nó để tạo tài khoản của bạn.",
+    "understand": "Tôi Hiểu"
+  }
 }
