@@ -28,14 +28,18 @@ interface SearchResultCardProps {
   onClick: () => void;
 }
 
-function SearchResultCard({ series, searchQuery, onClick }: SearchResultCardProps) {
+function SearchResultCard({
+  series,
+  searchQuery,
+  onClick,
+}: SearchResultCardProps) {
   // Highlight search query in title
   const highlightedTitle = useMemo(() => {
     if (!searchQuery.trim()) return series.title;
-    
+
     const regex = new RegExp(`(${searchQuery})`, "gi");
     const parts = series.title.split(regex);
-    
+
     return parts.map((part, index) => {
       if (part.toLowerCase() === searchQuery.toLowerCase()) {
         return (
@@ -71,7 +75,7 @@ function SearchResultCard({ series, searchQuery, onClick }: SearchResultCardProp
           className="object-cover"
         />
       </div>
-      
+
       {/* Title */}
       <div className="flex-1 min-w-0">
         <h3 className="text-sm sm:text-base text-foreground line-clamp-1 font-medium">

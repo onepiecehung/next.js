@@ -919,5 +919,11 @@
     "reason3": "Need help?",
     "reason3Desc": "Contact support or an administrator if you believe you should have access"
   },
-  "checkingPermission": "Checking permissions..."
+  "checkingPermission": "Checking permissions...",
+  "inviteOnly": {
+    "title": "Invite Only",
+    "description": "This site is currently invite-only",
+    "message": "Access to this platform is restricted to invited users only. If you have an invitation, please use it to create your account.",
+    "understand": "I Understand"
+  }
 }
