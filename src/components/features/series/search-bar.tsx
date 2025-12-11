@@ -184,41 +184,42 @@ export function SearchBar({
         onSubmit={handleSubmit}
         className={cn("relative w-full max-w-2xl", className)}
       >
-        <PopoverAnchor asChild>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none z-10" />
-            <Input
-              ref={inputRef}
-              type="search"
-              placeholder={placeholder || t("searchPlaceholder", "series")}
-              value={query}
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              className={cn(
-                "w-full pl-10",
-                showKeyboardShortcut ? "pr-28 sm:pr-32" : "pr-12",
-              )}
-            />
-            {/* Search Button - Always visible */}
-            <Button
-              type="submit"
-              size="icon"
-              className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 z-10"
-              aria-label="Search"
-            >
-              <Search className="h-4 w-4" />
-            </Button>
-            {/* Keyboard Shortcut Badge - Only on larger screens */}
-            {showKeyboardShortcut && (
-              <div className="absolute right-10 sm:right-12 top-1/2 -translate-y-1/2 z-10">
-                <kbd className="pointer-events-none hidden h-8 select-none items-center gap-1 rounded border bg-muted px-2 font-mono text-xs font-medium opacity-100 sm:flex">
-                  <span className="text-xs">{isMac ? "⌘" : "Ctrl"}</span>
-                  <span className="text-xs">K</span>
-                </kbd>
-              </div>
+        <div className="relative">
+          <PopoverAnchor asChild>
+            <div className="absolute inset-0 pointer-events-none" />
+          </PopoverAnchor>
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none z-10" />
+          <Input
+            ref={inputRef}
+            type="search"
+            placeholder={placeholder || t("searchPlaceholder", "series")}
+            value={query}
+            onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            className={cn(
+              "w-full pl-10 relative z-20",
+              showKeyboardShortcut ? "pr-28 sm:pr-32" : "pr-12",
             )}
-          </div>
-        </PopoverAnchor>
+          />
+          {/* Search Button - Always visible */}
+          <Button
+            type="submit"
+            size="icon"
+            className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 z-20"
+            aria-label="Search"
+          >
+            <Search className="h-4 w-4" />
+          </Button>
+          {/* Keyboard Shortcut Badge - Only on larger screens */}
+          {showKeyboardShortcut && (
+            <div className="absolute right-10 sm:right-12 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
+              <kbd className="hidden h-8 select-none items-center gap-1 rounded border bg-muted px-2 font-mono text-xs font-medium opacity-100 sm:flex">
+                <span className="text-xs">{isMac ? "⌘" : "Ctrl"}</span>
+                <span className="text-xs">K</span>
+              </kbd>
+            </div>
+          )}
+        </div>
         <PopoverContent
           className="w-[var(--radix-popover-trigger-width)] p-0"
           align="start"
