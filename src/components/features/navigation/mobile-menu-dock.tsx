@@ -2,6 +2,7 @@
 
 import { useAtom } from "jotai";
 import {
+  ArrowLeft,
   Home,
   LogIn,
   LogOut,
@@ -28,22 +29,66 @@ import {
   DialogTitle,
 } from "@/components/ui/layout/dialog";
 import { Separator } from "@/components/ui/layout/separator";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/layout/sheet";
 import { LanguageSwitcher } from "@/components/ui/navigation";
 import {
   MenuDock,
   type MenuDockItem,
 } from "@/components/ui/shadcn-io/menu-dock";
-import {
-  Popover,
-  PopoverAnchor,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/shadcn-io/popover";
 import { authLoadingAtom, currentUserAtom } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 
 interface MobileMenuDockProps {
   onLogout: () => Promise<void>;
   isLoggingOut: boolean;
+}
+
+/**
+ * Avatar Icon Component for MenuDock
+ * Renders user avatar instead of a generic icon
+ * Best UX practice: Personalizes the navigation and creates visual identity
+ * Used as a replacement for UserIcon in the dock when user is authenticated
+ */
+function UserAvatarIcon({
+  user,
+  className,
+}: {
+  user: { avatar?: { url?: string }; name?: string; username?: string; email?: string };
+  className?: string;
+}) {
+  // Generate initials from user data for fallback
+  const initials = (
+    user.name ||
+    user.username ||
+    user.email?.split("@")[0] ||
+    "US"
+  )
+    .slice(0, 2)
+    .toUpperCase();
+
+  const avatarUrl = user.avatar?.url;
+
+  // Avatar size: h-6 w-6 (slightly larger than default icon h-4 w-4 for better visibility)
+  // This ensures the avatar is clearly visible in the compact dock variant
+  return (
+    <Avatar className={cn("h-6 w-6 ring-1 ring-border", className)}>
+      {avatarUrl && (
+        <AvatarImage
+          src={avatarUrl}
+          alt={`${user.name || user.username || user.email || "User"} avatar`}
+          className="object-cover"
+        />
+      )}
+      <AvatarFallback className="bg-primary/10 text-primary font-semibold text-[0.625rem] leading-none">
+        {initials}
+      </AvatarFallback>
+    </Avatar>
+  );
 }
 
 /**
@@ -66,31 +111,73 @@ export default function MobileMenuDock({
     null,
   );
 
+  // Check if current route is a detail/nested page (not in dock menu)
+  const isDetailPage = useMemo(() => {
+    // Routes that are in dock menu
+    const dockRoutes = [
+      "/",
+      "/auth/login",
+      "/settings",
+      user?.id ? `/user/${user.id}` : null,
+    ].filter(Boolean) as string[];
+
+    // Check if current pathname matches any dock route
+    const matchesDockRoute = dockRoutes.some((route) => {
+      if (route === "/") {
+        return pathname === "/";
+      }
+      return pathname.startsWith(route);
+    });
+
+    // If doesn't match dock routes, it's a detail page
+    return !matchesDockRoute;
+  }, [pathname, user?.id]);
+
   // Calculate menu items based on auth state
   const menuItems = useMemo<MenuDockItem[]>(() => {
-    const items: MenuDockItem[] = [
-      {
-        label: t("nav.home", "common") || "Home",
-        icon: Home,
+    const items: MenuDockItem[] = [];
+
+    // Add Back button if on detail page
+    if (isDetailPage) {
+      items.push({
+        label: t("actions.back", "common") || "Back",
+        icon: ArrowLeft,
         onClick: () => {
-          router.push("/");
+          router.back();
         },
+      });
+    }
+
+    // Always add Home
+    items.push({
+      label: t("nav.home", "common") || "Home",
+      icon: Home,
+      onClick: () => {
+        router.push("/");
       },
-      {
-        label: t("actions.search", "common") || "Search",
-        icon: Search,
-        onClick: () => {
-          setIsSearchOpen(true);
-        },
+    });
+
+    // Always add Search
+    items.push({
+      label: t("actions.search", "common") || "Search",
+      icon: Search,
+      onClick: () => {
+        setIsSearchOpen(true);
       },
-    ];
+    });
 
     // Add Profile item if user is authenticated, otherwise add Login button
     // Write button is hidden per requirements
     if (user?.id) {
+      // Create Avatar icon component wrapper for personalized UX
+      // Best practice: Use Avatar instead of generic icon for better user recognition
+      const AvatarIcon = ({ className }: { className?: string }) => (
+        <UserAvatarIcon user={user} className={className} />
+      );
+      
       items.push({
         label: t("nav.profile", "common") || "Profile",
-        icon: UserIcon,
+        icon: AvatarIcon, // Avatar provides better UX than generic UserIcon
         onClick: () => {
           setIsSettingsOpen(true);
         },
@@ -123,14 +210,20 @@ export default function MobileMenuDock({
     });
 
     return items;
-  }, [user, t, router]);
+  }, [user, t, router, isDetailPage]);
 
   // Calculate active index based on current pathname
   const pathnameBasedIndex = useMemo(() => {
-    if (pathname === "/") {
+    // If on detail page, Back button should be active (index 0)
+    if (isDetailPage) {
       return 0;
     }
-    // Check for Search - this is index 1, but we don't have a specific route for it
+
+    if (pathname === "/") {
+      // Home is at index 0 if no Back button, otherwise index 1
+      return isDetailPage ? 1 : 0;
+    }
+    // Check for Search - this is index 1 (or 2 if Back button exists)
     // So we'll handle it via user click only
 
     // Check for Login route (when not authenticated)
@@ -156,9 +249,9 @@ export default function MobileMenuDock({
       // Settings is always the last item
       return menuItems.length - 1;
     }
-    // For other routes, default to home
-    return 0;
-  }, [pathname, menuItems, user?.id, t]);
+    // For other routes, default to home (or back if on detail page)
+    return isDetailPage ? 0 : 0;
+  }, [pathname, menuItems, user?.id, t, isDetailPage]);
 
   // Determine final active index: use user selection if available and valid, otherwise use pathname-based
   const finalActiveIndex = useMemo(() => {
@@ -217,46 +310,32 @@ export default function MobileMenuDock({
     setIsSettingsOpen(false);
   };
 
+
   return (
     <>
-      {/* Settings Popover */}
-      <Popover open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
-        {/* Menu Dock Navigation Container - serves as anchor */}
-        <PopoverAnchor asChild>
-          <div className="w-full flex justify-center">
-            <MenuDock
-              items={menuItems}
-              variant="compact"
-              orientation="horizontal"
-              showLabels={true}
-              animated={true}
-              activeIndex={finalActiveIndex}
-              onActiveIndexChange={setUserSelectedIndex}
-              // className="w-full max-w-md"
-            />
-          </div>
-        </PopoverAnchor>
-        {/* Hidden trigger - controlled by Profile button click */}
-        <PopoverTrigger asChild>
-          <button
-            className="sr-only"
-            aria-label={t("nav.menu", "common") || "Menu"}
-            aria-hidden="true"
-            tabIndex={-1}
-          />
-        </PopoverTrigger>
-        <PopoverContent
-          side="top"
-          align="center"
-          sideOffset={12}
-          className="w-80 max-w-[calc(100vw-2rem)] max-h-[85vh] overflow-y-auto p-0"
+      {/* Menu Dock Navigation */}
+      <div className="w-full flex justify-center">
+        <MenuDock
+          items={menuItems}
+          variant="compact"
+          orientation="horizontal"
+          showLabels={true}
+          animated={true}
+          activeIndex={finalActiveIndex}
+          onActiveIndexChange={setUserSelectedIndex}
+          // className="w-full max-w-md"
+        />
+      </div>
+
+      {/* Settings Bottom Sheet - Best UX for mobile */}
+      <Sheet open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+        <SheetContent
+          side="bottom"
+          className="max-h-[85vh] overflow-y-auto p-0"
         >
-          {/* Header */}
-          <div className="px-4 pt-4 pb-3 border-b border-border">
-            <h3 className="text-base font-semibold text-foreground">
-              {t("nav.menu", "common") || "Menu"}
-            </h3>
-          </div>
+          <SheetHeader className="px-4 pt-4 pb-3 border-b border-border">
+            <SheetTitle>{t("nav.menu", "common") || "Menu"}</SheetTitle>
+          </SheetHeader>
 
           <div className="p-4 space-y-6">
             {/* Language Switcher Section */}
@@ -373,8 +452,8 @@ export default function MobileMenuDock({
               )}
             </div>
           </div>
-        </PopoverContent>
-      </Popover>
+        </SheetContent>
+      </Sheet>
 
       {/* Search Dialog */}
       <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
