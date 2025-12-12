@@ -257,14 +257,15 @@ export function useRecentlyAddedSeries(enabled?: boolean) {
 /**
  * Hook for fetching a single series by ID
  */
-export function useSeries(seriesId: string) {
+export function useSeries(seriesId: string, enabled: boolean = true) {
   return useQuery({
     queryKey: queryKeys.series.detail(seriesId),
     queryFn: async () => {
       const backendSeries = await SeriesAPI.getSeries(seriesId);
       return transformBackendSeries(backendSeries as unknown as BackendSeries);
     },
-    enabled: !!seriesId && seriesId !== "undefined" && seriesId !== "null",
+    enabled:
+      enabled && !!seriesId && seriesId !== "undefined" && seriesId !== "null",
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
@@ -624,6 +625,48 @@ export function useSegment(segmentId: string) {
     },
     enabled: !!segmentId && segmentId !== "undefined",
     staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+  });
+}
+
+/**
+ * Hook for fetching segments uploaded by a specific user with cursor-based infinite scroll
+ * Supports filtering by segment type and status
+ * @param userId - User ID to fetch segments for
+ * @param enabled - Whether to enable the query
+ * @param type - Optional segment type filter (chapter/episode/trailer)
+ * @param status - Optional status filter (active/pending/inactive/archived)
+ */
+export function useUserSegmentsInfinite(
+  userId: string,
+  enabled: boolean = true,
+  type?: string,
+  status?: string,
+) {
+  return useInfiniteQuery({
+    queryKey: queryKeys.segments.byUserCursor(userId, undefined, type, status),
+    queryFn: async ({ pageParam }) => {
+      const params: QuerySegmentCursorDto = {
+        userId,
+        cursor: pageParam as string | undefined,
+        limit: 20, // Number of items per page
+        sortBy: "createdAt",
+        order: "DESC", // Sort by creation date descending (newest first)
+        type: type && type !== "all" ? type : undefined,
+        // Note: status filter may need to be added to QuerySegmentCursorDto if backend supports it
+      };
+      const response = await SegmentsAPI.getSegmentsCursor(params);
+      return response.data;
+    },
+    enabled: enabled && !!userId && userId !== "undefined" && userId !== "null",
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (lastPage) => {
+      // Return next cursor if available, otherwise undefined to stop pagination
+      return lastPage.metaData.nextCursor ?? undefined;
+    },
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
