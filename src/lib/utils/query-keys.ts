@@ -98,8 +98,12 @@ export const queryKeys = {
   segments: {
     all: () => ["segments"] as const,
     byUser: (userId: string) => ["segments", "user", userId] as const,
-    byUserCursor: (userId: string, cursor?: string, type?: string, status?: string) =>
-      ["segments", "user", userId, "cursor", cursor, type, status] as const,
+    byUserCursor: (
+      userId: string,
+      cursor?: string,
+      type?: string,
+      status?: string,
+    ) => ["segments", "user", userId, "cursor", cursor, type, status] as const,
   },
 
   // Comments related queries

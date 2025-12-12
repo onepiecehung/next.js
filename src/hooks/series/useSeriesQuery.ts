@@ -1,35 +1,35 @@
 import {
-    useInfiniteQuery,
-    useMutation,
-    useQuery,
-    useQueryClient,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { useI18n } from "@/components/providers/i18n-provider";
 import {
-    SegmentsAPI,
-    type QuerySegmentCursorDto,
-    type QuerySegmentDto,
+  SegmentsAPI,
+  type QuerySegmentCursorDto,
+  type QuerySegmentDto,
 } from "@/lib/api/segments";
 import { SeriesAPI, type QuerySeriesDto } from "@/lib/api/series";
 import type { SeriesSeason } from "@/lib/constants/series.constants";
 import { SERIES_CONSTANTS } from "@/lib/constants/series.constants";
 import type {
-    BackendSeries,
-    CreateSegmentDto,
-    LatestUpdateItem,
-    PopularSeries,
-    Series,
-    SeriesSegment,
-    UpdateSegmentDto,
+  BackendSeries,
+  CreateSegmentDto,
+  LatestUpdateItem,
+  PopularSeries,
+  Series,
+  SeriesSegment,
+  UpdateSegmentDto,
 } from "@/lib/interface/series.interface";
 import type { AdvancedQueryParams } from "@/lib/types";
 import { queryKeys } from "@/lib/utils/query-keys";
 import {
-    transformBackendSeries,
-    transformBackendSeriesList,
-    transformToPopularSeries,
+  transformBackendSeries,
+  transformBackendSeriesList,
+  transformToPopularSeries,
 } from "@/lib/utils/series-utils";
 
 /**
@@ -265,10 +265,7 @@ export function useSeries(seriesId: string, enabled: boolean = true) {
       return transformBackendSeries(backendSeries as unknown as BackendSeries);
     },
     enabled:
-      enabled &&
-      !!seriesId &&
-      seriesId !== "undefined" &&
-      seriesId !== "null",
+      enabled && !!seriesId && seriesId !== "undefined" && seriesId !== "null",
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
@@ -662,8 +659,7 @@ export function useUserSegmentsInfinite(
       const response = await SegmentsAPI.getSegmentsCursor(params);
       return response.data;
     },
-    enabled:
-      enabled && !!userId && userId !== "undefined" && userId !== "null",
+    enabled: enabled && !!userId && userId !== "undefined" && userId !== "null",
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => {
       // Return next cursor if available, otherwise undefined to stop pagination

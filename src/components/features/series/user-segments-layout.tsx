@@ -2,15 +2,15 @@
 
 import { useAtom } from "jotai";
 import {
-    BookOpen,
-    Calendar,
-    EyeOff,
-    Filter,
-    Grid3X3,
-    List,
-    Loader2,
-    Search,
-    Square,
+  BookOpen,
+  Calendar,
+  EyeOff,
+  Filter,
+  Grid3X3,
+  List,
+  Loader2,
+  Search,
+  Square,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,10 +24,10 @@ import { Button } from "@/components/ui/core/button";
 import { Card, CardContent } from "@/components/ui/core/card";
 import { Input } from "@/components/ui/core/input";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/layout/dropdown-menu";
 import { useSeries, useUserSegmentsInfinite } from "@/hooks/series";
 import { currentUserAtom } from "@/lib/auth";
@@ -142,8 +142,7 @@ export function UserSegmentsLayout({
     return (
       <div className="text-center py-8">
         <p className="text-muted-foreground mb-4">
-          {t("error.loadingSegments", "user") ||
-            "Failed to load segments"}
+          {t("error.loadingSegments", "user") || "Failed to load segments"}
         </p>
         <Button onClick={() => fetchNextPage()} variant="outline">
           {t("actions.retry", "common") || "Retry"}
@@ -224,8 +223,9 @@ export function UserSegmentsLayout({
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder={t("searchSegmentsPlaceholder", "user") ||
-                "Search segments..."}
+              placeholder={
+                t("searchSegmentsPlaceholder", "user") || "Search segments..."
+              }
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
               className="pl-10"
@@ -356,8 +356,7 @@ export function UserSegmentsLayout({
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin" />
               <span>
-                {t("chapters.loading", "series") ||
-                  "Loading more segments..."}
+                {t("chapters.loading", "series") || "Loading more segments..."}
               </span>
             </div>
           )}
@@ -387,12 +386,7 @@ interface SegmentItemProps {
  * Segment Item Component
  * Displays individual segment in different layouts
  */
-function SegmentItem({
-  segment,
-  layout,
-  onSegmentClick,
-  t,
-}: SegmentItemProps) {
+function SegmentItem({ segment, layout, onSegmentClick, t }: SegmentItemProps) {
   // Use series data from segment response (included in API response)
   // Fallback to fetching if not available (for backward compatibility)
   const seriesFromSegment = segment.series;
@@ -400,7 +394,7 @@ function SegmentItem({
     segment.seriesId,
     !seriesFromSegment, // Only fetch if series data is not included in segment
   );
-  
+
   // Prefer series data from segment response, fallback to API fetch
   const series = seriesFromSegment || seriesFromApi;
 
@@ -456,18 +450,18 @@ function SegmentItem({
   // Handle both transformed Series (from API) and BackendSeries (from segment response)
   const coverImage = (() => {
     if (!series) return "/default-article-cover.svg";
-    
+
     // If series is transformed (has coverUrl), use it directly
     if ("coverUrl" in series && typeof series.coverUrl === "string") {
       return series.coverUrl;
     }
-    
+
     // If series is BackendSeries (from segment response), extract from coverImageUrls
     const backendSeries = series as {
       coverImage?: { url?: string };
       coverImageUrls?: Record<string, string>;
     };
-    
+
     if (backendSeries.coverImage?.url) {
       return backendSeries.coverImage.url;
     }
@@ -490,7 +484,7 @@ function SegmentItem({
         return firstUrl;
       }
     }
-    
+
     return "/default-article-cover.svg";
   })();
 
@@ -498,12 +492,12 @@ function SegmentItem({
   // Handle both transformed Series (from API) and BackendSeries (from segment response)
   const seriesTitle = (() => {
     if (!series) return "Unknown Series";
-    
+
     // If series is transformed (has title as string), use it directly
     if ("title" in series && typeof series.title === "string") {
       return series.title;
     }
-    
+
     // If series is BackendSeries (from segment response), extract from title object
     const backendSeries = series as {
       title?: {
@@ -513,7 +507,7 @@ function SegmentItem({
         native?: string;
       };
     };
-    
+
     if (backendSeries.title) {
       return (
         backendSeries.title.userPreferred ||
@@ -523,7 +517,7 @@ function SegmentItem({
         "Unknown Series"
       );
     }
-    
+
     return "Unknown Series";
   })();
 

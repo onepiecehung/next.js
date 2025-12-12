@@ -2,13 +2,13 @@
 
 import { useAtom } from "jotai";
 import {
-    BookOpen,
-    Calendar,
-    MapPin,
-    MessageSquare,
-    PenTool,
-    Rss,
-    UserPlus,
+  BookOpen,
+  Calendar,
+  MapPin,
+  MessageSquare,
+  PenTool,
+  Rss,
+  UserPlus,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -19,18 +19,18 @@ import { useI18n } from "@/components/providers/i18n-provider";
 import { useIsMounted } from "@/components/providers/no-ssr";
 import { AnimatedSection, Skeletonize } from "@/components/shared";
 import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-    Button,
-    GitHubIcon,
-    XIcon,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
+  GitHubIcon,
+  XIcon,
 } from "@/components/ui";
 import {
-    useFollow,
-    useFollowCounters,
-    useFollowStatus,
-    useUnfollow,
+  useFollow,
+  useFollowCounters,
+  useFollowStatus,
+  useUnfollow,
 } from "@/hooks/follow";
 import { useUserProfile } from "@/hooks/users/useUserQuery";
 import { currentUserAtom } from "@/lib/auth";

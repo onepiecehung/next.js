@@ -94,6 +94,7 @@ interface SearchBarProps {
   placeholder?: string;
   showKeyboardShortcut?: boolean;
   onSearch?: (query: string) => void;
+  onResultClick?: () => void; // Callback when a search result is clicked
   className?: string;
 }
 
@@ -101,6 +102,7 @@ export function SearchBar({
   placeholder,
   showKeyboardShortcut = true,
   onSearch,
+  onResultClick,
   className,
 }: SearchBarProps) {
   const { t } = useI18n();
@@ -168,6 +170,8 @@ export function SearchBar({
     router.push(`/series/${seriesId}`);
     setIsOpen(false);
     setQuery("");
+    // Notify parent component that a result was clicked (e.g., to close dialog)
+    onResultClick?.();
   };
 
   // Handle input change

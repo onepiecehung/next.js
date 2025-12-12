@@ -1,15 +1,15 @@
 import { http } from "@/lib/http";
 import type {
-    CreateSegmentDto,
-    SeriesSegment,
-    UpdateSegmentDto,
+  CreateSegmentDto,
+  SeriesSegment,
+  UpdateSegmentDto,
 } from "@/lib/interface/series.interface";
 import type {
-    AdvancedQueryParams,
-    ApiResponse,
-    ApiResponseCursor,
-    ApiResponseOffset,
-    QueryParamsWithCursor,
+  AdvancedQueryParams,
+  ApiResponse,
+  ApiResponseCursor,
+  ApiResponseOffset,
+  QueryParamsWithCursor,
 } from "@/lib/types";
 
 /**
